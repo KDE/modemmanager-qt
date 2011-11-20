@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 project(libmm-qt)
 
+set(VERSION 0.5.0)
 set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_MODULE_PATH})
 
@@ -96,5 +97,9 @@ DESTINATION
 include/libmm-qt COMPONENT Devel)
 
 set_property(TARGET mm-qt PROPERTY COMPILE_DEFINITIONS MAKE_MMQT_LIB)
-set_property(TARGET mm-qt PROPERTY VERSION 0.5.0)
+set_property(TARGET mm-qt PROPERTY VERSION ${VERSION})
 set_property(TARGET mm-qt PROPERTY SOVERSION 0)
+
+message(STATUS "Writing pkg-config file...")
+configure_file(${CMAKE_SOURCE_DIR}/libmm-qt.pc.cmake ${CMAKE_BINARY_DIR}/libmm-qt.pc @ONLY)
+install(FILES ${CMAKE_BINARY_DIR}/libmm-qt.pc DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig/")
