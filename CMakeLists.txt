@@ -102,4 +102,4 @@ set_property(TARGET mm-qt PROPERTY SOVERSION 0)
 
 message(STATUS "Writing pkg-config file...")
 configure_file(${CMAKE_SOURCE_DIR}/libmm-qt.pc.cmake ${CMAKE_BINARY_DIR}/libmm-qt.pc @ONLY)
-install(FILES ${CMAKE_BINARY_DIR}/libmm-qt.pc DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig/")
+install(FILES ${CMAKE_BINARY_DIR}/libmm-qt.pc DESTINATION "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}/pkgconfig/")
