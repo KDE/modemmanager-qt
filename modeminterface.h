@@ -75,7 +75,7 @@ public:
         Hspa /* HSPA (ETSI 27.007: "UTRAN w/HSDPA and HSUPA") */
     };
 
-    /** A bitfield describing the specifc access modes and technologies supported by a device
+    /** A bitfield describing the specific access modes and technologies supported by a device
      * and the access technology in-use when connected to a mobile network. */
     enum Mode {
         UnknownMode = 0x0, /* Unknown or invalid mode. */
@@ -140,8 +140,8 @@ public:
                 version;
     };
 
-    ModemInterface( const QString & path, QObject * parent = 0 );
-    ModemInterface( ModemInterfacePrivate &dd, QObject * parent = 0);
+    explicit ModemInterface( const QString & path, QObject * parent = 0 );
+    explicit ModemInterface( ModemInterfacePrivate &dd, QObject * parent = 0);
     virtual ~ModemInterface();
 
     QString udi() const;
