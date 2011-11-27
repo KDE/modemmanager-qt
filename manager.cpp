@@ -40,12 +40,12 @@ ModemManager::ModemManagerPrivate::ModemManagerPrivate() : watcher(ModemManager:
     qDBusRegisterMetaType<QList<QDBusObjectPath> >();
     registerModemManagerTypes();
 
-    connect( &iface, SIGNAL(DeviceAdded(const QDBusObjectPath &)),
-                  this, SLOT(deviceAdded(const QDBusObjectPath &)));
-    connect( &iface, SIGNAL(DeviceRemoved(const QDBusObjectPath &)),
-                  this, SLOT(deviceRemoved(const QDBusObjectPath &)));
+    connect(&iface, SIGNAL(DeviceAdded(QDBusObjectPath)),
+                  this, SLOT(deviceAdded(QDBusObjectPath)));
+    connect(&iface, SIGNAL(DeviceRemoved(QDBusObjectPath)),
+                  this, SLOT(deviceRemoved(QDBusObjectPath)));
 
-    connect(&watcher, SIGNAL(serviceUnregistered(const QString&)), SLOT(daemonUnregistered()));
+    connect(&watcher, SIGNAL(serviceUnregistered(QString)), SLOT(daemonUnregistered()));
     init();
 }
 

@@ -63,7 +63,7 @@ void ModemManager::ModemInterface::init()
     d->modemIface.connection().connect(ModemManager::DBUS_SERVICE,
                                        d->udi, QLatin1String("org.freedesktop.DBus.Properties"),
                                        QLatin1String("MmPropertiesChanged"), QLatin1String("sa{sv}"),
-                                       this, SLOT(propertiesChanged(const QString &,const QVariantMap &)));
+                                       this, SLOT(propertiesChanged(QString,QVariantMap)));
 }
 
 QString ModemManager::ModemInterface::udi() const

@@ -35,7 +35,7 @@ ModemManager::ModemLocationInterface::ModemLocationInterface(const QString & pat
     d->modemLocationIface.connection().connect(ModemManager::DBUS_SERVICE,
         path, QLatin1String("org.freedesktop.DBus.Properties"),
         QLatin1String("MmPropertiesChanged"), QLatin1String("sa{sv}"),
-        this, SLOT(propertiesChanged(const QString &,const QVariantMap &)));
+        this, SLOT(propertiesChanged(QString,QVariantMap)));
 }
 
 ModemManager::ModemLocationInterface::~ModemLocationInterface()

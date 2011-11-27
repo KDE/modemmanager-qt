@@ -34,10 +34,10 @@ ModemManager::ModemGsmHsoInterface::ModemGsmHsoInterface(const QString & path, Q
     : ModemInterface(*new ModemGsmHsoInterfacePrivate(path, this), parent)
 {
     Q_D(const ModemGsmHsoInterface);
-    connect( &d->modemGsmHsoIface, SIGNAL(smsReceived(uint, bool)),
-                this, SIGNAL(smsReceived(int, bool)));
-    connect( &d->modemGsmHsoIface, SIGNAL(completed(uint, bool)),
-                this, SIGNAL(completed(int, bool)));
+    connect(&d->modemGsmHsoIface, SIGNAL(smsReceived(uint,bool)),
+                this, SIGNAL(smsReceived(int,bool)));
+    connect(&d->modemGsmHsoIface, SIGNAL(completed(uint,bool)),
+                this, SIGNAL(completed(int,bool)));
 }
 
 ModemManager::ModemGsmHsoInterface::~ModemGsmHsoInterface()

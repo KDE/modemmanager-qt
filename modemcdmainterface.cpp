@@ -33,10 +33,10 @@ ModemManager::ModemCdmaInterface::ModemCdmaInterface(const QString & path, QObje
 {
     Q_D(ModemCdmaInterface);
 
-    connect( &d->modemCdmaIface, SIGNAL(RegistrationStateChanged(const ModemManager::ModemCdmaInterface::RegistrationState,
-                                                                 const ModemManager::ModemCdmaInterface::RegistrationState)),
-                this, SIGNAL(registrationStateChanged(const ModemManager::ModemCdmaInterface::RegistrationState,
-                                                      const ModemManager::ModemCdmaInterface::RegistrationState)));
+    connect( &d->modemCdmaIface, SIGNAL(RegistrationStateChanged(ModemManager::ModemCdmaInterface::RegistrationState,
+                                                                 ModemManager::ModemCdmaInterface::RegistrationState)),
+                this, SIGNAL(registrationStateChanged(ModemManager::ModemCdmaInterface::RegistrationState,
+                                                      ModemManager::ModemCdmaInterface::RegistrationState)));
     connect( &d->modemCdmaIface, SIGNAL(SignalQuality(uint)),
                 this, SIGNAL(signalQualityChanged(uint)));
 }

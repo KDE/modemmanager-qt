@@ -33,10 +33,10 @@ ModemManager::ModemGsmSmsInterface::ModemGsmSmsInterface(const QString & path, Q
     : ModemInterface(*new ModemGsmSmsInterfacePrivate(path, this), parent)
 {
     Q_D(const ModemGsmSmsInterface);
-    connect( &d->modemGsmSmsIface, SIGNAL(smsReceived(uint, bool)),
-                this, SIGNAL(smsReceived(int, bool)));
-    connect( &d->modemGsmSmsIface, SIGNAL(completed(uint, bool)),
-                this, SIGNAL(completed(int, bool)));
+    connect(&d->modemGsmSmsIface, SIGNAL(smsReceived(uint,bool)),
+                this, SIGNAL(smsReceived(int,bool)));
+    connect(&d->modemGsmSmsIface, SIGNAL(completed(uint,bool)),
+                this, SIGNAL(completed(int,bool)));
 }
 
 ModemManager::ModemGsmSmsInterface::~ModemGsmSmsInterface()
