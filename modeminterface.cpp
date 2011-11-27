@@ -19,10 +19,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "manager.h"
 #include "modeminterface.h"
 #include "modeminterface_p.h"
-
+#include "manager.h"
 #include "mmdebug.h"
 
 ModemInterfacePrivate::ModemInterfacePrivate( const QString & path, QObject * owner ) : modemIface(ModemManager::DBUS_SERVICE, path, QDBusConnection::systemBus()), modemSimpleIface(ModemManager::DBUS_SERVICE, path, QDBusConnection::systemBus()), udi(path)

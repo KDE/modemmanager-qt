@@ -19,6 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "manager.h"
+#include "manager_p.h"
 #include "modemcdmainterface.h"
 #include "modemgsmcardinterface.h"
 #include "modemgsmcontactsinterface.h"
@@ -26,10 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "modemgsmsmsinterface.h"
 #include "modemgsmhsointerface.h"
 #include "modemgsmussdinterface.h"
-
-#include "manager_p.h"
 #include "macros.h"
-
 #include "mmdebug.h"
 
 const QString ModemManager::DBUS_SERVICE = QString::fromLatin1("org.freedesktop.ModemManager");

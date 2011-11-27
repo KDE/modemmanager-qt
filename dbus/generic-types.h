@@ -18,8 +18,8 @@
    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_TYPES_H
-#define MODEMMANAGER_TYPES_H
+#ifndef MODEMMANAGER_GENERIC_TYPES_H
+#define MODEMMANAGER_GENERIC_TYPES_H
 
 #include <QMetaType>
 #include <QDBusArgument>

@@ -18,9 +18,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "manager.h"
 #include "modemgsmcontactsinterface.h"
 #include "modemgsmcontactsinterface_p.h"
+#include "manager.h"
 
 #include <QDebug>
 

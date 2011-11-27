@@ -18,10 +18,9 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "manager.h"
 #include "modemgsmcardinterface.h"
 #include "modemgsmcardinterface_p.h"
-
+#include "manager.h"
 #include "mmdebug.h"
 
 ModemGsmCardInterfacePrivate::ModemGsmCardInterfacePrivate(const QString &path, QObject *owner)
