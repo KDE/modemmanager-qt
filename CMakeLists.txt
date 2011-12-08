@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-project(libmm-qt)
+project(libQtModemManager)
 
 set(VERSION 0.5.0)
 set(CMAKE_BUILD_TYPE Debug)
@@ -22,7 +22,7 @@ include_directories(
 
 #add_subdirectory(dbus)
 
-set(mmqt_HEADERS
+set(QtModemManager_HEADERS
     manager.h
     modeminterface.h
     modemlocationinterface.h
@@ -33,10 +33,10 @@ set(mmqt_HEADERS
     modemgsmsmsinterface.h
     modemgsmhsointerface.h
     modemgsmussdinterface.h
-    mmqt-export.h
+    QtModemManager-export.h
 )
 
-set(mmqt_PRIVATE_HEADERS
+set(QtModemManager_PRIVATE_HEADERS
     manager_p.h
     modemcdmainterface_p.h
     modemgsmcardinterface_p.h
@@ -49,7 +49,7 @@ set(mmqt_PRIVATE_HEADERS
     modemlocationinterface_p.h
 )
 
-set(mmqt_SRCS
+set(QtModemManager_SRCS
    manager.cpp
    modeminterface.cpp
    modemlocationinterface.cpp
@@ -77,23 +77,23 @@ set( DBUS_INTERFACES_FILES
    dbus/mm-modem-gsm-ussdinterface.cpp
 )
 
-qt4_wrap_cpp(mmqt_MOC ${mmqt_HEADERS} ${mmqt_PRIVATE_HEADERS})
+qt4_wrap_cpp(QtModemManager_MOC ${QtModemManager_HEADERS} ${QtModemManager_PRIVATE_HEADERS})
 qt4_automoc(${DBUS_INTERFACES_FILES})
 
-add_library(mm-qt SHARED ${mmqt_MOC} ${mmqt_SRCS} ${DBUS_INTERFACES_FILES})
+add_library(QtModemManager SHARED ${QtModemManager_MOC} ${QtModemManager_SRCS} ${DBUS_INTERFACES_FILES})
 
-target_link_libraries(mm-qt ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY})
-install(TARGETS mm-qt DESTINATION lib${LIB_SUFFIX})
+target_link_libraries(QtModemManager ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY})
+install(TARGETS QtModemManager DESTINATION lib${LIB_SUFFIX})
 
 install( FILES
-${mmqt_HEADERS}
+${QtModemManager_HEADERS}
 DESTINATION
-include/libmm-qt COMPONENT Devel)
+include/QtModemManager COMPONENT Devel)
 
-set_property(TARGET mm-qt PROPERTY COMPILE_DEFINITIONS MAKE_MMQT_LIB)
-set_property(TARGET mm-qt PROPERTY VERSION ${VERSION})
-set_property(TARGET mm-qt PROPERTY SOVERSION 0)
+set_property(TARGET QtModemManager PROPERTY COMPILE_DEFINITIONS MAKE_QTMODEMMANAGER_LIB)
+set_property(TARGET QtModemManager PROPERTY VERSION ${VERSION})
+set_property(TARGET QtModemManager PROPERTY SOVERSION 0)
 
 message(STATUS "Writing pkg-config file...")
-configure_file(${CMAKE_SOURCE_DIR}/libmm-qt.pc.cmake ${CMAKE_BINARY_DIR}/libmm-qt.pc @ONLY)
-install(FILES ${CMAKE_BINARY_DIR}/libmm-qt.pc DESTINATION "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}/pkgconfig/")
+configure_file(${CMAKE_SOURCE_DIR}/QtModemManager.pc.cmake ${CMAKE_BINARY_DIR}/QtModemManager.pc @ONLY)
+install(FILES ${CMAKE_BINARY_DIR}/QtModemManager.pc DESTINATION "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}/pkgconfig/")

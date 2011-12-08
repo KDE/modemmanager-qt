@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef MODEMMANAGER_MODEMMANAGER_H
 #define MODEMMANAGER_MODEMMANAGER_H
 
-#include "mmqt-export.h"
+#include "QtModemManager-export.h"
 
 #include <QObject>
 #include <QDBusObjectPath>
@@ -44,7 +44,7 @@ namespace ModemManager
     class ModemInterface;
     typedef QList<ModemInterface*> ModemInterfaceList;
 
-    class MMQT_EXPORT Notifier : public QObject
+    class QTMODEMMANAGER_EXPORT Notifier : public QObject
     {
     Q_OBJECT
     Q_SIGNALS:
@@ -76,7 +76,7 @@ namespace ModemManager
      * in Modem Manager specification.
      * @return the list of modem interfaces available in this system
      */
-    MMQT_EXPORT ModemInterfaceList modemInterfaces();
+    QTMODEMMANAGER_EXPORT ModemInterfaceList modemInterfaces();
     /**
      * Find a new ModemManagerInterface object given its UDNI.  This pointer is owned by the Solid
      * infrastructure.
@@ -85,9 +85,9 @@ namespace ModemManager
      * @returns a valid ModemManagerInterface object if there's a device having the given UDI, an invalid one otherwise
      */
     //willtodo: decide what to do with type arg
-    MMQT_EXPORT ModemInterface *findModemInterface(const QString &udi, const ModemManager::ModemInterface::GsmInterfaceType ifaceType);
+    QTMODEMMANAGER_EXPORT ModemInterface *findModemInterface(const QString &udi, const ModemManager::ModemInterface::GsmInterfaceType ifaceType);
 
-    MMQT_EXPORT Notifier * notifier();
+    QTMODEMMANAGER_EXPORT Notifier * notifier();
 
 }
 

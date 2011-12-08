@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef MODEMMANAGER_MODEMGSMSMSINTERFACE_H
 #define MODEMMANAGER_MODEMGSMSMSINTERFACE_H
 
-#include "mmqt-export.h"
+#include "QtModemManager-export.h"
 
 #include <QObject>
 #include "modeminterface.h"
@@ -31,7 +31,7 @@ class ModemGsmSmsInterfacePrivate;
 
 namespace ModemManager
 {
-class MMQT_EXPORT ModemGsmSmsInterface : public ModemInterface
+class QTMODEMMANAGER_EXPORT ModemGsmSmsInterface : public ModemInterface
 {
 Q_OBJECT
 Q_DECLARE_PRIVATE(ModemGsmSmsInterface)

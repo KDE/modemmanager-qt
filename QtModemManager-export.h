@@ -19,10 +19,10 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef MMQT_EXPORT_H
-#define MMQT_EXPORT_H
+#ifndef QTMODEMMANAGER_EXPORT_H
+#define QTMODEMMANAGER_EXPORT_H
 
-/** \file mmqt-export.h
+/** \file QtModemManager-export.h
     \brief Contains Macros for exporting symbols
 
     This file contains macros needed for exporting/importing symbols
@@ -30,15 +30,15 @@
 
 #include <QtCore/QtGlobal>
 
-#ifndef MMQT_EXPORT
-# if defined(MAKE_MMQT_LIB)
+#ifndef QTMODEMMANAGER_EXPORT
+# if defined(MAKE_QTMODEMMANAGER_LIB)
 /* We are building this library */
-#  define MMQT_EXPORT Q_DECL_EXPORT
+#  define QTMODEMMANAGER_EXPORT Q_DECL_EXPORT
 # else
 /* We are using this library */
-#  define MMQT_EXPORT Q_DECL_IMPORT
+#  define QTMODEMMANAGER_EXPORT Q_DECL_IMPORT
 # endif
 #endif
 
-#endif /*MMQT_EXPORT_H*/
+#endif /*QTMODEMMANAGER_EXPORT*/
 

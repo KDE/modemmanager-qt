@@ -22,7 +22,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef MODEMMANAGER_MODEMCDMAINTERFACE_H
 #define MODEMMANAGER_MODEMCDMAINTERFACE_H
 
-#include "mmqt-export.h"
+#include "QtModemManager-export.h"
 
 #include <QObject>
 #include "modeminterface.h"
@@ -30,7 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 class ModemCdmaInterfacePrivate;
 
 namespace ModemManager {
-class MMQT_EXPORT ModemCdmaInterface : public ModemInterface
+class QTMODEMMANAGER_EXPORT ModemCdmaInterface : public ModemInterface
 {
 Q_OBJECT
 Q_DECLARE_PRIVATE(ModemCdmaInterface)
