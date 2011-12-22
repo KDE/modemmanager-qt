@@ -84,7 +84,7 @@ namespace ModemManager
      * @param udi the identifier of the modem interface to find
      * @returns a valid ModemManagerInterface object if there's a device having the given UDI, an invalid one otherwise
      */
-    //willtodo: decide what to do with type arg
+    //TODO: decide what to do with type arg
     QTMODEMMANAGER_EXPORT ModemInterface *findModemInterface(const QString &udi, const ModemManager::ModemInterface::GsmInterfaceType ifaceType);
 
     QTMODEMMANAGER_EXPORT Notifier * notifier();
