@@ -31,17 +31,19 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace ModemManager
 {
+typedef QMap<ModemInterface::GsmInterfaceType, ModemInterface*> ModemInterfaceIfaceMap;
+
 class ModemInterface;
 class ModemManagerPrivate : public Notifier
 {
 Q_OBJECT
+
 public:
     ModemManagerPrivate();
     ~ModemManagerPrivate();
     QDBusServiceWatcher watcher;
     OrgFreedesktopModemManagerInterface iface;
-    QStringList modemInterfaces;
-    QMap<QString, ModemManager::ModemInterface *> modemMap;
+    QMap<QString, ModemInterfaceIfaceMap> modemMap;
     ModemManager::ModemInterface * findModemInterface(const QString &udi, const ModemManager::ModemInterface::GsmInterfaceType ifaceType);
     ModemManager::ModemInterface * createModemInterface(const QString &udi, const ModemManager::ModemInterface::GsmInterfaceType ifaceType);
 protected Q_SLOTS:
