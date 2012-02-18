@@ -99,7 +99,7 @@ public:
      *
      * @return the signal quality as a percentage
      */
-    uint getSignalQuality();
+    uint getSignalQuality() const;
     /**
      * Sets the band the device is allowed to use when connecting to a mobile network.
      *
@@ -107,12 +107,13 @@ public:
      */
     void setBand(const ModemManager::ModemInterface::Band band);
     ModemManager::ModemInterface::Band getBand();
-    RegistrationInfoType getRegistrationInfo();
+    RegistrationInfoType getRegistrationInfo() const;
     void setAllowedMode(const ModemManager::ModemInterface::AllowedMode mode);
     // properties
     ModemManager::ModemInterface::AllowedMode getAllowedMode() const;
     ModemManager::ModemInterface::AccessTechnology getAccessTechnology() const;
 public Q_SLOTS:
+    void slotSignalQualityChanged(uint signalQuality);
     void slotRegistrationInfoChanged(uint status, const QString & operatorCode, const QString &operatorName);
     void propertiesChanged(const QString & interface, const QVariantMap & properties);
 Q_SIGNALS:

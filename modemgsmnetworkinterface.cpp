@@ -42,7 +42,12 @@ ModemManager::ModemGsmNetworkInterface::ModemGsmNetworkInterface(const QString &
     connect( &d->modemGsmNetworkIface, SIGNAL(RegistrationInfo(uint,QString,QString)),
                 this, SLOT(slotRegistrationInfoChanged(uint,QString,QString)));
     connect( &d->modemGsmNetworkIface, SIGNAL(SignalQuality(uint)),
-                this, SIGNAL(signalQualityChanged(uint)));
+                this, SLOT(slotSignalQualityChanged(uint)));
+
+    d->signalQuality = d->modemGsmNetworkIface.GetSignalQuality();
+    d->registrationInfo = d->modemGsmNetworkIface.GetRegistrationInfo();
+    d->accessTechnology = (ModemManager::ModemInterface::AccessTechnology)d->modemGsmNetworkIface.accessTechnology();
+    d->allowedMode = (ModemManager::ModemInterface::AllowedMode)d->modemGsmNetworkIface.allowedMode();
 }
 
 ModemManager::ModemGsmNetworkInterface::~ModemGsmNetworkInterface()
@@ -69,27 +74,34 @@ void ModemManager::ModemGsmNetworkInterface::propertiesChanged(const QString & i
     }
 }
 
+void ModemManager::ModemGsmNetworkInterface::slotSignalQualityChanged(uint signalQuality)
+{
+    Q_D(ModemGsmNetworkInterface);
+    d->signalQuality = signalQuality;
+    emit signalQualityChanged(d->signalQuality);
+}
+
 void ModemManager::ModemGsmNetworkInterface::slotRegistrationInfoChanged(uint status, const QString & operatorCode, const QString &operatorName)
 {
-    RegistrationInfoType r;
+    Q_D(ModemGsmNetworkInterface);
 
-    r.status = (ModemManager::ModemGsmNetworkInterface::RegistrationStatus) status;
-    r.operatorCode = operatorCode;
-    r.operatorName = operatorName;
+    d->registrationInfo.status = (ModemManager::ModemGsmNetworkInterface::RegistrationStatus) status;
+    d->registrationInfo.operatorCode = operatorCode;
+    d->registrationInfo.operatorName = operatorName;
 
-    emit registrationInfoChanged(r);
+    emit registrationInfoChanged(d->registrationInfo);
 }
 
 ModemManager::ModemInterface::AllowedMode ModemManager::ModemGsmNetworkInterface::getAllowedMode() const
 {
     Q_D(const ModemGsmNetworkInterface);
-    return (ModemManager::ModemInterface::AllowedMode) d->modemGsmNetworkIface.allowedMode();
+    return d->allowedMode;
 }
 
 ModemManager::ModemInterface::AccessTechnology ModemManager::ModemGsmNetworkInterface::getAccessTechnology() const
 {
     Q_D(const ModemGsmNetworkInterface);
-    return (ModemManager::ModemInterface::AccessTechnology) d->modemGsmNetworkIface.accessTechnology();
+    return d->accessTechnology;
 }
 
 void ModemManager::ModemGsmNetworkInterface::registerToNetwork(const QString & networkId)
@@ -128,28 +140,16 @@ ModemManager::ModemInterface::Band ModemManager::ModemGsmNetworkInterface::getBa
     return ModemManager::ModemInterface::UnknownBand;
 }
 
-ModemManager::ModemGsmNetworkInterface::RegistrationInfoType ModemManager::ModemGsmNetworkInterface::getRegistrationInfo()
+ModemManager::ModemGsmNetworkInterface::RegistrationInfoType ModemManager::ModemGsmNetworkInterface::getRegistrationInfo() const
 {
-    Q_D(ModemGsmNetworkInterface);
-    QDBusReply< RegistrationInfoType > registrationInfo = d->modemGsmNetworkIface.GetRegistrationInfo();
-
-    if (registrationInfo.isValid())
-        return registrationInfo.value();
-
-    mmDebug() << "Error getting registration info for operator: " << registrationInfo.error().name() << ": " << registrationInfo.error().message();
-    return RegistrationInfoType();
+    Q_D(const ModemGsmNetworkInterface);
+    return d->registrationInfo;
 }
 
-uint ModemManager::ModemGsmNetworkInterface::getSignalQuality()
+uint ModemManager::ModemGsmNetworkInterface::getSignalQuality() const
 {
-    Q_D(ModemGsmNetworkInterface);
-    QDBusReply< uint > signalQuality = d->modemGsmNetworkIface.GetSignalQuality();
-
-    if (signalQuality.isValid())
-        return signalQuality.value();
-
-    mmDebug() << "Error getting signal quality: " << signalQuality.error().name() << ": " << signalQuality.error().message();
-    return 0;
+    Q_D(const ModemGsmNetworkInterface);
+    return d->signalQuality;
 }
 
 void ModemManager::ModemGsmNetworkInterface::setAllowedMode(const ModemManager::ModemInterface::AllowedMode mode)

@@ -30,6 +30,10 @@ class ModemGsmNetworkInterfacePrivate: public ModemInterfacePrivate
 public:
     ModemGsmNetworkInterfacePrivate(const QString &path, QObject *owner);
     OrgFreedesktopModemManagerModemGsmNetworkInterface modemGsmNetworkIface;
+    uint signalQuality;
+    ModemManager::ModemGsmNetworkInterface::RegistrationInfoType registrationInfo;
+    ModemManager::ModemInterface::AccessTechnology accessTechnology;
+    ModemManager::ModemInterface::AllowedMode allowedMode;
 };
 
 #endif
