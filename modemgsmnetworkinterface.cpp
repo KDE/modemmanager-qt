@@ -44,7 +44,15 @@ ModemManager::ModemGsmNetworkInterface::ModemGsmNetworkInterface(const QString &
     connect( &d->modemGsmNetworkIface, SIGNAL(SignalQuality(uint)),
                 this, SLOT(slotSignalQualityChanged(uint)));
 
-    d->signalQuality = d->modemGsmNetworkIface.GetSignalQuality();
+    // GetSignalQuality gives wrong values in certain situations, specially
+    // when modem is in an access technology mode that does not support signal 
+    // quality. For instance, with Sony Ericsson MD300 in HSDPA mode
+    // GetSignalQuality always returns 60 even though MD300's manual says that
+    // it does not report signal quality in HSDPA mode. It reports only the
+    // number of bars between 0 and 5 indicating the signal quality, which
+    // ModemManager does not seem to parse.
+    //d->signalQuality = d->modemGsmNetworkIface.GetSignalQuality();
+    d->signalQuality = 0;
     d->registrationInfo = d->modemGsmNetworkIface.GetRegistrationInfo();
     d->accessTechnology = (ModemManager::ModemInterface::AccessTechnology)d->modemGsmNetworkIface.accessTechnology();
     d->allowedMode = (ModemManager::ModemInterface::AllowedMode)d->modemGsmNetworkIface.allowedMode();
@@ -70,6 +78,11 @@ void ModemManager::ModemGsmNetworkInterface::propertiesChanged(const QString & i
         it = properties.find(accessTechnology);
         if ( it != properties.end()) {
             emit accessTechnologyChanged((ModemManager::ModemInterface::AccessTechnology) it->toInt());
+
+            // ModemManager does not update signal quality for some modems in
+            // certain access technology modes (e.g. Sony Ericsson MD300 in HSDPA mode),
+            // so we should reset it here.
+            slotSignalQualityChanged(0);
         }
     }
 }
