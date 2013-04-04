@@ -45,13 +45,13 @@ ModemManager::ModemGsmNetworkInterface::ModemGsmNetworkInterface(const QString &
                 this, SLOT(slotSignalQualityChanged(uint)));
 
     // GetSignalQuality gives wrong values in certain situations, specially
-    // when modem is in an access technology mode that does not support signal 
+    // when modem is in an access technology mode that does not support signal
     // quality. For instance, with Sony Ericsson MD300 in HSDPA mode
     // GetSignalQuality always returns 60 even though MD300's manual says that
     // it does not report signal quality in HSDPA mode. It reports only the
     // number of bars between 0 and 5 indicating the signal quality, which
     // ModemManager does not seem to parse.
-    //d->signalQuality = d->modemGsmNetworkIface.GetSignalQuality();
+//     d->signalQuality = d->modemGsmNetworkIface.GetSignalQuality();
     d->signalQuality = 0;
     d->registrationInfo = d->modemGsmNetworkIface.GetRegistrationInfo();
     d->accessTechnology = (ModemManager::ModemInterface::AccessTechnology)d->modemGsmNetworkIface.accessTechnology();
@@ -65,6 +65,7 @@ ModemManager::ModemGsmNetworkInterface::~ModemGsmNetworkInterface()
 
 void ModemManager::ModemGsmNetworkInterface::propertiesChanged(const QString & interface, const QVariantMap & properties)
 {
+    Q_D(ModemGsmNetworkInterface);
     mmDebug() << interface << properties.keys();
 
     if (interface == QString("org.freedesktop.ModemManager.Modem.Gsm.Network")) {
@@ -73,10 +74,12 @@ void ModemManager::ModemGsmNetworkInterface::propertiesChanged(const QString & i
 
         QVariantMap::const_iterator it = properties.find(allowedMode);
         if ( it != properties.end()) {
+            d->allowedMode = (ModemManager::ModemInterface::AllowedMode) it->toInt();
             emit allowedModeChanged((ModemManager::ModemInterface::AllowedMode) it->toInt());
         }
         it = properties.find(accessTechnology);
         if ( it != properties.end()) {
+            d->accessTechnology = (ModemManager::ModemInterface::AccessTechnology) it->toInt();
             emit accessTechnologyChanged((ModemManager::ModemInterface::AccessTechnology) it->toInt());
 
             // ModemManager does not update signal quality for some modems in
