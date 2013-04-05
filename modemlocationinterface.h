@@ -37,6 +37,8 @@ Q_OBJECT
 Q_DECLARE_PRIVATE(ModemLocationInterface)
 
 public:
+    typedef QSharedPointer<ModemLocationInterface> Ptr;
+    typedef QList<Ptr> List;
     enum Capability { Unknown = 0x0, GpsNmea = 0x1, GpsLacCi = 0x2 };
 
     typedef QList<QMap<Capability, QVariant> > LocationInformationMap;

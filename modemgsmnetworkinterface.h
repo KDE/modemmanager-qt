@@ -39,6 +39,8 @@ Q_OBJECT
 Q_DECLARE_PRIVATE(ModemGsmNetworkInterface)
 
 public:
+    typedef QSharedPointer<ModemGsmNetworkInterface> Ptr;
+    typedef QList<Ptr> List;
     typedef QList< QMap<QString,QString> > ScanResultsType;
 
     /* GSM registration code as defined in 3GPP TS 27.007 section 10.1.19. */

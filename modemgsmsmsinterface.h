@@ -37,6 +37,8 @@ Q_OBJECT
 Q_DECLARE_PRIVATE(ModemGsmSmsInterface)
 
 public:
+    typedef QSharedPointer<ModemGsmSmsInterface> Ptr;
+    typedef QList<Ptr> List;
     ModemGsmSmsInterface(const QString & path, QObject * parent);
     ~ModemGsmSmsInterface();
 

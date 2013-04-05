@@ -37,6 +37,8 @@ Q_OBJECT
 Q_DECLARE_PRIVATE(ModemGsmHsoInterface)
 
 public:
+    typedef QSharedPointer<ModemGsmHsoInterface> Ptr;
+    typedef QList<Ptr> List;
     ModemGsmHsoInterface(const QString & path, QObject * parent);
     ~ModemGsmHsoInterface();
 

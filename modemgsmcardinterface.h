@@ -38,6 +38,8 @@ Q_OBJECT
 Q_DECLARE_PRIVATE(ModemGsmCardInterface)
 
 public:
+    typedef QSharedPointer<ModemGsmCardInterface> Ptr;
+    typedef QList<Ptr> List;
     ModemGsmCardInterface(const QString & path, QObject * parent);
     ~ModemGsmCardInterface();
 

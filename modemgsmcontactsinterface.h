@@ -37,6 +37,8 @@ Q_OBJECT
 Q_DECLARE_PRIVATE(ModemGsmContactsInterface)
 
 public:
+    typedef QSharedPointer<ModemGsmContactsInterface> Ptr;
+    typedef QList<Ptr> List;
     struct ContactType
     {
         int index;

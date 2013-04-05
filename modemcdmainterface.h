@@ -35,6 +35,8 @@ class QTMODEMMANAGER_EXPORT ModemCdmaInterface : public ModemInterface
 Q_OBJECT
 Q_DECLARE_PRIVATE(ModemCdmaInterface)
 public:
+    typedef QSharedPointer<ModemCdmaInterface> Ptr;
+    typedef QList<Ptr> List;
     enum BandClass { Unknown = 0x0, B800 = 0x01, B1900 = 0x2 };
 
     struct ServingSystemType {

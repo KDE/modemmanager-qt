@@ -1,6 +1,7 @@
 /*
 Copyright 2008,2011 Will Stephenson <wstephenson@kde.org>
 Copyright 2010 Lamarque Souza <lamarque@kde.org>
+Copyright 2013 Daniel Nicoletti <dantti12@gmail.com>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public

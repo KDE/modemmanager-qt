@@ -31,7 +31,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace ModemManager
 {
-typedef QMap<ModemInterface::GsmInterfaceType, ModemInterface*> ModemInterfaceIfaceMap;
+typedef QMap<ModemInterface::GsmInterfaceType, ModemInterface::Ptr> ModemInterfaceIfaceMap;
 
 class ModemInterface;
 class ModemManagerPrivate : public Notifier
@@ -44,8 +44,8 @@ public:
     QDBusServiceWatcher watcher;
     OrgFreedesktopModemManagerInterface iface;
     QMap<QString, ModemInterfaceIfaceMap> modemMap;
-    ModemManager::ModemInterface * findModemInterface(const QString &udi, const ModemManager::ModemInterface::GsmInterfaceType ifaceType);
-    ModemManager::ModemInterface * createModemInterface(const QString &udi, const ModemManager::ModemInterface::GsmInterfaceType ifaceType);
+    ModemManager::ModemInterface::Ptr findModemInterface(const QString &udi, const ModemManager::ModemInterface::GsmInterfaceType ifaceType);
+    ModemManager::ModemInterface::Ptr createModemInterface(const QString &udi, const ModemManager::ModemInterface::GsmInterfaceType ifaceType);
 protected Q_SLOTS:
     void init();
     void deviceAdded(const QDBusObjectPath & device);

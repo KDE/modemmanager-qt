@@ -1,6 +1,7 @@
 /*
 Copyright 2008,2011 Will Stephenson <wstephenson@kde.org>
 Copyright 2010 Lamarque Souza <lamarque@kde.org>
+Copyright 2013 Daniel Nicoletti <dantti12@gmail.com>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -42,7 +43,6 @@ namespace ModemManager
     extern const QString DBUS_DAEMON_PATH;
 
     class ModemInterface;
-    typedef QList<ModemInterface*> ModemInterfaceList;
 
     class QTMODEMMANAGER_EXPORT Notifier : public QObject
     {
@@ -76,7 +76,7 @@ namespace ModemManager
      * in Modem Manager specification.
      * @return the list of modem interfaces available in this system
      */
-    QTMODEMMANAGER_EXPORT ModemInterfaceList modemInterfaces();
+    QTMODEMMANAGER_EXPORT ModemInterface::List modemInterfaces();
     /**
      * Find a new ModemManagerInterface object given its UDNI.  This pointer is owned by the Solid
      * infrastructure.
@@ -85,7 +85,7 @@ namespace ModemManager
      * @returns a valid ModemManagerInterface object if there's a device having the given UDI, an invalid one otherwise
      */
     //TODO: decide what to do with type arg
-    QTMODEMMANAGER_EXPORT ModemInterface *findModemInterface(const QString &udi, const ModemManager::ModemInterface::GsmInterfaceType ifaceType);
+    QTMODEMMANAGER_EXPORT ModemInterface::Ptr findModemInterface(const QString &udi, const ModemManager::ModemInterface::GsmInterfaceType ifaceType);
 
     QTMODEMMANAGER_EXPORT Notifier * notifier();
 
