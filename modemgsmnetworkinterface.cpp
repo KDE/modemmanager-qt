@@ -44,15 +44,16 @@ ModemManager::ModemGsmNetworkInterface::ModemGsmNetworkInterface(const QString &
     connect( &d->modemGsmNetworkIface, SIGNAL(SignalQuality(uint)),
                 this, SLOT(slotSignalQualityChanged(uint)));
 
+    d->signalQuality = 0;
+    d->accessTechnology = (ModemManager::ModemInterface::AccessTechnology)d->modemGsmNetworkIface.accessTechnology();
+    d->allowedMode = (ModemManager::ModemInterface::AllowedMode)d->modemGsmNetworkIface.allowedMode();
+
 #define getProperty(property) QDBusPendingCall reply##property = d->modemGsmNetworkIface.Get##property(); \
     QDBusPendingCallWatcher *watcher##property = new QDBusPendingCallWatcher(reply##property); \
     connect(watcher##property, SIGNAL(finished(QDBusPendingCallWatcher*)), SLOT(on##property##Arrived(QDBusPendingCallWatcher*)));
 
     getProperty(SignalQuality);
     getProperty(RegistrationInfo);
-
-    d->accessTechnology = (ModemManager::ModemInterface::AccessTechnology)d->modemGsmNetworkIface.accessTechnology();
-    d->allowedMode = (ModemManager::ModemInterface::AllowedMode)d->modemGsmNetworkIface.allowedMode();
 }
 
 ModemManager::ModemGsmNetworkInterface::~ModemGsmNetworkInterface()
