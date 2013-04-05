@@ -127,7 +127,7 @@ Q_SIGNALS:
     void accessTechnologyChanged(const ModemManager::ModemInterface::AccessTechnology tech);
 private Q_SLOTS:
     void onGetSignalQualityArrived(QDBusPendingCallWatcher *watcher);
-    void onRegistrationInfoArrived(QDBusPendingCallWatcher *watcher);
+    void onGetRegistrationInfoArrived(QDBusPendingCallWatcher *watcher);
 };
 
 } // namespace ModemManager

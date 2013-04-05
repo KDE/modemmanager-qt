@@ -50,7 +50,7 @@ ModemManager::ModemGsmNetworkInterface::ModemGsmNetworkInterface(const QString &
 
 #define getProperty(property) QDBusPendingCall reply##property = d->modemGsmNetworkIface.Get##property(); \
     QDBusPendingCallWatcher *watcher##property = new QDBusPendingCallWatcher(reply##property); \
-    connect(watcher##property, SIGNAL(finished(QDBusPendingCallWatcher*)), SLOT(on##property##Arrived(QDBusPendingCallWatcher*)));
+    connect(watcher##property, SIGNAL(finished(QDBusPendingCallWatcher*)), SLOT(onGet##property##Arrived(QDBusPendingCallWatcher*)));
 
     getProperty(SignalQuality);
     getProperty(RegistrationInfo);
@@ -107,7 +107,7 @@ void ModemManager::ModemGsmNetworkInterface::slotSignalQualityChanged(uint signa
     emit signalQualityChanged(d->signalQuality);
 }
 
-void ModemManager::ModemGsmNetworkInterface::onRegistrationInfoArrived(QDBusPendingCallWatcher *watcher)
+void ModemManager::ModemGsmNetworkInterface::onGetRegistrationInfoArrived(QDBusPendingCallWatcher *watcher)
 {
     if (!watcher) {
         return;
