@@ -93,7 +93,9 @@ void ModemManager::ModemGsmNetworkInterface::onGetSignalQualityArrived(QDBusPend
     }
 
     QDBusPendingReply<uint> reply = *watcher;
-    slotSignalQualityChanged(reply.value());
+    if (reply.isValid()) {
+        slotSignalQualityChanged(reply.value());
+    }
     watcher->deleteLater();
 }
 
@@ -111,8 +113,10 @@ void ModemManager::ModemGsmNetworkInterface::onRegistrationInfoArrived(QDBusPend
     }
 
     QDBusPendingReply<RegistrationInfoType> reply = *watcher;
-    RegistrationInfoType v = reply.value();
-    slotRegistrationInfoChanged(v.status, v.operatorCode, v.operatorName);
+    if (reply.isValid()) {
+        RegistrationInfoType v = reply.value();
+        slotRegistrationInfoChanged(v.status, v.operatorCode, v.operatorName);
+    }
     watcher->deleteLater();
 }
 
