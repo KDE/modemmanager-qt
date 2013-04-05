@@ -44,16 +44,13 @@ ModemManager::ModemGsmNetworkInterface::ModemGsmNetworkInterface(const QString &
     connect( &d->modemGsmNetworkIface, SIGNAL(SignalQuality(uint)),
                 this, SLOT(slotSignalQualityChanged(uint)));
 
-    // GetSignalQuality gives wrong values in certain situations, specially
-    // when modem is in an access technology mode that does not support signal
-    // quality. For instance, with Sony Ericsson MD300 in HSDPA mode
-    // GetSignalQuality always returns 60 even though MD300's manual says that
-    // it does not report signal quality in HSDPA mode. It reports only the
-    // number of bars between 0 and 5 indicating the signal quality, which
-    // ModemManager does not seem to parse.
-//     d->signalQuality = d->modemGsmNetworkIface.GetSignalQuality();
-    d->signalQuality = 0;
-    d->registrationInfo = d->modemGsmNetworkIface.GetRegistrationInfo();
+#define getProperty(property) QDBusPendingCall reply##property = d->modemGsmNetworkIface.Get##property(); \
+    QDBusPendingCallWatcher *watcher##property = new QDBusPendingCallWatcher(reply##property); \
+    connect(watcher##property, SIGNAL(finished(QDBusPendingCallWatcher*)), SLOT(on##property##Arrived(QDBusPendingCallWatcher*)));
+
+    getProperty(SignalQuality);
+    getProperty(RegistrationInfo);
+
     d->accessTechnology = (ModemManager::ModemInterface::AccessTechnology)d->modemGsmNetworkIface.accessTechnology();
     d->allowedMode = (ModemManager::ModemInterface::AllowedMode)d->modemGsmNetworkIface.allowedMode();
 }
@@ -82,12 +79,22 @@ void ModemManager::ModemGsmNetworkInterface::propertiesChanged(const QString & i
             d->accessTechnology = (ModemManager::ModemInterface::AccessTechnology) it->toInt();
             emit accessTechnologyChanged((ModemManager::ModemInterface::AccessTechnology) it->toInt());
 
-            // ModemManager does not update signal quality for some modems in
-            // certain access technology modes (e.g. Sony Ericsson MD300 in HSDPA mode),
-            // so we should reset it here.
-            slotSignalQualityChanged(0);
+            // Some modems, like Sony Ericsson MD300, do not update signal quality when on 3G access technology mode, so
+            // update the value here.
+            getProperty(SignalQuality);
         }
     }
+}
+
+void ModemManager::ModemGsmNetworkInterface::onGetSignalQualityArrived(QDBusPendingCallWatcher *watcher)
+{
+    if (!watcher) {
+        return;
+    }
+
+    QDBusPendingReply<uint> reply = *watcher;
+    slotSignalQualityChanged(reply.value());
+    watcher->deleteLater();
 }
 
 void ModemManager::ModemGsmNetworkInterface::slotSignalQualityChanged(uint signalQuality)
@@ -95,6 +102,18 @@ void ModemManager::ModemGsmNetworkInterface::slotSignalQualityChanged(uint signa
     Q_D(ModemGsmNetworkInterface);
     d->signalQuality = signalQuality;
     emit signalQualityChanged(d->signalQuality);
+}
+
+void ModemManager::ModemGsmNetworkInterface::onRegistrationInfoArrived(QDBusPendingCallWatcher *watcher)
+{
+    if (!watcher) {
+        return;
+    }
+
+    QDBusPendingReply<RegistrationInfoType> reply = *watcher;
+    RegistrationInfoType v = reply.value();
+    slotRegistrationInfoChanged(v.status, v.operatorCode, v.operatorName);
+    watcher->deleteLater();
 }
 
 void ModemManager::ModemGsmNetworkInterface::slotRegistrationInfoChanged(uint status, const QString & operatorCode, const QString &operatorName)
@@ -173,6 +192,3 @@ void ModemManager::ModemGsmNetworkInterface::setAllowedMode(const ModemManager::
     Q_D(ModemGsmNetworkInterface);
     d->modemGsmNetworkIface.SetAllowedMode(mode);
 }
-
-
-

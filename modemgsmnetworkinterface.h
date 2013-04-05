@@ -25,6 +25,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "QtModemManager-export.h"
 
 #include <QObject>
+#include <QDBusPendingCallWatcher>
+
 #include "modeminterface.h"
 
 class ModemGsmNetworkInterfacePrivate;
@@ -122,6 +124,9 @@ Q_SIGNALS:
     // properties
     void allowedModeChanged(const ModemManager::ModemInterface::AllowedMode mode);
     void accessTechnologyChanged(const ModemManager::ModemInterface::AccessTechnology tech);
+private Q_SLOTS:
+    void onGetSignalQualityArrived(QDBusPendingCallWatcher *watcher);
+    void onRegistrationInfoArrived(QDBusPendingCallWatcher *watcher);
 };
 
 } // namespace ModemManager
