@@ -56,6 +56,7 @@ public:
     class RegistrationInfoType
     {
     public:
+        RegistrationInfoType() { status = StatusUnknown; }
         RegistrationStatus status; /* Mobile registration status as defined in 3GPP TS 27.007 section 10.1.19. */
         QString operatorCode, /* Current operator code of the operator to which the mobile is currently registered.
                                  Returned in the format "MCCMNC", where MCC is the three-digit ITU E.212 Mobile Country Code
@@ -128,7 +129,7 @@ Q_SIGNALS:
     void accessTechnologyChanged(const ModemManager::ModemInterface::AccessTechnology tech);
 private Q_SLOTS:
     void onGetSignalQualityArrived(QDBusPendingCallWatcher *watcher);
-    void onRegistrationInfoArrived(QDBusPendingCallWatcher *watcher);
+    void onGetRegistrationInfoArrived(QDBusPendingCallWatcher *watcher);
 };
 
 } // namespace ModemManager
