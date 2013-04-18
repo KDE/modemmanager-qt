@@ -172,7 +172,32 @@ public:
     ModemManager::ModemInterface::Method ipMethod() const;
 
     // From org.freedesktop.ModemManager.Modem.Simple
+
+    //    Dictionary of properties needed to get the modem connected.
+    //    Each implementation is free to add its own specific key-value pairs. The predefined
+    //    common ones are:
+
+    //      'pin'          : string
+    //      'network_id'   : string (GSM/HSPA only)
+    //      'band'         : uint
+    //      'network_mode' : uint
+    //      'apn'          : string (GSM/HSPA only)
+    //      'number'       : string
+    //      'rm-protocol'  : uint (CDMA/EVDO only) (1 - Relay, 2 - Network PPP)
+    //      'allowed_auth' : uint (GSM/HSPA only) (MM_MODEM_GSM_ALLOWED_AUTH bitfield)
     void connectModem(const QVariantMap & properties);
+
+    //    Dictionary of properties.
+    //     Each implementation is free to add it's own specific key-value pairs. The predefined
+    //     common ones are:
+    //
+    //    'state'          : uint (always)
+    //    'signal_quality' : uint  (state >= registered)
+    //    'operator_code'  : string (state >= registered)
+    //    'operator_name'  : string (state >= registered)
+    //    'band'           : uint (state >= registered)
+    //    'network_mode'   : uint (state >= registered)
+    //
     QVariantMap getStatus();
 public Q_SLOTS:
     void propertiesChanged(const QString & interface, const QVariantMap & properties);
