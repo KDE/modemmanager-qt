@@ -76,11 +76,16 @@ public:
         Umts, /* UMTS (ETSI 27.007: "UTRAN") */
         Hsdpa, /* HSDPA (ETSI 27.007: "UTRAN w/HSDPA") */
         Hsupa, /* HSUPA (ETSI 27.007: "UTRAN w/HSUPA") */
-        Hspa /* HSPA (ETSI 27.007: "UTRAN w/HSDPA and HSUPA") */
+        Hspa, /* HSPA (ETSI 27.007: "UTRAN w/HSDPA and HSUPA") */
+        HspaPlus, /* HSPA+ (ETSI 27.007: "UTRAN w/HSPA+") */
+        Lte /* LTE (ETSI 27.007: "E-UTRAN") */
     };
 
     /** A bitfield describing the specific access modes and technologies supported by a device
-     * and the access technology in-use when connected to a mobile network. */
+     *  and the access technology in-use when connected to a mobile network.
+     *
+     *  DEPRECATED
+     */
     enum Mode {
         UnknownMode = 0x0, /* Unknown or invalid mode. */
         AnyMode = 0x1, /* For certain operations, allow the modem to pick any available mode. */
@@ -114,7 +119,8 @@ public:
         U850 = 0x200, /* WCDMA 3GPP UMTS 850 MHz (Class V) */
         U900 = 0x400, /* WCDMA 3GPP UMTS 900 MHz (Class VIII) */
         U17IX = 0x800, /* WCDMA 3GPP UMTS 1700 MHz (Class IX) */
-        U19IX = 0x1000 /* WCDMA 3GPP UMTS 1900 MHz (Class II) */
+        U19IX = 0x1000, /* WCDMA 3GPP UMTS 1900 MHz (Class II) */
+        U2600 = 0x2000 /* WCDMA 3GPP UMTS 2600 MHz (Class VII, internal) */
     };
 
     enum GsmInterfaceType {
