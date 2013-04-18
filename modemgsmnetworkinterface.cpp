@@ -40,9 +40,9 @@ ModemManager::ModemGsmNetworkInterface::ModemGsmNetworkInterface(const QString &
         this, SLOT(propertiesChanged(QString,QVariantMap)));
 
     connect( &d->modemGsmNetworkIface, SIGNAL(RegistrationInfo(uint,QString,QString)),
-                this, SLOT(slotRegistrationInfoChanged(uint,QString,QString)));
+             this, SLOT(slotRegistrationInfoChanged(uint,QString,QString)));
     connect( &d->modemGsmNetworkIface, SIGNAL(SignalQuality(uint)),
-                this, SLOT(slotSignalQualityChanged(uint)));
+             this, SLOT(slotSignalQualityChanged(uint)));
 
     d->signalQuality = 0;
     d->accessTechnology = (ModemManager::ModemInterface::AccessTechnology)d->modemGsmNetworkIface.accessTechnology();
@@ -72,13 +72,13 @@ void ModemManager::ModemGsmNetworkInterface::propertiesChanged(const QString & i
 
         QVariantMap::const_iterator it = properties.find(allowedMode);
         if ( it != properties.end()) {
-            d->allowedMode = (ModemManager::ModemInterface::AllowedMode) it->toInt();
-            emit allowedModeChanged((ModemManager::ModemInterface::AllowedMode) it->toInt());
+            d->allowedMode = (ModemManager::ModemInterface::AllowedMode) it->toUInt();
+            emit allowedModeChanged(d->allowedMode);
         }
         it = properties.find(accessTechnology);
         if ( it != properties.end()) {
-            d->accessTechnology = (ModemManager::ModemInterface::AccessTechnology) it->toInt();
-            emit accessTechnologyChanged((ModemManager::ModemInterface::AccessTechnology) it->toInt());
+            d->accessTechnology = (ModemManager::ModemInterface::AccessTechnology) it->toUInt();
+            emit accessTechnologyChanged(d->accessTechnology);
 
             // Some modems, like Sony Ericsson MD300, do not update signal quality when on 3G access technology mode, so
             // update the value here.
