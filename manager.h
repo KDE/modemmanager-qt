@@ -33,7 +33,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 /**
  * This namespace allows to query the underlying system to discover the available
  * modem interfaces
- * responsibility to notify when a modem interface or a modem appear or disappear.
+ * responsibility to notify when a modem interface or a modem appears or disappears.
  *
  * Note that it's implemented as a singleton and encapsulates the backend logic.
  */
@@ -78,11 +78,10 @@ namespace ModemManager
      */
     QTMODEMMANAGER_EXPORT ModemInterface::List modemInterfaces();
     /**
-     * Find a new ModemManagerInterface object given its UDNI.  This pointer is owned by the Solid
-     * infrastructure.
+     * Find a new ModemManagerInterface object given its UDI.
      *
      * @param udi the identifier of the modem interface to find
-     * @returns a valid ModemManagerInterface object if there's a device having the given UDI, an invalid one otherwise
+     * @returns a valid ModemInterface object if there's a device having the given UDI, an invalid one otherwise
      */
     //TODO: decide what to do with type arg
     QTMODEMMANAGER_EXPORT ModemInterface::Ptr findModemInterface(const QString &udi, const ModemManager::ModemInterface::GsmInterfaceType ifaceType);
