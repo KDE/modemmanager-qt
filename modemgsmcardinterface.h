@@ -22,7 +22,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef MODEMMANAGER_MODEMGSMCARDINTERFACE_H
 #define MODEMMANAGER_MODEMGSMCARDINTERFACE_H
 
-#include "QtModemManager-export.h"
+#include "ModemManagerQt-export.h"
 
 #include <QObject>
 #include <QDBusPendingReply>

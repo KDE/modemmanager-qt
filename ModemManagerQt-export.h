@@ -22,7 +22,7 @@
 #ifndef QTMODEMMANAGER_EXPORT_H
 #define QTMODEMMANAGER_EXPORT_H
 
-/** \file QtModemManager-export.h
+/** \file ModemManagerQt-export.h
     \brief Contains Macros for exporting symbols
 
     This file contains macros needed for exporting/importing symbols
