@@ -100,7 +100,7 @@ QDBusPendingReply<> ModemManager::ModemGsmCardInterface::sendPin(const QString &
     return d->modemGsmCardIface.SendPin(pin);
 }
 
-QDBusPendingReply<> ModemManager::ModemGsmCardInterface::enablePin(const QString & pin, const bool enabled)
+QDBusPendingReply<> ModemManager::ModemGsmCardInterface::enablePin(const QString & pin, bool enabled)
 {
     Q_D(ModemGsmCardInterface);
     return d->modemGsmCardIface.EnablePin(pin, enabled);

@@ -39,15 +39,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 namespace ModemManager
 {
-    extern const QString DBUS_SERVICE;
-    extern const QString DBUS_DAEMON_PATH;
+extern const QString DBUS_SERVICE;
+extern const QString DBUS_DAEMON_PATH;
 
-    class ModemInterface;
+class ModemInterface;
 
-    class QTMODEMMANAGER_EXPORT Notifier : public QObject
-    {
+class QTMODEMMANAGER_EXPORT Notifier : public QObject
+{
     Q_OBJECT
-    Q_SIGNALS:
+Q_SIGNALS:
     /**
      * This signal is emitted when a new modem interface is available.
      *
@@ -60,35 +60,34 @@ namespace ModemManager
      * @param udi the network interface identifier
      */
     void modemRemoved(const QString & udi);
-     /**
+    /**
       * This signal is emitted when the ModemManager DBus service goes away
       */
-     void serviceDisappeared();
-     /**
+    void serviceDisappeared();
+    /**
       * This signal is emitted when the ModemManager DBus service appears
       */
-     void serviceAppeared();
-    };
+    void serviceAppeared();
+};
 
-    /**
-     * Retrieves the list of all modem interfaces Unique Device Identifiers (UDIs)
-     * in the system. This method is the equivalent of enumerateDevices described
-     * in Modem Manager specification.
-     * @return the list of modem interfaces available in this system
-     */
-    QTMODEMMANAGER_EXPORT ModemInterface::List modemInterfaces();
-    /**
-     * Find a new ModemManagerInterface object given its UDI.
-     *
-     * @param udi the identifier of the modem interface to find
-     * @returns a valid ModemInterface object if there's a device having the given UDI, an invalid one otherwise
-     */
-    //TODO: decide what to do with type arg
-    QTMODEMMANAGER_EXPORT ModemInterface::Ptr findModemInterface(const QString &udi, const ModemManager::ModemInterface::GsmInterfaceType ifaceType);
+/**
+  * Retrieves the list of all modem interfaces Unique Device Identifiers (UDIs)
+  * in the system. This method is the equivalent of enumerateDevices described
+  * in Modem Manager specification.
+  * @return the list of modem interfaces available in this system
+  */
+QTMODEMMANAGER_EXPORT ModemInterface::List modemInterfaces();
+/**
+  * Find a new ModemManagerInterface object given its UDI.
+  *
+  * @param udi the identifier of the modem interface to find
+  * @returns a valid ModemInterface object if there's a device having the given UDI, an invalid one otherwise
+  */
+//TODO: decide what to do with type arg
+QTMODEMMANAGER_EXPORT ModemInterface::Ptr findModemInterface(const QString &udi, const ModemManager::ModemInterface::GsmInterfaceType ifaceType);
 
-    QTMODEMMANAGER_EXPORT Notifier * notifier();
+QTMODEMMANAGER_EXPORT Notifier * notifier();
 
 }
 
 #endif
-

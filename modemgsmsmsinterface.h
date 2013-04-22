@@ -42,16 +42,16 @@ public:
     ModemGsmSmsInterface(const QString & path, QObject * parent);
     ~ModemGsmSmsInterface();
 
-    void deleteSms(const int index);
-    QVariantMap get(const int index);
+    void deleteSms(int index);
+    QVariantMap get(int index);
     int getFormat();
-    void setFormat(const int format);
+    void setFormat(int format);
     QString getSmsc();
     QList<QVariantMap> list();
     void save(const QVariantMap & properties);
     void send(const QVariantMap & properties);
-    void sendFromStorage(const int index);
-    void setIndication(const int mode, const int mt, const int bm, const int ds, const int brf);
+    void sendFromStorage(int index);
+    void setIndication(int mode, int mt, int bm, int ds, int brf);
 
 Q_SIGNALS:
     void smsReceived(int index, bool complete);
@@ -62,4 +62,3 @@ Q_SIGNALS:
 
 
 #endif
-

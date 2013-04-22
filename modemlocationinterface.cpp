@@ -55,7 +55,7 @@ void ModemManager::ModemLocationInterface::propertiesChanged(const QString & int
 
         QVariantMap::const_iterator it = properties.find(capabilities);
         if ( it != properties.end()) {
-            emit capabilitiesChanged((ModemManager::ModemLocationInterface::Capability)it->toInt());
+            emit capabilitiesChanged((ModemManager::ModemLocationInterface::Capability)it->toUInt());
         }
         it = properties.find(enabled);
         if ( it != properties.end()) {
@@ -79,7 +79,7 @@ void ModemManager::ModemLocationInterface::propertiesChanged(const QString & int
     }
 }
 
-void ModemManager::ModemLocationInterface::enableLocation(const bool enable, const bool signalLocation)
+void ModemManager::ModemLocationInterface::enableLocation(bool enable, bool signalLocation)
 {
     Q_D(ModemLocationInterface);
     d->modemLocationIface.Enable(enable, signalLocation);

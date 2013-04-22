@@ -39,27 +39,27 @@ Q_DECLARE_PRIVATE(ModemLocationInterface)
 public:
     typedef QSharedPointer<ModemLocationInterface> Ptr;
     typedef QList<Ptr> List;
-    enum Capability { Unknown = 0x0, GpsNmea = 0x1, GpsLacCi = 0x2 };
+    enum Capability { Unknown = 0x0, GpsNmea = 0x1, GpsLacCi = 0x2, GpsRaw = 0x4 };
 
     typedef QList<QMap<Capability, QVariant> > LocationInformationMap;
 
     ModemLocationInterface(const QString & path, QObject * parent);
     ~ModemLocationInterface();
 
-    void enableLocation(const bool enable, const bool signalLocation);
+    void enableLocation(bool enable, bool signalLocation);
     ModemManager::ModemLocationInterface::LocationInformationMap getLocation();
     ModemManager::ModemLocationInterface::Capability getCapability() const;
     bool enabled() const;
     bool signalsLocation() const;
 
-public Q_SLOTS:
-   void propertiesChanged(const QString & interface, const QVariantMap & properties);
-
 Q_SIGNALS:
     void capabilitiesChanged(const ModemManager::ModemLocationInterface::Capability capability);
-    void enabledChanged(const bool enabled);
-    void signalsLocationChanged(const bool signalsLocation);
+    void enabledChanged(bool enabled);
+    void signalsLocationChanged(bool signalsLocation);
     void locationChanged(const ModemManager::ModemLocationInterface::LocationInformationMap & location);
+
+private Q_SLOTS:
+   void propertiesChanged(const QString & interface, const QVariantMap & properties);
 };
 
 } // namespace ModemManager

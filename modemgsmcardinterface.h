@@ -47,21 +47,21 @@ public:
     QString getImsi();
     QDBusPendingReply<> sendPuk(const QString & puk, const QString & pin);
     QDBusPendingReply<> sendPin(const QString & pin);
-    QDBusPendingReply<> enablePin(const QString & pin, const bool enabled);
+    QDBusPendingReply<> enablePin(const QString & pin, bool enabled);
     QDBusPendingReply<> changePin(const QString & oldPin, const QString & newPin);
 
     // Properties
-    ModemManager::ModemInterface::Band getSupportedBands() const;
+    ModemManager::ModemInterface::Band getSupportedBands() const; // deprecated
     ModemManager::ModemInterface::Mode getSupportedModes() const;
-public Q_SLOTS:
-    void propertiesChanged(const QString & interface, const QVariantMap & properties);
 Q_SIGNALS:
     // properties
     void supportedBandsChanged(const ModemManager::ModemInterface::Band band);
     void supportedModesChanged(const ModemManager::ModemInterface::Mode modes);
 
+private Q_SLOTS:
+    void propertiesChanged(const QString & interface, const QVariantMap & properties);
+
 };
 } // namespace ModemManager
 
 #endif
-

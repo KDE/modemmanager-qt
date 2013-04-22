@@ -117,17 +117,18 @@ public:
     // properties
     ModemManager::ModemInterface::AllowedMode getAllowedMode() const;
     ModemManager::ModemInterface::AccessTechnology getAccessTechnology() const;
-public Q_SLOTS:
-    void slotSignalQualityChanged(uint signalQuality);
-    void slotRegistrationInfoChanged(uint status, const QString & operatorCode, const QString &operatorName);
-    void propertiesChanged(const QString & interface, const QVariantMap & properties);
+
 Q_SIGNALS:
     void signalQualityChanged(uint signalQuality);
     void registrationInfoChanged(const ModemManager::ModemGsmNetworkInterface::RegistrationInfoType &registrationInfo);
     // properties
     void allowedModeChanged(const ModemManager::ModemInterface::AllowedMode mode);
     void accessTechnologyChanged(const ModemManager::ModemInterface::AccessTechnology tech);
+
 private Q_SLOTS:
+    void slotSignalQualityChanged(uint signalQuality);
+    void slotRegistrationInfoChanged(uint status, const QString & operatorCode, const QString &operatorName);
+    void propertiesChanged(const QString & interface, const QVariantMap & properties);
     void onGetSignalQualityArrived(QDBusPendingCallWatcher *watcher);
     void onGetRegistrationInfoArrived(QDBusPendingCallWatcher *watcher);
 };

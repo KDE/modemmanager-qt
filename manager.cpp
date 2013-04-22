@@ -43,9 +43,9 @@ ModemManager::ModemManagerPrivate::ModemManagerPrivate() : watcher(ModemManager:
     registerModemManagerTypes();
 
     connect(&iface, SIGNAL(DeviceAdded(QDBusObjectPath)),
-                  this, SLOT(deviceAdded(QDBusObjectPath)));
+            this, SLOT(deviceAdded(QDBusObjectPath)));
     connect(&iface, SIGNAL(DeviceRemoved(QDBusObjectPath)),
-                  this, SLOT(deviceRemoved(QDBusObjectPath)));
+            this, SLOT(deviceRemoved(QDBusObjectPath)));
 
     connect(&watcher, SIGNAL(serviceUnregistered(QString)), SLOT(daemonUnregistered()));
     init();

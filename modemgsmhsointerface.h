@@ -47,4 +47,3 @@ public:
 } // namespace ModemManager
 
 #endif
-

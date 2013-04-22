@@ -199,17 +199,18 @@ public:
     //    'network_mode'   : uint (state >= registered)
     //
     QVariantMap getStatus();
-public Q_SLOTS:
-    void propertiesChanged(const QString & interface, const QVariantMap & properties);
 
 Q_SIGNALS:
     void deviceChanged(const QString & device);
     void masterDeviceChanged(const QString & masterDevice);
     void driverChanged(const QString & driver);
     void typeChanged(const ModemManager::ModemInterface::Type type);
-    void enabledChanged(const bool enabled);
+    void enabledChanged(bool enabled);
     void unlockRequiredChanged(const QString & codeRequired);
     void ipMethodChanged(const ModemManager::ModemInterface::Method ipMethod);
+
+private Q_SLOTS:
+    void propertiesChanged(const QString & interface, const QVariantMap & properties);
 
 private:
     void init();

@@ -44,13 +44,13 @@ ModemManager::ModemGsmSmsInterface::~ModemGsmSmsInterface()
 {
 }
 
-void ModemManager::ModemGsmSmsInterface::deleteSms(const int index)
+void ModemManager::ModemGsmSmsInterface::deleteSms(int index)
 {
     Q_D(ModemGsmSmsInterface);
     d->modemGsmSmsIface.Delete(index);
 }
 
-QVariantMap ModemManager::ModemGsmSmsInterface::get(const int index)
+QVariantMap ModemManager::ModemGsmSmsInterface::get(int index)
 {
     Q_D(ModemGsmSmsInterface);
     QDBusReply<QVariantMap> sms = d->modemGsmSmsIface.Get(index);
@@ -74,7 +74,7 @@ int ModemManager::ModemGsmSmsInterface::getFormat()
     return 0;
 }
 
-void ModemManager::ModemGsmSmsInterface::setFormat(const int format)
+void ModemManager::ModemGsmSmsInterface::setFormat(int format)
 {
     Q_D(ModemGsmSmsInterface);
     d->modemGsmSmsIface.SetFormat(format);
@@ -116,13 +116,13 @@ void ModemManager::ModemGsmSmsInterface::send(const QVariantMap & properties)
     d->modemGsmSmsIface.Save(properties);
 }
 
-void ModemManager::ModemGsmSmsInterface::sendFromStorage(const int index)
+void ModemManager::ModemGsmSmsInterface::sendFromStorage(int index)
 {
     Q_D(ModemGsmSmsInterface);
     d->modemGsmSmsIface.SendFromStorage(index);
 }
 
-void ModemManager::ModemGsmSmsInterface::setIndication(const int mode, const int mt, const int bm, const int ds, const int brf)
+void ModemManager::ModemGsmSmsInterface::setIndication(int mode, int mt, int bm, int ds, int brf)
 {
     Q_D(ModemGsmSmsInterface);
     d->modemGsmSmsIface.SetIndication(mode, mt, bm, ds, brf);
