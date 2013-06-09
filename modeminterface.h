@@ -33,7 +33,7 @@ class ModemInterfacePrivate;
 
 namespace ModemManager
 {
-class QTMODEMMANAGER_EXPORT ModemInterface : public QObject
+class MODEMMANAGERQT_EXPORT ModemInterface : public QObject
 {
 Q_OBJECT
 Q_DECLARE_PRIVATE(ModemInterface)

@@ -31,7 +31,7 @@ class ModemLocationInterfacePrivate;
 
 namespace ModemManager
 {
-class QTMODEMMANAGER_EXPORT ModemLocationInterface : public ModemInterface
+class MODEMMANAGERQT_EXPORT ModemLocationInterface : public ModemInterface
 {
 Q_OBJECT
 Q_DECLARE_PRIVATE(ModemLocationInterface)

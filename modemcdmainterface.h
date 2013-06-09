@@ -30,7 +30,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 class ModemCdmaInterfacePrivate;
 
 namespace ModemManager {
-class QTMODEMMANAGER_EXPORT ModemCdmaInterface : public ModemInterface
+class MODEMMANAGERQT_EXPORT ModemCdmaInterface : public ModemInterface
 {
 Q_OBJECT
 Q_DECLARE_PRIVATE(ModemCdmaInterface)

@@ -44,7 +44,7 @@ extern const QString DBUS_DAEMON_PATH;
 
 class ModemInterface;
 
-class QTMODEMMANAGER_EXPORT Notifier : public QObject
+class MODEMMANAGERQT_EXPORT Notifier : public QObject
 {
     Q_OBJECT
 Q_SIGNALS:
@@ -76,7 +76,7 @@ Q_SIGNALS:
   * in Modem Manager specification.
   * @return the list of modem interfaces available in this system
   */
-QTMODEMMANAGER_EXPORT ModemInterface::List modemInterfaces();
+MODEMMANAGERQT_EXPORT ModemInterface::List modemInterfaces();
 /**
   * Find a new ModemManagerInterface object given its UDI.
   *
@@ -84,9 +84,9 @@ QTMODEMMANAGER_EXPORT ModemInterface::List modemInterfaces();
   * @returns a valid ModemInterface object if there's a device having the given UDI, an invalid one otherwise
   */
 //TODO: decide what to do with type arg
-QTMODEMMANAGER_EXPORT ModemInterface::Ptr findModemInterface(const QString &udi, const ModemManager::ModemInterface::GsmInterfaceType ifaceType);
+MODEMMANAGERQT_EXPORT ModemInterface::Ptr findModemInterface(const QString &udi, const ModemManager::ModemInterface::GsmInterfaceType ifaceType);
 
-QTMODEMMANAGER_EXPORT Notifier * notifier();
+MODEMMANAGERQT_EXPORT Notifier * notifier();
 
 }
 

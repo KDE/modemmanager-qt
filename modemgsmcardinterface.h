@@ -32,7 +32,7 @@ class ModemGsmCardInterfacePrivate;
 
 namespace ModemManager
 {
-class QTMODEMMANAGER_EXPORT ModemGsmCardInterface : public ModemInterface
+class MODEMMANAGERQT_EXPORT ModemGsmCardInterface : public ModemInterface
 {
 Q_OBJECT
 Q_DECLARE_PRIVATE(ModemGsmCardInterface)

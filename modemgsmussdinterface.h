@@ -31,7 +31,7 @@ class ModemGsmUssdInterfacePrivate;
 
 namespace ModemManager
 {
-class QTMODEMMANAGER_EXPORT ModemGsmUssdInterface : public ModemInterface
+class MODEMMANAGERQT_EXPORT ModemGsmUssdInterface : public ModemInterface
 {
 Q_OBJECT
 Q_DECLARE_PRIVATE(ModemGsmUssdInterface)

@@ -19,8 +19,8 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef QTMODEMMANAGER_EXPORT_H
-#define QTMODEMMANAGER_EXPORT_H
+#ifndef MODEMMANAGERQT_EXPORT_H
+#define MODEMMANAGERQT_EXPORT_H
 
 /** \file ModemManagerQt-export.h
     \brief Contains Macros for exporting symbols
@@ -30,15 +30,15 @@
 
 #include <QtCore/QtGlobal>
 
-#ifndef QTMODEMMANAGER_EXPORT
-# if defined(MAKE_QTMODEMMANAGER_LIB)
+#ifndef MODEMMANAGERQT_EXPORT
+# if defined(MAKE_MODEMMANAGERQT_LIB)
 /* We are building this library */
-#  define QTMODEMMANAGER_EXPORT Q_DECL_EXPORT
+#  define MODEMMANAGERQT_EXPORT Q_DECL_EXPORT
 # else
 /* We are using this library */
-#  define QTMODEMMANAGER_EXPORT Q_DECL_IMPORT
+#  define MODEMMANAGERQT_EXPORT Q_DECL_IMPORT
 # endif
 #endif
 
-#endif /*QTMODEMMANAGER_EXPORT*/
+#endif /*MODEMMANAGERQT_EXPORT_H*/
 
