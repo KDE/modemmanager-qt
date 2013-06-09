@@ -24,6 +24,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "manager.h"
 #include "mmdebug.h"
 
+ModemManager::ModemGsmNetworkInterface::RegistrationInfoType::RegistrationInfoType()
+{
+    status = StatusUnknown;
+}
+
 ModemGsmNetworkInterfacePrivate::ModemGsmNetworkInterfacePrivate(const QString &path, QObject *owner)
     : ModemInterfacePrivate(path, owner), modemGsmNetworkIface(ModemManager::DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
