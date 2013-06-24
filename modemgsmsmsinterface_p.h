@@ -23,14 +23,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #define MODEMMANAGER_MODEMGSMSMSINTERFACE_P_H
 
 #include "modeminterface_p.h"
-#include "dbus/mm-modem-gsm-smsinterface.h"
+#include "dbus/Sms.h"
 
-class ModemGsmSmsInterfacePrivate: public ModemInterfacePrivate
+class ModemSmsInterfacePrivate: public ModemInterfacePrivate
 {
 public:
-    ModemGsmSmsInterfacePrivate(const QString &path, QObject *owner);
-    OrgFreedesktopModemManagerModemGsmSMSInterface modemGsmSmsIface;
+    ModemSmsInterfacePrivate(const QString &path, QObject *owner);
+    OrgFreedesktopModemManager1SmsInterface smsIface;
 };
 
 #endif
-

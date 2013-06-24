@@ -1,6 +1,7 @@
 /*
 Copyright 2008,2011 Will Stephenson <wstephenson@kde.org>
 Copyright 2010-2011 Lamarque Souza <lamarque@kde.org>
+Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -19,47 +20,48 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_MODEMGSMCARDINTERFACE_H
-#define MODEMMANAGER_MODEMGSMCARDINTERFACE_H
+#ifndef MODEMMANAGER_MODEMSIMCARDINTERFACE_H
+#define MODEMMANAGER_MODEMSIMCARDINTERFACE_H
 
 #include "ModemManagerQt-export.h"
 
-#include <QObject>
-#include <QDBusPendingReply>
 #include "modeminterface.h"
 
-class ModemGsmCardInterfacePrivate;
+class ModemSimCardInterfacePrivate;
 
 namespace ModemManager
 {
-class MODEMMANAGERQT_EXPORT ModemGsmCardInterface : public ModemInterface
+class MODEMMANAGERQT_EXPORT ModemSimCardInterface : public ModemInterface
 {
-Q_OBJECT
-Q_DECLARE_PRIVATE(ModemGsmCardInterface)
+    Q_OBJECT
+    Q_DECLARE_PRIVATE(ModemSimCardInterface)
 
 public:
-    typedef QSharedPointer<ModemGsmCardInterface> Ptr;
+    typedef QSharedPointer<ModemSimCardInterface> Ptr;
     typedef QList<Ptr> List;
-    ModemGsmCardInterface(const QString & path, QObject * parent);
-    ~ModemGsmCardInterface();
 
-    QString getImei();
-    QString getImsi();
-    QDBusPendingReply<> sendPuk(const QString & puk, const QString & pin);
-    QDBusPendingReply<> sendPin(const QString & pin);
-    QDBusPendingReply<> enablePin(const QString & pin, bool enabled);
-    QDBusPendingReply<> changePin(const QString & oldPin, const QString & newPin);
+    ModemSimCardInterface(const QString & path, QObject * parent);
+    ~ModemSimCardInterface();
 
-    // Properties
-    ModemManager::ModemInterface::Band getSupportedBands() const; // deprecated
-    ModemManager::ModemInterface::Mode getSupportedModes() const;
-Q_SIGNALS:
     // properties
-    void supportedBandsChanged(const ModemManager::ModemInterface::Band band);
-    void supportedModesChanged(const ModemManager::ModemInterface::Mode modes);
+    QString simIdentifier() const;
+    QString imsi() const;
+    QString operatorIdentifier() const;
+    QString operatorName() const;
+
+    // methods
+    void sendPin(const QString & pin);
+    void sendPuk(const QString & puk, const QString & pin);
+    void enablePin(const QString & pin, bool enabled);
+    void changePin(const QString & oldPin, const QString & newPin);
+
+#if 0
+Q_SIGNALS:
+
 
 private Q_SLOTS:
     void propertiesChanged(const QString & interface, const QVariantMap & properties);
+#endif
 
 };
 } // namespace ModemManager

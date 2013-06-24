@@ -2,6 +2,7 @@
 Copyright 2008,2011 Will Stephenson <wstephenson@kde.org>
 Copyright 2010 Lamarque Souza <lamarque@kde.org>
 Copyright 2013 Daniel Nicoletti <dantti12@gmail.com>
+Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -24,30 +25,54 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "manager_p.h"
 #include "modemcdmainterface.h"
 #include "modemgsmcardinterface.h"
-#include "modemgsmcontactsinterface.h"
 #include "modemgsmnetworkinterface.h"
 #include "modemgsmsmsinterface.h"
-#include "modemgsmhsointerface.h"
 #include "modemgsmussdinterface.h"
+#include "modemmessaginginterface.h"
+#include "modemtimeinterface.h"
+#include "modemlocationinterface.h"
 #include "macros.h"
 #include "mmdebug.h"
-
-const QString ModemManager::DBUS_SERVICE = QString::fromLatin1("org.freedesktop.ModemManager");
-const QString ModemManager::DBUS_DAEMON_PATH = QString::fromLatin1("/org/freedesktop/ModemManager");
+#include "../dbus/generic-types.h"
+#include "../dbus/dbus_manager.h"
 
 MM_GLOBAL_STATIC(ModemManager::ModemManagerPrivate, globalModemManager)
 
-ModemManager::ModemManagerPrivate::ModemManagerPrivate() : watcher(ModemManager::DBUS_SERVICE, QDBusConnection::systemBus(), QDBusServiceWatcher::WatchForUnregistration, this), iface(ModemManager::DBUS_SERVICE, ModemManager::DBUS_DAEMON_PATH, QDBusConnection::systemBus())
+ModemManager::ModemManagerPrivate::ModemManagerPrivate() :
+    watcher(MM_DBUS_SERVICE, QDBusConnection::systemBus(), QDBusServiceWatcher::WatchForRegistration | QDBusServiceWatcher::WatchForUnregistration, this),
+    iface(MM_DBUS_SERVICE, MM_DBUS_PATH, QDBusConnection::systemBus(), this),
+    manager(MM_DBUS_SERVICE, MM_DBUS_PATH, QDBusConnection::systemBus(), this)
 {
     qDBusRegisterMetaType<QList<QDBusObjectPath> >();
+    qDBusRegisterMetaType<QVariantMapMap>();
+    qDBusRegisterMetaType<DBUSManagerStruct>();
     registerModemManagerTypes();
 
-    connect(&iface, SIGNAL(DeviceAdded(QDBusObjectPath)),
-            this, SLOT(deviceAdded(QDBusObjectPath)));
-    connect(&iface, SIGNAL(DeviceRemoved(QDBusObjectPath)),
-            this, SLOT(deviceRemoved(QDBusObjectPath)));
+    bool serviceFound = manager.isValid();
+    if (!serviceFound) {
+        // find out whether it will be activated automatically
+        QDBusMessage message = QDBusMessage::createMethodCall("org.freedesktop.DBus",
+                                                              "/org/freedesktop/DBus",
+                                                              "org.freedesktop.DBus",
+                                                              "ListActivatableNames");
 
+        QDBusReply<QStringList> reply = QDBusConnection::systemBus().call(message);
+        if (reply.isValid() && reply.value().contains(MM_DBUS_SERVICE)) {
+            QDBusConnection::systemBus().interface()->startService(MM_DBUS_SERVICE);
+            serviceFound = true;
+        }
+    }
+
+    if (serviceFound) {
+        connect(&manager, SIGNAL(InterfacesAdded(QDBusObjectPath,QVariantMapMap)),
+                this, SLOT(onInterfacesAdded(QDBusObjectPath,QVariantMapMap)));
+        connect(&manager, SIGNAL(InterfacesRemoved(QDBusObjectPath,QStringList)),
+                this, SLOT(onInterfacesRemoved(QDBusObjectPath,QStringList)));
+    }
+
+    connect(&watcher, SIGNAL(serviceRegistered(QString)), SLOT(daemonRegistered()));
     connect(&watcher, SIGNAL(serviceUnregistered(QString)), SLOT(daemonUnregistered()));
+
     init();
 }
 
@@ -57,93 +82,71 @@ ModemManager::ModemManagerPrivate::~ModemManagerPrivate()
 
 void ModemManager::ModemManagerPrivate::init()
 {
-    QDBusReply< QList<QDBusObjectPath> > deviceList = iface.EnumerateDevices();
-    if (deviceList.isValid())
-    {
-        QList <QDBusObjectPath> devices = deviceList.value();
-        foreach (const QDBusObjectPath &op, devices)
-        {
-            modemMap.insert(op.path(), ModemInterfaceIfaceMap());
-            mmDebug() << "  " << op.path();
+    devices.clear();
+
+    QDBusPendingReply<DBUSManagerStruct> reply = manager.GetManagedObjects();
+    reply.waitForFinished();
+    if (!reply.isError()) {  // enum devices
+        Q_FOREACH(const QDBusObjectPath &path, reply.value().keys()) {
+            const QString udi = path.path();
+            mmDebug() << "Adding device" << udi;
+
+            if (udi == MM_DBUS_PATH || !udi.startsWith(MM_DBUS_MODEM_PREFIX)) // TODO checkme
+                continue;
+
+            devices.append(udi);
         }
-    } else {
-        mmDebug() << "Error getting device list: " << deviceList.error().name() << ": " << deviceList.error().message();
+    } else { // show error
+        qWarning() << "Failed enumerating MM objects:" << reply.error().name() << "\n" << reply.error().message();
     }
 }
 
-ModemManager::ModemInterface::Ptr ModemManager::ModemManagerPrivate::findModemInterface(const QString &udi, const ModemManager::ModemInterface::GsmInterfaceType ifaceType)
-{
-    ModemManager::ModemInterface::Ptr modem;
-    QMap<QString, ModemInterfaceIfaceMap>::ConstIterator mapIt = modemMap.constFind(udi);
-    if (mapIt != modemMap.constEnd()) {
-        ModemInterfaceIfaceMap map = modemMap.value(udi);
-        if (map.contains(ifaceType)) {
-            modem = map.value(ifaceType);
-        } else {
-            modem = createModemInterface(udi, ifaceType);
-            if (modem) {
-                map.insert(ifaceType, modem);
-                modemMap.insert(udi, map);
-            }
-        }
-    }
-    return modem;
-}
-
-ModemManager::ModemInterface::Ptr ModemManager::ModemManagerPrivate::createModemInterface(const QString &udi, const ModemManager::ModemInterface::GsmInterfaceType ifaceType)
+ModemManager::ModemInterface::Ptr ModemManager::ModemManagerPrivate::findModemInterface(const QString &udi, ModemInterface::InterfaceType ifaceType)
 {
     mmDebug();
-    OrgFreedesktopModemManagerModemInterface modemIface(ModemManager::DBUS_SERVICE, udi, QDBusConnection::systemBus());
-    uint modemType = modemIface.type();
+
+    ModemInterface modem(udi, this);
     ModemInterface::Ptr createdInterface;
-    switch ( modemType ) {
-    case ModemInterface::GsmType:
-        switch (ifaceType) {
-        case ModemInterface::GsmCard:
-            createdInterface = ModemInterface::Ptr(new ModemGsmCardInterface(udi, this));
-            break;
-        case ModemInterface::GsmContacts:
-            createdInterface = ModemInterface::Ptr(new ModemGsmContactsInterface(udi, this));
-            break;
-        case ModemInterface::GsmNetwork:
-            createdInterface = ModemInterface::Ptr(new ModemGsmNetworkInterface(udi, this));
-            break;
-        case ModemInterface::GsmSms:
-            createdInterface = ModemInterface::Ptr(new ModemGsmSmsInterface(udi, this));
-            break;
-        case ModemInterface::GsmHso:
-            createdInterface = ModemInterface::Ptr(new ModemGsmHsoInterface(udi, this));
-            break;
-        case ModemInterface::GsmUssd:
-            createdInterface = ModemInterface::Ptr(new ModemGsmUssdInterface(udi, this));
-            break;
-        case ModemInterface::NotGsm: // to prevent compilation warning
-            break;
-        }
+
+    if (!modem.isValid())
+        return createdInterface;
+
+    switch (ifaceType) {
+    case ModemInterface::Gsm:
+        if (modem.hasInterface(MM_DBUS_INTERFACE_MODEM_MODEM3GPP))
+            createdInterface = ModemInterface::Ptr(new Modem3gppInterface(udi, this));
         break;
-    case ModemInterface::CdmaType:
-        createdInterface = ModemInterface::Ptr(new ModemCdmaInterface(udi, this));
+    case ModemInterface::Messaging:
+        if (modem.hasInterface(MM_DBUS_INTERFACE_MODEM_MESSAGING))
+            createdInterface = ModemInterface::Ptr(new ModemMessagingInterface(udi, this));
+        break;
+    case ModemInterface::GsmUssd:
+        if (modem.hasInterface(MM_DBUS_INTERFACE_MODEM_MODEM3GPP_USSD))
+            createdInterface = ModemInterface::Ptr(new Modem3gppUssdInterface(udi, this));
+        break;
+    case ModemInterface::Cdma:
+        if (modem.hasInterface(MM_DBUS_INTERFACE_MODEM_MODEMCDMA))
+            createdInterface = ModemInterface::Ptr(new ModemCdmaInterface(udi, this));
+        break;
+    case ModemInterface::Location:
+        if (modem.hasInterface(MM_DBUS_INTERFACE_MODEM_LOCATION))
+            createdInterface = ModemInterface::Ptr(new ModemLocationInterface(udi, this));
+        break;
+    case ModemInterface::Time:
+        if (modem.hasInterface(MM_DBUS_INTERFACE_MODEM_TIME))
+            createdInterface = ModemInterface::Ptr(new ModemTimeInterface(udi, this));
         break;
     default:
-        mmDebug() << "libQtModemManager: Can't create object of type " << modemType << "for" << udi;
+        mmDebug() << "libQtModemManager: Can't create object of type " << ifaceType << "for" << udi;
         break;
     }
 
     return createdInterface;
 }
 
-void ModemManager::ModemManagerPrivate::deviceAdded(const QDBusObjectPath & objpath)
+void ModemManager::ModemManagerPrivate::scanDevices()
 {
-    mmDebug();
-    modemMap.insert(objpath.path(), ModemInterfaceIfaceMap());
-    emit modemAdded(objpath.path());
-}
-
-void ModemManager::ModemManagerPrivate::deviceRemoved(const QDBusObjectPath & objpath)
-{
-    mmDebug();
-    emit modemRemoved(objpath.path());
-    modemMap.remove(objpath.path());
+    iface.ScanDevices();
 }
 
 void ModemManager::ModemManagerPrivate::daemonRegistered()
@@ -155,25 +158,72 @@ void ModemManager::ModemManagerPrivate::daemonRegistered()
 void ModemManager::ModemManagerPrivate::daemonUnregistered()
 {
     emit serviceDisappeared();
-    modemMap.clear();
+    devices.clear();
+}
+
+void ModemManager::ModemManagerPrivate::onInterfacesAdded(const QDBusObjectPath &object_path, const QVariantMapMap &interfaces_and_properties)
+{
+    const QString udi = object_path.path();
+
+    /* Ignore non-modems */
+    if (!udi.startsWith(MM_DBUS_MODEM_PREFIX)) {
+        return;
+    }
+
+    mmDebug() << udi << "has new interfaces:" << interfaces_and_properties.keys();
+
+    // new device, we don't know it yet
+    if (!devices.contains(udi)) {
+        devices.append(udi);
+        emit modemAdded(udi);
+    }
+    // re-emit in case of modem type change (GSM <-> CDMA)
+    else if (devices.contains(udi) && (interfaces_and_properties.keys().contains(MM_DBUS_INTERFACE_MODEM_MODEM3GPP) ||
+                                       interfaces_and_properties.keys().contains(MM_DBUS_INTERFACE_MODEM_MODEMCDMA))) {
+        emit modemAdded(udi);
+    }
+}
+
+void ModemManager::ModemManagerPrivate::onInterfacesRemoved(const QDBusObjectPath &object_path, const QStringList &interfaces)
+{
+    const QString udi = object_path.path();
+
+    /* Ignore non-modems */
+    if (!udi.startsWith(MM_DBUS_MODEM_PREFIX)) {
+        return;
+    }
+
+    mmDebug() << udi << "lost interfaces:" << interfaces;
+
+    ModemInterface modem(udi);
+
+    if (!udi.isEmpty() && (interfaces.isEmpty() || modem.interfaces().isEmpty())) {
+        emit modemRemoved(udi);
+        devices.removeAll(udi);
+    }
 }
 
 ModemManager::ModemInterface::List ModemManager::modemInterfaces()
 {
     ModemInterface::List list;
-    QMap<QString, ModemInterfaceIfaceMap>::const_iterator i = globalModemManager->modemMap.constBegin();
-    while (i != globalModemManager->modemMap.constEnd()) {
-        ModemInterface::Ptr modemIface = globalModemManager->findModemInterface(i.key(), ModemInterface::GsmNetwork);
+
+    foreach (const QString & device, globalModemManager->devices) {
+        ModemInterface modem(device);
+        ModemInterface::Ptr modemIface;
+        if (modem.isGsmModem())
+            modemIface = globalModemManager->findModemInterface(device, ModemInterface::Gsm);
+        else if (modem.isCdmaModem())
+            modemIface = globalModemManager->findModemInterface(device, ModemInterface::Cdma);
+
         if (modemIface) {
-            list << modemIface;
+            list.append(modemIface);
         }
-        ++i;
     }
 
     return list;
 }
 
-ModemManager::ModemInterface::Ptr ModemManager::findModemInterface(const QString &udi, const ModemManager::ModemInterface::GsmInterfaceType ifaceType)
+ModemManager::ModemInterface::Ptr ModemManager::findModemInterface(const QString &udi, ModemInterface::InterfaceType ifaceType)
 {
     return globalModemManager->findModemInterface(udi, ifaceType);
 }
@@ -183,3 +233,7 @@ ModemManager::Notifier * ModemManager::notifier()
     return globalModemManager;
 }
 
+void ModemManager::scanDevices()
+{
+    globalModemManager->scanDevices();
+}

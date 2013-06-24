@@ -22,26 +22,24 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef MODEMMANAGER_MODEMINTERFACE_P_H
 #define MODEMMANAGER_MODEMINTERFACE_P_H
 
-#include "dbus/mm-modeminterface.h"
-#include "dbus/mm-modem-simpleinterface.h"
+#include "dbus/Modem.h"
+#include "dbus/ModemSimple.h"
 
+#define DBUS_INTERFACE_PROPS             "org.freedesktop.DBus.Properties"
+#define DBUS_INTERFACE_INTROSPECT        "org.freedesktop.DBus.Introspectable"
+#define DBUS_INTERFACE_MANAGER           "org.freedesktop.DBus.ObjectManager"
 
-class ModemInterfacePrivate
+class ModemInterfacePrivate: public QObject
 {
 public:
-    ModemInterfacePrivate( const QString & path, QObject * owner );
+    ModemInterfacePrivate(const QString & path, QObject * parent);
     virtual ~ModemInterfacePrivate();
-    OrgFreedesktopModemManagerModemInterface modemIface;
-    OrgFreedesktopModemManagerModemSimpleInterface modemSimpleIface;
+    OrgFreedesktopModemManager1ModemInterface modemIface;
+    OrgFreedesktopModemManager1ModemSimpleInterface modemSimpleIface;
     QString udi;
     QString device;
-    QString masterDevice;
-    QString driver;
-    ModemManager::ModemInterface::Type type;
-    bool enabled;
-    QString unlockRequired;
-    ModemManager::ModemInterface::Method ipMethod;
+    QStringList drivers;
+    QStringList interfaces;
 };
 
 #endif
-

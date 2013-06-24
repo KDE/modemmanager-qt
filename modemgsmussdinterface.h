@@ -1,6 +1,7 @@
 /*
 Copyright 2008,2011 Will Stephenson <wstephenson@kde.org>
 Copyright 2010 Lamarque Souza <lamarque@kde.org>
+Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -24,41 +25,44 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "ModemManagerQt-export.h"
 
-#include <QObject>
 #include "modeminterface.h"
 
-class ModemGsmUssdInterfacePrivate;
+class Modem3gppUssdInterfacePrivate;
 
 namespace ModemManager
 {
-class MODEMMANAGERQT_EXPORT ModemGsmUssdInterface : public ModemInterface
+class MODEMMANAGERQT_EXPORT Modem3gppUssdInterface : public ModemInterface
 {
-Q_OBJECT
-Q_DECLARE_PRIVATE(ModemGsmUssdInterface)
+    Q_OBJECT
+    Q_DECLARE_PRIVATE(Modem3gppUssdInterface)
 
 public:
-    typedef QSharedPointer<ModemGsmUssdInterface> Ptr;
+    typedef QSharedPointer<Modem3gppUssdInterface> Ptr;
     typedef QList<Ptr> List;
-    ModemGsmUssdInterface(const QString & path, QObject * parent);
-    ~ModemGsmUssdInterface();
 
+    Modem3gppUssdInterface(const QString & path, QObject * parent);
+    ~Modem3gppUssdInterface();
+
+    // methods
     QString initiate(const QString & command);
-    void respond(const QString response);
+    QString respond(const QString &response);
     void cancel();
+
     // properties
-    QString getState();
-    QString getNetworkNotification();
-    QString getNetworkRequest();
-public Q_SLOTS:
-    void propertiesChanged(const QString & interface, const QVariantMap & properties);
+    MMModem3gppUssdSessionState state() const;
+    QString networkNotification() const;
+    QString networkRequest() const;
+
 Q_SIGNALS:
     // properties
-    void stateChanged(const QString & state);
+    void stateChanged(MMModem3gppUssdSessionState state);
     void networkNotificationChanged(const QString & networkNotification);
     void networkRequestChanged(const QString & networkRequest);
+
+private Q_SLOTS:
+    void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps);
 };
 
 } // namespace ModemManager
 
 #endif
-

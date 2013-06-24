@@ -23,14 +23,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #define MODEMMANAGER_MODEMCDMAINTERFACE_P_H
 
 #include "modeminterface_p.h"
-#include "dbus/mm-modem-cdmainterface.h"
+#include "dbus/ModemCdma.h"
 
 class ModemCdmaInterfacePrivate: public ModemInterfacePrivate
 {
 public:
     ModemCdmaInterfacePrivate(const QString &path, QObject *owner);
-    OrgFreedesktopModemManagerModemCdmaInterface modemCdmaIface;
+    OrgFreedesktopModemManager1ModemModemCdmaInterface modemCdmaIface;
 };
 
 #endif
-

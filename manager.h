@@ -2,6 +2,7 @@
 Copyright 2008,2011 Will Stephenson <wstephenson@kde.org>
 Copyright 2010 Lamarque Souza <lamarque@kde.org>
 Copyright 2013 Daniel Nicoletti <dantti12@gmail.com>
+Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -27,6 +28,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <QObject>
 #include <QDBusObjectPath>
+#include <QSharedPointer>
 
 #include "modeminterface.h"
 
@@ -39,9 +41,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 namespace ModemManager
 {
-extern const QString DBUS_SERVICE;
-extern const QString DBUS_DAEMON_PATH;
-
 class ModemInterface;
 
 class MODEMMANAGERQT_EXPORT Notifier : public QObject
@@ -74,20 +73,26 @@ Q_SIGNALS:
   * Retrieves the list of all modem interfaces Unique Device Identifiers (UDIs)
   * in the system. This method is the equivalent of enumerateDevices described
   * in Modem Manager specification.
+  *
+  * Note: only HW modems are returned (Gsm or Cdma)
+  *
   * @return the list of modem interfaces available in this system
   */
 MODEMMANAGERQT_EXPORT ModemInterface::List modemInterfaces();
+
 /**
   * Find a new ModemManagerInterface object given its UDI.
+  *
+  * Note: only Modem-inherited objects are returned (not SMS, SIM or Bearer objects)
   *
   * @param udi the identifier of the modem interface to find
   * @returns a valid ModemInterface object if there's a device having the given UDI, an invalid one otherwise
   */
-//TODO: decide what to do with type arg
-MODEMMANAGERQT_EXPORT ModemInterface::Ptr findModemInterface(const QString &udi, const ModemManager::ModemInterface::GsmInterfaceType ifaceType);
+MODEMMANAGERQT_EXPORT ModemInterface::Ptr findModemInterface(const QString &udi, ModemManager::ModemInterface::InterfaceType ifaceType);
+
+MODEMMANAGERQT_EXPORT void scanDevices();
 
 MODEMMANAGERQT_EXPORT Notifier * notifier();
-
 }
 
 #endif

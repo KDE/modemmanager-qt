@@ -20,47 +20,49 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "generic-types.h"
 
-// Marshall the ModemManager::Ip4ConfigType data into a D-BUS argument
-QDBusArgument &operator << (QDBusArgument &arg,
-    const ModemManager::ModemInterface::Ip4ConfigType &config)
+
+// Marshall the CurrentModesType data into a D-BUS argument
+QDBusArgument &operator << (QDBusArgument &arg, const CurrentModesType &mode)
 {
     arg.beginStructure();
-    arg << config.ip4Address << config.dns1 << config.dns2 << config.dns3;
+    arg << mode.allowed << mode.prefered;
     arg.endStructure();
     return arg;
 }
 
-// Retrieve the ModemManager::Ip4ConfigType data from the D-BUS argument
-const QDBusArgument &operator >> (const QDBusArgument &arg,
-    ModemManager::ModemInterface::Ip4ConfigType &config)
+// Retrieve the CurrentModesType data from the D-BUS argument
+const QDBusArgument &operator >> (const QDBusArgument &arg, CurrentModesType &mode)
 {
+    uint temp1, temp2;
     arg.beginStructure();
-    arg >> config.ip4Address >> config.dns1 >> config.dns2 >> config.dns3;
+    arg >> temp1 >> temp2;
+    mode.allowed = (MMModemMode)temp1;
+    mode.prefered = (MMModemMode)temp2;
     arg.endStructure();
 
     return arg;
 }
 
-// Marshall the ModemManager::ModemManager::Modem::InfoType data into a D-BUS argument
-QDBusArgument &operator << (QDBusArgument &arg,
-    const ModemManager::ModemInterface::InfoType &info)
+
+// Marshall the SignalQualityPair data into a D-BUS argument
+QDBusArgument &operator << (QDBusArgument &arg, const SignalQualityPair &sqp)
 {
     arg.beginStructure();
-    arg << info.manufacturer << info.model << info.version;
+    arg << sqp.signal << sqp.recent;
     arg.endStructure();
     return arg;
 }
 
-// Retrieve the ModemManager::ModemManager::Modem::InfoType data from the D-BUS argument
-const QDBusArgument &operator >> (const QDBusArgument &arg,
-    ModemManager::ModemInterface::InfoType &info)
+// Retrieve the SignalQualityPair data from the D-BUS argument
+const QDBusArgument &operator >> (const QDBusArgument &arg, SignalQualityPair &sqp)
 {
     arg.beginStructure();
-    arg >> info.manufacturer >> info.model >> info.version;
+    arg >> sqp.signal >> sqp.recent;
     arg.endStructure();
     return arg;
 }
 
+#if 0
 // Marshall the ModemManager::ModemCdmaInterface::ServingSystemType data into a D-BUS argument
 QDBusArgument &operator << (QDBusArgument &arg,
     const ModemManager::ModemCdmaInterface::ServingSystemType &servingSystem)
@@ -83,29 +85,9 @@ const QDBusArgument &operator >> (const QDBusArgument &arg,
     return arg;
 }
 
-// Marshall the ModemManager::ModemGsmContactsInterface::ContactType data into a D-BUS argument
-QDBusArgument &operator << (QDBusArgument &arg,
-    const ModemManager::ModemGsmContactsInterface::ContactType &contact)
-{
-    arg.beginStructure();
-    arg << contact.index << contact.name << contact.number;
-    arg.endStructure();
-    return arg;
-}
-
-// Retrieve the ModemManager::ModemGsmContactsInterface::ContactType data from the D-BUS argument
-const QDBusArgument &operator >> (const QDBusArgument &arg,
-    ModemManager::ModemGsmContactsInterface::ContactType &contact)
-{
-    arg.beginStructure();
-    arg >> contact.index >> contact.name >> contact.number;
-    arg.endStructure();
-    return arg;
-}
-
 // Marshall the RegistrationInfoType data into a D-BUS argument
 QDBusArgument &operator << (QDBusArgument &arg,
-    const ModemManager::ModemGsmNetworkInterface::RegistrationInfoType &info)
+    const ModemManager::Modem3gppInterface::RegistrationInfoType &info)
 {
     uint temp;
 
@@ -118,13 +100,14 @@ QDBusArgument &operator << (QDBusArgument &arg,
 
 // Retrieve the RegistrationInfoType data from the D-BUS argument
 const QDBusArgument &operator >> (const QDBusArgument &arg,
-    ModemManager::ModemGsmNetworkInterface::RegistrationInfoType &info)
+    ModemManager::Modem3gppInterface::RegistrationInfoType &info)
 {
     uint temp;
 
     arg.beginStructure();
     arg >> temp >> info.operatorCode >> info.operatorName;
-    info.status = (ModemManager::ModemGsmNetworkInterface::RegistrationStatus) temp;
+    info.status = (ModemManager::Modem3gppInterface::RegistrationStatus) temp;
     arg.endStructure();
     return arg;
 }
+#endif

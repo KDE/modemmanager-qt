@@ -1,6 +1,5 @@
 /*
-Copyright 2008,2011 Will Stephenson <wstephenson@kde.org>
-Copyright 2010 Lamarque Souza <lamarque@kde.org>
+Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -23,110 +22,113 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "modemgsmsmsinterface_p.h"
 #include "manager.h"
 
-#include <QDebug>
-
-ModemGsmSmsInterfacePrivate::ModemGsmSmsInterfacePrivate(const QString &path, QObject *owner)
-    : ModemInterfacePrivate(path, owner), modemGsmSmsIface(ModemManager::DBUS_SERVICE, path, QDBusConnection::systemBus())
+ModemSmsInterfacePrivate::ModemSmsInterfacePrivate(const QString &path, QObject *owner)
+    : ModemInterfacePrivate(path, owner),
+      smsIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus(), this)
 {
 }
 
-ModemManager::ModemGsmSmsInterface::ModemGsmSmsInterface(const QString & path, QObject * parent)
-    : ModemInterface(*new ModemGsmSmsInterfacePrivate(path, this), parent)
-{
-    Q_D(const ModemGsmSmsInterface);
-    connect(&d->modemGsmSmsIface, SIGNAL(smsReceived(uint,bool)),
-                this, SIGNAL(smsReceived(int,bool)));
-    connect(&d->modemGsmSmsIface, SIGNAL(completed(uint,bool)),
-                this, SIGNAL(completed(int,bool)));
-}
-
-ModemManager::ModemGsmSmsInterface::~ModemGsmSmsInterface()
+ModemManager::ModemSmsInterface::ModemSmsInterface(const QString & path, QObject * parent)
+    : ModemInterface(*new ModemSmsInterfacePrivate(path, this), parent)
 {
 }
 
-void ModemManager::ModemGsmSmsInterface::deleteSms(int index)
+ModemManager::ModemSmsInterface::~ModemSmsInterface()
 {
-    Q_D(ModemGsmSmsInterface);
-    d->modemGsmSmsIface.Delete(index);
 }
 
-QVariantMap ModemManager::ModemGsmSmsInterface::get(int index)
+MMSmsState ModemManager::ModemSmsInterface::state() const
 {
-    Q_D(ModemGsmSmsInterface);
-    QDBusReply<QVariantMap> sms = d->modemGsmSmsIface.Get(index);
-
-    if (sms.isValid()) {
-        return sms.value();
-    }
-
-    return QVariantMap();
+    Q_D(const ModemSmsInterface);
+    return (MMSmsState)d->smsIface.state();
 }
 
-int ModemManager::ModemGsmSmsInterface::getFormat()
+MMSmsPduType ModemManager::ModemSmsInterface::pduType() const
 {
-    Q_D(ModemGsmSmsInterface);
-    QDBusReply<uint> format = d->modemGsmSmsIface.GetFormat();
-
-    if (format.isValid()) {
-        return format.value();
-    }
-
-    return 0;
+    Q_D(const ModemSmsInterface);
+    return (MMSmsPduType)d->smsIface.pduType();
 }
 
-void ModemManager::ModemGsmSmsInterface::setFormat(int format)
+QString ModemManager::ModemSmsInterface::number() const
 {
-    Q_D(ModemGsmSmsInterface);
-    d->modemGsmSmsIface.SetFormat(format);
+    Q_D(const ModemSmsInterface);
+    return d->smsIface.number();
 }
 
-QString ModemManager::ModemGsmSmsInterface::getSmsc()
+QString ModemManager::ModemSmsInterface::text() const
 {
-    Q_D(ModemGsmSmsInterface);
-    QDBusReply<QString> smsc = d->modemGsmSmsIface.GetSmsc();
-
-    if (smsc.isValid()) {
-        return smsc.value();
-    }
-
-    return QString();
+    Q_D(const ModemSmsInterface);
+    return d->smsIface.text();
 }
 
-QList<QVariantMap> ModemManager::ModemGsmSmsInterface::list()
+QByteArray ModemManager::ModemSmsInterface::data() const
 {
-    Q_D(ModemGsmSmsInterface);
-    QDBusReply<QList<QVariantMap> > sms = d->modemGsmSmsIface.List();
-
-    if (sms.isValid()) {
-        return sms.value();
-    }
-
-    return QList<QVariantMap>();
+    Q_D(const ModemSmsInterface);
+    return d->smsIface.data();
 }
 
-void ModemManager::ModemGsmSmsInterface::save(const QVariantMap & properties)
+QString ModemManager::ModemSmsInterface::smsc() const
 {
-    Q_D(ModemGsmSmsInterface);
-    d->modemGsmSmsIface.Save(properties);
+    Q_D(const ModemSmsInterface);
+    return d->smsIface.sMSC();
 }
 
-void ModemManager::ModemGsmSmsInterface::send(const QVariantMap & properties)
+ValidityPair ModemManager::ModemSmsInterface::validity() const
 {
-    Q_D(ModemGsmSmsInterface);
-    d->modemGsmSmsIface.Save(properties);
+    Q_D(const ModemSmsInterface);
+    return d->smsIface.validity();
 }
 
-void ModemManager::ModemGsmSmsInterface::sendFromStorage(int index)
+int ModemManager::ModemSmsInterface::smsClass() const
 {
-    Q_D(ModemGsmSmsInterface);
-    d->modemGsmSmsIface.SendFromStorage(index);
+    Q_D(const ModemSmsInterface);
+    return d->smsIface.smsClass();
 }
 
-void ModemManager::ModemGsmSmsInterface::setIndication(int mode, int mt, int bm, int ds, int brf)
+bool ModemManager::ModemSmsInterface::deliveryReportRequest() const
 {
-    Q_D(ModemGsmSmsInterface);
-    d->modemGsmSmsIface.SetIndication(mode, mt, bm, ds, brf);
+    Q_D(const ModemSmsInterface);
+    return d->smsIface.deliveryReportRequest();
 }
 
+uint ModemManager::ModemSmsInterface::messageReference() const
+{
+    Q_D(const ModemSmsInterface);
+    return d->smsIface.messageReference();
+}
 
+QDateTime ModemManager::ModemSmsInterface::timestamp() const
+{
+    Q_D(const ModemSmsInterface);
+    return QDateTime::fromString(d->smsIface.timestamp(), Qt::ISODate);
+}
 
+QDateTime ModemManager::ModemSmsInterface::dischargeTimestamp() const
+{
+    Q_D(const ModemSmsInterface);
+    return QDateTime::fromString(d->smsIface.dischargeTimestamp(), Qt::ISODate);
+}
+
+MMSmsDeliveryState ModemManager::ModemSmsInterface::deliveryState() const
+{
+    Q_D(const ModemSmsInterface);
+    return (MMSmsDeliveryState)d->smsIface.deliveryState();
+}
+
+MMSmsStorage ModemManager::ModemSmsInterface::storage() const
+{
+    Q_D(const ModemSmsInterface);
+    return (MMSmsStorage)d->smsIface.storage();
+}
+
+void ModemManager::ModemSmsInterface::send()
+{
+    Q_D(ModemSmsInterface);
+    d->smsIface.Send();
+}
+
+void ModemManager::ModemSmsInterface::store(MMSmsStorage storage)
+{
+    Q_D(ModemSmsInterface);
+    d->smsIface.Store(storage);
+}

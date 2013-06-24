@@ -1,6 +1,5 @@
 /*
-Copyright 2008,2011 Will Stephenson <wstephenson@kde.org>
-Copyright 2010 Lamarque Souza <lamarque@kde.org>
+Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -19,46 +18,54 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_MODEMGSMSMSINTERFACE_H
-#define MODEMMANAGER_MODEMGSMSMSINTERFACE_H
+#ifndef MODEMMANAGER_MODEMSMSINTERFACE_H
+#define MODEMMANAGER_MODEMSMSINTERFACE_H
 
 #include "ModemManagerQt-export.h"
-
-#include <QObject>
 #include "modeminterface.h"
 
-class ModemGsmSmsInterfacePrivate;
+#include <QObject>
+#include <QSharedPointer>
+#include <QDateTime>
+#include <QPair>
+
+class ModemSmsInterfacePrivate;
 
 namespace ModemManager
 {
-class MODEMMANAGERQT_EXPORT ModemGsmSmsInterface : public ModemInterface
+class MODEMMANAGERQT_EXPORT ModemSmsInterface : public ModemInterface
 {
-Q_OBJECT
-Q_DECLARE_PRIVATE(ModemGsmSmsInterface)
+    Q_OBJECT
+    Q_DECLARE_PRIVATE(ModemSmsInterface)
 
 public:
-    typedef QSharedPointer<ModemGsmSmsInterface> Ptr;
+    typedef QSharedPointer<ModemSmsInterface> Ptr;
     typedef QList<Ptr> List;
-    ModemGsmSmsInterface(const QString & path, QObject * parent);
-    ~ModemGsmSmsInterface();
 
-    void deleteSms(int index);
-    QVariantMap get(int index);
-    int getFormat();
-    void setFormat(int format);
-    QString getSmsc();
-    QList<QVariantMap> list();
-    void save(const QVariantMap & properties);
-    void send(const QVariantMap & properties);
-    void sendFromStorage(int index);
-    void setIndication(int mode, int mt, int bm, int ds, int brf);
+    ModemSmsInterface(const QString & path, QObject * parent);
+    ~ModemSmsInterface();
 
-Q_SIGNALS:
-    void smsReceived(int index, bool complete);
-    void completed(int index, bool completed);
+    // properties
+    MMSmsState state() const;
+    MMSmsPduType pduType() const;
+    QString number() const;
+    QString text() const;
+    QByteArray data() const;
+    QString smsc() const;
+    ValidityPair validity() const;
+    int smsClass() const;
+    bool deliveryReportRequest() const;
+    uint messageReference() const;
+    QDateTime timestamp() const;
+    QDateTime dischargeTimestamp() const;
+    MMSmsDeliveryState deliveryState() const;
+    MMSmsStorage storage() const;
+
+    // methods
+    void send();
+    void store(MMSmsStorage storage);
 };
 
 } // namespace ModemManager
-
 
 #endif

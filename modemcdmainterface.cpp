@@ -1,6 +1,7 @@
 /*
 Copyright 2008,2011 Will Stephenson <wstephenson@kde.org>
 Copyright 2010 Lamarque Souza <lamarque@kde.org>
+Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -25,7 +26,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "mmdebug.h"
 
 ModemCdmaInterfacePrivate::ModemCdmaInterfacePrivate(const QString &path, QObject *owner)
-    : ModemInterfacePrivate(path, owner), modemCdmaIface(ModemManager::DBUS_SERVICE, path, QDBusConnection::systemBus())
+    : ModemInterfacePrivate(path, owner),
+      modemCdmaIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus(), this)
 {
 }
 
@@ -34,64 +36,69 @@ ModemManager::ModemCdmaInterface::ModemCdmaInterface(const QString & path, QObje
 {
     Q_D(ModemCdmaInterface);
 
-    connect(&d->modemCdmaIface, SIGNAL(RegistrationStateChanged(uint,uint)),
-            this, SIGNAL(registrationStateChanged(ModemManager::ModemCdmaInterface::RegistrationState,
-                                                   ModemManager::ModemCdmaInterface::RegistrationState)));
-    connect(&d->modemCdmaIface, SIGNAL(SignalQuality(uint)),
-            this, SIGNAL(signalQualityChanged(uint)));
+    connect(&d->modemCdmaIface, SIGNAL(ActivationStateChanged(uint,uint,QVariantMap)),
+            SLOT(onActivationStateChanged(uint,uint,QVariantMap)));
 }
 
 ModemManager::ModemCdmaInterface::~ModemCdmaInterface()
 {
-
 }
 
-uint ModemManager::ModemCdmaInterface::getSignalQuality()
+void ModemManager::ModemCdmaInterface::activate(const QString &carrierCode)
 {
     Q_D(ModemCdmaInterface);
-    QDBusReply< uint > signalQuality = d->modemCdmaIface.GetSignalQuality();
-
-    if (signalQuality.isValid())
-        return signalQuality.value();
-
-    mmDebug() << "Error getting signal quality: " << signalQuality.error().name() << ": " << signalQuality.error().message();
-    return 0;
+    d->modemCdmaIface.Activate(carrierCode);
 }
 
-QString ModemManager::ModemCdmaInterface::getEsn()
+void ModemManager::ModemCdmaInterface::activateManual(const QVariantMap & properties)
 {
     Q_D(ModemCdmaInterface);
-    QDBusReply<QString> esn = d->modemCdmaIface.GetEsn();
-
-    if (esn.isValid())
-        return esn.value();
-
-    mmDebug() << "Error getting ESN: " << esn.error().name() << ": " << esn.error().message();
-    return QString();
+    d->modemCdmaIface.ActivateManual(properties);
 }
 
-ModemManager::ModemCdmaInterface::ServingSystemType ModemManager::ModemCdmaInterface::getServingSystem()
+MMModemCdmaActivationState ModemManager::ModemCdmaInterface::activationState() const
 {
-    Q_D(ModemCdmaInterface);
-    QDBusReply<ServingSystemType> servingSystem = d->modemCdmaIface.GetServingSystem();
-
-    if (servingSystem.isValid())
-        return servingSystem.value();
-
-    mmDebug() << "Error getting serving system info: " << servingSystem.error().name() << ": " << servingSystem.error().message();
-    return ServingSystemType();
+    Q_D(const ModemCdmaInterface);
+    return (MMModemCdmaActivationState)d->modemCdmaIface.activationState();
 }
 
-ModemManager::ModemCdmaInterface::RegistrationStateResult ModemManager::ModemCdmaInterface::getRegistrationState()
+QString ModemManager::ModemCdmaInterface::meid() const
 {
-    Q_D(ModemCdmaInterface);
-    QDBusReply<RegistrationStateResult> registrationState = d->modemCdmaIface.GetRegistrationState();
-
-    if (registrationState.isValid())
-        return registrationState.value();
-
-    mmDebug() << "Error getting registration state: " << registrationState.error().name() << ": " << registrationState.error().message();
-    return RegistrationStateResult();
+    Q_D(const ModemCdmaInterface);
+    return d->modemCdmaIface.meid();
 }
 
+QString ModemManager::ModemCdmaInterface::esn() const
+{
+    Q_D(const ModemCdmaInterface);
+    return d->modemCdmaIface.esn();
+}
 
+uint ModemManager::ModemCdmaInterface::sid() const
+{
+    Q_D(const ModemCdmaInterface);
+    return d->modemCdmaIface.sid();
+}
+
+uint ModemManager::ModemCdmaInterface::nid() const
+{
+    Q_D(const ModemCdmaInterface);
+    return d->modemCdmaIface.nid();
+}
+
+MMModemCdmaRegistrationState ModemManager::ModemCdmaInterface::cdma1xRegistrationState() const
+{
+    Q_D(const ModemCdmaInterface);
+    return (MMModemCdmaRegistrationState)d->modemCdmaIface.cdma1xRegistrationState();
+}
+
+MMModemCdmaRegistrationState ModemManager::ModemCdmaInterface::evdoRegistrationState() const
+{
+    Q_D(const ModemCdmaInterface);
+    return (MMModemCdmaRegistrationState)d->modemCdmaIface.evdoRegistrationState();
+}
+
+void ModemManager::ModemCdmaInterface::onActivationStateChanged(uint activation_state, uint activation_error, const QVariantMap &status_changes)
+{
+    emit activationStateChanged((MMModemCdmaActivationState)activation_state, (MMCdmaActivationError)activation_error, status_changes);
+}
