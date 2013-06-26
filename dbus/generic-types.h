@@ -1,5 +1,6 @@
 /* This file is part of the KDE project
    Copyright 2010 Lamarque Souza <lamarque@kde.org>
+   Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -68,7 +69,10 @@ typedef QMap<MMModemLocationSource, QVariant> LocationInformationMap;
 Q_DECLARE_METATYPE(LocationInformationMap)
 
 Q_DECLARE_BUILTIN_METATYPE(MMSmsValidityType, UInt)
-typedef QPair<MMSmsValidityType, QVariant> ValidityPair;
+typedef struct {
+    MMSmsValidityType validity;
+    uint value;
+} ValidityPair;
 Q_DECLARE_METATYPE(ValidityPair)
 
 // CurrentModesType
@@ -79,35 +83,19 @@ const QDBusArgument &operator >> (const QDBusArgument &arg, CurrentModesType &mo
 QDBusArgument &operator << (QDBusArgument &arg, const SignalQualityPair &sqp);
 const QDBusArgument &operator >> (const QDBusArgument &arg, SignalQualityPair &sqp);
 
-#if 0
-// ModemManager::ModemCdmaInterface::ServingSystemType
-QDBusArgument &operator << (QDBusArgument &arg,
-    const ModemManager::ModemCdmaInterface::ServingSystemType &servingSystem);
-
-const QDBusArgument &operator >> (const QDBusArgument &arg,
-    ModemManager::ModemCdmaInterface::ServingSystemType &servingSystem);
-
-// ModemManager::ModemManager::Modem::Gsm::Network::RegistrationInfoType
-QDBusArgument &operator << (QDBusArgument &arg,
-    const ModemManager::Modem3gppInterface::RegistrationInfoType &info);
-
-const QDBusArgument &operator >> (const QDBusArgument &arg,
-    ModemManager::Modem3gppInterface::RegistrationInfoType &info);
-
-#endif
+// ValidityPair
+QDBusArgument &operator << (QDBusArgument &arg, const ValidityPair &vp);
+const QDBusArgument &operator >> (const QDBusArgument &arg, ValidityPair &vp);
 
 inline void registerModemManagerTypes() {
-    //qDBusRegisterMetaType<MMModemMode>();
-    //qDBusRegisterMetaType<MMModemCapability>();
-    //qDBusRegisterMetaType<MMModemLock>();
-    //qDBusRegisterMetaType<MMModemLocationSource>();
-    //qDBusRegisterMetaType<CurrentModesType>();
-    //qDBusRegisterMetaType<SignalQualityPair>();
+    qDBusRegisterMetaType<CurrentModesType>();
+    qDBusRegisterMetaType<SignalQualityPair>();
     //qDBusRegisterMetaType<CapabilityList>();
-    //qDBusRegisterMetaType<SupportedModesType>();
+    qDBusRegisterMetaType<SupportedModesType>();
     //qDBusRegisterMetaType<UnlockRetriesMap>();
-    //qDBusRegisterMetaType<ScanResultsType>();
+    qDBusRegisterMetaType<ScanResultsType>();
     //qDBusRegisterMetaType<LocationInformationMap>();
+    qDBusRegisterMetaType<ValidityPair>();
 }
 
 #endif // MODEMMANAGER_TYPES_H

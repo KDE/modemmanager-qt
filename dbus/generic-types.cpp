@@ -1,5 +1,6 @@
 /* This file is part of the KDE project
    Copyright 2010 Lamarque Souza <lamarque@kde.org>
+   Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -62,52 +63,24 @@ const QDBusArgument &operator >> (const QDBusArgument &arg, SignalQualityPair &s
     return arg;
 }
 
-#if 0
-// Marshall the ModemManager::ModemCdmaInterface::ServingSystemType data into a D-BUS argument
-QDBusArgument &operator << (QDBusArgument &arg,
-    const ModemManager::ModemCdmaInterface::ServingSystemType &servingSystem)
+// Marshall the ValidityPair data into a D-BUS argument
+QDBusArgument &operator <<(QDBusArgument &arg, const ValidityPair &vp)
 {
     arg.beginStructure();
-    arg << servingSystem.bandClass << servingSystem.band << servingSystem.systemId;
+    arg << vp.validity << vp.value;
     arg.endStructure();
     return arg;
 }
 
-// Retrieve the ModemManager::ModemCdmaInterface::ServingSystemType data from the D-BUS argument
-const QDBusArgument &operator >> (const QDBusArgument &arg,
-    ModemManager::ModemCdmaInterface::ServingSystemType &servingSystem)
+// Retrieve the ValidityPair data from the D-BUS argument
+const QDBusArgument &operator >>(const QDBusArgument &arg, ValidityPair &vp)
 {
-    uint temp;
+    uint temp1, temp2;
     arg.beginStructure();
-    arg >> temp >> servingSystem.band >> servingSystem.systemId;
-    servingSystem.bandClass = (ModemManager::ModemCdmaInterface::BandClass) temp;
+    arg >> temp1 >> temp2;
+    vp.validity = (MMSmsValidityType)temp1;
+    vp.value = temp2;
     arg.endStructure();
+
     return arg;
 }
-
-// Marshall the RegistrationInfoType data into a D-BUS argument
-QDBusArgument &operator << (QDBusArgument &arg,
-    const ModemManager::Modem3gppInterface::RegistrationInfoType &info)
-{
-    uint temp;
-
-    temp = (uint) info.status;
-    arg.beginStructure();
-    arg << temp << info.operatorCode << info.operatorName;
-    arg.endStructure();
-    return arg;
-}
-
-// Retrieve the RegistrationInfoType data from the D-BUS argument
-const QDBusArgument &operator >> (const QDBusArgument &arg,
-    ModemManager::Modem3gppInterface::RegistrationInfoType &info)
-{
-    uint temp;
-
-    arg.beginStructure();
-    arg >> temp >> info.operatorCode >> info.operatorName;
-    info.status = (ModemManager::Modem3gppInterface::RegistrationStatus) temp;
-    arg.endStructure();
-    return arg;
-}
-#endif

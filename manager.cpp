@@ -46,6 +46,7 @@ ModemManager::ModemManagerPrivate::ModemManagerPrivate() :
     qDBusRegisterMetaType<QList<QDBusObjectPath> >();
     qDBusRegisterMetaType<QVariantMapMap>();
     qDBusRegisterMetaType<DBUSManagerStruct>();
+    qDBusRegisterMetaType<UIntList>();
     registerModemManagerTypes();
 
     bool serviceFound = manager.isValid();
