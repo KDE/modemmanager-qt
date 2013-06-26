@@ -105,7 +105,7 @@ public:
 
     // properties
     QDBusObjectPath simPath() const;
-    CapabilityList supportedCapabilities() const;
+    QList<MMModemCapability> supportedCapabilities() const;
     Capabilities currentCapabilities() const;
     uint maxBearers() const;
     uint maxActiveBearers() const;

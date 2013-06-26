@@ -203,8 +203,8 @@
         The modem's state (see #org.freedesktop.ModemManager1.Modem:State) changed.
     -->
     <signal name="StateChanged">
-      <arg name="old"    type="i" />
-      <arg name="new"    type="i" />
+      <arg name="oldState"    type="i" />
+      <arg name="newState"    type="i" />
       <arg name="reason" type="u" />
     </signal>
 
@@ -227,7 +227,7 @@
         will be given.
     -->
     <property name="SupportedCapabilities" type="au" access="read">
-      <annotation name="org.qtproject.QtDBus.QtTypeName" value="CapabilityList"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName" value="UIntList"/>
     </property>
 
     <!--

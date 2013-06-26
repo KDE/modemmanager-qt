@@ -42,10 +42,6 @@ typedef struct {
 } SignalQualityPair;
 Q_DECLARE_METATYPE(SignalQualityPair)
 
-Q_DECLARE_BUILTIN_METATYPE(MMModemCapability, UInt)
-typedef QList<MMModemCapability> CapabilityList;
-Q_DECLARE_METATYPE(CapabilityList)
-
 Q_DECLARE_BUILTIN_METATYPE(MMModemMode, UInt)
 typedef struct {
 public:
@@ -90,7 +86,6 @@ const QDBusArgument &operator >> (const QDBusArgument &arg, ValidityPair &vp);
 inline void registerModemManagerTypes() {
     qDBusRegisterMetaType<CurrentModesType>();
     qDBusRegisterMetaType<SignalQualityPair>();
-    //qDBusRegisterMetaType<CapabilityList>();
     qDBusRegisterMetaType<SupportedModesType>();
     //qDBusRegisterMetaType<UnlockRetriesMap>();
     qDBusRegisterMetaType<ScanResultsType>();

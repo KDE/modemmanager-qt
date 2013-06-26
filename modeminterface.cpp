@@ -239,10 +239,16 @@ QDBusObjectPath ModemManager::ModemInterface::simPath() const
     return d->modemIface.sim();
 }
 
-CapabilityList ModemManager::ModemInterface::supportedCapabilities() const
+QList<MMModemCapability> ModemManager::ModemInterface::supportedCapabilities() const
 {
     Q_D(const ModemInterface);
-    return d->modemIface.supportedCapabilities();
+
+    QList<MMModemCapability> result;
+    foreach (uint cap, d->modemIface.supportedCapabilities()) {
+        result.append((MMModemCapability)cap);
+    }
+
+    return result;
 }
 
 ModemManager::ModemInterface::Capabilities ModemManager::ModemInterface::currentCapabilities() const

@@ -44,10 +44,9 @@ ModemManager::ModemMessagingInterface::~ModemMessagingInterface()
 QList<MMSmsStorage> ModemManager::ModemMessagingInterface::supportedStorages() const
 {
     Q_D(const ModemMessagingInterface);
-    const QList<uint> tmp = d->modemMessagingIface.supportedStorages();
     QList<MMSmsStorage> result;
 
-    foreach (uint storage, tmp) {
+    foreach (uint storage, d->modemMessagingIface.supportedStorages()) {
         result.append((MMSmsStorage)storage);
     }
 

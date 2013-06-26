@@ -8,8 +8,8 @@
  * Do not edit! All changes made to it will be lost.
  */
 
-#ifndef MODEM_H_1372198924
-#define MODEM_H_1372198924
+#ifndef MODEM_H_1372256597
+#define MODEM_H_1372256597
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>
@@ -125,9 +125,9 @@ public:
     inline UIntList supportedBands() const
     { return qvariant_cast< UIntList >(property("SupportedBands")); }
 
-    Q_PROPERTY(CapabilityList SupportedCapabilities READ supportedCapabilities)
-    inline CapabilityList supportedCapabilities() const
-    { return qvariant_cast< CapabilityList >(property("SupportedCapabilities")); }
+    Q_PROPERTY(UIntList SupportedCapabilities READ supportedCapabilities)
+    inline UIntList supportedCapabilities() const
+    { return qvariant_cast< UIntList >(property("SupportedCapabilities")); }
 
     Q_PROPERTY(uint SupportedIpFamilies READ supportedIpFamilies)
     inline uint supportedIpFamilies() const
