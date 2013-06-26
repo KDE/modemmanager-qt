@@ -54,7 +54,7 @@ typedef QList<CurrentModesType> SupportedModesType;
 Q_DECLARE_METATYPE(SupportedModesType)
 
 Q_DECLARE_BUILTIN_METATYPE(MMModemLock, UInt)
-typedef QMap<MMModemLock, uint> UnlockRetriesMap;
+typedef QMap</*MMModemLock*/uint, uint> UnlockRetriesMap;
 Q_DECLARE_METATYPE(UnlockRetriesMap)
 
 typedef QList<QVariantMap> ScanResultsType;
@@ -87,7 +87,7 @@ inline void registerModemManagerTypes() {
     qDBusRegisterMetaType<CurrentModesType>();
     qDBusRegisterMetaType<SignalQualityPair>();
     qDBusRegisterMetaType<SupportedModesType>();
-    //qDBusRegisterMetaType<UnlockRetriesMap>();
+    qDBusRegisterMetaType<UnlockRetriesMap>();
     qDBusRegisterMetaType<ScanResultsType>();
     //qDBusRegisterMetaType<LocationInformationMap>();
     qDBusRegisterMetaType<ValidityPair>();

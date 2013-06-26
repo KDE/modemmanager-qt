@@ -61,7 +61,7 @@ public:
     */
     void registerToNetwork(const QString & networkId = QString());
 
-    ScanResultsType scan();
+    ScanResultsType scan(); // TODO return the scan results async
 
 Q_SIGNALS:
     void registrationStateChanged(MMModem3gppRegistrationState registrationState);
