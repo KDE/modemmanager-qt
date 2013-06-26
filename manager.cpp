@@ -37,7 +37,9 @@ const QString ModemManager::DBUS_DAEMON_PATH = QString::fromLatin1("/org/freedes
 
 MM_GLOBAL_STATIC(ModemManager::ModemManagerPrivate, globalModemManager)
 
-ModemManager::ModemManagerPrivate::ModemManagerPrivate() : watcher(ModemManager::DBUS_SERVICE, QDBusConnection::systemBus(), QDBusServiceWatcher::WatchForUnregistration, this), iface(ModemManager::DBUS_SERVICE, ModemManager::DBUS_DAEMON_PATH, QDBusConnection::systemBus())
+ModemManager::ModemManagerPrivate::ModemManagerPrivate() :
+    watcher(ModemManager::DBUS_SERVICE, QDBusConnection::systemBus(), QDBusServiceWatcher::WatchForRegistration | QDBusServiceWatcher::WatchForUnregistration, this),
+    iface(ModemManager::DBUS_SERVICE, ModemManager::DBUS_DAEMON_PATH, QDBusConnection::systemBus())
 {
     qDBusRegisterMetaType<QList<QDBusObjectPath> >();
     registerModemManagerTypes();
@@ -47,6 +49,7 @@ ModemManager::ModemManagerPrivate::ModemManagerPrivate() : watcher(ModemManager:
     connect(&iface, SIGNAL(DeviceRemoved(QDBusObjectPath)),
             this, SLOT(deviceRemoved(QDBusObjectPath)));
 
+    connect(&watcher, SIGNAL(serviceRegistered(QString)), SLOT(daemonRegistered()));
     connect(&watcher, SIGNAL(serviceUnregistered(QString)), SLOT(daemonUnregistered()));
     init();
 }
