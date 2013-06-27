@@ -1,7 +1,5 @@
 /*
 Copyright 2013 Anant Kamath <kamathanant@gmail.com>
-Copyright 2008 Will Stephenson <wstephenson@kde.org>
-Copyright 2010 Lamarque Souza <lamarque@kde.org>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -20,24 +18,35 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_MODEMLOCATIONINTERFACE_P_H
-#define MODEMMANAGER_MODEMLOCATIONINTERFACE_P_H
+#ifndef MODEMMANAGER_SMSINTERFACE_P_H
+#define MODEMMANAGER_SMSINTERFACE_P_H
 
-#include "modeminterface_p.h"
-#include "modemlocationinterface.h"
-#include "dbus/mm-modem-locationinterface.h"
+#include <QtDBus>
 
-class ModemLocationInterfacePrivate: public ModemInterfacePrivate
+#include "smsinterface.h"
+#include "dbus/mm-smsinterface.h"
+
+class SmsInterfacePrivate
 {
 public:
-    ModemLocationInterfacePrivate(const QString &path, QObject *owner);
-    OrgFreedesktopModemManagerModemLocationInterface modemLocationIface;
+    SmsInterfacePrivate(const QString &path, QObject *owner);
+    OrgFreedesktopModemManager1SmsInterface smsIface;
     QDBusInterface propertiesIface;
     
-    ModemManager::ModemLocationInterface::LocationInformationMap enabledSources;
-    bool signalsLocation;
-    ModemManager::ModemLocationInterface::LocationInformationMap location;
-    ModemManager::ModemLocationInterface::LocationSources capabilities;
+    ModemManager::SmsInterface::State state;
+    ModemManager::SmsInterface::SmsPduType pduType;
+    QString number;
+    QString text;
+    QString SMSC;
+    QByteArray data;
+    ModemManager::SmsInterface::SmsValidity validity;
+    int smsClass;
+    bool deliveryReportRequest;
+    uint messageReference;
+    QString timestamp;
+    QString dischargeTimestamp;
+    ModemManager::SmsInterface::SmsDeliveryState deliveryState;
+    ModemManager::SmsInterface::SmsStorage storage;
 };
 
 #endif

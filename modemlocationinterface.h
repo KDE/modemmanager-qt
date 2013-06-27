@@ -39,22 +39,32 @@ Q_DECLARE_PRIVATE(ModemLocationInterface)
 public:
     typedef QSharedPointer<ModemLocationInterface> Ptr;
     typedef QList<Ptr> List;
-    enum Capability { Unknown = 0x0, GpsNmea = 0x1, GpsLacCi = 0x2, GpsRaw = 0x4 };
+    
+    enum LocationSource {
+    MM_MODEM_LOCATION_SOURCE_NONE        = 0,
+    MM_MODEM_LOCATION_SOURCE_3GPP_LAC_CI = 1 << 0,
+    MM_MODEM_LOCATION_SOURCE_GPS_RAW     = 1 << 1,
+    MM_MODEM_LOCATION_SOURCE_GPS_NMEA    = 1 << 2,
+    MM_MODEM_LOCATION_SOURCE_CDMA_BS     = 1 << 3,
+    };
+    
+    Q_DECLARE_FLAGS(LocationSources, LocationSource)
+    Q_DECLARE_OPERATORS_FOR_FLAGS(LocationSources)
 
-    typedef QList<QMap<Capability, QVariant> > LocationInformationMap;
+    typedef QMap<LocationSource, QVariant>  LocationInformationMap;
 
     ModemLocationInterface(const QString & path, QObject * parent);
     ~ModemLocationInterface();
 
-    void enableLocation(bool enable, bool signalLocation);
+    void enableLocation(ModemManager::ModemLocationInterface::LocationSources sources, bool signalLocation);
     ModemManager::ModemLocationInterface::LocationInformationMap getLocation();
-    ModemManager::ModemLocationInterface::Capability getCapability() const;
-    bool enabled() const;
+    ModemManager::ModemLocationInterface::LocationSources getCapabilities() const;
+    ModemManager::ModemLocationInterface::LocationSources enabledSources() const;
     bool signalsLocation() const;
 
 Q_SIGNALS:
-    void capabilitiesChanged(const ModemManager::ModemLocationInterface::Capability capability);
-    void enabledChanged(bool enabled);
+    void capabilitiesChanged(const ModemManager::ModemLocationInterface::LocationSources capabilities);
+    void enabledSourcesChanged(const ModemManager::ModemLocationInterface::LocationSources enabledSources);
     void signalsLocationChanged(bool signalsLocation);
     void locationChanged(const ModemManager::ModemLocationInterface::LocationInformationMap & location);
 
