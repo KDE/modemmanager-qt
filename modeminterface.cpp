@@ -422,22 +422,22 @@ void ModemManager::ModemInterface::onPropertiesChanged(const QString & ifaceName
         QLatin1String enabled(MM_MODEM_PROPERTY_POWERSTATE);
         QLatin1String unlockRequired(MM_MODEM_PROPERTY_UNLOCKREQUIRED);
 
-        QVariantMap::const_iterator it = changedProps.find(device);
-        if ( it != changedProps.end()) {
+        QVariantMap::const_iterator it = changedProps.constFind(device);
+        if ( it != changedProps.constEnd()) {
             d->device = it->toString();
             emit deviceChanged(d->device);
         }
         it = changedProps.find(drivers);
-        if ( it != changedProps.end()) {
+        if ( it != changedProps.constEnd()) {
             d->drivers = it->toStringList();
             emit driversChanged(d->drivers);
         }
         it = changedProps.find(enabled);
-        if ( it != changedProps.end()) {
+        if ( it != changedProps.constEnd()) {
             emit enabledChanged(it->toBool());
         }
         it = changedProps.find(unlockRequired);
-        if ( it != changedProps.end()) {
+        if ( it != changedProps.constEnd()) {
             emit unlockRequiredChanged((MMModemLock)it->toUInt());
         }
     }

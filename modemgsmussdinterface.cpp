@@ -55,16 +55,16 @@ void ModemManager::Modem3gppUssdInterface::onPropertiesChanged(const QString &in
         QLatin1String networkNotification(MM_MODEM_MODEM3GPP_USSD_PROPERTY_NETWORKNOTIFICATION);
         QLatin1String networkRequest(MM_MODEM_MODEM3GPP_USSD_PROPERTY_NETWORKREQUEST);
 
-        QVariantMap::const_iterator it = properties.find(state);
-        if ( it != properties.end()) {
+        QVariantMap::const_iterator it = properties.constFind(state);
+        if ( it != properties.constEnd()) {
             emit stateChanged((MMModem3gppUssdSessionState)it->toUInt());
         }
         it = properties.find(networkNotification);
-        if ( it != properties.end()) {
+        if ( it != properties.constEnd()) {
             emit networkNotificationChanged(it->toString());
         }
         it = properties.find(networkRequest);
-        if ( it != properties.end()) {
+        if ( it != properties.constEnd()) {
             emit networkRequestChanged(it->toString());
         }
     }

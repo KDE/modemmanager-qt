@@ -123,16 +123,16 @@ void ModemManager::ModemBearerInterface::onPropertiesChanged(const QString & int
         QLatin1String connected(MM_BEARER_PROPERTY_CONNECTED);
         QLatin1String suspended(MM_BEARER_PROPERTY_SUSPENDED);
 
-        QVariantMap::const_iterator it = properties.find(interface);
-        if ( it != properties.end()) {
+        QVariantMap::const_iterator it = properties.constFind(interface);
+        if ( it != properties.constEnd()) {
             emit interfaceChanged(it->toString());
         }
         it = properties.find(connected);
-        if ( it != properties.end()) {
+        if ( it != properties.constEnd()) {
             emit connectedChanged(it->toBool());
         }
         it = properties.find(suspended);
-        if ( it != properties.end()) {
+        if ( it != properties.constEnd()) {
             emit suspendedChanged(it->toBool());
         }
     }

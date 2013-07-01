@@ -92,13 +92,13 @@ void ModemManager::Modem3gppInterface::onPropertiesChanged(const QString &interf
     mmDebug() << interface << properties.keys();
 
     if (interface == QString(MM_DBUS_INTERFACE_MODEM_MODEM3GPP)) {
-        QVariantMap::const_iterator it = properties.find(MM_MODEM_MODEM3GPP_PROPERTY_REGISTRATIONSTATE);
-        if (it != properties.end()) {
+        QVariantMap::const_iterator it = properties.constFind(MM_MODEM_MODEM3GPP_PROPERTY_REGISTRATIONSTATE);
+        if (it != properties.constEnd()) {
             emit registrationStateChanged((MMModem3gppRegistrationState) it->toUInt());
         }
 
         it = properties.find(MM_MODEM_MODEM3GPP_PROPERTY_ENABLEDFACILITYLOCKS);
-        if (it != properties.end()) {
+        if (it != properties.constEnd()) {
             emit enabledFacilityLocksChanged((FacilityLocks) it->toUInt());
         }
     }

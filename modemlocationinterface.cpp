@@ -54,20 +54,20 @@ void ModemManager::ModemLocationInterface::onPropertiesChanged(const QString & i
         QLatin1String signalsLocation(MM_MODEM_LOCATION_PROPERTY_SIGNALSLOCATION);
         QLatin1String location(MM_MODEM_LOCATION_PROPERTY_LOCATION);
 
-        QVariantMap::const_iterator it = properties.find(capabilities);
+        QVariantMap::const_iterator it = properties.constFind(capabilities);
         if ( it != properties.end()) {
             emit capabilitiesChanged((ModemManager::ModemLocationInterface::LocationSources)it->toUInt());
         }
         it = properties.find(enabled);
-        if ( it != properties.end()) {
+        if ( it != properties.constEnd()) {
             emit enabledChanged(it->toBool());
         }
         it = properties.find(signalsLocation);
-        if ( it != properties.end()) {
+        if ( it != properties.constEnd()) {
             emit signalsLocationChanged(it->toBool());
         }
         it = properties.find(location);
-        if ( it != properties.end()) {
+        if ( it != properties.constEnd()) {
             QVariant v = it.value();  // FIXME demarshall properly
             LocationInformationMap map;
             if (v.canConvert<LocationInformationMap>()) {
