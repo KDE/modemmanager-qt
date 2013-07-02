@@ -65,12 +65,16 @@ ModemManager::ModemBearerInterface::IpConfig ModemManager::ModemBearerInterface:
     Q_D(const ModemBearerInterface);
     IpConfig result;
     const QVariantMap map = d->modemBearerIface.ip4Config();
-    result.address = map.value("address").toString();
-    result.prefix = map.value("address").toUInt();
-    result.dns1 = map.value("dns1").toString();
-    result.dns2 = map.value("dns2").toString();
-    result.dns3 = map.value("dns3").toString();
-    result.gateway = map.value("gateway").toString();
+    result.method = (MMBearerIpMethod)map.value("method").toUInt();
+
+    if (result.method == MM_BEARER_IP_METHOD_STATIC) {
+        result.address = map.value("address").toString();
+        result.prefix = map.value("prefix").toUInt();
+        result.dns1 = map.value("dns1").toString();
+        result.dns2 = map.value("dns2").toString();
+        result.dns3 = map.value("dns3").toString();
+        result.gateway = map.value("gateway").toString();
+    }
 
     return result;
 }
@@ -80,12 +84,16 @@ ModemManager::ModemBearerInterface::IpConfig ModemManager::ModemBearerInterface:
     Q_D(const ModemBearerInterface);
     IpConfig result;
     const QVariantMap map = d->modemBearerIface.ip6Config();
-    result.address = map.value("address").toString();
-    result.prefix = map.value("address").toUInt();
-    result.dns1 = map.value("dns1").toString();
-    result.dns2 = map.value("dns2").toString();
-    result.dns3 = map.value("dns3").toString();
-    result.gateway = map.value("gateway").toString();
+    result.method = (MMBearerIpMethod)map.value("method").toUInt();
+
+    if (result.method == MM_BEARER_IP_METHOD_STATIC) {
+        result.address = map.value("address").toString();
+        result.prefix = map.value("prefix").toUInt();
+        result.dns1 = map.value("dns1").toString();
+        result.dns2 = map.value("dns2").toString();
+        result.dns3 = map.value("dns3").toString();
+        result.gateway = map.value("gateway").toString();
+    }
 
     return result;
 }
