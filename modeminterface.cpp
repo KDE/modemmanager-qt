@@ -427,16 +427,16 @@ void ModemManager::ModemInterface::onPropertiesChanged(const QString & ifaceName
             d->device = it->toString();
             emit deviceChanged(d->device);
         }
-        it = changedProps.find(drivers);
+        it = changedProps.constFind(drivers);
         if ( it != changedProps.constEnd()) {
             d->drivers = it->toStringList();
             emit driversChanged(d->drivers);
         }
-        it = changedProps.find(enabled);
+        it = changedProps.constFind(enabled);
         if ( it != changedProps.constEnd()) {
             emit enabledChanged(it->toBool());
         }
-        it = changedProps.find(unlockRequired);
+        it = changedProps.constFind(unlockRequired);
         if ( it != changedProps.constEnd()) {
             emit unlockRequiredChanged((MMModemLock)it->toUInt());
         }

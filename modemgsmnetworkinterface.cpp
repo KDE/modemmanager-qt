@@ -97,7 +97,7 @@ void ModemManager::Modem3gppInterface::onPropertiesChanged(const QString &interf
             emit registrationStateChanged((MMModem3gppRegistrationState) it->toUInt());
         }
 
-        it = properties.find(MM_MODEM_MODEM3GPP_PROPERTY_ENABLEDFACILITYLOCKS);
+        it = properties.constFind(MM_MODEM_MODEM3GPP_PROPERTY_ENABLEDFACILITYLOCKS);
         if (it != properties.constEnd()) {
             emit enabledFacilityLocksChanged((FacilityLocks) it->toUInt());
         }

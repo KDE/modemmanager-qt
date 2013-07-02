@@ -59,11 +59,11 @@ void ModemManager::Modem3gppUssdInterface::onPropertiesChanged(const QString &in
         if ( it != properties.constEnd()) {
             emit stateChanged((MMModem3gppUssdSessionState)it->toUInt());
         }
-        it = properties.find(networkNotification);
+        it = properties.constFind(networkNotification);
         if ( it != properties.constEnd()) {
             emit networkNotificationChanged(it->toString());
         }
-        it = properties.find(networkRequest);
+        it = properties.constFind(networkRequest);
         if ( it != properties.constEnd()) {
             emit networkRequestChanged(it->toString());
         }

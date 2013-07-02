@@ -127,11 +127,11 @@ void ModemManager::ModemBearerInterface::onPropertiesChanged(const QString & int
         if ( it != properties.constEnd()) {
             emit interfaceChanged(it->toString());
         }
-        it = properties.find(connected);
+        it = properties.constFind(connected);
         if ( it != properties.constEnd()) {
             emit connectedChanged(it->toBool());
         }
-        it = properties.find(suspended);
+        it = properties.constFind(suspended);
         if ( it != properties.constEnd()) {
             emit suspendedChanged(it->toBool());
         }
