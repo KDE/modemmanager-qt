@@ -130,18 +130,28 @@ void ModemManager::ModemBearerInterface::onPropertiesChanged(const QString & int
         QLatin1String interface(MM_BEARER_PROPERTY_INTERFACE);
         QLatin1String connected(MM_BEARER_PROPERTY_CONNECTED);
         QLatin1String suspended(MM_BEARER_PROPERTY_SUSPENDED);
+        QLatin1String ip4Config(MM_BEARER_PROPERTY_IP4CONFIG);
+        QLatin1String ip6Config(MM_BEARER_PROPERTY_IP6CONFIG);
 
         QVariantMap::const_iterator it = properties.constFind(interface);
-        if ( it != properties.constEnd()) {
+        if (it != properties.constEnd()) {
             emit interfaceChanged(it->toString());
         }
         it = properties.constFind(connected);
-        if ( it != properties.constEnd()) {
+        if (it != properties.constEnd()) {
             emit connectedChanged(it->toBool());
         }
         it = properties.constFind(suspended);
-        if ( it != properties.constEnd()) {
+        if (it != properties.constEnd()) {
             emit suspendedChanged(it->toBool());
+        }
+        it = properties.constFind(ip4Config);
+        if (it != properties.constEnd()) {
+            emit ip4ConfigChanged();
+        }
+        it = properties.constFind(ip6Config);
+        if (it != properties.constEnd()) {
+            emit ip6ConfigChanged();
         }
     }
 }

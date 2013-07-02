@@ -68,6 +68,8 @@ Q_SIGNALS:
     void interfaceChanged(const QString & iface);
     void connectedChanged(bool connected);
     void suspendedChanged(bool suspended);
+    void ip4ConfigChanged();
+    void ip6ConfigChanged();
 
 private Q_SLOTS:
    void onPropertiesChanged(const QString & interface, const QVariantMap & properties, const QStringList &invalidatedProps);
