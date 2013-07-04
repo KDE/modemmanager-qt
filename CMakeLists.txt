@@ -31,11 +31,11 @@ set(ModemManagerQt_HEADERS
     modemcdmainterface.h
     modemgsmcardinterface.h
     modemgsmnetworkinterface.h
-    modemgsmsmsinterface.h
     modemgsmussdinterface.h
     modemtimeinterface.h
     modemmessaginginterface.h
     modembearerinterface.h
+    smsinterface.h
     ModemManagerQt-export.h
 )
 
@@ -44,13 +44,13 @@ set(ModemManagerQt_PRIVATE_HEADERS
     modemcdmainterface_p.h
     modemgsmcardinterface_p.h
     modemgsmnetworkinterface_p.h
-    modemgsmsmsinterface_p.h
     modemgsmussdinterface_p.h
     modeminterface_p.h
     modemlocationinterface_p.h
     modemtimeinterface_p.h
     modemmessaginginterface_p.h
     modembearerinterface_p.h
+    smsinterface_p.h
 )
 
 set(ModemManagerQt_SRCS
@@ -60,11 +60,11 @@ set(ModemManagerQt_SRCS
    modemcdmainterface.cpp
    modemgsmcardinterface.cpp
    modemgsmnetworkinterface.cpp
-   modemgsmsmsinterface.cpp
    modemgsmussdinterface.cpp
    modemtimeinterface.cpp
    modemmessaginginterface.cpp
    modembearerinterface.cpp
+   smsinterface.cpp
 )
 
 set( DBUS_INTERFACES_FILES

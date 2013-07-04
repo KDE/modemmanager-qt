@@ -1,6 +1,8 @@
 /*
 Copyright 2008 Will Stephenson <wstephenson@kde.org>
 Copyright 2010 Lamarque Souza <lamarque@kde.org>
+Copyright 2013 Anant Kamath <kamathanant@gmail.com>
+Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -19,17 +21,32 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_MODEMGSMSMSINTERFACE_P_H
-#define MODEMMANAGER_MODEMGSMSMSINTERFACE_P_H
+#ifndef MODEMMANAGER_SMSINTERFACE_P_H
+#define MODEMMANAGER_SMSINTERFACE_P_H
 
-#include "modeminterface_p.h"
 #include "dbus/Sms.h"
 
-class ModemSmsInterfacePrivate: public ModemInterfacePrivate
+class SmsInterfacePrivate
 {
 public:
-    ModemSmsInterfacePrivate(const QString &path, QObject *owner);
+    SmsInterfacePrivate(const QString &path);
     OrgFreedesktopModemManager1SmsInterface smsIface;
+
+    MMSmsState state;
+    MMSmsPduType pduType;
+    QString number;
+    QString text;
+    QString smsc;
+    QByteArray data;
+    ValidityPair validity;
+    int smsClass;
+    bool deliveryReportRequest;
+    uint messageReference;
+    QDateTime timestamp;
+    QDateTime dischargeTimestamp;
+    MMSmsDeliveryState deliveryState;
+    MMSmsStorage storage;
 };
 
 #endif
+

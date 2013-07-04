@@ -26,7 +26,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "modemcdmainterface.h"
 #include "modemgsmcardinterface.h"
 #include "modemgsmnetworkinterface.h"
-#include "modemgsmsmsinterface.h"
 #include "modemgsmussdinterface.h"
 #include "modemmessaginginterface.h"
 #include "modemtimeinterface.h"
