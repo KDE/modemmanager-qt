@@ -29,7 +29,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 class SmsInterfacePrivate
 {
 public:
-    SmsInterfacePrivate(const QString &path);
+    explicit SmsInterfacePrivate(const QString &path);
     OrgFreedesktopModemManager1SmsInterface smsIface;
 
     MMSmsState state;
