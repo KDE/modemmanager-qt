@@ -73,6 +73,17 @@ public:
         //, Firmware  // TODO ?
     };
 
+    struct BearerStruct {
+        QString apn; // required for 3GPP
+        MMBearerIpFamily ipType;
+        MMBearerAllowedAuth allowedAuth;
+        QString user;
+        QString password;
+        bool allowRoaming;
+        MMModemCdmaRmProtocol rmProtocol;
+        QString number; // required for POTS
+    };
+
     explicit ModemInterface( const QString & path, QObject * parent = 0 );
     explicit ModemInterface( ModemInterfacePrivate &dd, QObject * parent = 0);
     virtual ~ModemInterface();
@@ -92,7 +103,7 @@ public:
     void enable(bool enable);
 
     QList<QDBusObjectPath> listBearers();
-    QDBusObjectPath createBearer(const QVariantMap & properties);
+    QDBusObjectPath createBearer(const BearerStruct & bearer);
     void deleteBearer(const QDBusObjectPath & bearer);
 
     void reset();
@@ -135,31 +146,37 @@ public:
 
     // From org.freedesktop.ModemManager.Modem.Simple
 
-    //    Dictionary of properties needed to get the modem connected.
-    //    Each implementation is free to add its own specific key-value pairs. The predefined
-    //    common ones are:
-
-    //      'pin'          : string
-    //      'network_id'   : string (GSM/HSPA only)
-    //      'band'         : uint
-    //      'network_mode' : uint
-    //      'apn'          : string (GSM/HSPA only)
-    //      'number'       : string
-    //      'rm-protocol'  : uint (CDMA/EVDO only) (1 - Relay, 2 - Network PPP)
-    //      'allowed_auth' : uint (GSM/HSPA only) (MM_MODEM_GSM_ALLOWED_AUTH bitfield)
+    //  Dictionary of properties needed to get the modem connected.
+    //  Each implementation is free to add its own specific key-value pairs. The predefined
+    //  common ones are:
+    //
+    //  "pin": SIM-PIN unlock code, given as a string value (signature "s").
+    //  "operator-id": ETSI MCC-MNC of a network to force registration with, given as a string value (signature "s").
+    //  "apn": For GSM/UMTS and LTE devices the APN to use, given as a string value (signature "s").
+    //  "ip-type": For GSM/UMTS and LTE devices the IP addressing type to use, given as a MMBearerIpFamily value (signature "u").
+    //  "allowed-auth": The authentication method to use, given as a MMBearerAllowedAuth value (signature "u"). Optional in 3GPP.
+    //  "user": User name (if any) required by the network, given as a string value (signature "s"). Optional in 3GPP.
+    //  "password": Password (if any) required by the network, given as a string value (signature "s"). Optional in 3GPP.
+    //  "number": For POTS devices the number to dial,, given as a string value (signature "s").
+    //  "allow-roaming": FALSE to allow only connections to home networks, given as a boolean value (signature "b").
+    //  "rm-protocol": For CDMA devices, the protocol of the Rm interface, given as a MMModemCdmaRmProtocol value (signature "u").
     void connectModem(const QVariantMap & properties);
 
-    //    Dictionary of properties.
-    //     Each implementation is free to add it's own specific key-value pairs. The predefined
-    //     common ones are:
-    //
-    //    'state'          : uint (always)
-    //    'signal_quality' : uint  (state >= registered)
-    //    'operator_code'  : string (state >= registered)
-    //    'operator_name'  : string (state >= registered)
-    //    'band'           : uint (state >= registered)
-    //    'network_mode'   : uint (state >= registered)
-    //
+    //  Dictionary of properties.
+    //  Each implementation is free to add it's own specific key-value pairs. The predefined
+    //  common ones are:
+    //   
+    //  "state": A MMModemState value specifying the overall state of the modem, given as an unsigned integer value (signature "u").
+    //  "signal-quality": Signal quality value, given only when registered, as an unsigned integer value (signature "u").
+    //  "current-bands": List of MMModemBand values, given only when registered, as a list of unsigned integer values (signature "au").
+    //  "access-technology": A MMModemAccessTechnology value, given only when registered, as an unsigned integer value (signature "u").
+    //  "m3gpp-registration-state":A MMModem3gppRegistrationState value specifying the state of the registration, given only when registered in a 3GPP network, as an unsigned integer value (signature "u").
+    //  "m3gpp-operator-code":Operator MCC-MNC, given only when registered in a 3GPP network, as a string value (signature "s").
+    //  "m3gpp-operator-name":Operator name, given only when registered in a 3GPP network, as a string value (signature "s").
+    //  "cdma-cdma1x-registration-state":A MMModemCdmaRegistrationState value specifying the state of the registration, given only when registered in a CDMA1x network, as an unsigned integer value (signature "u").
+    //  "cdma-evdo-registration-state":A MMModemCdmaRegistrationState value specifying the state of the registration, given only when registered in a EV-DO network, as an unsigned integer value (signature "u").
+    //  "cdma-sid":The System Identifier of the serving network, if registered in a CDMA1x network and if known. Given as an unsigned integer value (signature "u").
+    //  "cdma-nid":The Network Identifier of the serving network, if registered in a CDMA1x network and if known. Given as an unsigned integer value (signature "u").
     QVariantMap status();
 
     void disconnectModem(const QDBusObjectPath &bearer);

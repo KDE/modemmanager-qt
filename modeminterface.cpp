@@ -175,10 +175,25 @@ QList<QDBusObjectPath> ModemManager::ModemInterface::listBearers()
     return d->modemIface.ListBearers();
 }
 
-QDBusObjectPath ModemManager::ModemInterface::createBearer(const QVariantMap &properties)
+QDBusObjectPath ModemManager::ModemInterface::createBearer(const BearerStruct &bearer)
 {
     Q_D(ModemInterface);
-    return d->modemIface.CreateBearer(properties);
+    QVariantMap map;
+    map.insert("apn", bearer.apn);
+    if (bearer.ipType != MM_BEARER_IP_FAMILY_NONE)
+        map.insert("ip-type", (uint)bearer.ipType);
+    if (bearer.allowedAuth != MM_BEARER_ALLOWED_AUTH_UNKNOWN)
+        map.insert("allowed-auth", (uint)bearer.allowedAuth);
+    if (!bearer.user.isEmpty())
+        map.insert("user", bearer.user);
+    if (!bearer.password.isEmpty())
+        map.insert("password", bearer.password);
+    map.insert("allow-roaming", bearer.allowRoaming);
+    if (bearer.rmProtocol != MM_MODEM_CDMA_RM_PROTOCOL_UNKNOWN)
+        map.insert("rm-protocol", (uint)bearer.rmProtocol);
+    if (!bearer.number.isEmpty())
+        map.insert("number", bearer.number);
+    return d->modemIface.CreateBearer(map);
 }
 
 void ModemManager::ModemInterface::deleteBearer(const QDBusObjectPath &bearer)
