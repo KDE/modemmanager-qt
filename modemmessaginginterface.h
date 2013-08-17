@@ -1,4 +1,5 @@
 /*
+Copyright 2013 Anant Kamath <kamathanant@gmail.com>
 Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
 
 This library is free software; you can redistribute it and/or
@@ -24,6 +25,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "ModemManagerQt-export.h"
 
 #include "modeminterface.h"
+#include "smsinterface.h"
+
+#include "../dbus/generic-types.h"
 
 class ModemMessagingInterfacePrivate;
 
@@ -35,10 +39,8 @@ class MODEMMANAGERQT_EXPORT ModemMessagingInterface : public ModemInterface
     Q_DECLARE_PRIVATE(ModemMessagingInterface)
 
 public:
-    typedef QSharedPointer<ModemMessagingInterface> Ptr;
-    typedef QList<Ptr> List;
 
-    ModemMessagingInterface(const QString & path, QObject * parent);
+    ModemMessagingInterface(const QString &path, QObject *parent);
     ~ModemMessagingInterface();
 
     // properties
@@ -46,13 +48,34 @@ public:
     MMSmsStorage defaultStorage() const;
 
     //methods
+    /**
+     * List all SMS messages
+     */
     QList<QDBusObjectPath> listMessages();
-    void createMessage(const QVariantMap & properties);
-    void deleteMessage(const QDBusObjectPath & path);
+
+    /**
+     * Create a new SMS message
+     */
+    QDBusPendingReply<QDBusObjectPath> createMessage(const QVariantMap &properties);
+
+    /**
+     * Delete an SMS message
+     */
+    QDBusPendingReply<> deleteMessage(const QDBusObjectPath &path);
+
+    /**
+     * Create a new SmsInterface object for a particular message
+     */
+    ModemManager::SmsInterface::Ptr createSmsInterface(const QDBusObjectPath &path);
+
+private Q_SLOTS:
+    void onPropertiesChanged(const QString &interface, const QVariantMap &changedProperties, const QStringList &invalidatedProps);
+    void onMessageAdded(const QDBusObjectPath &path, bool received);
+    void onMessageDeleted(const QDBusObjectPath &path);
 
 Q_SIGNALS:
-    void messageAdded(const QDBusObjectPath & path, bool received);
-    void messageDeleted(const QDBusObjectPath & path);
+    void messageAdded(const QDBusObjectPath &path, bool received);
+    void messageDeleted(const QDBusObjectPath &path);
 };
 
 } // namespace ModemManager

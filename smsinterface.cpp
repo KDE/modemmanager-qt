@@ -36,6 +36,7 @@ ModemManager::SmsInterface::SmsInterface(const QString &path, QObject *parent)
 {
     Q_D(SmsInterface);
 
+    d->dBusPath = path;
     d->state = (MMSmsState) d->smsIface.state();
     d->pduType = (MMSmsPduType) d->smsIface.pduType();
     d->number = d->smsIface.number();

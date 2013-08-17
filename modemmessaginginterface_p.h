@@ -1,4 +1,5 @@
 /*
+Copyright 2013 Anant Kamath <kamathanant@gmail.com>
 Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
 
 This library is free software; you can redistribute it and/or
@@ -29,6 +30,10 @@ class ModemMessagingInterfacePrivate: public ModemInterfacePrivate
 public:
     ModemMessagingInterfacePrivate(const QString &path, QObject *owner);
     OrgFreedesktopModemManager1ModemMessagingInterface modemMessagingIface;
+
+    QList<QDBusObjectPath> messageList; 
+    QList<MMSmsStorage> supportedStorages;
+    MMSmsStorage defaultStorage;
 };
 
 #endif

@@ -32,6 +32,7 @@ public:
     explicit SmsInterfacePrivate(const QString &path);
     OrgFreedesktopModemManager1SmsInterface smsIface;
 
+    QString dBusPath;
     MMSmsState state;
     MMSmsPduType pduType;
     QString number;
