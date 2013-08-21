@@ -84,3 +84,29 @@ const QDBusArgument &operator >>(const QDBusArgument &arg, ValidityPair &vp)
 
     return arg;
 }
+
+// Marshal QList<QVariantMap> into a D-BUS argument
+QDBusArgument &operator<<(QDBusArgument &argument, const QList<QVariantMap> &variantMapList)
+{
+    argument.beginArray(qMetaTypeId<QVariantMap>());
+    for (int i = 0; i < variantMapList.length(); ++i)
+        argument << variantMapList[i];
+    argument.endArray();
+    return argument;
+}
+
+// Retrieve QList<QVariantMap> from a D-BUS argument
+const QDBusArgument &operator>>(const QDBusArgument &argument, QList<QVariantMap> &variantMapList)
+{
+    argument.beginArray();
+    variantMapList.clear();
+
+    while (!argument.atEnd()) {
+        QVariantMapList element;
+        argument >> element;
+        variantMapList.append( element );
+    }
+
+    argument.endArray();
+    return argument;
+}
