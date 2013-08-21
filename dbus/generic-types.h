@@ -86,6 +86,7 @@ inline void registerModemManagerTypes() {
         qDBusRegisterMetaType<ModemManager::ModemCdmaInterface::ServingSystemType>();
         qDBusRegisterMetaType<ModemManager::ModemGsmContactsInterface::ContactType>();
         qDBusRegisterMetaType<ModemManager::ModemGsmNetworkInterface::RegistrationInfoType>();
+        qDBusRegisterMetaType<QList<QVariantMap> >();
 }
 
 #endif // MODEMMANAGER_TYPES_H
