@@ -24,8 +24,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef MODEMMANAGER_DBUS_H
 #define MODEMMANAGER_DBUS_H
 
-#define DBUS_INTERFACE_PROPS             "org.freedesktop.DBus.Properties"
-#define DBUS_INTERFACE_INTROSPECT        "org.freedesktop.DBus.Introspectable"
-#define DBUS_INTERFACE_MANAGER           "org.freedesktop.DBus.ObjectManager"
+#define DBUS_INTERFACE_PROPS             QLatin1String("org.freedesktop.DBus.Properties")
+#define DBUS_INTERFACE_INTROSPECT        QLatin1String("org.freedesktop.DBus.Introspectable")
+#define DBUS_INTERFACE_MANAGER           QLatin1String("org.freedesktop.DBus.ObjectManager")
 
 #endif
