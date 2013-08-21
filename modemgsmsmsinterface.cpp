@@ -113,7 +113,7 @@ void ModemManager::ModemGsmSmsInterface::save(const QVariantMap & properties)
 void ModemManager::ModemGsmSmsInterface::send(const QVariantMap & properties)
 {
     Q_D(ModemGsmSmsInterface);
-    d->modemGsmSmsIface.Save(properties);
+    d->modemGsmSmsIface.Send(properties);
 }
 
 void ModemManager::ModemGsmSmsInterface::sendFromStorage(int index)
