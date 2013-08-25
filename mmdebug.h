@@ -1,5 +1,5 @@
 /*
-Copyright 2011 Lamarque Souza <lamarque@kde.org>
+Copyright 2011-2013 Lamarque Souza <lamarque@kde.org>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -18,12 +18,13 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MM_DEBUG_H
-#define MM_DEBUG_H
+#ifndef MODEMMANAGERQT_DEBUG_H
+#define MODEMMANAGERQT_DEBUG_H
 
+#include <QCoreApplication>
 #include <QDebug>
 
 #define mmDebug() \
-	qDebug() << "libmm-qt" << QCoreApplication::applicationName() << '(' << QCoreApplication::applicationPid() << ')' << __PRETTY_FUNCTION__ << ':'
+	qDebug() << "ModemManagerQt" << QCoreApplication::applicationName() << '(' << QCoreApplication::applicationPid() << ')' << __PRETTY_FUNCTION__ << ':'
 
 #endif

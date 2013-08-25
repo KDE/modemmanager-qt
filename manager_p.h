@@ -19,8 +19,8 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_MODEMMANAGER_P_H
-#define MODEMMANAGER_MODEMMANAGER_P_H
+#ifndef MODEMMANAGERQT_MANAGER_P_H
+#define MODEMMANAGERQT_MANAGER_P_H
 
 #include <QObject>
 #include <QDBusServiceWatcher>

@@ -19,8 +19,8 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_MODEMGSMUSSDINTERFACE_H
-#define MODEMMANAGER_MODEMGSMUSSDINTERFACE_H
+#ifndef MODEMMANAGERQT_MODEMGSMUSSDINTERFACE_H
+#define MODEMMANAGERQT_MODEMGSMUSSDINTERFACE_H
 
 #include "ModemManagerQt-export.h"
 

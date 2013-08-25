@@ -128,7 +128,7 @@ ModemManager::ModemInterface::Ptr ModemManager::ModemManagerPrivate::createModem
         createdInterface = ModemInterface::Ptr(new ModemCdmaInterface(udi, this));
         break;
     default:
-        mmDebug() << "libQtModemManager: Can't create object of type " << modemType << "for" << udi;
+        mmDebug() << "ModemManagerQt: Can't create object of type " << modemType << "for" << udi;
         break;
     }
 

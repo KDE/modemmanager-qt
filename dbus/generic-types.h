@@ -18,8 +18,8 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_GENERIC_TYPES_H
-#define MODEMMANAGER_GENERIC_TYPES_H
+#ifndef MODEMMANAGERQT_GENERIC_TYPES_H
+#define MODEMMANAGERQT_GENERIC_TYPES_H
 
 #include <QMetaType>
 #include <QDBusArgument>
@@ -89,4 +89,4 @@ inline void registerModemManagerTypes() {
         qDBusRegisterMetaType<QList<QVariantMap> >();
 }
 
-#endif // MODEMMANAGER_TYPES_H
+#endif // MODEMMANAGERQT_TYPES_H

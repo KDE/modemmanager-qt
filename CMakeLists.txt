@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 
-project(libModemManagerQt)
+project(ModemManagerQt)
 
 set(VERSION 0.5.0)
 set(CMAKE_BUILD_TYPE Debug)
@@ -90,7 +90,7 @@ ${ModemManagerQt_HEADERS}
 DESTINATION
 include/ModemManagerQt COMPONENT Devel)
 
-set_property(TARGET ModemManagerQt PROPERTY COMPILE_DEFINITIONS MAKE_QTMODEMMANAGER_LIB)
+set_property(TARGET ModemManagerQt PROPERTY COMPILE_DEFINITIONS MAKE_MODEMMANAGERQT_LIB)
 set_property(TARGET ModemManagerQt PROPERTY VERSION ${VERSION})
 set_property(TARGET ModemManagerQt PROPERTY SOVERSION 0)
 

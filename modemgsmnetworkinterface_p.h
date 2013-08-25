@@ -19,8 +19,8 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_MODEMGSMNETWORKINTERFACE_P_H
-#define MODEMMANAGER_MODEMGSMNETWORKINTERFACE_P_H
+#ifndef MODEMMANAGERQT_MODEMGSMNETWORKINTERFACE_P_H
+#define MODEMMANAGERQT_MODEMGSMNETWORKINTERFACE_P_H
 
 #include "modeminterface_p.h"
 #include "dbus/mm-modem-gsm-networkinterface.h"
