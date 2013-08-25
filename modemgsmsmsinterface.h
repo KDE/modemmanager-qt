@@ -54,8 +54,8 @@ public:
     void setIndication(int mode, int mt, int bm, int ds, int brf);
 
 Q_SIGNALS:
-    void smsReceived(int index, bool complete);
-    void completed(int index, bool completed);
+    void smsReceived(uint index, bool complete);
+    void completed(uint index, bool completed);
 };
 
 } // namespace ModemManager

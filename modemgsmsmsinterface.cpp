@@ -34,10 +34,10 @@ ModemManager::ModemGsmSmsInterface::ModemGsmSmsInterface(const QString & path, Q
     : ModemInterface(*new ModemGsmSmsInterfacePrivate(path, this), parent)
 {
     Q_D(const ModemGsmSmsInterface);
-    connect(&d->modemGsmSmsIface, SIGNAL(smsReceived(uint,bool)),
-                this, SIGNAL(smsReceived(int,bool)));
-    connect(&d->modemGsmSmsIface, SIGNAL(completed(uint,bool)),
-                this, SIGNAL(completed(int,bool)));
+    connect(&d->modemGsmSmsIface, SIGNAL(SmsReceived(uint,bool)),
+                this, SIGNAL(smsReceived(uint,bool)));
+    connect(&d->modemGsmSmsIface, SIGNAL(Completed(uint,bool)),
+                this, SIGNAL(completed(uint,bool)));
 }
 
 ModemManager::ModemGsmSmsInterface::~ModemGsmSmsInterface()
