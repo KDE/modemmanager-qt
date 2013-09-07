@@ -102,7 +102,7 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, QList<QVariantMap
     variantMapList.clear();
 
     while (!argument.atEnd()) {
-        QVariantMapList element;
+        QList<QVariantMap> element;
         argument >> element;
         variantMapList.append( element );
     }
