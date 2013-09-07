@@ -33,7 +33,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include <QSharedPointer>
 #include <QDBusObjectPath>
 
-#include "../dbus/generic-types.h"
+#include "generic-types.h"
 
 class ModemInterfacePrivate;
 
@@ -66,7 +66,6 @@ public:
         Cdma,
         SimCard,
         Messaging,
-        Sms,
         Location,
         Bearer,
         Time

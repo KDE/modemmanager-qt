@@ -28,7 +28,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "manager.h"
 #include "mmdebug.h"
 
-#include "../dbus/generic-types.h"
+#include "generic-types.h"
 
 ModemInterfacePrivate::ModemInterfacePrivate(const QString & path, QObject *parent) :
     QObject(parent),

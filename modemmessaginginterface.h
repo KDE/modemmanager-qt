@@ -27,7 +27,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "modeminterface.h"
 #include "smsinterface.h"
 
-#include "../dbus/generic-types.h"
+#include "generic-types.h"
 
 class ModemMessagingInterfacePrivate;
 

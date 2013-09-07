@@ -32,8 +32,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "modemlocationinterface.h"
 #include "macros.h"
 #include "mmdebug.h"
-#include "../dbus/generic-types.h"
-#include "../dbus/dbus_manager.h"
+#include "generic-types.h"
 
 MM_GLOBAL_STATIC(ModemManager::ModemManagerPrivate, globalModemManager)
 
