@@ -24,12 +24,17 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "modeminterface_p.h"
 #include "dbus/mm-modem-gsm-cardinterface.h"
+#include "modeminterface.h"
 
 class ModemGsmCardInterfacePrivate: public ModemInterfacePrivate
 {
 public:
     ModemGsmCardInterfacePrivate(const QString &path, QObject *owner);
     OrgFreedesktopModemManagerModemGsmCardInterface modemGsmCardIface;
+
+    ModemManager::ModemInterface::Band supportedBands;
+    ModemManager::ModemInterface::Mode supportedModes;
+    QString simIdentifier;
 };
 
 #endif

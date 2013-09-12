@@ -45,6 +45,8 @@ public:
 
     QString getImei();
     QString getImsi();
+    QDBusPendingReply<QString> getSpn();
+    QDBusPendingReply<QString> getOperatorId();
     QDBusPendingReply<> sendPuk(const QString & puk, const QString & pin);
     QDBusPendingReply<> sendPin(const QString & pin);
     QDBusPendingReply<> enablePin(const QString & pin, bool enabled);
@@ -53,6 +55,7 @@ public:
     // Properties
     ModemManager::ModemInterface::Band getSupportedBands() const; // deprecated
     ModemManager::ModemInterface::Mode getSupportedModes() const;
+    QString getSimIdentifier() const;
 Q_SIGNALS:
     // properties
     void supportedBandsChanged(const ModemManager::ModemInterface::Band band);

@@ -34,6 +34,10 @@ ModemManager::ModemGsmCardInterface::ModemGsmCardInterface(const QString & path,
 {
     Q_D(ModemGsmCardInterface);
 
+    d->supportedBands = (ModemManager::ModemInterface::Band) d->modemGsmCardIface.supportedBands();
+    d->supportedModes = (ModemManager::ModemInterface::Mode) d->modemGsmCardIface.supportedModes();
+    d->simIdentifier = d->modemGsmCardIface.simIdentifier();
+
     d->modemGsmCardIface.connection().connect(ModemManager::DBUS_SERVICE,
         path, QLatin1String("org.freedesktop.DBus.Properties"),
         QLatin1String("MmPropertiesChanged"), QLatin1String("sa{sv}"),
@@ -52,14 +56,23 @@ void ModemManager::ModemGsmCardInterface::propertiesChanged(const QString & inte
     if (interface == QString("org.freedesktop.ModemManager.Modem.Gsm.Card")) {
         QLatin1String supportedBands("SupportedBands");
         QLatin1String supportedModes("SupportedModes");
+        QLatin1String simIdentifier("SimIdentifier");
+
+        Q_D(ModemGsmCardInterface);
 
         QVariantMap::const_iterator it = properties.find(supportedBands);
         if ( it != properties.end()) {
-            emit supportedBandsChanged((ModemManager::ModemInterface::Band) it->toInt());
+            d->supportedBands = (ModemManager::ModemInterface::Band) it->toInt();
+            emit supportedBandsChanged(d->supportedBands);
         }
         it = properties.find(supportedModes);
         if ( it != properties.end()) {
-            emit supportedModesChanged((ModemManager::ModemInterface::Mode) it->toInt());
+            d->supportedModes = (ModemManager::ModemInterface::Mode) it->toInt();
+            emit supportedModesChanged(d->supportedModes);
+        }
+        it = properties.find(simIdentifier);
+        if ( it != properties.end()) {
+            d->simIdentifier = it->toString();
         }
     }
 }
@@ -86,6 +99,18 @@ QString ModemManager::ModemGsmCardInterface::getImsi()
     }
 
     return QString();
+}
+
+QDBusPendingReply<QString> ModemManager::ModemGsmCardInterface::getOperatorId()
+{
+    Q_D(ModemGsmCardInterface);
+    return d->modemGsmCardIface.GetOperatorId();
+}
+
+QDBusPendingReply<QString> ModemManager::ModemGsmCardInterface::getSpn()
+{
+    Q_D(ModemGsmCardInterface);
+    return d->modemGsmCardIface.GetSpn();
 }
 
 QDBusPendingReply<> ModemManager::ModemGsmCardInterface::sendPuk(const QString & puk, const QString & pin)
@@ -115,14 +140,17 @@ QDBusPendingReply<> ModemManager::ModemGsmCardInterface::changePin(const QString
 ModemManager::ModemInterface::Band ModemManager::ModemGsmCardInterface::getSupportedBands() const
 {
     Q_D(const ModemGsmCardInterface);
-    return (ModemManager::ModemInterface::Band) d->modemGsmCardIface.supportedBands();
+    return d->supportedBands;
 }
 
 ModemManager::ModemInterface::Mode ModemManager::ModemGsmCardInterface::getSupportedModes() const
 {
     Q_D(const ModemGsmCardInterface);
-    return (ModemManager::ModemInterface::Mode) d->modemGsmCardIface.supportedModes();
+    return d->supportedModes;
 }
 
-
-
+QString ModemManager::ModemGsmCardInterface::getSimIdentifier() const
+{
+    Q_D(const ModemGsmCardInterface);
+    return d->simIdentifier;
+}
