@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 project(ModemManagerQt)
 
-set(VERSION 0.5.0)
+set(VERSION 0.5.1)
 set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_MODULE_PATH})
 
