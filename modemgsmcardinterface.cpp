@@ -73,6 +73,7 @@ void ModemManager::ModemGsmCardInterface::propertiesChanged(const QString & inte
         it = properties.find(simIdentifier);
         if ( it != properties.end()) {
             d->simIdentifier = it->toString();
+            emit simIdentifierChanged(d->simIdentifier);
         }
     }
 }
@@ -101,13 +102,13 @@ QString ModemManager::ModemGsmCardInterface::getImsi()
     return QString();
 }
 
-QDBusPendingReply<QString> ModemManager::ModemGsmCardInterface::getOperatorId()
+QDBusPendingReply<QString> ModemManager::ModemGsmCardInterface::operatorId()
 {
     Q_D(ModemGsmCardInterface);
     return d->modemGsmCardIface.GetOperatorId();
 }
 
-QDBusPendingReply<QString> ModemManager::ModemGsmCardInterface::getSpn()
+QDBusPendingReply<QString> ModemManager::ModemGsmCardInterface::serviceProviderName()
 {
     Q_D(ModemGsmCardInterface);
     return d->modemGsmCardIface.GetSpn();
@@ -149,7 +150,7 @@ ModemManager::ModemInterface::Mode ModemManager::ModemGsmCardInterface::getSuppo
     return d->supportedModes;
 }
 
-QString ModemManager::ModemGsmCardInterface::getSimIdentifier() const
+QString ModemManager::ModemGsmCardInterface::simIdentifier() const
 {
     Q_D(const ModemGsmCardInterface);
     return d->simIdentifier;
