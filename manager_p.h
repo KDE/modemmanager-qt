@@ -54,7 +54,7 @@ protected Q_SLOTS:
     void daemonRegistered();
     void daemonUnregistered();
 
-    void onInterfacesAdded(const QDBusObjectPath &object_path, const QVariantMapMap &interfaces_and_properties);
+    void onInterfacesAdded(const QDBusObjectPath &object_path, const NMVariantMapMap &interfaces_and_properties);
     void onInterfacesRemoved(const QDBusObjectPath &object_path, const QStringList &interfaces);
 };
 } // namespace ModemManager

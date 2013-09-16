@@ -189,7 +189,7 @@ Q_SIGNALS:
     void stateChanged(MMModemState oldState, MMModemState newState, MMModemStateChangeReason reason);
 
 private Q_SLOTS:
-    void onInterfacesAdded(const QDBusObjectPath &object_path, const QVariantMapMap &interfaces_and_properties);
+    void onInterfacesAdded(const QDBusObjectPath &object_path, const NMVariantMapMap &interfaces_and_properties);
     void onInterfacesRemoved(const QDBusObjectPath &object_path, const QStringList &interfaces);
     void onPropertiesChanged(const QString &ifaceName, const QVariantMap &changedProps, const QStringList &invalidatedProps);
     void onStateChanged(int oldState, int newState, uint reason);

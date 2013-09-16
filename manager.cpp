@@ -42,7 +42,7 @@ ModemManager::ModemManagerPrivate::ModemManagerPrivate() :
     manager(MM_DBUS_SERVICE, MM_DBUS_PATH, QDBusConnection::systemBus(), this)
 {
     qDBusRegisterMetaType<QList<QDBusObjectPath> >();
-    qDBusRegisterMetaType<QVariantMapMap>();
+    qDBusRegisterMetaType<NMVariantMapMap>();
     qDBusRegisterMetaType<DBUSManagerStruct>();
     qDBusRegisterMetaType<UIntList>();
     registerModemManagerTypes();
@@ -63,8 +63,8 @@ ModemManager::ModemManagerPrivate::ModemManagerPrivate() :
     }
 
     if (serviceFound) {
-        connect(&manager, SIGNAL(InterfacesAdded(QDBusObjectPath,QVariantMapMap)),
-                this, SLOT(onInterfacesAdded(QDBusObjectPath,QVariantMapMap)));
+        connect(&manager, SIGNAL(InterfacesAdded(QDBusObjectPath,NMVariantMapMap)),
+                this, SLOT(onInterfacesAdded(QDBusObjectPath,NMVariantMapMap)));
         connect(&manager, SIGNAL(InterfacesRemoved(QDBusObjectPath,QStringList)),
                 this, SLOT(onInterfacesRemoved(QDBusObjectPath,QStringList)));
     }
@@ -160,7 +160,7 @@ void ModemManager::ModemManagerPrivate::daemonUnregistered()
     devices.clear();
 }
 
-void ModemManager::ModemManagerPrivate::onInterfacesAdded(const QDBusObjectPath &object_path, const QVariantMapMap &interfaces_and_properties)
+void ModemManager::ModemManagerPrivate::onInterfacesAdded(const QDBusObjectPath &object_path, const NMVariantMapMap &interfaces_and_properties)
 {
     const QString udi = object_path.path();
 

@@ -72,7 +72,7 @@ void ModemManager::ModemInterface::init()
         QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->udi, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
                                              SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
         QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, MM_DBUS_PATH, DBUS_INTERFACE_MANAGER, "InterfacesAdded",
-                                            this, SLOT(onInterfacesAdded(QDBusObjectPath,QVariantMapMap)));
+                                            this, SLOT(onInterfacesAdded(QDBusObjectPath,NMVariantMapMap)));
         QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, MM_DBUS_PATH, DBUS_INTERFACE_MANAGER, "InterfacesRemoved",
                                             this, SLOT(onInterfacesRemoved(QDBusObjectPath,QStringList)));
 
@@ -458,7 +458,7 @@ void ModemManager::ModemInterface::onPropertiesChanged(const QString & ifaceName
     }
 }
 
-void ModemManager::ModemInterface::onInterfacesAdded(const QDBusObjectPath &object_path, const QVariantMapMap &interfaces_and_properties)
+void ModemManager::ModemInterface::onInterfacesAdded(const QDBusObjectPath &object_path, const NMVariantMapMap &interfaces_and_properties)
 {
     Q_D(ModemInterface);
     if (object_path.path() != d->udi) {

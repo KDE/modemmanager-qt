@@ -27,10 +27,10 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMetaType>
 #include <QtDBus/QtDBus>
 
-typedef QMap<QString,QVariantMap> QVariantMapMap;
-Q_DECLARE_METATYPE(QVariantMapMap)
+typedef QMap<QString, QVariantMap> NMVariantMapMap;
+Q_DECLARE_METATYPE(NMVariantMapMap)
 
-typedef QMap<QDBusObjectPath, QVariantMapMap> DBUSManagerStruct;
+typedef QMap<QDBusObjectPath, NMVariantMapMap> DBUSManagerStruct;
 Q_DECLARE_METATYPE(DBUSManagerStruct)
 
 typedef QList<uint> UIntList;
