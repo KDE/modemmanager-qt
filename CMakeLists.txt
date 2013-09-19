@@ -85,7 +85,24 @@ set( DBUS_INTERFACES_FILES
    dbus/dbus_manager.cpp
 )
 
-qt4_wrap_cpp(ModemManagerQt_MOC ${ModemManagerQt_HEADERS} ${ModemManagerQt_PRIVATE_HEADERS})
+set( DBUS_INTERFACES_HEADERS
+   dbus/generic-types.h
+   dbus/Bearer.h
+   dbus/Location.h
+   dbus/Manager.h
+   dbus/Messaging.h
+   dbus/Modem.h
+   dbus/Modem3gpp.h
+   dbus/Modem3gppUssd.h
+   dbus/ModemCdma.h
+   dbus/ModemSimple.h
+   dbus/Sim.h
+   dbus/Sms.h
+   dbus/Time.h
+   dbus/dbus_manager.h
+)
+
+qt4_wrap_cpp(ModemManagerQt_MOC ${ModemManagerQt_HEADERS} ${ModemManagerQt_PRIVATE_HEADERS} ${DBUS_INTERFACES_HEADERS})
 qt4_automoc(${DBUS_INTERFACES_FILES})
 
 add_library(ModemManagerQt SHARED ${ModemManagerQt_MOC} ${ModemManagerQt_SRCS} ${DBUS_INTERFACES_FILES})

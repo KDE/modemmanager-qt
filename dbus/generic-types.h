@@ -36,6 +36,12 @@ Q_DECLARE_METATYPE(DBUSManagerStruct)
 typedef QList<uint> UIntList;
 Q_DECLARE_METATYPE(UIntList)
 
+typedef QList<QList<uint> > UIntListList;
+Q_DECLARE_METATYPE(UIntListList)
+
+typedef QMap<QString, QString> NMStringMap;
+Q_DECLARE_METATYPE(NMStringMap)
+
 typedef struct {
     uint signal;
     bool recent;
