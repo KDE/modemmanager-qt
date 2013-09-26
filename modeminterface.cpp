@@ -27,6 +27,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "modeminterface_p.h"
 #include "manager.h"
 #include "mmdebug.h"
+#include "dbus/dbus.h"
 
 #include "generic-types.h"
 
@@ -436,6 +437,9 @@ void ModemManager::ModemInterface::onPropertiesChanged(const QString & ifaceName
         QLatin1String drivers(MM_MODEM_PROPERTY_DRIVERS);
         QLatin1String enabled(MM_MODEM_PROPERTY_POWERSTATE);
         QLatin1String unlockRequired(MM_MODEM_PROPERTY_UNLOCKREQUIRED);
+        QLatin1String signalQuality(MM_MODEM_PROPERTY_SIGNALQUALITY);
+        QLatin1String tech(MM_MODEM_PROPERTY_ACCESSTECHNOLOGIES);
+        QLatin1String currentModes(MM_MODEM_PROPERTY_CURRENTMODES);
 
         QVariantMap::const_iterator it = changedProps.constFind(device);
         if ( it != changedProps.constEnd()) {
@@ -454,6 +458,21 @@ void ModemManager::ModemInterface::onPropertiesChanged(const QString & ifaceName
         it = changedProps.constFind(unlockRequired);
         if ( it != changedProps.constEnd()) {
             emit unlockRequiredChanged((MMModemLock)it->toUInt());
+        }
+        it = changedProps.constFind(tech);
+        if ( it != changedProps.constEnd()) {
+            emit accessTechnologyChanged(static_cast<AccessTechnologies>(it->toUInt()));
+        }
+        it = changedProps.constFind(currentModes);
+        if ( it != changedProps.constEnd()) {
+            emit currentModesChanged();
+        }
+        it = changedProps.constFind(signalQuality);
+        if (it != changedProps.constEnd()) {
+            SignalQualityPair pair = qdbus_cast<SignalQualityPair>(*it);
+            if (pair.recent) {
+                emit signalQualityChanged(pair.signal);
+            }
         }
     }
 }

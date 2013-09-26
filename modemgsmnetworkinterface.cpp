@@ -24,6 +24,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "modemgsmnetworkinterface_p.h"
 #include "manager.h"
 #include "mmdebug.h"
+#include "dbus/dbus.h"
 
 Modem3gppInterfacePrivate::Modem3gppInterfacePrivate(const QString &path, QObject *owner)
     : ModemInterfacePrivate(path, owner),

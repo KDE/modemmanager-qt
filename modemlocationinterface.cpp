@@ -23,6 +23,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "modemlocationinterface.h"
 #include "modemlocationinterface_p.h"
 #include "manager.h"
+#include "dbus/dbus.h"
 #include "mmdebug.h"
 
 ModemLocationInterfacePrivate::ModemLocationInterfacePrivate(const QString &path, QObject *owner)

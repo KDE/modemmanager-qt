@@ -25,10 +25,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "dbus/Modem.h"
 #include "dbus/ModemSimple.h"
 
-#define DBUS_INTERFACE_PROPS             "org.freedesktop.DBus.Properties"
-#define DBUS_INTERFACE_INTROSPECT        "org.freedesktop.DBus.Introspectable"
-#define DBUS_INTERFACE_MANAGER           "org.freedesktop.DBus.ObjectManager"
-
 class ModemInterfacePrivate: public QObject
 {
 public:

@@ -22,6 +22,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "modembearerinterface_p.h"
 #include "manager.h"
 #include "mmdebug.h"
+#include "dbus/dbus.h"
 
 ModemBearerInterfacePrivate::ModemBearerInterfacePrivate(const QString &path, QObject *owner)
     : ModemInterfacePrivate(path, owner),

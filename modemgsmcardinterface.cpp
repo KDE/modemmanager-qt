@@ -93,16 +93,16 @@ QString ModemManager::ModemSimCardInterface::operatorName() const
     return d->modemSimCardIface.operatorName();
 }
 
-void ModemManager::ModemSimCardInterface::sendPuk(const QString & puk, const QString & pin)
+QDBusPendingReply<> ModemManager::ModemSimCardInterface::sendPuk(const QString & puk, const QString & pin)
 {
     Q_D(ModemSimCardInterface);
-    d->modemSimCardIface.SendPuk(puk, pin);
+    return d->modemSimCardIface.SendPuk(puk, pin);
 }
 
-void ModemManager::ModemSimCardInterface::sendPin(const QString & pin)
+QDBusPendingReply<> ModemManager::ModemSimCardInterface::sendPin(const QString & pin)
 {
     Q_D(ModemSimCardInterface);
-    d->modemSimCardIface.SendPin(pin);
+    return d->modemSimCardIface.SendPin(pin);
 }
 
 void ModemManager::ModemSimCardInterface::enablePin(const QString & pin, bool enabled)

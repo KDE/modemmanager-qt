@@ -50,8 +50,8 @@ public:
     QString operatorName() const;
 
     // methods
-    void sendPin(const QString & pin);
-    void sendPuk(const QString & puk, const QString & pin);
+    QDBusPendingReply<> sendPin(const QString & pin);
+    QDBusPendingReply<> sendPuk(const QString & puk, const QString & pin);
     void enablePin(const QString & pin, bool enabled);
     void changePin(const QString & oldPin, const QString & newPin);
 

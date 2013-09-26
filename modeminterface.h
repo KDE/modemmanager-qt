@@ -187,6 +187,9 @@ Q_SIGNALS:
     void enabledChanged(bool enabled);
     void unlockRequiredChanged(MMModemLock lock);
     void stateChanged(MMModemState oldState, MMModemState newState, MMModemStateChangeReason reason);
+    void signalQualityChanged(uint percentStrength);
+    void accessTechnologyChanged(ModemManager::ModemInterface::AccessTechnologies tech);
+    void currentModesChanged();
 
 private Q_SLOTS:
     void onInterfacesAdded(const QDBusObjectPath &object_path, const NMVariantMapMap &interfaces_and_properties);
