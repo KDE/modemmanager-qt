@@ -34,6 +34,7 @@ set(ModemManagerQt_HEADERS
     modemgsmhsointerface.h
     modemgsmussdinterface.h
     ModemManagerQt-export.h
+    dbus/generic-types.h
 )
 
 set(ModemManagerQt_PRIVATE_HEADERS
