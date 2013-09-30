@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 2.8)
 
 project(ModemManagerQt)
 
+include(FindPkgConfig)
+
 set(VERSION 0.7.991)
 set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_MODULE_PATH})
@@ -9,7 +11,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_MODULE_PATH})
 set(LIB_SUFFIX "" CACHE STRING "Define suffix of library directory name (32/64)" )
 
 find_package(Qt4 REQUIRED)
-find_package(ModemManager 0.7.990 REQUIRED)
+pkg_check_modules(MODEMMANAGER REQUIRED ModemManager>=0.8)
 
 add_definitions(${QT_DEFINITIONS})
 

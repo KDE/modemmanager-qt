@@ -26,5 +26,5 @@ Description: Convenience Qt library for clients of ModemManager
 Version: @VERSION@
 
 Requires: QtCore QtDBus QtXml
-Cflags: -I${includedir} @CMAKE_INCLUDE_PATH@
-Libs: -L${libdir} -lModemManagerQt @CMAKE_LIBRARY_PATH@
+Cflags: -I${includedir} -I@MODEMMANAGER_INCLUDE_DIRS@
+Libs: -L${libdir} -lModemManagerQt
