@@ -52,8 +52,8 @@ public:
     // methods
     QDBusPendingReply<> sendPin(const QString & pin);
     QDBusPendingReply<> sendPuk(const QString & puk, const QString & pin);
-    void enablePin(const QString & pin, bool enabled);
-    void changePin(const QString & oldPin, const QString & newPin);
+    QDBusPendingReply<> enablePin(const QString & pin, bool enabled);
+    QDBusPendingReply<> changePin(const QString & oldPin, const QString & newPin);
 
 #if 0
 Q_SIGNALS:

@@ -159,7 +159,7 @@ public:
     //  "number": For POTS devices the number to dial,, given as a string value (signature "s").
     //  "allow-roaming": FALSE to allow only connections to home networks, given as a boolean value (signature "b").
     //  "rm-protocol": For CDMA devices, the protocol of the Rm interface, given as a MMModemCdmaRmProtocol value (signature "u").
-    void connectModem(const QVariantMap & properties);
+    QDBusObjectPath connectModem(const QVariantMap & properties);
 
     //  Dictionary of properties.
     //  Each implementation is free to add it's own specific key-value pairs. The predefined

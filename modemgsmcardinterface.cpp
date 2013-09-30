@@ -105,14 +105,14 @@ QDBusPendingReply<> ModemManager::ModemSimCardInterface::sendPin(const QString &
     return d->modemSimCardIface.SendPin(pin);
 }
 
-void ModemManager::ModemSimCardInterface::enablePin(const QString & pin, bool enabled)
+QDBusPendingReply<> ModemManager::ModemSimCardInterface::enablePin(const QString & pin, bool enabled)
 {
     Q_D(ModemSimCardInterface);
-    d->modemSimCardIface.EnablePin(pin, enabled);
+    return d->modemSimCardIface.EnablePin(pin, enabled);
 }
 
-void ModemManager::ModemSimCardInterface::changePin(const QString & oldPin, const QString & newPin)
+QDBusPendingReply<> ModemManager::ModemSimCardInterface::changePin(const QString & oldPin, const QString & newPin)
 {
     Q_D(ModemSimCardInterface);
-    d->modemSimCardIface.ChangePin(oldPin, newPin);
+    return d->modemSimCardIface.ChangePin(oldPin, newPin);
 }

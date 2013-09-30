@@ -81,7 +81,7 @@ void ModemManager::Modem3gppInterface::registerToNetwork(const QString &networkI
     d->modem3gppIface.Register(networkId);
 }
 
-ScanResultsType ModemManager::Modem3gppInterface::scan()
+QDBusPendingReply<ScanResultsType> ModemManager::Modem3gppInterface::scan()
 {
     Q_D(Modem3gppInterface);
     return d->modem3gppIface.Scan();

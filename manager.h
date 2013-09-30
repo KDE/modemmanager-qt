@@ -90,6 +90,9 @@ MODEMMANAGERQT_EXPORT ModemInterface::List modemInterfaces();
   */
 MODEMMANAGERQT_EXPORT ModemInterface::Ptr findModemInterface(const QString &udi, ModemManager::ModemInterface::InterfaceType ifaceType);
 
+/**
+  * Start a new scan for connected modem devices.
+  */
 MODEMMANAGERQT_EXPORT void scanDevices();
 
 MODEMMANAGERQT_EXPORT Notifier * notifier();

@@ -511,10 +511,10 @@ void ModemManager::ModemInterface::onStateChanged(int oldState, int newState, ui
 
 /*** From org.freedesktop.ModemManager.Modem.Simple ***/
 
-void ModemManager::ModemInterface::connectModem(const QVariantMap & properties)
+QDBusObjectPath ModemManager::ModemInterface::connectModem(const QVariantMap & properties)
 {
     Q_D(ModemInterface);
-    d->modemSimpleIface.Connect(properties);
+    return d->modemSimpleIface.Connect(properties);
 }
 
 QVariantMap ModemManager::ModemInterface::status()
