@@ -1,6 +1,7 @@
 /*
 Copyright 2008,2011 Will Stephenson <wstephenson@kde.org>
 Copyright 2010 Lamarque Souza <lamarque@kde.org>
+Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -24,58 +25,46 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "ModemManagerQt-export.h"
 
-#include <QObject>
 #include "modeminterface.h"
 
 class ModemCdmaInterfacePrivate;
 
 namespace ModemManager {
+
 class MODEMMANAGERQT_EXPORT ModemCdmaInterface : public ModemInterface
 {
-Q_OBJECT
-Q_DECLARE_PRIVATE(ModemCdmaInterface)
+    Q_OBJECT
+    Q_DECLARE_PRIVATE(ModemCdmaInterface)
 public:
     typedef QSharedPointer<ModemCdmaInterface> Ptr;
     typedef QList<Ptr> List;
-    enum BandClass { Unknown = 0x0, B800 = 0x01, B1900 = 0x2 };
-
-    struct ServingSystemType {
-        BandClass bandClass;
-        QString band;
-        uint systemId;
-    };
-
-    enum RegistrationState { UnknownState = 0x0, Registered = 0x1, Home = 0x2, Roaming = 0x3 };
-
-    struct RegistrationStateResult
-    {
-        RegistrationState cdma_1x_state, evdo_state;
-    };
 
     ModemCdmaInterface(const QString & path, QObject * parent);
     ~ModemCdmaInterface();
 
-    uint getSignalQuality();
-    QString getEsn();
-    ServingSystemType getServingSystem();
-    RegistrationStateResult getRegistrationState();
+    // methods
+    void activate(const QString & carrierCode);
+    void activateManual(const QVariantMap & properties);
+
+    // properties
+    MMModemCdmaActivationState activationState() const;
+    QString meid() const;
+    QString esn() const;
+    uint sid() const;
+    uint nid() const;
+    MMModemCdmaRegistrationState cdma1xRegistrationState() const;
+    MMModemCdmaRegistrationState evdoRegistrationState() const;
+
+private slots:
+    void onActivationStateChanged(uint activation_state, uint activation_error, const QVariantMap &status_changes);
 
 Q_SIGNALS:
     /**
-     * This signal is emitted when the signal quality of this network changes.
+     * This signal is emitted when the activation info this network changes
      *
-     * @param signalQuality the new signal quality value for this network.
      */
-    void signalQualityChanged(uint signalQuality);
-    /**
-     * This signal is emitted when the registration info this network changes
-     *
-     * @param registrationInfo the new registration info (status, operatorCode, operatorName)
-     */
-    void registrationStateChanged(const ModemManager::ModemCdmaInterface::RegistrationState cdma_1x_state,
-                                  const ModemManager::ModemCdmaInterface::RegistrationState evdo_state);
+    void activationStateChanged(MMModemCdmaActivationState state, MMCdmaActivationError error, const QVariantMap &status_changes);
 };
 } // namespace ModemManager
 
 #endif
-

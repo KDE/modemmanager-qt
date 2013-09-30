@@ -19,22 +19,17 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGERQT_MODEMGSMNETWORKINTERFACE_P_H
-#define MODEMMANAGERQT_MODEMGSMNETWORKINTERFACE_P_H
+#ifndef MODEMMANAGER_MODEM3GPPINTERFACE_P_H
+#define MODEMMANAGER_MODEM3GPPINTERFACE_P_H
 
 #include "modeminterface_p.h"
-#include "dbus/mm-modem-gsm-networkinterface.h"
+#include "dbus/Modem3gpp.h"
 
-class ModemGsmNetworkInterfacePrivate: public ModemInterfacePrivate
+class Modem3gppInterfacePrivate: public ModemInterfacePrivate
 {
 public:
-    ModemGsmNetworkInterfacePrivate(const QString &path, QObject *owner);
-    OrgFreedesktopModemManagerModemGsmNetworkInterface modemGsmNetworkIface;
-    uint signalQuality;
-    ModemManager::ModemGsmNetworkInterface::RegistrationInfoType registrationInfo;
-    ModemManager::ModemInterface::AccessTechnology accessTechnology;
-    ModemManager::ModemInterface::AllowedMode allowedMode;
+    Modem3gppInterfacePrivate(const QString &path, QObject *owner);
+    OrgFreedesktopModemManager1ModemModem3gppInterface modem3gppIface;
 };
 
 #endif
-

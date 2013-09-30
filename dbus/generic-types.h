@@ -1,5 +1,6 @@
 /* This file is part of the KDE project
    Copyright 2010 Lamarque Souza <lamarque@kde.org>
+   Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -21,72 +22,81 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef MODEMMANAGERQT_GENERIC_TYPES_H
 #define MODEMMANAGERQT_GENERIC_TYPES_H
 
+#include <ModemManager/ModemManager.h>
+
 #include <QMetaType>
-#include <QDBusArgument>
 #include <QtDBus/QtDBus>
 
-#include "manager.h"
-#include "modemlocationinterface.h"
-#include "modemcdmainterface.h"
-#include "modemgsmcontactsinterface.h"
-#include "modemgsmnetworkinterface.h"
-//#include "networkipv4config.h"
+typedef QMap<QString, QVariantMap> NMVariantMapMap;
+Q_DECLARE_METATYPE(NMVariantMapMap)
 
-typedef QList<QVariantMap> QVariantMapList;
+typedef QMap<QDBusObjectPath, NMVariantMapMap> DBUSManagerStruct;
+Q_DECLARE_METATYPE(DBUSManagerStruct)
 
-Q_DECLARE_METATYPE(ModemManager::ModemInterface::Ip4ConfigType)
-Q_DECLARE_METATYPE(ModemManager::ModemInterface::InfoType)
-Q_DECLARE_METATYPE(ModemManager::ModemLocationInterface::LocationInformationMap)
-Q_DECLARE_METATYPE(ModemManager::ModemCdmaInterface::ServingSystemType)
-Q_DECLARE_METATYPE(ModemManager::ModemCdmaInterface::RegistrationStateResult)
-Q_DECLARE_METATYPE(ModemManager::ModemGsmContactsInterface::ContactType)
-Q_DECLARE_METATYPE(ModemManager::ModemGsmContactsInterface::ContactTypeList)
-Q_DECLARE_METATYPE(ModemManager::ModemGsmNetworkInterface::ScanResultsType)
-Q_DECLARE_METATYPE(ModemManager::ModemGsmNetworkInterface::RegistrationInfoType)
-Q_DECLARE_METATYPE(QList<QVariantMap>)
+typedef QList<uint> UIntList;
+Q_DECLARE_METATYPE(UIntList)
 
-// ModemManager::ModemManager::Modem::Ip4Configtype
-QDBusArgument &operator << (QDBusArgument &arg,
-    const ModemManager::ModemInterface::Ip4ConfigType &config);
+typedef QList<QList<uint> > UIntListList;
+Q_DECLARE_METATYPE(UIntListList)
 
-const QDBusArgument &operator >> (const QDBusArgument &arg,
-    ModemManager::ModemInterface::Ip4ConfigType &config);
+typedef QMap<QString, QString> NMStringMap;
+Q_DECLARE_METATYPE(NMStringMap)
 
-// ModemManager::ModemManager::Modem::InfoType
-QDBusArgument &operator << (QDBusArgument &arg,
-    const ModemManager::ModemInterface::InfoType &info);
+typedef struct {
+    uint signal;
+    bool recent;
+} SignalQualityPair;
+Q_DECLARE_METATYPE(SignalQualityPair)
 
-const QDBusArgument &operator >> (const QDBusArgument &arg,
-    ModemManager::ModemInterface::InfoType &info);
+Q_DECLARE_BUILTIN_METATYPE(MMModemMode, UInt)
+typedef struct {
+public:
+    MMModemMode allowed; // bitfield
+    MMModemMode prefered;
+} CurrentModesType;
+Q_DECLARE_METATYPE(CurrentModesType)
 
-// ModemManager::ModemCdmaInterface::ServingSystemType
-QDBusArgument &operator << (QDBusArgument &arg,
-    const ModemManager::ModemCdmaInterface::ServingSystemType &servingSystem);
+typedef QList<CurrentModesType> SupportedModesType;
+Q_DECLARE_METATYPE(SupportedModesType)
 
-const QDBusArgument &operator >> (const QDBusArgument &arg,
-    ModemManager::ModemCdmaInterface::ServingSystemType &servingSystem);
+Q_DECLARE_BUILTIN_METATYPE(MMModemLock, UInt)
+typedef QMap</*MMModemLock*/uint, uint> UnlockRetriesMap;
+Q_DECLARE_METATYPE(UnlockRetriesMap)
 
-// ModemManager::ModemGsmContactsInterface::ContactType
-QDBusArgument &operator << (QDBusArgument &arg,
-    const ModemManager::ModemGsmContactsInterface::ContactType &contact);
+typedef QList<QVariantMap> ScanResultsType;
+Q_DECLARE_METATYPE(ScanResultsType)
 
-const QDBusArgument &operator >> (const QDBusArgument &arg,
-    ModemManager::ModemGsmContactsInterface::ContactType &contact);
+Q_DECLARE_BUILTIN_METATYPE(MMModemLocationSource, UInt)
+typedef QMap<MMModemLocationSource, QVariant> LocationInformationMap;
+Q_DECLARE_METATYPE(LocationInformationMap)
 
-// ModemManager::ModemManager::Modem::Gsm::Network::RegistrationInfoType
-QDBusArgument &operator << (QDBusArgument &arg,
-    const ModemManager::ModemGsmNetworkInterface::RegistrationInfoType &info);
+Q_DECLARE_BUILTIN_METATYPE(MMSmsValidityType, UInt)
+typedef struct {
+    MMSmsValidityType validity;
+    uint value;
+} ValidityPair;
+Q_DECLARE_METATYPE(ValidityPair)
 
-const QDBusArgument &operator >> (const QDBusArgument &arg,
-    ModemManager::ModemGsmNetworkInterface::RegistrationInfoType &info);
+// CurrentModesType
+QDBusArgument &operator << (QDBusArgument &arg, const CurrentModesType &mode);
+const QDBusArgument &operator >> (const QDBusArgument &arg, CurrentModesType &mode);
+
+// SignalQualityPair
+QDBusArgument &operator << (QDBusArgument &arg, const SignalQualityPair &sqp);
+const QDBusArgument &operator >> (const QDBusArgument &arg, SignalQualityPair &sqp);
+
+// ValidityPair
+QDBusArgument &operator << (QDBusArgument &arg, const ValidityPair &vp);
+const QDBusArgument &operator >> (const QDBusArgument &arg, ValidityPair &vp);
 
 inline void registerModemManagerTypes() {
-        qDBusRegisterMetaType<ModemManager::ModemInterface::Ip4ConfigType>();
-        qDBusRegisterMetaType<ModemManager::ModemInterface::InfoType>();
-        qDBusRegisterMetaType<ModemManager::ModemCdmaInterface::ServingSystemType>();
-        qDBusRegisterMetaType<ModemManager::ModemGsmContactsInterface::ContactType>();
-        qDBusRegisterMetaType<ModemManager::ModemGsmNetworkInterface::RegistrationInfoType>();
-        qDBusRegisterMetaType<QList<QVariantMap> >();
+    qDBusRegisterMetaType<CurrentModesType>();
+    qDBusRegisterMetaType<SignalQualityPair>();
+    qDBusRegisterMetaType<SupportedModesType>();
+    qDBusRegisterMetaType<UnlockRetriesMap>();
+    qDBusRegisterMetaType<ScanResultsType>();
+    //qDBusRegisterMetaType<LocationInformationMap>();
+    qDBusRegisterMetaType<ValidityPair>();
 }
 
 #endif // MODEMMANAGERQT_TYPES_H

@@ -1,5 +1,6 @@
 /* This file is part of the KDE project
    Copyright 2010 Lamarque Souza <lamarque@kde.org>
+   Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -20,112 +21,67 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "generic-types.h"
 
-// Marshall the ModemManager::Ip4ConfigType data into a D-BUS argument
-QDBusArgument &operator << (QDBusArgument &arg,
-    const ModemManager::ModemInterface::Ip4ConfigType &config)
+
+// Marshall the CurrentModesType data into a D-BUS argument
+QDBusArgument &operator << (QDBusArgument &arg, const CurrentModesType &mode)
 {
     arg.beginStructure();
-    arg << config.ip4Address << config.dns1 << config.dns2 << config.dns3;
+    arg << mode.allowed << mode.prefered;
     arg.endStructure();
     return arg;
 }
 
-// Retrieve the ModemManager::Ip4ConfigType data from the D-BUS argument
-const QDBusArgument &operator >> (const QDBusArgument &arg,
-    ModemManager::ModemInterface::Ip4ConfigType &config)
+// Retrieve the CurrentModesType data from the D-BUS argument
+const QDBusArgument &operator >> (const QDBusArgument &arg, CurrentModesType &mode)
 {
+    uint temp1, temp2;
     arg.beginStructure();
-    arg >> config.ip4Address >> config.dns1 >> config.dns2 >> config.dns3;
+    arg >> temp1 >> temp2;
+    mode.allowed = (MMModemMode)temp1;
+    mode.prefered = (MMModemMode)temp2;
     arg.endStructure();
 
     return arg;
 }
 
-// Marshall the ModemManager::ModemManager::Modem::InfoType data into a D-BUS argument
-QDBusArgument &operator << (QDBusArgument &arg,
-    const ModemManager::ModemInterface::InfoType &info)
+
+// Marshall the SignalQualityPair data into a D-BUS argument
+QDBusArgument &operator << (QDBusArgument &arg, const SignalQualityPair &sqp)
 {
     arg.beginStructure();
-    arg << info.manufacturer << info.model << info.version;
+    arg << sqp.signal << sqp.recent;
     arg.endStructure();
     return arg;
 }
 
-// Retrieve the ModemManager::ModemManager::Modem::InfoType data from the D-BUS argument
-const QDBusArgument &operator >> (const QDBusArgument &arg,
-    ModemManager::ModemInterface::InfoType &info)
+// Retrieve the SignalQualityPair data from the D-BUS argument
+const QDBusArgument &operator >> (const QDBusArgument &arg, SignalQualityPair &sqp)
 {
     arg.beginStructure();
-    arg >> info.manufacturer >> info.model >> info.version;
+    arg >> sqp.signal >> sqp.recent;
     arg.endStructure();
     return arg;
 }
 
-// Marshall the ModemManager::ModemCdmaInterface::ServingSystemType data into a D-BUS argument
-QDBusArgument &operator << (QDBusArgument &arg,
-    const ModemManager::ModemCdmaInterface::ServingSystemType &servingSystem)
+// Marshall the ValidityPair data into a D-BUS argument
+QDBusArgument &operator <<(QDBusArgument &arg, const ValidityPair &vp)
 {
     arg.beginStructure();
-    arg << servingSystem.bandClass << servingSystem.band << servingSystem.systemId;
+    arg << vp.validity << vp.value;
     arg.endStructure();
     return arg;
 }
 
-// Retrieve the ModemManager::ModemCdmaInterface::ServingSystemType data from the D-BUS argument
-const QDBusArgument &operator >> (const QDBusArgument &arg,
-    ModemManager::ModemCdmaInterface::ServingSystemType &servingSystem)
+// Retrieve the ValidityPair data from the D-BUS argument
+const QDBusArgument &operator >>(const QDBusArgument &arg, ValidityPair &vp)
 {
-    uint temp;
+    uint temp1, temp2;
     arg.beginStructure();
-    arg >> temp >> servingSystem.band >> servingSystem.systemId;
-    servingSystem.bandClass = (ModemManager::ModemCdmaInterface::BandClass) temp;
+    arg >> temp1 >> temp2;
+    vp.validity = (MMSmsValidityType)temp1;
+    vp.value = temp2;
     arg.endStructure();
-    return arg;
-}
 
-// Marshall the ModemManager::ModemGsmContactsInterface::ContactType data into a D-BUS argument
-QDBusArgument &operator << (QDBusArgument &arg,
-    const ModemManager::ModemGsmContactsInterface::ContactType &contact)
-{
-    arg.beginStructure();
-    arg << contact.index << contact.name << contact.number;
-    arg.endStructure();
-    return arg;
-}
-
-// Retrieve the ModemManager::ModemGsmContactsInterface::ContactType data from the D-BUS argument
-const QDBusArgument &operator >> (const QDBusArgument &arg,
-    ModemManager::ModemGsmContactsInterface::ContactType &contact)
-{
-    arg.beginStructure();
-    arg >> contact.index >> contact.name >> contact.number;
-    arg.endStructure();
-    return arg;
-}
-
-// Marshall the RegistrationInfoType data into a D-BUS argument
-QDBusArgument &operator << (QDBusArgument &arg,
-    const ModemManager::ModemGsmNetworkInterface::RegistrationInfoType &info)
-{
-    uint temp;
-
-    temp = (uint) info.status;
-    arg.beginStructure();
-    arg << temp << info.operatorCode << info.operatorName;
-    arg.endStructure();
-    return arg;
-}
-
-// Retrieve the RegistrationInfoType data from the D-BUS argument
-const QDBusArgument &operator >> (const QDBusArgument &arg,
-    ModemManager::ModemGsmNetworkInterface::RegistrationInfoType &info)
-{
-    uint temp;
-
-    arg.beginStructure();
-    arg >> temp >> info.operatorCode >> info.operatorName;
-    info.status = (ModemManager::ModemGsmNetworkInterface::RegistrationStatus) temp;
-    arg.endStructure();
     return arg;
 }
 
@@ -146,7 +102,7 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, QList<QVariantMap
     variantMapList.clear();
 
     while (!argument.atEnd()) {
-        QVariantMapList element;
+        QList<QVariantMap> element;
         argument >> element;
         variantMapList.append( element );
     }

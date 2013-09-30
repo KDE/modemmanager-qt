@@ -23,14 +23,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #define MODEMMANAGERQT_MODEMLOCATIONINTERFACE_P_H
 
 #include "modeminterface_p.h"
-#include "dbus/mm-modem-locationinterface.h"
+#include "dbus/Location.h"
 
 class ModemLocationInterfacePrivate: public ModemInterfacePrivate
 {
 public:
     ModemLocationInterfacePrivate(const QString &path, QObject *owner);
-    OrgFreedesktopModemManagerModemLocationInterface modemLocationIface;
+    OrgFreedesktopModemManager1ModemLocationInterface modemLocationIface;
 };
 
 #endif
-

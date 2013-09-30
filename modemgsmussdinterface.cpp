@@ -1,6 +1,7 @@
 /*
 Copyright 2008,2011 Will Stephenson <wstephenson@kde.org>
 Copyright 2010 Lamarque Souza <lamarque@kde.org>
+Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -23,56 +24,57 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "modemgsmussdinterface_p.h"
 #include "manager.h"
 #include "mmdebug.h"
+#include "dbus/dbus.h"
 
-ModemGsmUssdInterfacePrivate::ModemGsmUssdInterfacePrivate(const QString &path, QObject *owner)
-    : ModemInterfacePrivate(path, owner), modemGsmUssdIface(ModemManager::DBUS_SERVICE, path, QDBusConnection::systemBus())
+Modem3gppUssdInterfacePrivate::Modem3gppUssdInterfacePrivate(const QString &path, QObject *owner)
+    : ModemInterfacePrivate(path, owner),
+      ussdIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus(), this)
 {
 }
 
-ModemManager::ModemGsmUssdInterface::ModemGsmUssdInterface(const QString & path, QObject * parent)
-    : ModemInterface(*new ModemGsmUssdInterfacePrivate(path, this), parent)
+ModemManager::Modem3gppUssdInterface::Modem3gppUssdInterface(const QString & path, QObject * parent)
+    : ModemInterface(*new Modem3gppUssdInterfacePrivate(path, this), parent)
 {
-    Q_D(ModemGsmUssdInterface);
+    Q_D(Modem3gppUssdInterface);
 
-    d->modemGsmUssdIface.connection().connect(ModemManager::DBUS_SERVICE,
-        path, QLatin1String("org.freedesktop.DBus.Properties"),
-        QLatin1String("MmPropertiesChanged"), QLatin1String("sa{sv}"),
-        this, SLOT(propertiesChanged(QString,QVariantMap)));
+    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->udi, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
+                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 }
 
-ModemManager::ModemGsmUssdInterface::~ModemGsmUssdInterface()
+ModemManager::Modem3gppUssdInterface::~Modem3gppUssdInterface()
 {
-
+    Q_D(Modem3gppUssdInterface);
+    delete d;
 }
 
-void ModemManager::ModemGsmUssdInterface::propertiesChanged(const QString & interface, const QVariantMap & properties)
+void ModemManager::Modem3gppUssdInterface::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
 {
     mmDebug() << interface << properties.keys();
 
-    if (interface == QString("org.freedesktop.ModemManager.Modem.Gsm.Ussd")) {
-        QLatin1String state("State");
-        QLatin1String networkNotification("NetworkNotification");
-        QLatin1String networkRequest("NetworkRequest");
+    if (interface == QString(MM_DBUS_INTERFACE_MODEM_MODEM3GPP_USSD)) {
+        QLatin1String state(MM_MODEM_MODEM3GPP_USSD_PROPERTY_STATE);
+        QLatin1String networkNotification(MM_MODEM_MODEM3GPP_USSD_PROPERTY_NETWORKNOTIFICATION);
+        QLatin1String networkRequest(MM_MODEM_MODEM3GPP_USSD_PROPERTY_NETWORKREQUEST);
 
-        QVariantMap::const_iterator it = properties.find(state);
-        if ( it != properties.end()) {
-            emit stateChanged(it->toString());
+        QVariantMap::const_iterator it = properties.constFind(state);
+        if ( it != properties.constEnd()) {
+            emit stateChanged((MMModem3gppUssdSessionState)it->toUInt());
         }
-        it = properties.find(networkNotification);
-        if ( it != properties.end()) {
+        it = properties.constFind(networkNotification);
+        if ( it != properties.constEnd()) {
             emit networkNotificationChanged(it->toString());
         }
-        it = properties.find(networkRequest);
-        if ( it != properties.end()) {
+        it = properties.constFind(networkRequest);
+        if ( it != properties.constEnd()) {
             emit networkRequestChanged(it->toString());
         }
     }
 }
 
-QString ModemManager::ModemGsmUssdInterface::initiate(const QString & command)
+QString ModemManager::Modem3gppUssdInterface::initiate(const QString & command)
 {
-    Q_D(ModemGsmUssdInterface);
-    QDBusReply<QString> reply = d->modemGsmUssdIface.Initiate(command);
+    Q_D(Modem3gppUssdInterface);
+    QDBusReply<QString> reply = d->ussdIface.Initiate(command);
 
     if (reply.isValid()) {
         return reply.value();
@@ -80,35 +82,37 @@ QString ModemManager::ModemGsmUssdInterface::initiate(const QString & command)
     return QString();
 }
 
-void ModemManager::ModemGsmUssdInterface::respond(const QString response)
+QString ModemManager::Modem3gppUssdInterface::respond(const QString & response)
 {
-    Q_D(ModemGsmUssdInterface);
-    d->modemGsmUssdIface.Respond(response);
+    Q_D(Modem3gppUssdInterface);
+    QDBusReply<QString> reply = d->ussdIface.Respond(response);
+
+    if (reply.isValid()) {
+        return reply.value();
+    }
+    return QString();
 }
 
-void ModemManager::ModemGsmUssdInterface::cancel()
+void ModemManager::Modem3gppUssdInterface::cancel()
 {
-    Q_D(ModemGsmUssdInterface);
-    d->modemGsmUssdIface.Cancel();
+    Q_D(Modem3gppUssdInterface);
+    d->ussdIface.Cancel();
 }
 
-QString ModemManager::ModemGsmUssdInterface::getState()
+MMModem3gppUssdSessionState ModemManager::Modem3gppUssdInterface::state() const
 {
-    Q_D(const ModemGsmUssdInterface);
-    return d->modemGsmUssdIface.state();
+    Q_D(const Modem3gppUssdInterface);
+    return (MMModem3gppUssdSessionState)d->ussdIface.state();
 }
 
-QString ModemManager::ModemGsmUssdInterface::getNetworkNotification()
+QString ModemManager::Modem3gppUssdInterface::networkNotification() const
 {
-    Q_D(const ModemGsmUssdInterface);
-    return d->modemGsmUssdIface.networkNotification();
+    Q_D(const Modem3gppUssdInterface);
+    return d->ussdIface.networkNotification();
 }
 
-QString ModemManager::ModemGsmUssdInterface::getNetworkRequest()
+QString ModemManager::Modem3gppUssdInterface::networkRequest() const
 {
-    Q_D(const ModemGsmUssdInterface);
-    return d->modemGsmUssdIface.networkRequest();
+    Q_D(const Modem3gppUssdInterface);
+    return d->ussdIface.networkRequest();
 }
-
-
-

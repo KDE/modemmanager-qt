@@ -19,23 +19,17 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGERQT_MODEMGSMCARDINTERFACE_P_H
-#define MODEMMANAGERQT_MODEMGSMCARDINTERFACE_P_H
+#ifndef MODEMMANAGER_MODEMSIMCARDINTERFACE_P_H
+#define MODEMMANAGER_MODEMSIMCARDINTERFACE_P_H
 
 #include "modeminterface_p.h"
-#include "dbus/mm-modem-gsm-cardinterface.h"
-#include "modeminterface.h"
+#include "dbus/Sim.h"
 
-class ModemGsmCardInterfacePrivate: public ModemInterfacePrivate
+class ModemSimCardInterfacePrivate: public ModemInterfacePrivate
 {
 public:
-    ModemGsmCardInterfacePrivate(const QString &path, QObject *owner);
-    OrgFreedesktopModemManagerModemGsmCardInterface modemGsmCardIface;
-
-    ModemManager::ModemInterface::Band supportedBands;
-    ModemManager::ModemInterface::Mode supportedModes;
-    QString simIdentifier;
+    ModemSimCardInterfacePrivate(const QString &path, QObject *owner);
+    OrgFreedesktopModemManager1SimInterface modemSimCardIface;
 };
 
 #endif
-

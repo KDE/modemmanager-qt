@@ -25,13 +25,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include <QObject>
 #include <QDBusServiceWatcher>
 
-#include "dbus/mm-modeminterface.h"
-#include "dbus/mm-manager-clientinterface.h"
-#include "dbus/mm-modem-gsm-networkinterface.h"
+#include "dbus/Modem.h"
+#include "dbus/Manager.h"
+#include "dbus/Modem3gpp.h"
+#include "dbus/dbus_manager.h"
+
+#include "manager.h"
 
 namespace ModemManager
 {
-typedef QMap<ModemInterface::GsmInterfaceType, ModemInterface::Ptr> ModemInterfaceIfaceMap;
 
 class ModemInterface;
 class ModemManagerPrivate : public Notifier
@@ -42,19 +44,20 @@ public:
     ModemManagerPrivate();
     ~ModemManagerPrivate();
     QDBusServiceWatcher watcher;
-    OrgFreedesktopModemManagerInterface iface;
-    QMap<QString, ModemInterfaceIfaceMap> modemMap;
-    ModemManager::ModemInterface::Ptr findModemInterface(const QString &udi, const ModemManager::ModemInterface::GsmInterfaceType ifaceType);
-    ModemManager::ModemInterface::Ptr createModemInterface(const QString &udi, const ModemManager::ModemInterface::GsmInterfaceType ifaceType);
+    OrgFreedesktopModemManager1Interface iface;
+    QStringList devices;
+    OrgFreedesktopDBusObjectManagerInterface manager;
+    ModemManager::ModemInterface::Ptr findModemInterface(const QString &udi, ModemInterface::InterfaceType ifaceType);
+    void scanDevices();
 protected Q_SLOTS:
     void init();
-    void deviceAdded(const QDBusObjectPath & device);
-    void deviceRemoved(const QDBusObjectPath & device);
     void daemonRegistered();
     void daemonUnregistered();
+
+    void onInterfacesAdded(const QDBusObjectPath &object_path, const NMVariantMapMap &interfaces_and_properties);
+    void onInterfacesRemoved(const QDBusObjectPath &object_path, const QStringList &interfaces);
 };
 } // namespace ModemManager
 
 
 #endif
-
