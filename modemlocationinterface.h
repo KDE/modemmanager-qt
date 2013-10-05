@@ -25,13 +25,17 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "ModemManagerQt-export.h"
 
-#include "modeminterface.h"
+#include <QObject>
+#include <QSharedPointer>
+
+#include "generic-types.h"
+#include "interface.h"
 
 class ModemLocationInterfacePrivate;
 
 namespace ModemManager
 {
-class MODEMMANAGERQT_EXPORT ModemLocationInterface : public ModemInterface
+class MODEMMANAGERQT_EXPORT ModemLocationInterface : public Interface
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(ModemLocationInterface)
@@ -43,7 +47,7 @@ public:
 
     Q_DECLARE_FLAGS(LocationSources, MMModemLocationSource)
 
-    ModemLocationInterface(const QString & path, QObject * parent);
+    explicit ModemLocationInterface(const QString & path, QObject * parent = 0);
     ~ModemLocationInterface();
 
     // methods

@@ -22,13 +22,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef MODEMMANAGER_MODEMSIMCARDINTERFACE_P_H
 #define MODEMMANAGER_MODEMSIMCARDINTERFACE_P_H
 
-#include "modeminterface_p.h"
 #include "dbus/Sim.h"
+#include "interface_p.h"
 
-class ModemSimCardInterfacePrivate: public ModemInterfacePrivate
+class ModemSimCardInterfacePrivate
 {
 public:
-    ModemSimCardInterfacePrivate(const QString &path, QObject *owner);
+    ModemSimCardInterfacePrivate(const QString &path);
     OrgFreedesktopModemManager1SimInterface modemSimCardIface;
 };
 

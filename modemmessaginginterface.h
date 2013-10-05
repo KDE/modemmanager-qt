@@ -24,23 +24,25 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "ModemManagerQt-export.h"
 
-#include "modeminterface.h"
-#include "smsinterface.h"
+#include <QObject>
+#include <QSharedPointer>
 
+#include "smsinterface.h"
 #include "generic-types.h"
+#include "interface.h"
 
 class ModemMessagingInterfacePrivate;
 
 namespace ModemManager
 {
-class MODEMMANAGERQT_EXPORT ModemMessagingInterface : public ModemInterface
+class MODEMMANAGERQT_EXPORT ModemMessagingInterface : public Interface
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(ModemMessagingInterface)
 
 public:
 
-    ModemMessagingInterface(const QString &path, QObject *parent);
+    explicit ModemMessagingInterface(const QString &path, QObject *parent = 0);
     ~ModemMessagingInterface();
 
     // properties

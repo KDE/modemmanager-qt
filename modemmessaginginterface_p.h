@@ -22,16 +22,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef MODEMMANAGER_MODEMMESSAGINGINTERFACE_P_H
 #define MODEMMANAGER_MODEMMESSAGINGINTERFACE_P_H
 
-#include "modeminterface_p.h"
+#include "interface_p.h"
 #include "dbus/Messaging.h"
 
-class ModemMessagingInterfacePrivate: public ModemInterfacePrivate
+class ModemMessagingInterfacePrivate: public InterfacePrivate
 {
 public:
-    ModemMessagingInterfacePrivate(const QString &path, QObject *owner);
+    ModemMessagingInterfacePrivate(const QString &path);
     OrgFreedesktopModemManager1ModemMessagingInterface modemMessagingIface;
 
-    QList<QDBusObjectPath> messageList; 
+    QList<QDBusObjectPath> messageList;
     QList<MMSmsStorage> supportedStorages;
     MMSmsStorage defaultStorage;
 };

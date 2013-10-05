@@ -22,13 +22,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef MODEMMANAGERQT_MODEMGSMUSSDINTERFACE_P_H
 #define MODEMMANAGERQT_MODEMGSMUSSDINTERFACE_P_H
 
-#include "modeminterface_p.h"
 #include "dbus/Modem3gppUssd.h"
+#include "interface_p.h"
 
-class Modem3gppUssdInterfacePrivate: public ModemInterfacePrivate
+class Modem3gppUssdInterfacePrivate: public InterfacePrivate
 {
 public:
-    Modem3gppUssdInterfacePrivate(const QString &path, QObject *owner);
+    Modem3gppUssdInterfacePrivate(const QString &path);
     OrgFreedesktopModemManager1ModemModem3gppUssdInterface ussdIface;
 };
 

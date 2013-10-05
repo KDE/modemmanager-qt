@@ -23,20 +23,18 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "modemmessaginginterface_p.h"
 
 #include "dbus/dbus.h"
-#include "manager.h"
 #include "mmdebug.h"
 
 #include "smsinterface.h"
 #include <ModemManager/ModemManager.h>
 
-ModemMessagingInterfacePrivate::ModemMessagingInterfacePrivate(const QString &path, QObject *owner)
-    : ModemInterfacePrivate(path, owner),
-      modemMessagingIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus(), this)
+ModemMessagingInterfacePrivate::ModemMessagingInterfacePrivate(const QString &path)
+    : InterfacePrivate(path), modemMessagingIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
 }
 
 ModemManager::ModemMessagingInterface::ModemMessagingInterface(const QString & path, QObject * parent)
-    : ModemInterface(*new ModemMessagingInterfacePrivate(path, this), parent)
+    : Interface(*new ModemMessagingInterfacePrivate(path), parent)
 {
     Q_D(ModemMessagingInterface);
 

@@ -22,22 +22,20 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "modemgsmussdinterface.h"
 #include "modemgsmussdinterface_p.h"
-#include "manager.h"
 #include "mmdebug.h"
 #include "dbus/dbus.h"
 
-Modem3gppUssdInterfacePrivate::Modem3gppUssdInterfacePrivate(const QString &path, QObject *owner)
-    : ModemInterfacePrivate(path, owner),
-      ussdIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus(), this)
+Modem3gppUssdInterfacePrivate::Modem3gppUssdInterfacePrivate(const QString &path)
+    : InterfacePrivate(path), ussdIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
 }
 
 ModemManager::Modem3gppUssdInterface::Modem3gppUssdInterface(const QString & path, QObject * parent)
-    : ModemInterface(*new Modem3gppUssdInterfacePrivate(path, this), parent)
+    : Interface(*new Modem3gppUssdInterfacePrivate(path), parent)
 {
     Q_D(Modem3gppUssdInterface);
 
-    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->udi, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
+    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 }
 

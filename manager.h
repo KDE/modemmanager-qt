@@ -30,7 +30,9 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include <QDBusObjectPath>
 #include <QSharedPointer>
 
-#include "modeminterface.h"
+#include "modem.h"
+#include "modembearerinterface.h"
+#include "modemgsmcardinterface.h"
 
 /**
  * This namespace allows to query the underlying system to discover the available
@@ -41,7 +43,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
  */
 namespace ModemManager
 {
-class ModemInterface;
+class Modem;
 
 class MODEMMANAGERQT_EXPORT Notifier : public QObject
 {
@@ -78,17 +80,22 @@ Q_SIGNALS:
   *
   * @return the list of modem interfaces available in this system
   */
-MODEMMANAGERQT_EXPORT ModemInterface::List modemInterfaces();
+MODEMMANAGERQT_EXPORT Modem::List modems();
 
 /**
   * Find a new ModemManagerInterface object given its UDI.
   *
   * Note: only Modem-inherited objects are returned (not SMS, SIM or Bearer objects)
   *
-  * @param udi the identifier of the modem interface to find
-  * @returns a valid ModemInterface object if there's a device having the given UDI, an invalid one otherwise
+  * @param uni the identifier of the modem interface to find
+  * @returns a valid Modem object if there's a device having the given UDI, an invalid one otherwise
   */
-MODEMMANAGERQT_EXPORT ModemInterface::Ptr findModemInterface(const QString &udi, ModemManager::ModemInterface::InterfaceType ifaceType);
+MODEMMANAGERQT_EXPORT Modem::Ptr findModem(const QString &uni);
+
+MODEMMANAGERQT_EXPORT ModemManager::ModemBearerInterface::Ptr findBearer(const QString &uni);
+MODEMMANAGERQT_EXPORT ModemManager::ModemBearerInterface::List bearers();
+MODEMMANAGERQT_EXPORT ModemManager::ModemSimCardInterface::Ptr findSim(const QString &uni);
+MODEMMANAGERQT_EXPORT ModemManager::ModemSimCardInterface::List sims();
 
 /**
   * Start a new scan for connected modem devices.

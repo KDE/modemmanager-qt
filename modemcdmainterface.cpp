@@ -22,17 +22,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "modemcdmainterface.h"
 #include "modemcdmainterface_p.h"
-#include "manager.h"
 #include "mmdebug.h"
 
-ModemCdmaInterfacePrivate::ModemCdmaInterfacePrivate(const QString &path, QObject *owner)
-    : ModemInterfacePrivate(path, owner),
-      modemCdmaIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus(), this)
+ModemCdmaInterfacePrivate::ModemCdmaInterfacePrivate(const QString &path)
+    : InterfacePrivate(path), modemCdmaIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
 }
 
 ModemManager::ModemCdmaInterface::ModemCdmaInterface(const QString & path, QObject * parent)
-    : ModemInterface(*new ModemCdmaInterfacePrivate(path, this), parent)
+    : Interface(*new ModemCdmaInterfacePrivate(path), parent)
 {
     Q_D(ModemCdmaInterface);
 

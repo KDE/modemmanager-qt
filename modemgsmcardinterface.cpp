@@ -22,17 +22,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "modemgsmcardinterface.h"
 #include "modemgsmcardinterface_p.h"
-#include "manager.h"
 #include "mmdebug.h"
 
-ModemSimCardInterfacePrivate::ModemSimCardInterfacePrivate(const QString &path, QObject *owner)
-    : ModemInterfacePrivate(path, owner),
-      modemSimCardIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus(), this)
+ModemSimCardInterfacePrivate::ModemSimCardInterfacePrivate(const QString &path)
+    : modemSimCardIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
 }
 
 ModemManager::ModemSimCardInterface::ModemSimCardInterface(const QString & path, QObject * parent)
-    : ModemInterface(*new ModemSimCardInterfacePrivate(path, this), parent)
+    : QObject(parent), d_ptr(new ModemSimCardInterface(path))
 {
     Q_D(ModemSimCardInterface);
 

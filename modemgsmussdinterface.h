@@ -25,13 +25,17 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "ModemManagerQt-export.h"
 
-#include "modeminterface.h"
+#include <QObject>
+#include <QSharedPointer>
+
+#include "generic-types.h"
+#include "interface.h"
 
 class Modem3gppUssdInterfacePrivate;
 
 namespace ModemManager
 {
-class MODEMMANAGERQT_EXPORT Modem3gppUssdInterface : public ModemInterface
+class MODEMMANAGERQT_EXPORT Modem3gppUssdInterface : public Interface
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(Modem3gppUssdInterface)
@@ -40,7 +44,7 @@ public:
     typedef QSharedPointer<Modem3gppUssdInterface> Ptr;
     typedef QList<Ptr> List;
 
-    Modem3gppUssdInterface(const QString & path, QObject * parent);
+    explicit Modem3gppUssdInterface(const QString & path, QObject * parent = 0);
     ~Modem3gppUssdInterface();
 
     // methods

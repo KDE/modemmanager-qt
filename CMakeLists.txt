@@ -27,7 +27,9 @@ include_directories(
 #add_subdirectory(dbus)
 
 set(ModemManagerQt_HEADERS
+    interface.h
     manager.h
+    modem.h
     modeminterface.h
     modemlocationinterface.h
     modemcdmainterface.h
@@ -57,7 +59,9 @@ set(ModemManagerQt_PRIVATE_HEADERS
 )
 
 set(ModemManagerQt_SRCS
+   interface.cpp
    manager.cpp
+   modem.cpp
    modeminterface.cpp
    modemlocationinterface.cpp
    modemcdmainterface.cpp

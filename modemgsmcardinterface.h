@@ -25,13 +25,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "ModemManagerQt-export.h"
 
-#include "modeminterface.h"
+#include <QObject>
+#include <QSharedPointer>
+#include <QDBusPendingReply>
 
 class ModemSimCardInterfacePrivate;
 
 namespace ModemManager
 {
-class MODEMMANAGERQT_EXPORT ModemSimCardInterface : public ModemInterface
+class MODEMMANAGERQT_EXPORT ModemSimCardInterface : public QObject
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(ModemSimCardInterface)
@@ -40,7 +42,7 @@ public:
     typedef QSharedPointer<ModemSimCardInterface> Ptr;
     typedef QList<Ptr> List;
 
-    ModemSimCardInterface(const QString & path, QObject * parent);
+    explicit ModemSimCardInterface(const QString & path, QObject * parent = 0);
     ~ModemSimCardInterface();
 
     // properties
@@ -55,13 +57,14 @@ public:
     QDBusPendingReply<> enablePin(const QString & pin, bool enabled);
     QDBusPendingReply<> changePin(const QString & oldPin, const QString & newPin);
 
+protected:
+    ModemSimCardInterface * d_ptr;
 #if 0
 Q_SIGNALS:
 
 private Q_SLOTS:
     void propertiesChanged(const QString &interface, const QVariantMap &properties);
 #endif
-
 };
 } // namespace ModemManager
 

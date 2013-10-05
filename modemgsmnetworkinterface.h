@@ -25,13 +25,17 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "ModemManagerQt-export.h"
 
-#include "modeminterface.h"
+#include <QObject>
+#include <QSharedPointer>
+
+#include "generic-types.h"
+#include "interface.h"
 
 class Modem3gppInterfacePrivate;
 
 namespace ModemManager
 {
-class MODEMMANAGERQT_EXPORT Modem3gppInterface : public ModemInterface
+class MODEMMANAGERQT_EXPORT Modem3gppInterface : public Interface
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(Modem3gppInterface)
@@ -43,7 +47,7 @@ public:
 
     Q_DECLARE_FLAGS(FacilityLocks, MMModem3gppFacility)
 
-    Modem3gppInterface(const QString & path, QObject * parent);
+    explicit Modem3gppInterface(const QString & path, QObject * parent = 0);
     ~Modem3gppInterface();
 
     // properties

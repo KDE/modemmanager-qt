@@ -25,17 +25,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "dbus/Modem.h"
 #include "dbus/ModemSimple.h"
 
-class ModemInterfacePrivate: public QObject
+#include "interface_p.h"
+
+class ModemInterfacePrivate: public InterfacePrivate
 {
 public:
-    ModemInterfacePrivate(const QString & path, QObject * parent);
-    virtual ~ModemInterfacePrivate();
+    ModemInterfacePrivate(const QString & path);
     OrgFreedesktopModemManager1ModemInterface modemIface;
     OrgFreedesktopModemManager1ModemSimpleInterface modemSimpleIface;
-    QString udi;
     QString device;
     QStringList drivers;
-    QStringList interfaces;
 };
 
 #endif

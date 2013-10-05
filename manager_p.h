@@ -31,11 +31,14 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "dbus/dbus_manager.h"
 
 #include "manager.h"
+#include "modem.h"
+#include "modembearerinterface.h"
+#include "modemgsmcardinterface.h"
 
 namespace ModemManager
 {
 
-class ModemInterface;
+class Modem;
 class ModemManagerPrivate : public Notifier
 {
 Q_OBJECT
@@ -45,9 +48,16 @@ public:
     ~ModemManagerPrivate();
     QDBusServiceWatcher watcher;
     OrgFreedesktopModemManager1Interface iface;
-    QStringList devices;
+    QMap<QString, Modem::Ptr> modemList;
+    QMap<QString, ModemBearerInterface::Ptr> bearerList;
+    QMap<QString, ModemSimCardInterface::Ptr> simList;
     OrgFreedesktopDBusObjectManagerInterface manager;
-    ModemManager::ModemInterface::Ptr findModemInterface(const QString &udi, ModemInterface::InterfaceType ifaceType);
+    ModemManager::Modem::Ptr findModem(const QString &uni);
+    ModemManager::Modem::List modems();
+    ModemManager::ModemBearerInterface::Ptr findBearer(const QString &uni);
+    ModemManager::ModemBearerInterface::List bearers();
+    ModemManager::ModemSimCardInterface::Ptr findSim(const QString &uni);
+    ModemManager::ModemSimCardInterface::List sims();
     void scanDevices();
 protected Q_SLOTS:
     void init();

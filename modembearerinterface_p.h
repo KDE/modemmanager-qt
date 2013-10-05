@@ -21,13 +21,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef MODEMMANAGER_MODEMBEARERINTERFACE_P_H
 #define MODEMMANAGER_MODEMBEARERINTERFACE_P_H
 
-#include "modeminterface_p.h"
 #include "dbus/Bearer.h"
+#include "interface_p.h"
 
-class ModemBearerInterfacePrivate: public ModemInterfacePrivate
+class ModemBearerInterfacePrivate
 {
 public:
-    ModemBearerInterfacePrivate(const QString &path, QObject *owner);
+    ModemBearerInterfacePrivate(const QString &path);
     OrgFreedesktopModemManager1BearerInterface modemBearerIface;
 };
 

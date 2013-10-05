@@ -34,17 +34,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include <QDBusObjectPath>
 
 #include "generic-types.h"
+#include "interface.h"
 
 class ModemInterfacePrivate;
 
 namespace ModemManager
 {
-class MODEMMANAGERQT_EXPORT ModemInterface : public QObject
+class MODEMMANAGERQT_EXPORT ModemInterface : public Interface
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(ModemInterface)
-
-    Q_PROPERTY(QString udi READ udi)
 
     Q_FLAGS(MMModemCapability)
     Q_FLAGS(MMModemAccessTechnology)
@@ -60,18 +59,6 @@ public:
     typedef QSharedPointer<ModemInterface> Ptr;
     typedef QList<Ptr> List;
 
-    enum InterfaceType {
-        Gsm,
-        GsmUssd,
-        Cdma,
-        SimCard,
-        Messaging,
-        Location,
-        Bearer,
-        Time
-        //, Firmware  // TODO ?
-    };
-
     struct BearerStruct {
         QString apn; // required for 3GPP
         MMBearerIpFamily ipType;
@@ -84,25 +71,18 @@ public:
     };
 
     explicit ModemInterface( const QString & path, QObject * parent = 0 );
-    explicit ModemInterface( ModemInterfacePrivate &dd, QObject * parent = 0);
-    virtual ~ModemInterface();
+    ~ModemInterface();
 
-    QString udi() const;
+    QString uni() const;
     bool isEnabled() const;
     bool isValid() const;
-
-    bool hasInterface(const QString & name) const;
-    QStringList interfaces() const;
-
-    bool isGsmModem() const;
-    bool isCdmaModem() const;
 
     // From org.freedesktop.ModemManager.Modem
     // methods
     void enable(bool enable);
 
-    QList<QDBusObjectPath> listBearers();
-    QDBusObjectPath createBearer(const BearerStruct & bearer);
+    QStringList listBearers();
+    QString createBearer(const BearerStruct & bearer);
     void deleteBearer(const QDBusObjectPath & bearer);
 
     void reset();
@@ -114,7 +94,7 @@ public:
     QString command(const QString & cmd, uint timeout);
 
     // properties
-    QDBusObjectPath simPath() const;
+    QString simPath() const;
     QList<MMModemCapability> supportedCapabilities() const;
     Capabilities currentCapabilities() const;
     uint maxBearers() const;
@@ -164,7 +144,7 @@ public:
     //  Dictionary of properties.
     //  Each implementation is free to add it's own specific key-value pairs. The predefined
     //  common ones are:
-    //   
+    //
     //  "state": A MMModemState value specifying the overall state of the modem, given as an unsigned integer value (signature "u").
     //  "signal-quality": Signal quality value, given only when registered, as an unsigned integer value (signature "u").
     //  "current-bands": List of MMModemBand values, given only when registered, as a list of unsigned integer values (signature "au").
@@ -192,18 +172,11 @@ Q_SIGNALS:
     void currentModesChanged();
 
 private Q_SLOTS:
-    void onInterfacesAdded(const QDBusObjectPath &object_path, const NMVariantMapMap &interfaces_and_properties);
-    void onInterfacesRemoved(const QDBusObjectPath &object_path, const QStringList &interfaces);
     void onPropertiesChanged(const QString &ifaceName, const QVariantMap &changedProps, const QStringList &invalidatedProps);
     void onStateChanged(int oldState, int newState, uint reason);
 
 private:
     void init();
-    void initInterfaces();
-    QString introspect() const;
-
-protected:
-    ModemInterfacePrivate * d_ptr;
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(ModemInterface::Capabilities)

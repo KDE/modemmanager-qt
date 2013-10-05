@@ -23,13 +23,16 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "ModemManagerQt-export.h"
 
-#include "modeminterface.h"
+#include <QObject>
+#include <QSharedPointer>
+
+#include "generic-types.h"
 
 class ModemBearerInterfacePrivate;
 
 namespace ModemManager
 {
-class MODEMMANAGERQT_EXPORT ModemBearerInterface : public ModemInterface
+class MODEMMANAGERQT_EXPORT ModemBearerInterface: public QObject
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(ModemBearerInterface)
@@ -48,7 +51,7 @@ public:
         QString gateway;
     };
 
-    ModemBearerInterface(const QString & path, QObject * parent);
+    ModemBearerInterface(const QString & path, QObject * parent = 0);
     ~ModemBearerInterface();
 
     // properties
@@ -73,6 +76,9 @@ Q_SIGNALS:
 
 private Q_SLOTS:
    void onPropertiesChanged(const QString & interface, const QVariantMap & properties, const QStringList &invalidatedProps);
+
+protected:
+    ModemBearerInterface * d_ptr;
 };
 
 } // namespace ModemManager

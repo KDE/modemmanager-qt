@@ -22,14 +22,17 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #define MODEMMANAGER_MODEMTIMEINTERFACE_H
 
 #include "ModemManagerQt-export.h"
+#include "interface.h"
 
-#include "modeminterface.h"
+#include <QObject>
+#include <QDateTime>
+#include <QSharedPointer>
 
 class ModemTimeInterfacePrivate;
 
 namespace ModemManager
 {
-class MODEMMANAGERQT_EXPORT ModemTimeInterface : public ModemInterface
+class MODEMMANAGERQT_EXPORT ModemTimeInterface : public Interface
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(ModemTimeInterface)
@@ -44,7 +47,7 @@ public:
         int leap_seconds;
     };
 
-    ModemTimeInterface(const QString & path, QObject * parent);
+    explicit ModemTimeInterface(const QString & path, QObject * parent = 0);
     ~ModemTimeInterface();
 
     QDateTime networkTime();

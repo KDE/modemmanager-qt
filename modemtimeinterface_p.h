@@ -21,13 +21,13 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef MODEMMANAGER_MODEMTIMEINTERFACE_P_H
 #define MODEMMANAGER_MODEMTIMEINTERFACE_P_H
 
-#include "modeminterface_p.h"
+#include "interface_p.h"
 #include "dbus/Time.h"
 
-class ModemTimeInterfacePrivate: public ModemInterfacePrivate
+class ModemTimeInterfacePrivate: public InterfacePrivate
 {
 public:
-    ModemTimeInterfacePrivate(const QString &path, QObject *owner);
+    ModemTimeInterfacePrivate(const QString &path);
     OrgFreedesktopModemManager1ModemTimeInterface modemTimeIface;
 };
 

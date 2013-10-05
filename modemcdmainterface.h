@@ -25,13 +25,18 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "ModemManagerQt-export.h"
 
-#include "modeminterface.h"
+#include <QObject>
+#include <QSharedPointer>
+#include <QVariant>
+
+#include "generic-types.h"
+#include "interface.h"
 
 class ModemCdmaInterfacePrivate;
 
 namespace ModemManager {
 
-class MODEMMANAGERQT_EXPORT ModemCdmaInterface : public ModemInterface
+class MODEMMANAGERQT_EXPORT ModemCdmaInterface : public Interface
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(ModemCdmaInterface)
@@ -39,7 +44,7 @@ public:
     typedef QSharedPointer<ModemCdmaInterface> Ptr;
     typedef QList<Ptr> List;
 
-    ModemCdmaInterface(const QString & path, QObject * parent);
+    explicit ModemCdmaInterface(const QString & path, QObject * parent = 0);
     ~ModemCdmaInterface();
 
     // methods

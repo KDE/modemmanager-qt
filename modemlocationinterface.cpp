@@ -22,22 +22,20 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "modemlocationinterface.h"
 #include "modemlocationinterface_p.h"
-#include "manager.h"
 #include "dbus/dbus.h"
 #include "mmdebug.h"
 
-ModemLocationInterfacePrivate::ModemLocationInterfacePrivate(const QString &path, QObject *owner)
-    : ModemInterfacePrivate(path, owner),
-      modemLocationIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus(), this)
+ModemLocationInterfacePrivate::ModemLocationInterfacePrivate(const QString &path)
+    : InterfacePrivate(path), modemLocationIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
 }
 
 ModemManager::ModemLocationInterface::ModemLocationInterface(const QString & path, QObject * parent)
-    : ModemInterface(*new ModemLocationInterfacePrivate(path, this), parent)
+    : Interface( *new ModemLocationInterfacePrivate(path), parent)
 {
     Q_D(ModemLocationInterface);
 
-    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->udi, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
+    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 }
 
@@ -61,7 +59,7 @@ void ModemManager::ModemLocationInterface::onPropertiesChanged(const QString & i
         }
         it = properties.constFind(enabled);
         if ( it != properties.constEnd()) {
-            emit enabledChanged(it->toBool());
+            emit isEnabledChanged(it->toBool());
         }
         it = properties.constFind(signalsLocation);
         if ( it != properties.constEnd()) {

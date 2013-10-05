@@ -25,42 +25,26 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "modeminterface.h"
 #include "modeminterface_p.h"
-#include "manager.h"
 #include "mmdebug.h"
 #include "dbus/dbus.h"
 
 #include "generic-types.h"
 
-ModemInterfacePrivate::ModemInterfacePrivate(const QString & path, QObject *parent) :
-    QObject(parent),
-    modemIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus(), this),
-    modemSimpleIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus(), this),
-    udi(path)
+ModemInterfacePrivate::ModemInterfacePrivate(const QString & path)
+    : InterfacePrivate(path),
+    modemIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus()),
+    modemSimpleIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
-}
-
-ModemInterfacePrivate::~ModemInterfacePrivate()
-{
-
 }
 
 ModemManager::ModemInterface::ModemInterface(const QString & path, QObject * parent) :
-    QObject(parent),
-    d_ptr(new ModemInterfacePrivate(path, this))
-{
-    init();
-}
-
-ModemManager::ModemInterface::ModemInterface(ModemInterfacePrivate & dd, QObject * parent) :
-    QObject(parent),
-    d_ptr(&dd)
+    Interface(*new ModemInterfacePrivate(path), parent)
 {
     init();
 }
 
 ModemManager::ModemInterface::~ModemInterface()
 {
-    delete d_ptr;
 }
 
 void ModemManager::ModemInterface::init()
@@ -70,63 +54,17 @@ void ModemManager::ModemInterface::init()
     d->drivers = d->modemIface.drivers();
 
     if (d->modemIface.isValid()) {
-        QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->udi, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
+        QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
                                              SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
-        QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, MM_DBUS_PATH, DBUS_INTERFACE_MANAGER, "InterfacesAdded",
-                                            this, SLOT(onInterfacesAdded(QDBusObjectPath,NMVariantMapMap)));
-        QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, MM_DBUS_PATH, DBUS_INTERFACE_MANAGER, "InterfacesRemoved",
-                                            this, SLOT(onInterfacesRemoved(QDBusObjectPath,QStringList)));
-
-        initInterfaces();
     }
 
     connect(&d->modemIface, SIGNAL(StateChanged(int,int,uint)), SLOT(onStateChanged(int,int,uint)));
 }
 
-void ModemManager::ModemInterface::initInterfaces()
-{
-    Q_D(ModemInterface);
-    d->interfaces.clear();
-
-    const QString xmlData = introspect();
-    if (xmlData.isEmpty()) {
-        mmDebug() << d->udi << "has no interfaces!";
-        return;
-    }
-
-    QDomDocument dom;
-    dom.setContent(xmlData);
-
-    QDomNodeList ifaceNodeList = dom.elementsByTagName("interface");
-    for (int i = 0; i < ifaceNodeList.count(); i++) {
-        QDomElement ifaceElem = ifaceNodeList.item(i).toElement();
-        /* Accept only MM interfaces so that when the device is unplugged,
-         * d->interfaces goes empty and we can easily verify that the device is gone. */
-        if (!ifaceElem.isNull() && ifaceElem.attribute("name").startsWith(MM_DBUS_SERVICE)) {
-            d->interfaces.append(ifaceElem.attribute("name"));
-        }
-    }
-
-    mmDebug() << d->udi << "has interfaces:" << d->interfaces;
-}
-
-QString ModemManager::ModemInterface::introspect() const
+QString ModemManager::ModemInterface::uni() const
 {
     Q_D(const ModemInterface);
-    QDBusMessage call = QDBusMessage::createMethodCall(MM_DBUS_SERVICE, d->udi, DBUS_INTERFACE_INTROSPECT, "Introspect");
-    QDBusPendingReply<QString> reply = QDBusConnection::systemBus().call(call);
-
-    if (reply.isValid())
-        return reply.value();
-    else {
-        return QString();
-    }
-}
-
-QString ModemManager::ModemInterface::udi() const
-{
-    Q_D(const ModemInterface);
-    return d->udi;
+    return d->uni;
 }
 
 bool ModemManager::ModemInterface::isEnabled() const
@@ -141,28 +79,6 @@ bool ModemManager::ModemInterface::isValid() const
     return d->modemIface.isValid();
 }
 
-bool ModemManager::ModemInterface::hasInterface(const QString &name) const
-{
-    Q_D(const ModemInterface);
-    return d->interfaces.contains(name);
-}
-
-QStringList ModemManager::ModemInterface::interfaces() const
-{
-    Q_D(const ModemInterface);
-    return d->interfaces;
-}
-
-bool ModemManager::ModemInterface::isGsmModem() const
-{
-    return hasInterface(MM_DBUS_INTERFACE_MODEM_MODEM3GPP);
-}
-
-bool ModemManager::ModemInterface::isCdmaModem() const
-{
-    return hasInterface(MM_DBUS_INTERFACE_MODEM_MODEMCDMA);
-}
-
 // From org.freedesktop.ModemManager.Modem
 void ModemManager::ModemInterface::enable(bool enable)
 {
@@ -170,13 +86,18 @@ void ModemManager::ModemInterface::enable(bool enable)
     d->modemIface.Enable(enable);
 }
 
-QList<QDBusObjectPath> ModemManager::ModemInterface::listBearers()
+QStringList ModemManager::ModemInterface::listBearers()
 {
     Q_D(ModemInterface);
-    return d->modemIface.ListBearers();
+    QStringList result;
+    QList<QDBusObjectPath> objects = d->modemIface.ListBearers();
+    foreach (const QDBusObjectPath & path, objects) {
+        result << path.path();
+    }
+    return result;
 }
 
-QDBusObjectPath ModemManager::ModemInterface::createBearer(const BearerStruct &bearer)
+QString ModemManager::ModemInterface::createBearer(const BearerStruct &bearer)
 {
     Q_D(ModemInterface);
     QVariantMap map;
@@ -194,7 +115,8 @@ QDBusObjectPath ModemManager::ModemInterface::createBearer(const BearerStruct &b
         map.insert("rm-protocol", (uint)bearer.rmProtocol);
     if (!bearer.number.isEmpty())
         map.insert("number", bearer.number);
-    return d->modemIface.CreateBearer(map);
+    QDBusObjectPath obj = d->modemIface.CreateBearer(map);
+    return obj.path();
 }
 
 void ModemManager::ModemInterface::deleteBearer(const QDBusObjectPath &bearer)
@@ -249,10 +171,10 @@ QString ModemManager::ModemInterface::command(const QString &cmd, uint timeout)
     d->modemIface.Command(cmd, timeout);
 }
 
-QDBusObjectPath ModemManager::ModemInterface::simPath() const
+QString ModemManager::ModemInterface::simPath() const
 {
     Q_D(const ModemInterface);
-    return d->modemIface.sim();
+    return d->modemIface.sim().path();
 }
 
 QList<MMModemCapability> ModemManager::ModemInterface::supportedCapabilities() const
@@ -474,33 +396,6 @@ void ModemManager::ModemInterface::onPropertiesChanged(const QString & ifaceName
                 emit signalQualityChanged(pair.signal);
             }
         }
-    }
-}
-
-void ModemManager::ModemInterface::onInterfacesAdded(const QDBusObjectPath &object_path, const NMVariantMapMap &interfaces_and_properties)
-{
-    Q_D(ModemInterface);
-    if (object_path.path() != d->udi) {
-        return;
-    }
-
-    foreach(const QString & iface, interfaces_and_properties.keys()) {
-        /* Don't store generic DBus interfaces */
-        if (iface.startsWith(MM_DBUS_SERVICE)) {
-            d->interfaces.append(interfaces_and_properties.keys());
-        }
-    }
-}
-
-void ModemManager::ModemInterface::onInterfacesRemoved(const QDBusObjectPath &object_path, const QStringList &interfaces)
-{
-    Q_D(ModemInterface);
-    if (object_path.path() != d->udi) {
-        return;
-    }
-
-    foreach(const QString & iface, interfaces) {
-        d->interfaces.removeAll(iface);
     }
 }
 

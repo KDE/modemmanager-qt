@@ -20,22 +20,20 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "modembearerinterface.h"
 #include "modembearerinterface_p.h"
-#include "manager.h"
 #include "mmdebug.h"
 #include "dbus/dbus.h"
 
-ModemBearerInterfacePrivate::ModemBearerInterfacePrivate(const QString &path, QObject *owner)
-    : ModemInterfacePrivate(path, owner),
-      modemBearerIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus(), this)
+ModemBearerInterfacePrivate::ModemBearerInterfacePrivate(const QString &path)
+    : modemBearerIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
 }
 
 ModemManager::ModemBearerInterface::ModemBearerInterface(const QString & path, QObject * parent)
-    : ModemInterface(*new ModemBearerInterfacePrivate(path, this), parent)
+    : QObject(parent), d_ptr(new ModemBearerInterface(path))
 {
     Q_D(ModemBearerInterface);
 
-    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->udi, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
+    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 }
 
