@@ -32,7 +32,8 @@ SmsInterfacePrivate::SmsInterfacePrivate(const QString &path)
 }
 
 ModemManager::SmsInterface::SmsInterface(const QString &path, QObject *parent)
-    : QObject(parent), d_ptr(new SmsInterfacePrivate(path))
+    : QObject(parent)
+    , d_ptr(new SmsInterfacePrivate(path))
 {
     Q_D(SmsInterface);
 

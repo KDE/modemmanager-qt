@@ -29,11 +29,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include <ModemManager/ModemManager.h>
 
 ModemMessagingInterfacePrivate::ModemMessagingInterfacePrivate(const QString &path)
-    : InterfacePrivate(path), modemMessagingIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+    : InterfacePrivate(path)
+    , modemMessagingIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
 }
 
-ModemManager::ModemMessagingInterface::ModemMessagingInterface(const QString & path, QObject * parent)
+ModemManager::ModemMessagingInterface::ModemMessagingInterface(const QString &path, QObject *parent)
     : Interface(*new ModemMessagingInterfacePrivate(path), parent)
 {
     Q_D(ModemMessagingInterface);
@@ -130,7 +131,7 @@ QDBusPendingReply<> ModemManager::ModemMessagingInterface::deleteMessage(const Q
     return d->modemMessagingIface.Delete(path);
 }
 
-ModemManager::SmsInterface::Ptr ModemManager::ModemMessagingInterface::createSmsInterface(const QDBusObjectPath& path)
+ModemManager::SmsInterface::Ptr ModemManager::ModemMessagingInterface::createSmsInterface(const QDBusObjectPath &path)
 {
     Q_D(ModemMessagingInterface);
     return SmsInterface::Ptr(new ModemManager::SmsInterface(path.path(), this));

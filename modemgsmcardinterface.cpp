@@ -29,8 +29,9 @@ ModemSimCardInterfacePrivate::ModemSimCardInterfacePrivate(const QString &path)
 {
 }
 
-ModemManager::ModemSimCardInterface::ModemSimCardInterface(const QString & path, QObject * parent)
-    : QObject(parent), d_ptr(new ModemSimCardInterface(path))
+ModemManager::ModemSimCardInterface::ModemSimCardInterface(const QString &path, QObject *parent)
+    : QObject(parent)
+    , d_ptr(new ModemSimCardInterface(path))
 {
     Q_D(ModemSimCardInterface);
 
@@ -47,7 +48,7 @@ ModemManager::ModemSimCardInterface::~ModemSimCardInterface()
 }
 
 #if 0
-void ModemManager::ModemSimCardInterface::propertiesChanged(const QString & interface, const QVariantMap & properties)
+void ModemManager::ModemSimCardInterface::propertiesChanged(const QString &interface, const QVariantMap &properties)
 {
     mmDebug() << interface << properties.keys();
 
@@ -101,25 +102,25 @@ QString ModemManager::ModemSimCardInterface::operatorName() const
     return d->modemSimCardIface.operatorName();
 }
 
-QDBusPendingReply<> ModemManager::ModemSimCardInterface::sendPuk(const QString & puk, const QString & pin)
+QDBusPendingReply<> ModemManager::ModemSimCardInterface::sendPuk(const QString &puk, const QString &pin)
 {
     Q_D(ModemSimCardInterface);
     return d->modemSimCardIface.SendPuk(puk, pin);
 }
 
-QDBusPendingReply<> ModemManager::ModemSimCardInterface::sendPin(const QString & pin)
+QDBusPendingReply<> ModemManager::ModemSimCardInterface::sendPin(const QString &pin)
 {
     Q_D(ModemSimCardInterface);
     return d->modemSimCardIface.SendPin(pin);
 }
 
-QDBusPendingReply<> ModemManager::ModemSimCardInterface::enablePin(const QString & pin, bool enabled)
+QDBusPendingReply<> ModemManager::ModemSimCardInterface::enablePin(const QString &pin, bool enabled)
 {
     Q_D(ModemSimCardInterface);
     return d->modemSimCardIface.EnablePin(pin, enabled);
 }
 
-QDBusPendingReply<> ModemManager::ModemSimCardInterface::changePin(const QString & oldPin, const QString & newPin)
+QDBusPendingReply<> ModemManager::ModemSimCardInterface::changePin(const QString &oldPin, const QString &newPin)
 {
     Q_D(ModemSimCardInterface);
     return d->modemSimCardIface.ChangePin(oldPin, newPin);

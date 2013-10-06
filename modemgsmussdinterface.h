@@ -44,11 +44,11 @@ public:
     typedef QSharedPointer<Modem3gppUssdInterface> Ptr;
     typedef QList<Ptr> List;
 
-    explicit Modem3gppUssdInterface(const QString & path, QObject * parent = 0);
+    explicit Modem3gppUssdInterface(const QString &path, QObject *parent = 0);
     ~Modem3gppUssdInterface();
 
     // methods
-    QString initiate(const QString & command);
+    QString initiate(const QString &command);
     QString respond(const QString &response);
     void cancel();
 
@@ -60,8 +60,8 @@ public:
 Q_SIGNALS:
     // properties
     void stateChanged(MMModem3gppUssdSessionState state);
-    void networkNotificationChanged(const QString & networkNotification);
-    void networkRequestChanged(const QString & networkRequest);
+    void networkNotificationChanged(const QString &networkNotification);
+    void networkRequestChanged(const QString &networkRequest);
 
 private Q_SLOTS:
     void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps);

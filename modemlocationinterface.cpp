@@ -26,11 +26,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "mmdebug.h"
 
 ModemLocationInterfacePrivate::ModemLocationInterfacePrivate(const QString &path)
-    : InterfacePrivate(path), modemLocationIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+    : InterfacePrivate(path)
+    , modemLocationIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
 }
 
-ModemManager::ModemLocationInterface::ModemLocationInterface(const QString & path, QObject * parent)
+ModemManager::ModemLocationInterface::ModemLocationInterface(const QString &path, QObject *parent)
     : Interface( *new ModemLocationInterfacePrivate(path), parent)
 {
     Q_D(ModemLocationInterface);
@@ -43,7 +44,7 @@ ModemManager::ModemLocationInterface::~ModemLocationInterface()
 {
 }
 
-void ModemManager::ModemLocationInterface::onPropertiesChanged(const QString & interface, const QVariantMap & properties, const QStringList &invalidatedProps)
+void ModemManager::ModemLocationInterface::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
 {
     mmDebug() << interface << properties.keys();
 

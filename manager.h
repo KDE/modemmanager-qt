@@ -54,13 +54,13 @@ Q_SIGNALS:
      *
      * @param udi the network interface identifier
      */
-    void modemAdded(const QString & udi);
+    void modemAdded(const QString &udi);
     /**
      * This signal is emitted when a network interface is not available anymore.
      *
      * @param udi the network interface identifier
      */
-    void modemRemoved(const QString & udi);
+    void modemRemoved(const QString &udi);
     /**
       * This signal is emitted when the ModemManager DBus service goes away
       */

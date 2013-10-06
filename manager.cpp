@@ -261,7 +261,7 @@ ModemManager::Modem::List ModemManager::modems()
     return globalModemManager->modems();
 }
 
-ModemManager::ModemBearerInterface::Ptr ModemManager::findBearer(const QString& uni)
+ModemManager::ModemBearerInterface::Ptr ModemManager::findBearer(const QString &uni)
 {
     return globalModemManager->findBearer(uni);
 }
@@ -271,7 +271,7 @@ ModemManager::ModemBearerInterface::List ModemManager::bearers()
     return globalModemManager->bearers();
 }
 
-ModemManager::ModemSimCardInterface::Ptr ModemManager::findSim(const QString& uni)
+ModemManager::ModemSimCardInterface::Ptr ModemManager::findSim(const QString &uni)
 {
     return globalModemManager->findSim(uni);
 }

@@ -26,11 +26,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "dbus/dbus.h"
 
 Modem3gppUssdInterfacePrivate::Modem3gppUssdInterfacePrivate(const QString &path)
-    : InterfacePrivate(path), ussdIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+    : InterfacePrivate(path)
+    , ussdIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
 }
 
-ModemManager::Modem3gppUssdInterface::Modem3gppUssdInterface(const QString & path, QObject * parent)
+ModemManager::Modem3gppUssdInterface::Modem3gppUssdInterface(const QString &path, QObject *parent)
     : Interface(*new Modem3gppUssdInterfacePrivate(path), parent)
 {
     Q_D(Modem3gppUssdInterface);
@@ -69,7 +70,7 @@ void ModemManager::Modem3gppUssdInterface::onPropertiesChanged(const QString &in
     }
 }
 
-QString ModemManager::Modem3gppUssdInterface::initiate(const QString & command)
+QString ModemManager::Modem3gppUssdInterface::initiate(const QString &command)
 {
     Q_D(Modem3gppUssdInterface);
     QDBusReply<QString> reply = d->ussdIface.Initiate(command);
@@ -80,7 +81,7 @@ QString ModemManager::Modem3gppUssdInterface::initiate(const QString & command)
     return QString();
 }
 
-QString ModemManager::Modem3gppUssdInterface::respond(const QString & response)
+QString ModemManager::Modem3gppUssdInterface::respond(const QString &response)
 {
     Q_D(Modem3gppUssdInterface);
     QDBusReply<QString> reply = d->ussdIface.Respond(response);

@@ -23,11 +23,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "mmdebug.h"
 
 ModemTimeInterfacePrivate::ModemTimeInterfacePrivate(const QString &path)
-    : InterfacePrivate(path), modemTimeIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+    : InterfacePrivate(path)
+    , modemTimeIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
 }
 
-ModemManager::ModemTimeInterface::ModemTimeInterface(const QString & path, QObject * parent)
+ModemManager::ModemTimeInterface::ModemTimeInterface(const QString &path, QObject *parent)
     : Interface(*new ModemTimeInterfacePrivate(path), parent)
 {
     Q_D(ModemTimeInterface);

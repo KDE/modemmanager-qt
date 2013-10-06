@@ -45,8 +45,8 @@ public:
     typedef QSharedPointer<Interface> Ptr;
     typedef QList<Ptr> List;
 
-    explicit Interface( const QString & path, QObject * parent = 0 );
-    Interface( InterfacePrivate &dd, QObject * parent = 0);
+    explicit Interface( const QString &path, QObject *parent = 0 );
+    Interface( InterfacePrivate &dd, QObject *parent = 0);
     virtual ~Interface();
 
     QString uni() const;

@@ -21,20 +21,20 @@
 #include "interface_p.h"
 #include "interface.h"
 
-InterfacePrivate::InterfacePrivate(const QString & path) :
-    uni(path)
+InterfacePrivate::InterfacePrivate(const QString &path)
+    : uni(path)
 {
 }
 
-ModemManager::Interface::Interface(const QString & path, QObject * parent) :
-    QObject(parent),
-    d_ptr(new InterfacePrivate(path))
+ModemManager::Interface::Interface(const QString &path, QObject *parent)
+    : QObject(parent)
+    , d_ptr(new InterfacePrivate(path))
 {
 }
 
-ModemManager::Interface::Interface(InterfacePrivate & dd, QObject * parent) :
-    QObject(parent),
-    d_ptr(&dd)
+ModemManager::Interface::Interface(InterfacePrivate &dd, QObject *parent)
+    : QObject(parent)
+    , d_ptr(&dd)
 {
 }
 

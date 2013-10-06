@@ -32,7 +32,7 @@
 class ModemPrivate
 {
 public:
-    ModemPrivate(const QString & path);
+    ModemPrivate(const QString &path);
     virtual ~ModemPrivate();
     QString uni;
     QMap<ModemManager::Modem::InterfaceType, ModemManager::Interface::Ptr> interfaceList;

@@ -47,7 +47,7 @@ public:
 
     Q_DECLARE_FLAGS(FacilityLocks, MMModem3gppFacility)
 
-    explicit Modem3gppInterface(const QString & path, QObject * parent = 0);
+    explicit Modem3gppInterface(const QString &path, QObject *parent = 0);
     ~Modem3gppInterface();
 
     // properties
@@ -63,7 +63,7 @@ public:
       *
       * @param networkId the network ID to register. An empty string can be used to register to the home network.
     */
-    void registerToNetwork(const QString & networkId = QString());
+    void registerToNetwork(const QString &networkId = QString());
 
     QDBusPendingReply<ScanResultsType> scan();
 

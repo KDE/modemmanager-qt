@@ -26,11 +26,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "dbus/dbus.h"
 
 Modem3gppInterfacePrivate::Modem3gppInterfacePrivate(const QString &path)
-    : InterfacePrivate(path), modem3gppIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+    : InterfacePrivate(path)
+    , modem3gppIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
 }
 
-ModemManager::Modem3gppInterface::Modem3gppInterface(const QString & path, QObject * parent)
+ModemManager::Modem3gppInterface::Modem3gppInterface(const QString &path, QObject *parent)
     : Interface(*new Modem3gppInterfacePrivate(path), parent)
 {
     Q_D(Modem3gppInterface);

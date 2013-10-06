@@ -51,7 +51,7 @@ public:
         QString gateway;
     };
 
-    ModemBearerInterface(const QString & path, QObject * parent = 0);
+    ModemBearerInterface(const QString &path, QObject *parent = 0);
     ~ModemBearerInterface();
 
     // properties
@@ -68,14 +68,14 @@ public:
     void disconnectBearer();
 
 Q_SIGNALS:
-    void interfaceChanged(const QString & iface);
+    void interfaceChanged(const QString &iface);
     void connectedChanged(bool connected);
     void suspendedChanged(bool suspended);
     void ip4ConfigChanged();
     void ip6ConfigChanged();
 
 private Q_SLOTS:
-   void onPropertiesChanged(const QString & interface, const QVariantMap & properties, const QStringList &invalidatedProps);
+   void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps);
 
 protected:
     ModemBearerInterface * d_ptr;

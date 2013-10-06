@@ -38,8 +38,8 @@
 
 #include "generic-types.h"
 
-ModemPrivate::ModemPrivate(const QString & path) :
-    uni(path)
+ModemPrivate::ModemPrivate(const QString &path)
+    : uni(path)
 {
 }
 
@@ -47,16 +47,16 @@ ModemPrivate::~ModemPrivate()
 {
 }
 
-ModemManager::Modem::Modem(const QString & path, QObject * parent) :
-    QObject(parent),
-    d_ptr(new ModemPrivate(path))
+ModemManager::Modem::Modem(const QString &path, QObject *parent)
+    : QObject(parent)
+    , d_ptr(new ModemPrivate(path))
 {
     init();
 }
 
-ModemManager::Modem::Modem(ModemPrivate & dd, QObject * parent) :
-    QObject(parent),
-    d_ptr(&dd)
+ModemManager::Modem::Modem(ModemPrivate &dd, QObject *parent)
+    : QObject(parent)
+    , d_ptr(&dd)
 {
     init();
 }

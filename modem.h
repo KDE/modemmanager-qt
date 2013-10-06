@@ -60,8 +60,8 @@ public:
         FirmwareInterface
     };
 
-    explicit Modem( const QString & path, QObject * parent = 0 );
-    explicit Modem( ModemPrivate &dd, QObject * parent = 0);
+    explicit Modem( const QString &path, QObject *parent = 0 );
+    explicit Modem( ModemPrivate &dd, QObject *parent = 0);
     virtual ~Modem();
 
     QString uni() const;

@@ -28,8 +28,9 @@ ModemBearerInterfacePrivate::ModemBearerInterfacePrivate(const QString &path)
 {
 }
 
-ModemManager::ModemBearerInterface::ModemBearerInterface(const QString & path, QObject * parent)
-    : QObject(parent), d_ptr(new ModemBearerInterface(path))
+ModemManager::ModemBearerInterface::ModemBearerInterface(const QString &path, QObject *parent)
+    : QObject(parent)
+    , d_ptr(new ModemBearerInterface(path))
 {
     Q_D(ModemBearerInterface);
 
@@ -121,7 +122,7 @@ void ModemManager::ModemBearerInterface::disconnectBearer()
     d->modemBearerIface.Disconnect();
 }
 
-void ModemManager::ModemBearerInterface::onPropertiesChanged(const QString & interface, const QVariantMap & properties, const QStringList &invalidatedProps)
+void ModemManager::ModemBearerInterface::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
 {
     mmDebug() << interface << properties.keys();
 

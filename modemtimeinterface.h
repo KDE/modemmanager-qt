@@ -47,7 +47,7 @@ public:
         int leap_seconds;
     };
 
-    explicit ModemTimeInterface(const QString & path, QObject * parent = 0);
+    explicit ModemTimeInterface(const QString &path, QObject *parent = 0);
     ~ModemTimeInterface();
 
     QDateTime networkTime();
@@ -55,10 +55,10 @@ public:
     NetworkTimeZone networkTimeZone() const;
 
 Q_SIGNALS:
-    void networkTimeChanged(const QDateTime & dateTime);
+    void networkTimeChanged(const QDateTime &dateTime);
 
 private Q_SLOTS:
-    void onNetworkTimeChanged(const QString & isoDateTime);
+    void onNetworkTimeChanged(const QString &isoDateTime);
 };
 
 } // namespace ModemManager

@@ -30,15 +30,15 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "generic-types.h"
 
-ModemInterfacePrivate::ModemInterfacePrivate(const QString & path)
-    : InterfacePrivate(path),
-    modemIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus()),
-    modemSimpleIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+ModemInterfacePrivate::ModemInterfacePrivate(const QString &path)
+    : InterfacePrivate(path)
+    , modemIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+    , modemSimpleIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
 }
 
-ModemManager::ModemInterface::ModemInterface(const QString & path, QObject * parent) :
-    Interface(*new ModemInterfacePrivate(path), parent)
+ModemManager::ModemInterface::ModemInterface(const QString &path, QObject *parent)
+    : Interface(*new ModemInterfacePrivate(path), parent)
 {
     init();
 }
@@ -349,7 +349,7 @@ ModemManager::ModemInterface::IpBearerFamilies ModemManager::ModemInterface::sup
     return (IpBearerFamilies)d->modemIface.supportedIpFamilies();
 }
 
-void ModemManager::ModemInterface::onPropertiesChanged(const QString & ifaceName, const QVariantMap & changedProps, const QStringList &invalidatedProps)
+void ModemManager::ModemInterface::onPropertiesChanged(const QString &ifaceName, const QVariantMap &changedProps, const QStringList &invalidatedProps)
 {
     Q_D(ModemInterface);
     mmDebug() << ifaceName << changedProps.keys();
@@ -406,7 +406,7 @@ void ModemManager::ModemInterface::onStateChanged(int oldState, int newState, ui
 
 /*** From org.freedesktop.ModemManager.Modem.Simple ***/
 
-QDBusObjectPath ModemManager::ModemInterface::connectModem(const QVariantMap & properties)
+QDBusObjectPath ModemManager::ModemInterface::connectModem(const QVariantMap &properties)
 {
     Q_D(ModemInterface);
     return d->modemSimpleIface.Connect(properties);

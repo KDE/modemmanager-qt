@@ -25,11 +25,12 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "mmdebug.h"
 
 ModemCdmaInterfacePrivate::ModemCdmaInterfacePrivate(const QString &path)
-    : InterfacePrivate(path), modemCdmaIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+    : InterfacePrivate(path)
+    , modemCdmaIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
 }
 
-ModemManager::ModemCdmaInterface::ModemCdmaInterface(const QString & path, QObject * parent)
+ModemManager::ModemCdmaInterface::ModemCdmaInterface(const QString &path, QObject *parent)
     : Interface(*new ModemCdmaInterfacePrivate(path), parent)
 {
     Q_D(ModemCdmaInterface);
@@ -48,7 +49,7 @@ void ModemManager::ModemCdmaInterface::activate(const QString &carrierCode)
     d->modemCdmaIface.Activate(carrierCode);
 }
 
-void ModemManager::ModemCdmaInterface::activateManual(const QVariantMap & properties)
+void ModemManager::ModemCdmaInterface::activateManual(const QVariantMap &properties)
 {
     Q_D(ModemCdmaInterface);
     d->modemCdmaIface.ActivateManual(properties);

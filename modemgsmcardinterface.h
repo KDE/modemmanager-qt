@@ -42,7 +42,7 @@ public:
     typedef QSharedPointer<ModemSimCardInterface> Ptr;
     typedef QList<Ptr> List;
 
-    explicit ModemSimCardInterface(const QString & path, QObject * parent = 0);
+    explicit ModemSimCardInterface(const QString &path, QObject *parent = 0);
     ~ModemSimCardInterface();
 
     // properties
@@ -52,10 +52,10 @@ public:
     QString operatorName() const;
 
     // methods
-    QDBusPendingReply<> sendPin(const QString & pin);
-    QDBusPendingReply<> sendPuk(const QString & puk, const QString & pin);
-    QDBusPendingReply<> enablePin(const QString & pin, bool enabled);
-    QDBusPendingReply<> changePin(const QString & oldPin, const QString & newPin);
+    QDBusPendingReply<> sendPin(const QString &pin);
+    QDBusPendingReply<> sendPuk(const QString &puk, const QString &pin);
+    QDBusPendingReply<> enablePin(const QString &pin, bool enabled);
+    QDBusPendingReply<> changePin(const QString &oldPin, const QString &newPin);
 
 protected:
     ModemSimCardInterface * d_ptr;

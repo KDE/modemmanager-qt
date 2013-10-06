@@ -44,12 +44,12 @@ public:
     typedef QSharedPointer<ModemCdmaInterface> Ptr;
     typedef QList<Ptr> List;
 
-    explicit ModemCdmaInterface(const QString & path, QObject * parent = 0);
+    explicit ModemCdmaInterface(const QString &path, QObject *parent = 0);
     ~ModemCdmaInterface();
 
     // methods
-    void activate(const QString & carrierCode);
-    void activateManual(const QVariantMap & properties);
+    void activate(const QString &carrierCode);
+    void activateManual(const QVariantMap &properties);
 
     // properties
     MMModemCdmaActivationState activationState() const;

@@ -70,7 +70,7 @@ public:
         QString number; // required for POTS
     };
 
-    explicit ModemInterface( const QString & path, QObject * parent = 0 );
+    explicit ModemInterface( const QString &path, QObject *parent = 0 );
     ~ModemInterface();
 
     QString uni() const;
@@ -82,16 +82,16 @@ public:
     void enable(bool enable);
 
     QStringList listBearers();
-    QString createBearer(const BearerStruct & bearer);
-    void deleteBearer(const QDBusObjectPath & bearer);
+    QString createBearer(const BearerStruct &bearer);
+    void deleteBearer(const QDBusObjectPath &bearer);
 
     void reset();
-    void factoryReset(const QString & code);
+    void factoryReset(const QString &code);
     void setPowerState(MMModemPowerState state);
     void setCurrentCapabilities(Capabilities caps);
-    void setCurrentModes(const CurrentModesType & mode);
-    void setCurrentBands(const QList<MMModemBand> & bands);
-    QString command(const QString & cmd, uint timeout);
+    void setCurrentModes(const CurrentModesType &mode);
+    void setCurrentBands(const QList<MMModemBand> &bands);
+    QString command(const QString &cmd, uint timeout);
 
     // properties
     QString simPath() const;
@@ -139,7 +139,7 @@ public:
     //  "number": For POTS devices the number to dial,, given as a string value (signature "s").
     //  "allow-roaming": FALSE to allow only connections to home networks, given as a boolean value (signature "b").
     //  "rm-protocol": For CDMA devices, the protocol of the Rm interface, given as a MMModemCdmaRmProtocol value (signature "u").
-    QDBusObjectPath connectModem(const QVariantMap & properties);
+    QDBusObjectPath connectModem(const QVariantMap &properties);
 
     //  Dictionary of properties.
     //  Each implementation is free to add it's own specific key-value pairs. The predefined
@@ -162,8 +162,8 @@ public:
     void disconnectAllModems();
 
 Q_SIGNALS:
-    void deviceChanged(const QString & device);
-    void driversChanged(const QStringList & drivers);
+    void deviceChanged(const QString &device);
+    void driversChanged(const QStringList &drivers);
     void enabledChanged(bool enabled);
     void unlockRequiredChanged(MMModemLock lock);
     void stateChanged(MMModemState oldState, MMModemState newState, MMModemStateChangeReason reason);

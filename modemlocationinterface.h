@@ -47,7 +47,7 @@ public:
 
     Q_DECLARE_FLAGS(LocationSources, MMModemLocationSource)
 
-    explicit ModemLocationInterface(const QString & path, QObject * parent = 0);
+    explicit ModemLocationInterface(const QString &path, QObject *parent = 0);
     ~ModemLocationInterface();
 
     // methods
@@ -63,10 +63,10 @@ Q_SIGNALS:
     void capabilitiesChanged(LocationSources sources);
     void isEnabledChanged(bool enabled);
     void signalsLocationChanged(bool signalsLocation);
-    void locationChanged(const LocationInformationMap & location);
+    void locationChanged(const LocationInformationMap &location);
 
 private Q_SLOTS:
-   void onPropertiesChanged(const QString & interface, const QVariantMap & properties, const QStringList &invalidatedProps);
+   void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps);
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(ModemLocationInterface::LocationSources)
