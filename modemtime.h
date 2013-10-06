@@ -18,8 +18,8 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_MODEMTIMEINTERFACE_H
-#define MODEMMANAGER_MODEMTIMEINTERFACE_H
+#ifndef MODEMMANAGER_MODEMTIME_H
+#define MODEMMANAGER_MODEMTIME_H
 
 #include "ModemManagerQt-export.h"
 #include "interface.h"
@@ -28,17 +28,17 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include <QDateTime>
 #include <QSharedPointer>
 
-class ModemTimeInterfacePrivate;
+class ModemTimePrivate;
 
 namespace ModemManager
 {
-class MODEMMANAGERQT_EXPORT ModemTimeInterface : public Interface
+class MODEMMANAGERQT_EXPORT ModemTime : public Interface
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(ModemTimeInterface)
+    Q_DECLARE_PRIVATE(ModemTime)
 
 public:
-    typedef QSharedPointer<ModemTimeInterface> Ptr;
+    typedef QSharedPointer<ModemTime> Ptr;
     typedef QList<Ptr> List;
 
     struct NetworkTimeZone {
@@ -47,8 +47,8 @@ public:
         int leap_seconds;
     };
 
-    explicit ModemTimeInterface(const QString &path, QObject *parent = 0);
-    ~ModemTimeInterface();
+    explicit ModemTime(const QString &path, QObject *parent = 0);
+    ~ModemTime();
 
     QDateTime networkTime();
 

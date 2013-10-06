@@ -19,23 +19,23 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "smsinterface.h"
-#include "smsinterface_p.h"
+#include "sms.h"
+#include "sms_p.h"
 
 #include "dbus/dbus.h"
 
 #include <ModemManager/ModemManager.h>
 
-SmsInterfacePrivate::SmsInterfacePrivate(const QString &path)
+SmsPrivate::SmsPrivate(const QString &path)
     : smsIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
 }
 
-ModemManager::SmsInterface::SmsInterface(const QString &path, QObject *parent)
+ModemManager::Sms::Sms(const QString &path, QObject *parent)
     : QObject(parent)
-    , d_ptr(new SmsInterfacePrivate(path))
+    , d_ptr(new SmsPrivate(path))
 {
-    Q_D(SmsInterface);
+    Q_D(Sms);
 
     d->dBusPath = path;
     d->state = (MMSmsState) d->smsIface.state();
@@ -57,12 +57,12 @@ ModemManager::SmsInterface::SmsInterface(const QString &path, QObject *parent)
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 }
 
-ModemManager::SmsInterface::~SmsInterface()
+ModemManager::Sms::~Sms()
 {
     delete d_ptr;
 }
 
-void ModemManager::SmsInterface::onPropertiesChanged(const QString &interfaceName, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
+void ModemManager::Sms::onPropertiesChanged(const QString &interfaceName, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
 {
     if (interfaceName == QString(MM_DBUS_INTERFACE_SMS)) {
         QLatin1String state(MM_SMS_PROPERTY_STATE);
@@ -80,7 +80,7 @@ void ModemManager::SmsInterface::onPropertiesChanged(const QString &interfaceNam
         QLatin1String deliveryState(MM_SMS_PROPERTY_DELIVERYSTATE);
         QLatin1String storage(MM_SMS_PROPERTY_STORAGE);
 
-        Q_D(SmsInterface);
+        Q_D(Sms);
 
         QVariantMap::const_iterator it = changedProperties.constFind(state);
         if (it != changedProperties.constEnd()) {
@@ -143,98 +143,98 @@ void ModemManager::SmsInterface::onPropertiesChanged(const QString &interfaceNam
     }
 }
 
-QDBusPendingReply<> ModemManager::SmsInterface::send()
+QDBusPendingReply<> ModemManager::Sms::send()
 {
-    Q_D(SmsInterface);
+    Q_D(Sms);
     return d->smsIface.Send();
 }
 
-QDBusPendingReply<> ModemManager::SmsInterface::store(MMSmsStorage storage)
+QDBusPendingReply<> ModemManager::Sms::store(MMSmsStorage storage)
 {
-    Q_D(SmsInterface);
+    Q_D(Sms);
     return d->smsIface.Store(storage);
 }
 
-MMSmsState ModemManager::SmsInterface::state() const
+MMSmsState ModemManager::Sms::state() const
 {
-    Q_D(const SmsInterface);
+    Q_D(const Sms);
     return d->state;
 }
 
-MMSmsPduType ModemManager::SmsInterface::pduType() const
+MMSmsPduType ModemManager::Sms::pduType() const
 {
-    Q_D(const SmsInterface);
+    Q_D(const Sms);
     return d->pduType;
 }
 
-QString ModemManager::SmsInterface::number() const
+QString ModemManager::Sms::number() const
 {
-    Q_D(const SmsInterface);
+    Q_D(const Sms);
     return d->number;
 }
 
-QString ModemManager::SmsInterface::text() const
+QString ModemManager::Sms::text() const
 {
-    Q_D(const SmsInterface);
+    Q_D(const Sms);
     return d->text;
 }
 
-QString ModemManager::SmsInterface::smsc() const
+QString ModemManager::Sms::smsc() const
 {
-    Q_D(const SmsInterface);
+    Q_D(const Sms);
     return d->smsc;
 }
 
-QByteArray ModemManager::SmsInterface::data() const
+QByteArray ModemManager::Sms::data() const
 {
-    Q_D(const SmsInterface);
+    Q_D(const Sms);
     return d->data;
 }
 
-ValidityPair ModemManager::SmsInterface::validity() const
+ValidityPair ModemManager::Sms::validity() const
 {
-    Q_D(const SmsInterface);
+    Q_D(const Sms);
     return d->validity;
 }
 
-int ModemManager::SmsInterface::smsClass() const
+int ModemManager::Sms::smsClass() const
 {
-    Q_D(const SmsInterface);
+    Q_D(const Sms);
     return d->smsClass;
 }
 
-bool ModemManager::SmsInterface::deliveryReportRequest() const
+bool ModemManager::Sms::deliveryReportRequest() const
 {
-    Q_D(const SmsInterface);
+    Q_D(const Sms);
     return d->deliveryReportRequest;
 }
 
-uint ModemManager::SmsInterface::messageReference() const
+uint ModemManager::Sms::messageReference() const
 {
-    Q_D(const SmsInterface);
+    Q_D(const Sms);
     return d->messageReference;
 }
 
-QDateTime ModemManager::SmsInterface::timestamp() const
+QDateTime ModemManager::Sms::timestamp() const
 {
-    Q_D(const SmsInterface);
+    Q_D(const Sms);
     return d->timestamp;
 }
 
-QDateTime ModemManager::SmsInterface::dischargeTimestamp() const
+QDateTime ModemManager::Sms::dischargeTimestamp() const
 {
-    Q_D(const SmsInterface);
+    Q_D(const Sms);
     return d->dischargeTimestamp;
 }
 
-MMSmsDeliveryState ModemManager::SmsInterface::deliveryState() const
+MMSmsDeliveryState ModemManager::Sms::deliveryState() const
 {
-    Q_D(const SmsInterface);
+    Q_D(const Sms);
     return d->deliveryState;
 }
 
-MMSmsStorage ModemManager::SmsInterface::storage() const
+MMSmsStorage ModemManager::Sms::storage() const
 {
-    Q_D(const SmsInterface);
+    Q_D(const Sms);
     return d->storage;
 }

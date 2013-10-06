@@ -18,8 +18,8 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_MODEMBEARERINTERFACE_H
-#define MODEMMANAGER_MODEMBEARERINTERFACE_H
+#ifndef MODEMMANAGER_BEARERINTERFACE_H
+#define MODEMMANAGER_BEARERINTERFACE_H
 
 #include "ModemManagerQt-export.h"
 
@@ -28,17 +28,17 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "generic-types.h"
 
-class ModemBearerInterfacePrivate;
+class BearerPrivate;
 
 namespace ModemManager
 {
-class MODEMMANAGERQT_EXPORT ModemBearerInterface: public QObject
+class MODEMMANAGERQT_EXPORT Bearer: public QObject
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(ModemBearerInterface)
+    Q_DECLARE_PRIVATE(Bearer)
 
 public:
-    typedef QSharedPointer<ModemBearerInterface> Ptr;
+    typedef QSharedPointer<Bearer> Ptr;
     typedef QList<Ptr> List;
 
     struct IpConfig {
@@ -51,8 +51,8 @@ public:
         QString gateway;
     };
 
-    ModemBearerInterface(const QString &path, QObject *parent = 0);
-    ~ModemBearerInterface();
+    Bearer(const QString &path, QObject *parent = 0);
+    ~Bearer();
 
     // properties
     QString interface() const;
@@ -78,7 +78,7 @@ private Q_SLOTS:
    void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps);
 
 protected:
-    ModemBearerInterface * d_ptr;
+    Bearer * d_ptr;
 };
 
 } // namespace ModemManager

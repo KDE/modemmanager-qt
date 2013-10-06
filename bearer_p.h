@@ -1,6 +1,5 @@
 /*
-Copyright 2008 Will Stephenson <wstephenson@kde.org>
-Copyright 2010 Lamarque Souza <lamarque@kde.org>
+Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -19,17 +18,17 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_MODEM3GPPINTERFACE_P_H
-#define MODEMMANAGER_MODEM3GPPINTERFACE_P_H
+#ifndef MODEMMANAGER_BEARER_P_H
+#define MODEMMANAGER_BEARER_P_H
 
-#include "dbus/Modem3gpp.h"
+#include "dbus/Bearer.h"
 #include "interface_p.h"
 
-class Modem3gppInterfacePrivate: public InterfacePrivate
+class BearerPrivate
 {
 public:
-    Modem3gppInterfacePrivate(const QString &path);
-    OrgFreedesktopModemManager1ModemModem3gppInterface modem3gppIface;
+    BearerPrivate(const QString &path);
+    OrgFreedesktopModemManager1BearerInterface bearerIface;
 };
 
 #endif

@@ -19,22 +19,17 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGERQT_MODEMINTERFACE_P_H
-#define MODEMMANAGERQT_MODEMINTERFACE_P_H
+#ifndef MODEMMANAGERQT_MODEMGSMUSSD_P_H
+#define MODEMMANAGERQT_MODEMGSMUSSD_P_H
 
-#include "dbus/Modem.h"
-#include "dbus/ModemSimple.h"
-
+#include "dbus/Modem3gppUssd.h"
 #include "interface_p.h"
 
-class ModemInterfacePrivate: public InterfacePrivate
+class Modem3gppUssdPrivate: public InterfacePrivate
 {
 public:
-    ModemInterfacePrivate(const QString &path);
-    OrgFreedesktopModemManager1ModemInterface modemIface;
-    OrgFreedesktopModemManager1ModemSimpleInterface modemSimpleIface;
-    QString device;
-    QStringList drivers;
+    Modem3gppUssdPrivate(const QString &path);
+    OrgFreedesktopModemManager1ModemModem3gppUssdInterface ussdIface;
 };
 
 #endif

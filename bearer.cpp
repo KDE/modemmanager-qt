@@ -18,53 +18,53 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "modembearerinterface.h"
-#include "modembearerinterface_p.h"
+#include "bearer.h"
+#include "bearer_p.h"
 #include "mmdebug.h"
 #include "dbus/dbus.h"
 
-ModemBearerInterfacePrivate::ModemBearerInterfacePrivate(const QString &path)
-    : modemBearerIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+BearerPrivate::BearerPrivate(const QString &path)
+    : bearerIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
 }
 
-ModemManager::ModemBearerInterface::ModemBearerInterface(const QString &path, QObject *parent)
+ModemManager::Bearer::Bearer(const QString &path, QObject *parent)
     : QObject(parent)
-    , d_ptr(new ModemBearerInterface(path))
+    , d_ptr(new Bearer(path))
 {
-    Q_D(ModemBearerInterface);
+    Q_D(Bearer);
 
     QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 }
 
-ModemManager::ModemBearerInterface::~ModemBearerInterface()
+ModemManager::Bearer::~Bearer()
 {
 }
 
-QString ModemManager::ModemBearerInterface::interface() const
+QString ModemManager::Bearer::interface() const
 {
-    Q_D(const ModemBearerInterface);
-    return d->modemBearerIface.interface();
+    Q_D(const Bearer);
+    return d->bearerIface.interface();
 }
 
-bool ModemManager::ModemBearerInterface::isConnected() const
+bool ModemManager::Bearer::isConnected() const
 {
-    Q_D(const ModemBearerInterface);
-    return d->modemBearerIface.connected();
+    Q_D(const Bearer);
+    return d->bearerIface.connected();
 }
 
-bool ModemManager::ModemBearerInterface::isSuspended() const
+bool ModemManager::Bearer::isSuspended() const
 {
-    Q_D(const ModemBearerInterface);
-    return d->modemBearerIface.suspended();
+    Q_D(const Bearer);
+    return d->bearerIface.suspended();
 }
 
-ModemManager::ModemBearerInterface::IpConfig ModemManager::ModemBearerInterface::ip4Config() const
+ModemManager::Bearer::IpConfig ModemManager::Bearer::ip4Config() const
 {
-    Q_D(const ModemBearerInterface);
+    Q_D(const Bearer);
     IpConfig result;
-    const QVariantMap map = d->modemBearerIface.ip4Config();
+    const QVariantMap map = d->bearerIface.ip4Config();
     result.method = (MMBearerIpMethod)map.value("method").toUInt();
 
     if (result.method == MM_BEARER_IP_METHOD_STATIC) {
@@ -79,11 +79,11 @@ ModemManager::ModemBearerInterface::IpConfig ModemManager::ModemBearerInterface:
     return result;
 }
 
-ModemManager::ModemBearerInterface::IpConfig ModemManager::ModemBearerInterface::ip6Config() const
+ModemManager::Bearer::IpConfig ModemManager::Bearer::ip6Config() const
 {
-    Q_D(const ModemBearerInterface);
+    Q_D(const Bearer);
     IpConfig result;
-    const QVariantMap map = d->modemBearerIface.ip6Config();
+    const QVariantMap map = d->bearerIface.ip6Config();
     result.method = (MMBearerIpMethod)map.value("method").toUInt();
 
     if (result.method == MM_BEARER_IP_METHOD_STATIC) {
@@ -98,31 +98,31 @@ ModemManager::ModemBearerInterface::IpConfig ModemManager::ModemBearerInterface:
     return result;
 }
 
-uint ModemManager::ModemBearerInterface::ipTimeout() const
+uint ModemManager::Bearer::ipTimeout() const
 {
-    Q_D(const ModemBearerInterface);
-    return d->modemBearerIface.ipTimeout();
+    Q_D(const Bearer);
+    return d->bearerIface.ipTimeout();
 }
 
-QVariantMap ModemManager::ModemBearerInterface::properties() const
+QVariantMap ModemManager::Bearer::properties() const
 {
-    Q_D(const ModemBearerInterface);
-    return d->modemBearerIface.properties();
+    Q_D(const Bearer);
+    return d->bearerIface.properties();
 }
 
-void ModemManager::ModemBearerInterface::connectBearer()
+void ModemManager::Bearer::connectBearer()
 {
-    Q_D(ModemBearerInterface);
-    d->modemBearerIface.Connect();
+    Q_D(Bearer);
+    d->bearerIface.Connect();
 }
 
-void ModemManager::ModemBearerInterface::disconnectBearer()
+void ModemManager::Bearer::disconnectBearer()
 {
-    Q_D(ModemBearerInterface);
-    d->modemBearerIface.Disconnect();
+    Q_D(Bearer);
+    d->bearerIface.Disconnect();
 }
 
-void ModemManager::ModemBearerInterface::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
+void ModemManager::Bearer::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
 {
     mmDebug() << interface << properties.keys();
 

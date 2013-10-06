@@ -20,31 +20,31 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "modemlocationinterface.h"
-#include "modemlocationinterface_p.h"
+#include "modemlocation.h"
+#include "modemlocation_p.h"
 #include "dbus/dbus.h"
 #include "mmdebug.h"
 
-ModemLocationInterfacePrivate::ModemLocationInterfacePrivate(const QString &path)
+ModemLocationPrivate::ModemLocationPrivate(const QString &path)
     : InterfacePrivate(path)
     , modemLocationIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
 }
 
-ModemManager::ModemLocationInterface::ModemLocationInterface(const QString &path, QObject *parent)
-    : Interface( *new ModemLocationInterfacePrivate(path), parent)
+ModemManager::ModemLocation::ModemLocation(const QString &path, QObject *parent)
+    : Interface( *new ModemLocationPrivate(path), parent)
 {
-    Q_D(ModemLocationInterface);
+    Q_D(ModemLocation);
 
     QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 }
 
-ModemManager::ModemLocationInterface::~ModemLocationInterface()
+ModemManager::ModemLocation::~ModemLocation()
 {
 }
 
-void ModemManager::ModemLocationInterface::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
+void ModemManager::ModemLocation::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
 {
     mmDebug() << interface << properties.keys();
 
@@ -56,7 +56,7 @@ void ModemManager::ModemLocationInterface::onPropertiesChanged(const QString &in
 
         QVariantMap::const_iterator it = properties.constFind(capabilities);
         if ( it != properties.constEnd()) {
-            emit capabilitiesChanged((ModemManager::ModemLocationInterface::LocationSources)it->toUInt());
+            emit capabilitiesChanged((ModemManager::ModemLocation::LocationSources)it->toUInt());
         }
         it = properties.constFind(enabled);
         if ( it != properties.constEnd()) {
@@ -80,15 +80,15 @@ void ModemManager::ModemLocationInterface::onPropertiesChanged(const QString &in
     }
 }
 
-void ModemManager::ModemLocationInterface::setup(ModemManager::ModemLocationInterface::LocationSources sources, bool signalLocation)
+void ModemManager::ModemLocation::setup(ModemManager::ModemLocation::LocationSources sources, bool signalLocation)
 {
-    Q_D(ModemLocationInterface);
+    Q_D(ModemLocation);
     d->modemLocationIface.Setup(sources, signalLocation);
 }
 
-LocationInformationMap ModemManager::ModemLocationInterface::location()
+LocationInformationMap ModemManager::ModemLocation::location()
 {
-    Q_D(ModemLocationInterface);
+    Q_D(ModemLocation);
     QDBusReply<LocationInformationMap> location = d->modemLocationIface.GetLocation();
 
     if (location.isValid()) {
@@ -98,20 +98,20 @@ LocationInformationMap ModemManager::ModemLocationInterface::location()
     return LocationInformationMap();
 }
 
-ModemManager::ModemLocationInterface::LocationSources ModemManager::ModemLocationInterface::capabilities() const
+ModemManager::ModemLocation::LocationSources ModemManager::ModemLocation::capabilities() const
 {
-    Q_D(const ModemLocationInterface);
+    Q_D(const ModemLocation);
     return (LocationSources)d->modemLocationIface.capabilities();
 }
 
-bool ModemManager::ModemLocationInterface::isEnabled() const
+bool ModemManager::ModemLocation::isEnabled() const
 {
-    Q_D(const ModemLocationInterface);
+    Q_D(const ModemLocation);
     return d->modemLocationIface.enabled();
 }
 
-bool ModemManager::ModemLocationInterface::signalsLocation() const
+bool ModemManager::ModemLocation::signalsLocation() const
 {
-    Q_D(const ModemLocationInterface);
+    Q_D(const ModemLocation);
     return d->modemLocationIface.signalsLocation();
 }

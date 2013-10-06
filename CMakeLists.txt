@@ -27,51 +27,53 @@ include_directories(
 #add_subdirectory(dbus)
 
 set(ModemManagerQt_HEADERS
+    dbus/generic-types.h
+    ModemManagerQt-export.h
+    bearer.h
     interface.h
     manager.h
     modem.h
-    modeminterface.h
-    modemlocationinterface.h
-    modemcdmainterface.h
-    modemgsmcardinterface.h
-    modemgsmnetworkinterface.h
-    modemgsmussdinterface.h
-    modemtimeinterface.h
-    modemmessaginginterface.h
-    modembearerinterface.h
-    smsinterface.h
-    ModemManagerQt-export.h
-    dbus/generic-types.h
+    modem3gpp.h
+    modem3gppussd.h
+    modemcdma.h
+    modemdevice.h
+    modemlocation.h
+    modemmessaging.h
+    modemtime.h
+    sim.h
+    sms.h
 )
 
 set(ModemManagerQt_PRIVATE_HEADERS
+    bearer_p.h
+    interface_p.h
     manager_p.h
-    modemcdmainterface_p.h
-    modemgsmcardinterface_p.h
-    modemgsmnetworkinterface_p.h
-    modemgsmussdinterface_p.h
-    modeminterface_p.h
-    modemlocationinterface_p.h
-    modemtimeinterface_p.h
-    modemmessaginginterface_p.h
-    modembearerinterface_p.h
-    smsinterface_p.h
+    modem_p.h
+    modem3gpp_p.h
+    modem3gppussd_p.h
+    modemcdma_p.h
+    modemdevice_p.h
+    modemlocation_p.h
+    modemmessaging_p.h
+    modemtime_p.h
+    sim_p.h
+    sms_p.h
 )
 
 set(ModemManagerQt_SRCS
-   interface.cpp
-   manager.cpp
-   modem.cpp
-   modeminterface.cpp
-   modemlocationinterface.cpp
-   modemcdmainterface.cpp
-   modemgsmcardinterface.cpp
-   modemgsmnetworkinterface.cpp
-   modemgsmussdinterface.cpp
-   modemtimeinterface.cpp
-   modemmessaginginterface.cpp
-   modembearerinterface.cpp
-   smsinterface.cpp
+    bearer.cpp
+    interface.cpp
+    manager.cpp
+    modem.cpp
+    modem3gpp.cpp
+    modem3gppussd.cpp
+    modemcdma.cpp
+    modemdevice.cpp
+    modemlocation.cpp
+    modemmessaging.cpp
+    modemtime.cpp
+    sim.cpp
+    sms.cpp
 )
 
 set( DBUS_INTERFACES_FILES

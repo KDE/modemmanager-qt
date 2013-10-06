@@ -19,17 +19,17 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGERQT_MODEMCDMAINTERFACE_P_H
-#define MODEMMANAGERQT_MODEMCDMAINTERFACE_P_H
+#ifndef MODEMMANAGER_MODEM3GPP_P_H
+#define MODEMMANAGER_MODEM3GPP_P_H
 
+#include "dbus/Modem3gpp.h"
 #include "interface_p.h"
-#include "dbus/ModemCdma.h"
 
-class ModemCdmaInterfacePrivate: public InterfacePrivate
+class Modem3gppPrivate: public InterfacePrivate
 {
 public:
-    ModemCdmaInterfacePrivate(const QString &path);
-    OrgFreedesktopModemManager1ModemModemCdmaInterface modemCdmaIface;
+    Modem3gppPrivate(const QString &path);
+    OrgFreedesktopModemManager1ModemModem3gppInterface modem3gppIface;
 };
 
 #endif

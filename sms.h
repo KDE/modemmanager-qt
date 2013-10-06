@@ -19,8 +19,8 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_SMSINTERFACE_H
-#define MODEMMANAGER_SMSINTERFACE_H
+#ifndef MODEMMANAGER_SMS_H
+#define MODEMMANAGER_SMS_H
 
 #include "ModemManagerQt-export.h"
 
@@ -30,7 +30,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "generic-types.h"
 
-class SmsInterfacePrivate;
+class SmsPrivate;
 
 namespace ModemManager
 {
@@ -40,17 +40,17 @@ namespace ModemManager
 * Note: MMSmsStorage, MMSmsState, MMSmsPduType and MMSmsDeliveryState enums are defined in <ModemManager/ModemManager-enums.h>
 * See http://www.freedesktop.org/software/ModemManager/api/0.8.0/ModemManager-Flags-and-Enumerations.html
 */
-class MODEMMANAGERQT_EXPORT SmsInterface : public QObject
+class MODEMMANAGERQT_EXPORT Sms : public QObject
 {
 Q_OBJECT
-Q_DECLARE_PRIVATE(SmsInterface)
+Q_DECLARE_PRIVATE(Sms)
 
 public:
-    typedef QSharedPointer<SmsInterface> Ptr;
+    typedef QSharedPointer<Sms> Ptr;
     typedef QList<Ptr> List;
 
-    SmsInterface(const QString &path, QObject *parent);
-    ~SmsInterface();
+    Sms(const QString &path, QObject *parent);
+    ~Sms();
 
     /**
     * Send the SMS
@@ -157,7 +157,7 @@ private Q_SLOTS:
     void onPropertiesChanged(const QString &interface, const QVariantMap &changedProperties, const QStringList &invalidatedProps);
 
 private:
-    SmsInterfacePrivate *d_ptr;
+    SmsPrivate *d_ptr;
 };
 
 } // namespace ModemManager

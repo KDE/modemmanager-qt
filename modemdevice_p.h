@@ -1,4 +1,5 @@
 /*
+    Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
     Copyright 2013 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
@@ -18,42 +19,26 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGERQT_INTERFACE_H
-#define MODEMMANAGERQT_INTERFACE_H
-
-#include "ModemManagerQt-export.h"
+#ifndef MODEMMANAGERQT_MODEMDEVICE_P_H
+#define MODEMMANAGERQT_MODEMDEVICE_P_H
 
 #include <QObject>
-#include <QVariant>
-#include <QSharedPointer>
-#include <QDBusObjectPath>
+#include <QStringList>
+#include <QMap>
 
-#include "generic-types.h"
+#include "modemdevice.h"
+#include "interface.h"
 
-class InterfacePrivate;
-
-namespace ModemManager
+class ModemDevicePrivate
 {
-class MODEMMANAGERQT_EXPORT Interface : public QObject
-{
-    Q_OBJECT
-    Q_DECLARE_PRIVATE(Interface)
-
-    Q_PROPERTY(QString uni READ uni)
-
 public:
-    typedef QSharedPointer<Interface> Ptr;
-    typedef QList<Ptr> List;
-
-    explicit Interface(const QString &path, QObject *parent = 0);
-    Interface(InterfacePrivate &dd, QObject *parent = 0);
-    virtual ~Interface();
-
-    QString uni() const;
-
-protected:
-    InterfacePrivate * d_ptr;
+    ModemDevicePrivate(const QString &path);
+    virtual ~ModemDevicePrivate();
+    QString uni;
+    QMap<ModemManager::ModemDevice::InterfaceType, ModemManager::Interface::Ptr> interfaceList;
+    ModemManager::Interface::List interfaces() ;
+    ModemManager::Interface::Ptr interface(ModemManager::ModemDevice::InterfaceType type);
+    ModemManager::Interface::Ptr createInterface(ModemManager::ModemDevice::InterfaceType type);
 };
-} // namespace ModemManager
 
 #endif

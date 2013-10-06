@@ -1,6 +1,6 @@
 /*
-Copyright 2013 Anant Kamath <kamathanant@gmail.com>
-Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
+Copyright 2008 Will Stephenson <wstephenson@kde.org>
+Copyright 2010 Lamarque Souza <lamarque@kde.org>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -19,21 +19,17 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_MODEMMESSAGINGINTERFACE_P_H
-#define MODEMMANAGER_MODEMMESSAGINGINTERFACE_P_H
+#ifndef MODEMMANAGER_SIM_P_H
+#define MODEMMANAGER_SIM_P_H
 
+#include "dbus/Sim.h"
 #include "interface_p.h"
-#include "dbus/Messaging.h"
 
-class ModemMessagingInterfacePrivate: public InterfacePrivate
+class SimPrivate
 {
 public:
-    ModemMessagingInterfacePrivate(const QString &path);
-    OrgFreedesktopModemManager1ModemMessagingInterface modemMessagingIface;
-
-    QList<QDBusObjectPath> messageList;
-    QList<MMSmsStorage> supportedStorages;
-    MMSmsStorage defaultStorage;
+    SimPrivate(const QString &path);
+    OrgFreedesktopModemManager1SimInterface simIface;
 };
 
 #endif

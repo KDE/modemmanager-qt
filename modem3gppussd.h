@@ -20,8 +20,8 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_MODEM3GPPINTERFACE_H
-#define MODEMMANAGER_MODEM3GPPINTERFACE_H
+#ifndef MODEMMANAGERQT_MODEMGSMUSSD_H
+#define MODEMMANAGERQT_MODEMGSMUSSD_H
 
 #include "ModemManagerQt-export.h"
 
@@ -31,51 +31,41 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "generic-types.h"
 #include "interface.h"
 
-class Modem3gppInterfacePrivate;
+class Modem3gppUssdPrivate;
 
 namespace ModemManager
 {
-class MODEMMANAGERQT_EXPORT Modem3gppInterface : public Interface
+class MODEMMANAGERQT_EXPORT Modem3gppUssd : public Interface
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(Modem3gppInterface)
-    Q_FLAGS(MMModem3gppFacility)
+    Q_DECLARE_PRIVATE(Modem3gppUssd)
 
 public:
-    typedef QSharedPointer<Modem3gppInterface> Ptr;
+    typedef QSharedPointer<Modem3gppUssd> Ptr;
     typedef QList<Ptr> List;
 
-    Q_DECLARE_FLAGS(FacilityLocks, MMModem3gppFacility)
-
-    explicit Modem3gppInterface(const QString &path, QObject *parent = 0);
-    ~Modem3gppInterface();
-
-    // properties
-    QString imei() const;
-    MMModem3gppRegistrationState registrationState() const;
-    QString operatorCode() const;
-    QString operatorName() const;
-    FacilityLocks enabledFacilityLocks() const;
+    explicit Modem3gppUssd(const QString &path, QObject *parent = 0);
+    ~Modem3gppUssd();
 
     // methods
-    /**
-      * Register the device to network.
-      *
-      * @param networkId the network ID to register. An empty string can be used to register to the home network.
-    */
-    void registerToNetwork(const QString &networkId = QString());
+    QString initiate(const QString &command);
+    QString respond(const QString &response);
+    void cancel();
 
-    QDBusPendingReply<ScanResultsType> scan();
+    // properties
+    MMModem3gppUssdSessionState state() const;
+    QString networkNotification() const;
+    QString networkRequest() const;
 
 Q_SIGNALS:
-    void registrationStateChanged(MMModem3gppRegistrationState registrationState);
-    void enabledFacilityLocksChanged(FacilityLocks locks);
+    // properties
+    void stateChanged(MMModem3gppUssdSessionState state);
+    void networkNotificationChanged(const QString &networkNotification);
+    void networkRequestChanged(const QString &networkRequest);
 
 private Q_SLOTS:
     void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps);
 };
-
-Q_DECLARE_OPERATORS_FOR_FLAGS(Modem3gppInterface::FacilityLocks)
 
 } // namespace ModemManager
 

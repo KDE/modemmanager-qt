@@ -19,25 +19,25 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "modemmessaginginterface.h"
-#include "modemmessaginginterface_p.h"
+#include "modemmessaging.h"
+#include "modemmessaging_p.h"
 
 #include "dbus/dbus.h"
 #include "mmdebug.h"
 
-#include "smsinterface.h"
+#include "sms.h"
 #include <ModemManager/ModemManager.h>
 
-ModemMessagingInterfacePrivate::ModemMessagingInterfacePrivate(const QString &path)
+ModemMessagingPrivate::ModemMessagingPrivate(const QString &path)
     : InterfacePrivate(path)
     , modemMessagingIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
 }
 
-ModemManager::ModemMessagingInterface::ModemMessagingInterface(const QString &path, QObject *parent)
-    : Interface(*new ModemMessagingInterfacePrivate(path), parent)
+ModemManager::ModemMessaging::ModemMessaging(const QString &path, QObject *parent)
+    : Interface(*new ModemMessagingPrivate(path), parent)
 {
-    Q_D(ModemMessagingInterface);
+    Q_D(ModemMessaging);
 
     QList<MMSmsStorage> storages;
     foreach (uint storage, d->modemMessagingIface.supportedStorages()) {
@@ -56,17 +56,17 @@ ModemManager::ModemMessagingInterface::ModemMessagingInterface(const QString &pa
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 }
 
-ModemManager::ModemMessagingInterface::~ModemMessagingInterface()
+ModemManager::ModemMessaging::~ModemMessaging()
 {
 }
 
-void ModemManager::ModemMessagingInterface::onPropertiesChanged(const QString &interfaceName, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
+void ModemManager::ModemMessaging::onPropertiesChanged(const QString &interfaceName, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
 {
     if (interfaceName == QString(MM_DBUS_INTERFACE_MODEM_MESSAGING)) {
         QLatin1String supportedStorages(MM_MODEM_MESSAGING_PROPERTY_SUPPORTEDSTORAGES);
         QLatin1String defaultStorage(MM_MODEM_MESSAGING_PROPERTY_DEFAULTSTORAGE);
 
-        Q_D(ModemMessagingInterface);
+        Q_D(ModemMessaging);
 
         QVariantMap::const_iterator it = changedProperties.constFind(supportedStorages);
         if (it != changedProperties.constEnd()) {
@@ -83,21 +83,21 @@ void ModemManager::ModemMessagingInterface::onPropertiesChanged(const QString &i
     }
 }
 
-void ModemManager::ModemMessagingInterface::onMessageAdded(const QDBusObjectPath &path, bool received)
+void ModemManager::ModemMessaging::onMessageAdded(const QDBusObjectPath &path, bool received)
 {
-    Q_D(ModemMessagingInterface);
+    Q_D(ModemMessaging);
     d->messageList.append(path);
 }
 
-void ModemManager::ModemMessagingInterface::onMessageDeleted(const QDBusObjectPath &path)
+void ModemManager::ModemMessaging::onMessageDeleted(const QDBusObjectPath &path)
 {
-    Q_D(ModemMessagingInterface);
+    Q_D(ModemMessaging);
     d->messageList.removeOne(path);
 }
 
-QList<MMSmsStorage> ModemManager::ModemMessagingInterface::supportedStorages() const
+QList<MMSmsStorage> ModemManager::ModemMessaging::supportedStorages() const
 {
-    Q_D(const ModemMessagingInterface);
+    Q_D(const ModemMessaging);
     QList<MMSmsStorage> result;
 
     foreach (uint storage, d->modemMessagingIface.supportedStorages()) {
@@ -107,32 +107,32 @@ QList<MMSmsStorage> ModemManager::ModemMessagingInterface::supportedStorages() c
     return result;
 }
 
-MMSmsStorage ModemManager::ModemMessagingInterface::defaultStorage() const
+MMSmsStorage ModemManager::ModemMessaging::defaultStorage() const
 {
-    Q_D(const ModemMessagingInterface);
+    Q_D(const ModemMessaging);
     return d->defaultStorage;
 }
 
-QList<QDBusObjectPath> ModemManager::ModemMessagingInterface::listMessages()
+QList<QDBusObjectPath> ModemManager::ModemMessaging::listMessages()
 {
-    Q_D(ModemMessagingInterface);
+    Q_D(ModemMessaging);
     return d->messageList;
 }
 
-QDBusPendingReply<QDBusObjectPath> ModemManager::ModemMessagingInterface::createMessage(const QVariantMap &properties)
+QDBusPendingReply<QDBusObjectPath> ModemManager::ModemMessaging::createMessage(const QVariantMap &properties)
 {
-    Q_D(ModemMessagingInterface);
+    Q_D(ModemMessaging);
     return d->modemMessagingIface.Create(properties);
 }
 
-QDBusPendingReply<> ModemManager::ModemMessagingInterface::deleteMessage(const QDBusObjectPath &path)
+QDBusPendingReply<> ModemManager::ModemMessaging::deleteMessage(const QDBusObjectPath &path)
 {
-    Q_D(ModemMessagingInterface);
+    Q_D(ModemMessaging);
     return d->modemMessagingIface.Delete(path);
 }
 
-ModemManager::SmsInterface::Ptr ModemManager::ModemMessagingInterface::createSmsInterface(const QDBusObjectPath &path)
+ModemManager::Sms::Ptr ModemManager::ModemMessaging::createSms(const QDBusObjectPath &path)
 {
-    Q_D(ModemMessagingInterface);
-    return SmsInterface::Ptr(new ModemManager::SmsInterface(path.path(), this));
+    Q_D(ModemMessaging);
+    return Sms::Ptr(new ModemManager::Sms(path.path(), this));
 }

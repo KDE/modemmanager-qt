@@ -20,35 +20,35 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "modemgsmcardinterface.h"
-#include "modemgsmcardinterface_p.h"
+#include "sim.h"
+#include "sim_p.h"
 #include "mmdebug.h"
 
-ModemSimCardInterfacePrivate::ModemSimCardInterfacePrivate(const QString &path)
-    : modemSimCardIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+SimPrivate::SimPrivate(const QString &path)
+    : simIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
 }
 
-ModemManager::ModemSimCardInterface::ModemSimCardInterface(const QString &path, QObject *parent)
+ModemManager::Sim::Sim(const QString &path, QObject *parent)
     : QObject(parent)
-    , d_ptr(new ModemSimCardInterface(path))
+    , d_ptr(new Sim(path))
 {
-    Q_D(ModemSimCardInterface);
+    Q_D(Sim);
 
 #if 0
-    d->modemSimCardIface.connection().connect(ModemManager::DBUS_SERVICE,
+    d->simIface.connection().connect(ModemManager::DBUS_SERVICE,
         path, QLatin1String("org.freedesktop.DBus.Properties"),
         QLatin1String("MmPropertiesChanged"), QLatin1String("sa{sv}"),
         this, SLOT(propertiesChanged(QString,QVariantMap)));
 #endif
 }
 
-ModemManager::ModemSimCardInterface::~ModemSimCardInterface()
+ModemManager::Sim::~Sim()
 {
 }
 
 #if 0
-void ModemManager::ModemSimCardInterface::propertiesChanged(const QString &interface, const QVariantMap &properties)
+void ModemManager::Sim::propertiesChanged(const QString &interface, const QVariantMap &properties)
 {
     mmDebug() << interface << properties.keys();
 
@@ -61,12 +61,12 @@ void ModemManager::ModemSimCardInterface::propertiesChanged(const QString &inter
 
         QVariantMap::const_iterator it = properties.find(supportedBands);
         if ( it != properties.end()) {
-            d->supportedBands = (ModemManager::ModemInterface::Band) it->toInt();
+            d->supportedBands = (ModemManager::Modem::Band) it->toInt();
             emit supportedBandsChanged(d->supportedBands);
         }
         it = properties.find(supportedModes);
         if ( it != properties.end()) {
-            d->supportedModes = (ModemManager::ModemInterface::Mode) it->toInt();
+            d->supportedModes = (ModemManager::Modem::Mode) it->toInt();
             emit supportedModesChanged(d->supportedModes);
         }
         it = properties.find(simIdentifier);
@@ -78,50 +78,50 @@ void ModemManager::ModemSimCardInterface::propertiesChanged(const QString &inter
 }
 #endif
 
-QString ModemManager::ModemSimCardInterface::simIdentifier() const
+QString ModemManager::Sim::simIdentifier() const
 {
-    Q_D(const ModemSimCardInterface);
-    return d->modemSimCardIface.simIdentifier();
+    Q_D(const Sim);
+    return d->simIface.simIdentifier();
 }
 
-QString ModemManager::ModemSimCardInterface::imsi() const
+QString ModemManager::Sim::imsi() const
 {
-    Q_D(const ModemSimCardInterface);
-    return d->modemSimCardIface.imsi();
+    Q_D(const Sim);
+    return d->simIface.imsi();
 }
 
-QString ModemManager::ModemSimCardInterface::operatorIdentifier() const
+QString ModemManager::Sim::operatorIdentifier() const
 {
-    Q_D(const ModemSimCardInterface);
-    return d->modemSimCardIface.operatorIdentifier();
+    Q_D(const Sim);
+    return d->simIface.operatorIdentifier();
 }
 
-QString ModemManager::ModemSimCardInterface::operatorName() const
+QString ModemManager::Sim::operatorName() const
 {
-    Q_D(const ModemSimCardInterface);
-    return d->modemSimCardIface.operatorName();
+    Q_D(const Sim);
+    return d->simIface.operatorName();
 }
 
-QDBusPendingReply<> ModemManager::ModemSimCardInterface::sendPuk(const QString &puk, const QString &pin)
+QDBusPendingReply<> ModemManager::Sim::sendPuk(const QString &puk, const QString &pin)
 {
-    Q_D(ModemSimCardInterface);
-    return d->modemSimCardIface.SendPuk(puk, pin);
+    Q_D(Sim);
+    return d->simIface.SendPuk(puk, pin);
 }
 
-QDBusPendingReply<> ModemManager::ModemSimCardInterface::sendPin(const QString &pin)
+QDBusPendingReply<> ModemManager::Sim::sendPin(const QString &pin)
 {
-    Q_D(ModemSimCardInterface);
-    return d->modemSimCardIface.SendPin(pin);
+    Q_D(Sim);
+    return d->simIface.SendPin(pin);
 }
 
-QDBusPendingReply<> ModemManager::ModemSimCardInterface::enablePin(const QString &pin, bool enabled)
+QDBusPendingReply<> ModemManager::Sim::enablePin(const QString &pin, bool enabled)
 {
-    Q_D(ModemSimCardInterface);
-    return d->modemSimCardIface.EnablePin(pin, enabled);
+    Q_D(Sim);
+    return d->simIface.EnablePin(pin, enabled);
 }
 
-QDBusPendingReply<> ModemManager::ModemSimCardInterface::changePin(const QString &oldPin, const QString &newPin)
+QDBusPendingReply<> ModemManager::Sim::changePin(const QString &oldPin, const QString &newPin)
 {
-    Q_D(ModemSimCardInterface);
-    return d->modemSimCardIface.ChangePin(oldPin, newPin);
+    Q_D(Sim);
+    return d->simIface.ChangePin(oldPin, newPin);
 }

@@ -20,84 +20,84 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "modemcdmainterface.h"
-#include "modemcdmainterface_p.h"
+#include "modemcdma.h"
+#include "modemcdma_p.h"
 #include "mmdebug.h"
 
-ModemCdmaInterfacePrivate::ModemCdmaInterfacePrivate(const QString &path)
+ModemCdmaPrivate::ModemCdmaPrivate(const QString &path)
     : InterfacePrivate(path)
     , modemCdmaIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
 }
 
-ModemManager::ModemCdmaInterface::ModemCdmaInterface(const QString &path, QObject *parent)
-    : Interface(*new ModemCdmaInterfacePrivate(path), parent)
+ModemManager::ModemCdma::ModemCdma(const QString &path, QObject *parent)
+    : Interface(*new ModemCdmaPrivate(path), parent)
 {
-    Q_D(ModemCdmaInterface);
+    Q_D(ModemCdma);
 
     connect(&d->modemCdmaIface, SIGNAL(ActivationStateChanged(uint,uint,QVariantMap)),
             SLOT(onActivationStateChanged(uint,uint,QVariantMap)));
 }
 
-ModemManager::ModemCdmaInterface::~ModemCdmaInterface()
+ModemManager::ModemCdma::~ModemCdma()
 {
 }
 
-void ModemManager::ModemCdmaInterface::activate(const QString &carrierCode)
+void ModemManager::ModemCdma::activate(const QString &carrierCode)
 {
-    Q_D(ModemCdmaInterface);
+    Q_D(ModemCdma);
     d->modemCdmaIface.Activate(carrierCode);
 }
 
-void ModemManager::ModemCdmaInterface::activateManual(const QVariantMap &properties)
+void ModemManager::ModemCdma::activateManual(const QVariantMap &properties)
 {
-    Q_D(ModemCdmaInterface);
+    Q_D(ModemCdma);
     d->modemCdmaIface.ActivateManual(properties);
 }
 
-MMModemCdmaActivationState ModemManager::ModemCdmaInterface::activationState() const
+MMModemCdmaActivationState ModemManager::ModemCdma::activationState() const
 {
-    Q_D(const ModemCdmaInterface);
+    Q_D(const ModemCdma);
     return (MMModemCdmaActivationState)d->modemCdmaIface.activationState();
 }
 
-QString ModemManager::ModemCdmaInterface::meid() const
+QString ModemManager::ModemCdma::meid() const
 {
-    Q_D(const ModemCdmaInterface);
+    Q_D(const ModemCdma);
     return d->modemCdmaIface.meid();
 }
 
-QString ModemManager::ModemCdmaInterface::esn() const
+QString ModemManager::ModemCdma::esn() const
 {
-    Q_D(const ModemCdmaInterface);
+    Q_D(const ModemCdma);
     return d->modemCdmaIface.esn();
 }
 
-uint ModemManager::ModemCdmaInterface::sid() const
+uint ModemManager::ModemCdma::sid() const
 {
-    Q_D(const ModemCdmaInterface);
+    Q_D(const ModemCdma);
     return d->modemCdmaIface.sid();
 }
 
-uint ModemManager::ModemCdmaInterface::nid() const
+uint ModemManager::ModemCdma::nid() const
 {
-    Q_D(const ModemCdmaInterface);
+    Q_D(const ModemCdma);
     return d->modemCdmaIface.nid();
 }
 
-MMModemCdmaRegistrationState ModemManager::ModemCdmaInterface::cdma1xRegistrationState() const
+MMModemCdmaRegistrationState ModemManager::ModemCdma::cdma1xRegistrationState() const
 {
-    Q_D(const ModemCdmaInterface);
+    Q_D(const ModemCdma);
     return (MMModemCdmaRegistrationState)d->modemCdmaIface.cdma1xRegistrationState();
 }
 
-MMModemCdmaRegistrationState ModemManager::ModemCdmaInterface::evdoRegistrationState() const
+MMModemCdmaRegistrationState ModemManager::ModemCdma::evdoRegistrationState() const
 {
-    Q_D(const ModemCdmaInterface);
+    Q_D(const ModemCdma);
     return (MMModemCdmaRegistrationState)d->modemCdmaIface.evdoRegistrationState();
 }
 
-void ModemManager::ModemCdmaInterface::onActivationStateChanged(uint activation_state, uint activation_error, const QVariantMap &status_changes)
+void ModemManager::ModemCdma::onActivationStateChanged(uint activation_state, uint activation_error, const QVariantMap &status_changes)
 {
     emit activationStateChanged((MMModemCdmaActivationState)activation_state, (MMCdmaActivationError)activation_error, status_changes);
 }

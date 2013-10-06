@@ -19,17 +19,17 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_MODEMSIMCARDINTERFACE_P_H
-#define MODEMMANAGER_MODEMSIMCARDINTERFACE_P_H
+#ifndef MODEMMANAGERQT_MODEMLOCATION_P_H
+#define MODEMMANAGERQT_MODEMLOCATION_P_H
 
-#include "dbus/Sim.h"
 #include "interface_p.h"
+#include "dbus/Location.h"
 
-class ModemSimCardInterfacePrivate
+class ModemLocationPrivate: public InterfacePrivate
 {
 public:
-    ModemSimCardInterfacePrivate(const QString &path);
-    OrgFreedesktopModemManager1SimInterface modemSimCardIface;
+    ModemLocationPrivate(const QString &path);
+    OrgFreedesktopModemManager1ModemLocationInterface modemLocationIface;
 };
 
 #endif

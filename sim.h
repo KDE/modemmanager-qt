@@ -20,8 +20,8 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_MODEMSIMCARDINTERFACE_H
-#define MODEMMANAGER_MODEMSIMCARDINTERFACE_H
+#ifndef MODEMMANAGER_SIM_H
+#define MODEMMANAGER_SIM_H
 
 #include "ModemManagerQt-export.h"
 
@@ -29,21 +29,21 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include <QSharedPointer>
 #include <QDBusPendingReply>
 
-class ModemSimCardInterfacePrivate;
+class SimPrivate;
 
 namespace ModemManager
 {
-class MODEMMANAGERQT_EXPORT ModemSimCardInterface : public QObject
+class MODEMMANAGERQT_EXPORT Sim : public QObject
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(ModemSimCardInterface)
+    Q_DECLARE_PRIVATE(Sim)
 
 public:
-    typedef QSharedPointer<ModemSimCardInterface> Ptr;
+    typedef QSharedPointer<Sim> Ptr;
     typedef QList<Ptr> List;
 
-    explicit ModemSimCardInterface(const QString &path, QObject *parent = 0);
-    ~ModemSimCardInterface();
+    explicit Sim(const QString &path, QObject *parent = 0);
+    ~Sim();
 
     // properties
     QString simIdentifier() const;
@@ -58,7 +58,7 @@ public:
     QDBusPendingReply<> changePin(const QString &oldPin, const QString &newPin);
 
 protected:
-    ModemSimCardInterface * d_ptr;
+    Sim * d_ptr;
 #if 0
 Q_SIGNALS:
 

@@ -1,6 +1,4 @@
 /*
-Copyright 2008 Will Stephenson <wstephenson@kde.org>
-Copyright 2010 Lamarque Souza <lamarque@kde.org>
 Copyright 2013 Anant Kamath <kamathanant@gmail.com>
 Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
 
@@ -21,33 +19,21 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_SMSINTERFACE_P_H
-#define MODEMMANAGER_SMSINTERFACE_P_H
+#ifndef MODEMMANAGER_MODEMMESSAGING_P_H
+#define MODEMMANAGER_MODEMMESSAGING_P_H
 
-#include "dbus/Sms.h"
+#include "interface_p.h"
+#include "dbus/Messaging.h"
 
-class SmsInterfacePrivate
+class ModemMessagingPrivate: public InterfacePrivate
 {
 public:
-    explicit SmsInterfacePrivate(const QString &path);
-    OrgFreedesktopModemManager1SmsInterface smsIface;
+    ModemMessagingPrivate(const QString &path);
+    OrgFreedesktopModemManager1ModemMessagingInterface modemMessagingIface;
 
-    QString dBusPath;
-    MMSmsState state;
-    MMSmsPduType pduType;
-    QString number;
-    QString text;
-    QString smsc;
-    QByteArray data;
-    ValidityPair validity;
-    int smsClass;
-    bool deliveryReportRequest;
-    uint messageReference;
-    QDateTime timestamp;
-    QDateTime dischargeTimestamp;
-    MMSmsDeliveryState deliveryState;
-    MMSmsStorage storage;
+    QList<QDBusObjectPath> messageList;
+    QList<MMSmsStorage> supportedStorages;
+    MMSmsStorage defaultStorage;
 };
 
 #endif
-

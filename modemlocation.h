@@ -20,56 +20,57 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGERQT_MODEMCDMAINTERFACE_H
-#define MODEMMANAGERQT_MODEMCDMAINTERFACE_H
+#ifndef MODEMMANAGERQT_MODEMLOCATION_H
+#define MODEMMANAGERQT_MODEMLOCATION_H
 
 #include "ModemManagerQt-export.h"
 
 #include <QObject>
 #include <QSharedPointer>
-#include <QVariant>
 
 #include "generic-types.h"
 #include "interface.h"
 
-class ModemCdmaInterfacePrivate;
+class ModemLocationPrivate;
 
-namespace ModemManager {
-
-class MODEMMANAGERQT_EXPORT ModemCdmaInterface : public Interface
+namespace ModemManager
+{
+class MODEMMANAGERQT_EXPORT ModemLocation : public Interface
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(ModemCdmaInterface)
+    Q_DECLARE_PRIVATE(ModemLocation)
+    Q_FLAGS(MMModemLocationSource)
+
 public:
-    typedef QSharedPointer<ModemCdmaInterface> Ptr;
+    typedef QSharedPointer<ModemLocation> Ptr;
     typedef QList<Ptr> List;
 
-    explicit ModemCdmaInterface(const QString &path, QObject *parent = 0);
-    ~ModemCdmaInterface();
+    Q_DECLARE_FLAGS(LocationSources, MMModemLocationSource)
+
+    explicit ModemLocation(const QString &path, QObject *parent = 0);
+    ~ModemLocation();
 
     // methods
-    void activate(const QString &carrierCode);
-    void activateManual(const QVariantMap &properties);
+    void setup(ModemManager::ModemLocation::LocationSources sources, bool signalLocation);
+    LocationInformationMap location(); // TODO process this better
 
     // properties
-    MMModemCdmaActivationState activationState() const;
-    QString meid() const;
-    QString esn() const;
-    uint sid() const;
-    uint nid() const;
-    MMModemCdmaRegistrationState cdma1xRegistrationState() const;
-    MMModemCdmaRegistrationState evdoRegistrationState() const;
-
-private slots:
-    void onActivationStateChanged(uint activation_state, uint activation_error, const QVariantMap &status_changes);
+    LocationSources capabilities() const;
+    bool isEnabled() const;
+    bool signalsLocation() const;
 
 Q_SIGNALS:
-    /**
-     * This signal is emitted when the activation info this network changes
-     *
-     */
-    void activationStateChanged(MMModemCdmaActivationState state, MMCdmaActivationError error, const QVariantMap &status_changes);
+    void capabilitiesChanged(LocationSources sources);
+    void isEnabledChanged(bool enabled);
+    void signalsLocationChanged(bool signalsLocation);
+    void locationChanged(const LocationInformationMap &location);
+
+private Q_SLOTS:
+   void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps);
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(ModemLocation::LocationSources)
+
 } // namespace ModemManager
 
 #endif

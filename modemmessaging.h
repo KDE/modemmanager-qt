@@ -19,31 +19,31 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_MODEMMESSAGINGINTERFACE_H
-#define MODEMMANAGER_MODEMMESSAGINGINTERFACE_H
+#ifndef MODEMMANAGER_MODEMMESSAGING_H
+#define MODEMMANAGER_MODEMMESSAGING_H
 
 #include "ModemManagerQt-export.h"
 
 #include <QObject>
 #include <QSharedPointer>
 
-#include "smsinterface.h"
+#include "sms.h"
 #include "generic-types.h"
 #include "interface.h"
 
-class ModemMessagingInterfacePrivate;
+class ModemMessagingPrivate;
 
 namespace ModemManager
 {
-class MODEMMANAGERQT_EXPORT ModemMessagingInterface : public Interface
+class MODEMMANAGERQT_EXPORT ModemMessaging : public Interface
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(ModemMessagingInterface)
+    Q_DECLARE_PRIVATE(ModemMessaging)
 
 public:
 
-    explicit ModemMessagingInterface(const QString &path, QObject *parent = 0);
-    ~ModemMessagingInterface();
+    explicit ModemMessaging(const QString &path, QObject *parent = 0);
+    ~ModemMessaging();
 
     // properties
     QList<MMSmsStorage> supportedStorages() const;
@@ -66,9 +66,9 @@ public:
     QDBusPendingReply<> deleteMessage(const QDBusObjectPath &path);
 
     /**
-     * Create a new SmsInterface object for a particular message
+     * Create a new Sms object for a particular message
      */
-    ModemManager::SmsInterface::Ptr createSmsInterface(const QDBusObjectPath &path);
+    ModemManager::Sms::Ptr createSms(const QDBusObjectPath &path);
 
 private Q_SLOTS:
     void onPropertiesChanged(const QString &interface, const QVariantMap &changedProperties, const QStringList &invalidatedProps);

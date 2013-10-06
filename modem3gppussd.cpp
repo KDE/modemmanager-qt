@@ -20,33 +20,33 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "modemgsmussdinterface.h"
-#include "modemgsmussdinterface_p.h"
+#include "modem3gppussd.h"
+#include "modem3gppussd_p.h"
 #include "mmdebug.h"
 #include "dbus/dbus.h"
 
-Modem3gppUssdInterfacePrivate::Modem3gppUssdInterfacePrivate(const QString &path)
+Modem3gppUssdPrivate::Modem3gppUssdPrivate(const QString &path)
     : InterfacePrivate(path)
     , ussdIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
 }
 
-ModemManager::Modem3gppUssdInterface::Modem3gppUssdInterface(const QString &path, QObject *parent)
-    : Interface(*new Modem3gppUssdInterfacePrivate(path), parent)
+ModemManager::Modem3gppUssd::Modem3gppUssd(const QString &path, QObject *parent)
+    : Interface(*new Modem3gppUssdPrivate(path), parent)
 {
-    Q_D(Modem3gppUssdInterface);
+    Q_D(Modem3gppUssd);
 
     QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 }
 
-ModemManager::Modem3gppUssdInterface::~Modem3gppUssdInterface()
+ModemManager::Modem3gppUssd::~Modem3gppUssd()
 {
-    Q_D(Modem3gppUssdInterface);
+    Q_D(Modem3gppUssd);
     delete d;
 }
 
-void ModemManager::Modem3gppUssdInterface::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
+void ModemManager::Modem3gppUssd::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
 {
     mmDebug() << interface << properties.keys();
 
@@ -70,9 +70,9 @@ void ModemManager::Modem3gppUssdInterface::onPropertiesChanged(const QString &in
     }
 }
 
-QString ModemManager::Modem3gppUssdInterface::initiate(const QString &command)
+QString ModemManager::Modem3gppUssd::initiate(const QString &command)
 {
-    Q_D(Modem3gppUssdInterface);
+    Q_D(Modem3gppUssd);
     QDBusReply<QString> reply = d->ussdIface.Initiate(command);
 
     if (reply.isValid()) {
@@ -81,9 +81,9 @@ QString ModemManager::Modem3gppUssdInterface::initiate(const QString &command)
     return QString();
 }
 
-QString ModemManager::Modem3gppUssdInterface::respond(const QString &response)
+QString ModemManager::Modem3gppUssd::respond(const QString &response)
 {
-    Q_D(Modem3gppUssdInterface);
+    Q_D(Modem3gppUssd);
     QDBusReply<QString> reply = d->ussdIface.Respond(response);
 
     if (reply.isValid()) {
@@ -92,26 +92,26 @@ QString ModemManager::Modem3gppUssdInterface::respond(const QString &response)
     return QString();
 }
 
-void ModemManager::Modem3gppUssdInterface::cancel()
+void ModemManager::Modem3gppUssd::cancel()
 {
-    Q_D(Modem3gppUssdInterface);
+    Q_D(Modem3gppUssd);
     d->ussdIface.Cancel();
 }
 
-MMModem3gppUssdSessionState ModemManager::Modem3gppUssdInterface::state() const
+MMModem3gppUssdSessionState ModemManager::Modem3gppUssd::state() const
 {
-    Q_D(const Modem3gppUssdInterface);
+    Q_D(const Modem3gppUssd);
     return (MMModem3gppUssdSessionState)d->ussdIface.state();
 }
 
-QString ModemManager::Modem3gppUssdInterface::networkNotification() const
+QString ModemManager::Modem3gppUssd::networkNotification() const
 {
-    Q_D(const Modem3gppUssdInterface);
+    Q_D(const Modem3gppUssd);
     return d->ussdIface.networkNotification();
 }
 
-QString ModemManager::Modem3gppUssdInterface::networkRequest() const
+QString ModemManager::Modem3gppUssd::networkRequest() const
 {
-    Q_D(const Modem3gppUssdInterface);
+    Q_D(const Modem3gppUssd);
     return d->ussdIface.networkRequest();
 }

@@ -1,6 +1,5 @@
 /*
-Copyright 2008 Will Stephenson <wstephenson@kde.org>
-Copyright 2010 Lamarque Souza <lamarque@kde.org>
+Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
 
 This library is free software; you can redistribute it and/or
 modify it under the terms of the GNU Lesser General Public
@@ -19,17 +18,17 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGERQT_MODEMLOCATIONINTERFACE_P_H
-#define MODEMMANAGERQT_MODEMLOCATIONINTERFACE_P_H
+#ifndef MODEMMANAGER_MODEMTIME_P_H
+#define MODEMMANAGER_MODEMTIME_P_H
 
 #include "interface_p.h"
-#include "dbus/Location.h"
+#include "dbus/Time.h"
 
-class ModemLocationInterfacePrivate: public InterfacePrivate
+class ModemTimePrivate: public InterfacePrivate
 {
 public:
-    ModemLocationInterfacePrivate(const QString &path);
-    OrgFreedesktopModemManager1ModemLocationInterface modemLocationIface;
+    ModemTimePrivate(const QString &path);
+    OrgFreedesktopModemManager1ModemTimeInterface modemTimeIface;
 };
 
 #endif

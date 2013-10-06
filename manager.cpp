@@ -23,7 +23,6 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "manager.h"
 #include "manager_p.h"
-#include "modem.h"
 #include "macros.h"
 #include "mmdebug.h"
 #include "generic-types.h"
@@ -87,7 +86,7 @@ void ModemManager::ModemManagerPrivate::init()
             if (uni == MM_DBUS_PATH || !uni.startsWith(MM_DBUS_MODEM_PREFIX)) // TODO checkme
                 continue;
 
-            modemList.insert(uni, Modem::Ptr());
+            modemList.insert(uni, ModemDevice::Ptr());
             emit modemAdded(uni);
         }
     } else { // show error
@@ -95,27 +94,27 @@ void ModemManager::ModemManagerPrivate::init()
     }
 }
 
-ModemManager::Modem::Ptr ModemManager::ModemManagerPrivate::findModem(const QString &uni)
+ModemManager::ModemDevice::Ptr ModemManager::ModemManagerPrivate::findModemDevice(const QString &uni)
 {
-    Modem::Ptr modem;
+    ModemDevice::Ptr modem;
     if (modemList.contains(uni)) {
         if (modemList.value(uni)) {
             modem = modemList.value(uni);
         } else {
-            modem = Modem::Ptr(new Modem(uni), &QObject::deleteLater);
+            modem = ModemDevice::Ptr(new ModemDevice(uni), &QObject::deleteLater);
             modemList[uni] = modem;
         }
     }
     return modem;
 }
 
-ModemManager::Modem::List ModemManager::ModemManagerPrivate::modems()
+ModemManager::ModemDevice::List ModemManager::ModemManagerPrivate::modemDevices()
 {
-    Modem::List list;
+    ModemDevice::List list;
 
-    QMap<QString, Modem::Ptr>::const_iterator i;
+    QMap<QString, ModemDevice::Ptr>::const_iterator i;
     for (i = modemList.constBegin(); i != modemList.constEnd(); ++i) {
-        Modem::Ptr modem = findModem(i.key());
+        ModemDevice::Ptr modem = findModemDevice(i.key());
         if (!modem.isNull()) {
             list.append(modem);
         } else {
@@ -126,27 +125,27 @@ ModemManager::Modem::List ModemManager::ModemManagerPrivate::modems()
     return list;
 }
 
-ModemManager::ModemBearerInterface::Ptr ModemManager::ModemManagerPrivate::findBearer(const QString &uni)
+ModemManager::Bearer::Ptr ModemManager::ModemManagerPrivate::findBearer(const QString &uni)
 {
-    ModemBearerInterface::Ptr bearer;
+    Bearer::Ptr bearer;
     if (bearerList.contains(uni)) {
         if (bearerList.value(uni)) {
             bearer = bearerList.value(uni);
         } else {
-            bearer = ModemBearerInterface::Ptr(new ModemBearerInterface(uni), &QObject::deleteLater);
+            bearer = Bearer::Ptr(new Bearer(uni), &QObject::deleteLater);
             bearerList[uni] = bearer;
         }
     }
     return bearer;
 }
 
-ModemManager::ModemBearerInterface::List ModemManager::ModemManagerPrivate::bearers()
+ModemManager::Bearer::List ModemManager::ModemManagerPrivate::bearers()
 {
-    ModemBearerInterface::List list;
+    Bearer::List list;
 
-    QMap<QString, ModemBearerInterface::Ptr>::const_iterator i;
+    QMap<QString, Bearer::Ptr>::const_iterator i;
     for (i = bearerList.constBegin(); i != bearerList.constEnd(); ++i) {
-        ModemBearerInterface::Ptr modemBearer = findBearer(i.key());
+        Bearer::Ptr modemBearer = findBearer(i.key());
         if (!modemBearer.isNull()) {
             list.append(modemBearer);
         } else {
@@ -157,27 +156,27 @@ ModemManager::ModemBearerInterface::List ModemManager::ModemManagerPrivate::bear
     return list;
 }
 
-ModemManager::ModemSimCardInterface::Ptr ModemManager::ModemManagerPrivate::findSim(const QString &uni)
+ModemManager::Sim::Ptr ModemManager::ModemManagerPrivate::findSim(const QString &uni)
 {
-    ModemSimCardInterface::Ptr sim;
+    Sim::Ptr sim;
     if (simList.contains(uni)) {
         if (simList.value(uni)) {
             sim = simList.value(uni);
         } else {
-            sim = ModemSimCardInterface::Ptr(new ModemSimCardInterface(uni), &QObject::deleteLater);
+            sim = Sim::Ptr(new Sim(uni), &QObject::deleteLater);
             simList[uni] = sim;
         }
     }
     return sim;
 }
 
-ModemManager::ModemSimCardInterface::List ModemManager::ModemManagerPrivate::sims()
+ModemManager::Sim::List ModemManager::ModemManagerPrivate::sims()
 {
-    ModemSimCardInterface::List list;
+    Sim::List list;
 
-    QMap<QString, ModemSimCardInterface::Ptr>::const_iterator i;
+    QMap<QString, Sim::Ptr>::const_iterator i;
     for (i = simList.constBegin(); i != simList.constEnd(); ++i) {
-        ModemSimCardInterface::Ptr modemSim = findSim(i.key());
+        Sim::Ptr modemSim = findSim(i.key());
         if (!modemSim.isNull()) {
             list.append(modemSim);
         } else {
@@ -220,7 +219,7 @@ void ModemManager::ModemManagerPrivate::onInterfacesAdded(const QDBusObjectPath 
 
     // new device, we don't know it yet
     if (!modemList.contains(uni)) {
-        modemList.insert(uni, Modem::Ptr());
+        modemList.insert(uni, ModemDevice::Ptr());
         emit modemAdded(uni);
     }
     // re-emit in case of modem type change (GSM <-> CDMA)
@@ -243,7 +242,7 @@ void ModemManager::ModemManagerPrivate::onInterfacesRemoved(const QDBusObjectPat
 
     mmDebug() << uni << "lost interfaces:" << interfaces;
 
-    Modem modem(uni);
+    ModemDevice modem(uni);
 
     if (!uni.isEmpty() && (interfaces.isEmpty() || modem.interfaces().isEmpty())) {
         emit modemRemoved(uni);
@@ -251,32 +250,32 @@ void ModemManager::ModemManagerPrivate::onInterfacesRemoved(const QDBusObjectPat
     }
 }
 
-ModemManager::Modem::Ptr ModemManager::findModem(const QString &uni)
+ModemManager::ModemDevice::Ptr ModemManager::findModemDevice(const QString &uni)
 {
-    return globalModemManager->findModem(uni);
+    return globalModemManager->findModemDevice(uni);
 }
 
-ModemManager::Modem::List ModemManager::modems()
+ModemManager::ModemDevice::List ModemManager::modemDevices()
 {
-    return globalModemManager->modems();
+    return globalModemManager->modemDevices();
 }
 
-ModemManager::ModemBearerInterface::Ptr ModemManager::findBearer(const QString &uni)
+ModemManager::Bearer::Ptr ModemManager::findBearer(const QString &uni)
 {
     return globalModemManager->findBearer(uni);
 }
 
-ModemManager::ModemBearerInterface::List ModemManager::bearers()
+ModemManager::Bearer::List ModemManager::bearers()
 {
     return globalModemManager->bearers();
 }
 
-ModemManager::ModemSimCardInterface::Ptr ModemManager::findSim(const QString &uni)
+ModemManager::Sim::Ptr ModemManager::findSim(const QString &uni)
 {
     return globalModemManager->findSim(uni);
 }
 
-ModemManager::ModemSimCardInterface::List ModemManager::sims()
+ModemManager::Sim::List ModemManager::sims()
 {
     return globalModemManager->sims();
 }

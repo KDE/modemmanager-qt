@@ -20,75 +20,75 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "modemgsmnetworkinterface.h"
-#include "modemgsmnetworkinterface_p.h"
+#include "modem3gpp.h"
+#include "modem3gpp_p.h"
 #include "mmdebug.h"
 #include "dbus/dbus.h"
 
-Modem3gppInterfacePrivate::Modem3gppInterfacePrivate(const QString &path)
+Modem3gppPrivate::Modem3gppPrivate(const QString &path)
     : InterfacePrivate(path)
     , modem3gppIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
 }
 
-ModemManager::Modem3gppInterface::Modem3gppInterface(const QString &path, QObject *parent)
-    : Interface(*new Modem3gppInterfacePrivate(path), parent)
+ModemManager::Modem3gpp::Modem3gpp(const QString &path, QObject *parent)
+    : Interface(*new Modem3gppPrivate(path), parent)
 {
-    Q_D(Modem3gppInterface);
+    Q_D(Modem3gpp);
 
     QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 }
 
-ModemManager::Modem3gppInterface::~Modem3gppInterface()
+ModemManager::Modem3gpp::~Modem3gpp()
 {
 }
 
-QString ModemManager::Modem3gppInterface::imei() const
+QString ModemManager::Modem3gpp::imei() const
 {
-    Q_D(const Modem3gppInterface);
+    Q_D(const Modem3gpp);
     return d->modem3gppIface.imei();
 }
 
-MMModem3gppRegistrationState ModemManager::Modem3gppInterface::registrationState() const
+MMModem3gppRegistrationState ModemManager::Modem3gpp::registrationState() const
 {
-    Q_D(const Modem3gppInterface);
+    Q_D(const Modem3gpp);
     return (MMModem3gppRegistrationState)d->modem3gppIface.registrationState();
 }
 
-QString ModemManager::Modem3gppInterface::operatorCode() const
+QString ModemManager::Modem3gpp::operatorCode() const
 {
-    Q_D(const Modem3gppInterface);
+    Q_D(const Modem3gpp);
     return d->modem3gppIface.operatorCode();
 }
 
-QString ModemManager::Modem3gppInterface::operatorName() const
+QString ModemManager::Modem3gpp::operatorName() const
 {
-    Q_D(const Modem3gppInterface);
+    Q_D(const Modem3gpp);
     return d->modem3gppIface.operatorName();
 }
 
-ModemManager::Modem3gppInterface::FacilityLocks ModemManager::Modem3gppInterface::enabledFacilityLocks() const
+ModemManager::Modem3gpp::FacilityLocks ModemManager::Modem3gpp::enabledFacilityLocks() const
 {
-    Q_D(const Modem3gppInterface);
+    Q_D(const Modem3gpp);
     return (FacilityLocks)d->modem3gppIface.enabledFacilityLocks();
 }
 
-void ModemManager::Modem3gppInterface::registerToNetwork(const QString &networkId)
+void ModemManager::Modem3gpp::registerToNetwork(const QString &networkId)
 {
-    Q_D(Modem3gppInterface);
+    Q_D(Modem3gpp);
     d->modem3gppIface.Register(networkId);
 }
 
-QDBusPendingReply<ScanResultsType> ModemManager::Modem3gppInterface::scan()
+QDBusPendingReply<ScanResultsType> ModemManager::Modem3gpp::scan()
 {
-    Q_D(Modem3gppInterface);
+    Q_D(Modem3gpp);
     return d->modem3gppIface.Scan();
 }
 
-void ModemManager::Modem3gppInterface::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
+void ModemManager::Modem3gpp::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
 {
-    Q_D(Modem3gppInterface);
+    Q_D(Modem3gpp);
     mmDebug() << interface << properties.keys();
 
     if (interface == QString(MM_DBUS_INTERFACE_MODEM_MODEM3GPP)) {

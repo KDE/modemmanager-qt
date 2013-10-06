@@ -18,31 +18,31 @@ You should have received a copy of the GNU Lesser General Public
 License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "modemtimeinterface.h"
-#include "modemtimeinterface_p.h"
+#include "modemtime.h"
+#include "modemtime_p.h"
 #include "mmdebug.h"
 
-ModemTimeInterfacePrivate::ModemTimeInterfacePrivate(const QString &path)
+ModemTimePrivate::ModemTimePrivate(const QString &path)
     : InterfacePrivate(path)
     , modemTimeIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
 }
 
-ModemManager::ModemTimeInterface::ModemTimeInterface(const QString &path, QObject *parent)
-    : Interface(*new ModemTimeInterfacePrivate(path), parent)
+ModemManager::ModemTime::ModemTime(const QString &path, QObject *parent)
+    : Interface(*new ModemTimePrivate(path), parent)
 {
-    Q_D(ModemTimeInterface);
+    Q_D(ModemTime);
 
     connect(&d->modemTimeIface, SIGNAL(NetworkTimeChanged(QString)), SLOT(onNetworkTimeChanged(QString)));
 }
 
-ModemManager::ModemTimeInterface::~ModemTimeInterface()
+ModemManager::ModemTime::~ModemTime()
 {
 }
 
-QDateTime ModemManager::ModemTimeInterface::networkTime()
+QDateTime ModemManager::ModemTime::networkTime()
 {
-    Q_D(ModemTimeInterface);
+    Q_D(ModemTime);
     QDBusPendingReply<QString> reply = d->modemTimeIface.GetNetworkTime();
     reply.waitForFinished();
     if (reply.isValid()) {
@@ -52,9 +52,9 @@ QDateTime ModemManager::ModemTimeInterface::networkTime()
     return QDateTime();
 }
 
-ModemManager::ModemTimeInterface::NetworkTimeZone ModemManager::ModemTimeInterface::networkTimeZone() const
+ModemManager::ModemTime::NetworkTimeZone ModemManager::ModemTime::networkTimeZone() const
 {
-    Q_D(const ModemTimeInterface);
+    Q_D(const ModemTime);
 
     NetworkTimeZone result;
     const QVariantMap map = d->modemTimeIface.networkTimezone();
@@ -69,9 +69,9 @@ ModemManager::ModemTimeInterface::NetworkTimeZone ModemManager::ModemTimeInterfa
 }
 
 
-void ModemManager::ModemTimeInterface::onNetworkTimeChanged(const QString &isoDateTime)
+void ModemManager::ModemTime::onNetworkTimeChanged(const QString &isoDateTime)
 {
-    Q_D(ModemTimeInterface);
+    Q_D(ModemTime);
 
     const QDateTime result = QDateTime::fromString(isoDateTime, Qt::ISODate);
     if (result.isValid())
