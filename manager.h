@@ -61,6 +61,13 @@ Q_SIGNALS:
      * @param udi the network interface identifier
      */
     void modemRemoved(const QString &udi);
+
+    void simAdded(const QString &udi);
+    void simRemoved(const QString &udi);
+
+    void bearerAdded(const QString &udi);
+    void bearerRemoved(const QString &udi);
+    
     /**
       * This signal is emitted when the ModemManager DBus service goes away
       */

@@ -170,6 +170,7 @@ Q_SIGNALS:
     void signalQualityChanged(uint percentStrength);
     void accessTechnologyChanged(ModemManager::Modem::AccessTechnologies tech);
     void currentModesChanged();
+    void simPathChanged(const QString &oldPath, const QString &newPath);
 
 private Q_SLOTS:
     void onPropertiesChanged(const QString &ifaceName, const QVariantMap &changedProps, const QStringList &invalidatedProps);

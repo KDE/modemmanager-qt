@@ -26,6 +26,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "macros.h"
 #include "mmdebug.h"
 #include "generic-types.h"
+#include "modem.h"
 
 MM_GLOBAL_STATIC(ModemManager::ModemManagerPrivate, globalModemManager)
 
@@ -88,6 +89,20 @@ void ModemManager::ModemManagerPrivate::init()
 
             modemList.insert(uni, ModemDevice::Ptr());
             emit modemAdded(uni);
+
+            ModemManager::ModemDevice::Ptr modemDevice = findModemDevice(uni);
+            if (modemDevice) {
+                if (modemDevice->hasInterface(ModemDevice::ModemInterface)) {
+                    ModemManager::Modem::Ptr modemInterface = modemDevice->interface(ModemDevice::ModemInterface).objectCast<ModemManager::Modem>();
+                    if (!modemInterface->simPath().isEmpty()) {
+                        simList.insert(modemInterface->simPath(), ModemManager::Sim::Ptr());
+                        emit simAdded(modemInterface->simPath());
+
+                        connect(modemInterface.data(), SIGNAL(simPathChanged(QString,QString)),
+                                SLOT(onSimPathChanged(QString,QString)));
+                    }
+                }
+            }
         }
     } else { // show error
         qWarning() << "Failed enumerating MM objects:" << reply.error().name() << "\n" << reply.error().message();
@@ -247,6 +262,19 @@ void ModemManager::ModemManagerPrivate::onInterfacesRemoved(const QDBusObjectPat
     if (!uni.isEmpty() && (interfaces.isEmpty() || modem.interfaces().isEmpty())) {
         emit modemRemoved(uni);
         modemList.remove(uni);
+    }
+}
+
+void ModemManager::ModemManagerPrivate::onSimPathChanged(const QString &oldPath, const QString &newPath)
+{
+    if (simList.contains(oldPath)) {
+        simList.remove(oldPath);
+        emit simRemoved(oldPath);
+    }
+
+    if (!newPath.isEmpty()) {
+        simList.insert(newPath, ModemManager::Sim::Ptr());
+        emit simAdded(newPath);
     }
 }
 

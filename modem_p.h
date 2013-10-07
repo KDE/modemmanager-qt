@@ -35,6 +35,7 @@ public:
     OrgFreedesktopModemManager1ModemSimpleInterface modemSimpleIface;
     QString device;
     QStringList drivers;
+    QString simPath;
 };
 
 #endif

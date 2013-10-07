@@ -63,7 +63,7 @@ protected Q_SLOTS:
     void init();
     void daemonRegistered();
     void daemonUnregistered();
-
+    void onSimPathChanged(const QString &oldPath, const QString &newPath);
     void onInterfacesAdded(const QDBusObjectPath &object_path, const NMVariantMapMap &interfaces_and_properties);
     void onInterfacesRemoved(const QDBusObjectPath &object_path, const QStringList &interfaces);
 };

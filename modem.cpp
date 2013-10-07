@@ -52,6 +52,7 @@ void ModemManager::Modem::init()
     Q_D(Modem);
     d->device = d->modemIface.device();
     d->drivers = d->modemIface.drivers();
+    d->simPath = d->modemIface.sim().path();
 
     if (d->modemIface.isValid()) {
         QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
@@ -174,7 +175,7 @@ QString ModemManager::Modem::command(const QString &cmd, uint timeout)
 QString ModemManager::Modem::simPath() const
 {
     Q_D(const Modem);
-    return d->modemIface.sim().path();
+    return d->simPath;
 }
 
 QList<MMModemCapability> ModemManager::Modem::supportedCapabilities() const
@@ -362,6 +363,7 @@ void ModemManager::Modem::onPropertiesChanged(const QString &ifaceName, const QV
         QLatin1String signalQuality(MM_MODEM_PROPERTY_SIGNALQUALITY);
         QLatin1String tech(MM_MODEM_PROPERTY_ACCESSTECHNOLOGIES);
         QLatin1String currentModes(MM_MODEM_PROPERTY_CURRENTMODES);
+        QLatin1String simPath(MM_MODEM_PROPERTY_SIM);
 
         QVariantMap::const_iterator it = changedProps.constFind(device);
         if ( it != changedProps.constEnd()) {
@@ -395,6 +397,12 @@ void ModemManager::Modem::onPropertiesChanged(const QString &ifaceName, const QV
             if (pair.recent) {
                 emit signalQualityChanged(pair.signal);
             }
+        }
+        it = changedProps.constFind(simPath);
+        if (it != changedProps.constEnd()) {
+            QString path = qdbus_cast<QDBusObjectPath>(*it).path();
+            emit simPathChanged(d->simPath, path);
+            d->simPath = path;
         }
     }
 }
