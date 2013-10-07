@@ -58,14 +58,8 @@ public:
     QDBusPendingReply<> changePin(const QString &oldPin, const QString &newPin);
 
     QString uni() const;
-protected:
+private:
     SimPrivate * d_ptr;
-#if 0
-Q_SIGNALS:
-
-private Q_SLOTS:
-    void propertiesChanged(const QString &interface, const QVariantMap &properties);
-#endif
 };
 } // namespace ModemManager
 

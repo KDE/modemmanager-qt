@@ -143,7 +143,7 @@ ModemManager::Interface::List ModemDevicePrivate::interfaces()
     QMap<ModemManager::ModemDevice::InterfaceType, ModemManager::Interface::Ptr>::const_iterator i;
     for (i = interfaceList.constBegin(); i != interfaceList.constEnd(); ++i) {
         ModemManager::Interface::Ptr modemInterface = interface(i.key());
-        if (!modemInterface.isNull()) {
+        if (modemInterface) {
             list.append(modemInterface);
         } else {
             qWarning() << "warning: null network Interface for" << i.key();
@@ -158,13 +158,11 @@ ModemManager::Interface::Ptr ModemDevicePrivate::interface(ModemManager::ModemDe
     ModemManager::Interface::Ptr modemInterface;
 
     if (interfaceList.contains(type)) {
-        if (interfaceList.contains(type)) {
-            if (interfaceList.value(type)) {
-                modemInterface = interfaceList.value(type);
-            } else {
-                modemInterface = createInterface(type);
-                interfaceList[type] = modemInterface;
-            }
+        if (interfaceList.value(type)) {
+            modemInterface = interfaceList.value(type);
+        } else {
+            modemInterface = createInterface(type);
+            interfaceList[type] = modemInterface;
         }
     }
 

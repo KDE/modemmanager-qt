@@ -34,50 +34,11 @@ ModemManager::Sim::Sim(const QString &path, QObject *parent)
     : QObject(parent)
     , d_ptr(new SimPrivate(path))
 {
-    Q_D(Sim);
-
-#if 0
-    d->simIface.connection().connect(ModemManager::DBUS_SERVICE,
-        path, QLatin1String("org.freedesktop.DBus.Properties"),
-        QLatin1String("MmPropertiesChanged"), QLatin1String("sa{sv}"),
-        this, SLOT(propertiesChanged(QString,QVariantMap)));
-#endif
 }
 
 ModemManager::Sim::~Sim()
 {
 }
-
-#if 0
-void ModemManager::Sim::propertiesChanged(const QString &interface, const QVariantMap &properties)
-{
-    mmDebug() << interface << properties.keys();
-
-    if (interface == QString("org.freedesktop.ModemManager.Modem.Gsm.Card")) {
-        QLatin1String supportedBands("SupportedBands");
-        QLatin1String supportedModes("SupportedModes");
-        QLatin1String simIdentifier("SimIdentifier");
-
-        Q_D(ModemGsmCardInterface);
-
-        QVariantMap::const_iterator it = properties.find(supportedBands);
-        if ( it != properties.end()) {
-            d->supportedBands = (ModemManager::Modem::Band) it->toInt();
-            emit supportedBandsChanged(d->supportedBands);
-        }
-        it = properties.find(supportedModes);
-        if ( it != properties.end()) {
-            d->supportedModes = (ModemManager::Modem::Mode) it->toInt();
-            emit supportedModesChanged(d->supportedModes);
-        }
-        it = properties.find(simIdentifier);
-        if ( it != properties.end()) {
-            d->simIdentifier = it->toString();
-            emit simIdentifierChanged(d->simIdentifier);
-        }
-    }
-}
-#endif
 
 QString ModemManager::Sim::simIdentifier() const
 {
