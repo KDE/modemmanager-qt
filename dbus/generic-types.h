@@ -27,6 +27,8 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMetaType>
 #include <QtDBus/QtDBus>
 
+Q_DECLARE_METATYPE(MMModemLock)
+
 typedef QMap<QString, QVariantMap> NMVariantMapMap;
 Q_DECLARE_METATYPE(NMVariantMapMap)
 
@@ -97,6 +99,7 @@ inline void registerModemManagerTypes() {
     qDBusRegisterMetaType<ScanResultsType>();
     //qDBusRegisterMetaType<LocationInformationMap>();
     qDBusRegisterMetaType<ValidityPair>();
+    qRegisterMetaType<MMModemLock>("MMModemLock");
 }
 
 #endif // MODEMMANAGERQT_TYPES_H
