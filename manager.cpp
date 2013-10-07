@@ -236,6 +236,20 @@ void ModemManager::ModemManagerPrivate::onInterfacesAdded(const QDBusObjectPath 
     if (!modemList.contains(uni)) {
         modemList.insert(uni, ModemDevice::Ptr());
         emit modemAdded(uni);
+
+        ModemManager::ModemDevice::Ptr modemDevice = findModemDevice(uni);
+        if (modemDevice) {
+            if (modemDevice->hasInterface(ModemDevice::ModemInterface)) {
+                ModemManager::Modem::Ptr modemInterface = modemDevice->interface(ModemDevice::ModemInterface).objectCast<ModemManager::Modem>();
+                if (!modemInterface->simPath().isEmpty()) {
+                    simList.insert(modemInterface->simPath(), ModemManager::Sim::Ptr());
+                    emit simAdded(modemInterface->simPath());
+
+                    connect(modemInterface.data(), SIGNAL(simPathChanged(QString,QString)),
+                            SLOT(onSimPathChanged(QString,QString)));
+                }
+            }
+        }
     }
     // re-emit in case of modem type change (GSM <-> CDMA)
     else if (modemList.contains(uni) && (interfaces_and_properties.keys().contains(MM_DBUS_INTERFACE_MODEM_MODEM3GPP) ||
@@ -267,7 +281,7 @@ void ModemManager::ModemManagerPrivate::onInterfacesRemoved(const QDBusObjectPat
 
 void ModemManager::ModemManagerPrivate::onSimPathChanged(const QString &oldPath, const QString &newPath)
 {
-    if (simList.contains(oldPath)) {
+    if (!oldPath.isEmpty() && simList.contains(oldPath)) {
         simList.remove(oldPath);
         emit simRemoved(oldPath);
     }
