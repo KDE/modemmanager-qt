@@ -366,29 +366,29 @@ void ModemManager::Modem::onPropertiesChanged(const QString &ifaceName, const QV
         QLatin1String simPath(MM_MODEM_PROPERTY_SIM);
 
         QVariantMap::const_iterator it = changedProps.constFind(device);
-        if ( it != changedProps.constEnd()) {
+        if (it != changedProps.constEnd()) {
             d->device = it->toString();
             emit deviceChanged(d->device);
         }
         it = changedProps.constFind(drivers);
-        if ( it != changedProps.constEnd()) {
+        if (it != changedProps.constEnd()) {
             d->drivers = it->toStringList();
             emit driversChanged(d->drivers);
         }
         it = changedProps.constFind(enabled);
-        if ( it != changedProps.constEnd()) {
+        if (it != changedProps.constEnd()) {
             emit enabledChanged(it->toBool());
         }
         it = changedProps.constFind(unlockRequired);
-        if ( it != changedProps.constEnd()) {
+        if (it != changedProps.constEnd()) {
             emit unlockRequiredChanged((MMModemLock)it->toUInt());
         }
         it = changedProps.constFind(tech);
-        if ( it != changedProps.constEnd()) {
+        if (it != changedProps.constEnd()) {
             emit accessTechnologyChanged(static_cast<AccessTechnologies>(it->toUInt()));
         }
         it = changedProps.constFind(currentModes);
-        if ( it != changedProps.constEnd()) {
+        if (it != changedProps.constEnd()) {
             emit currentModesChanged();
         }
         it = changedProps.constFind(signalQuality);
@@ -400,7 +400,7 @@ void ModemManager::Modem::onPropertiesChanged(const QString &ifaceName, const QV
         }
         it = changedProps.constFind(simPath);
         if (it != changedProps.constEnd()) {
-            QString path = qdbus_cast<QDBusObjectPath>(*it).path();
+            const QString path = qdbus_cast<QDBusObjectPath>(*it).path();
             emit simPathChanged(d->simPath, path);
             d->simPath = path;
         }
