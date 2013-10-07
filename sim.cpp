@@ -32,7 +32,7 @@ SimPrivate::SimPrivate(const QString &path)
 
 ModemManager::Sim::Sim(const QString &path, QObject *parent)
     : QObject(parent)
-    , d_ptr(new Sim(path))
+    , d_ptr(new SimPrivate(path))
 {
     Q_D(Sim);
 

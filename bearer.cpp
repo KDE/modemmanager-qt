@@ -31,7 +31,7 @@ BearerPrivate::BearerPrivate(const QString &path)
 
 ModemManager::Bearer::Bearer(const QString &path, QObject *parent)
     : QObject(parent)
-    , d_ptr(new Bearer(path))
+    , d_ptr(new BearerPrivate(path))
 {
     Q_D(Bearer);
 

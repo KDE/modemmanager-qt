@@ -59,7 +59,7 @@ public:
 
     QString uni() const;
 protected:
-    Sim * d_ptr;
+    SimPrivate * d_ptr;
 #if 0
 Q_SIGNALS:
 

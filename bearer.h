@@ -80,7 +80,7 @@ private Q_SLOTS:
    void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps);
 
 protected:
-    Bearer * d_ptr;
+    BearerPrivate * d_ptr;
 };
 
 } // namespace ModemManager
