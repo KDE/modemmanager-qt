@@ -57,6 +57,7 @@ public:
     QDBusPendingReply<> enablePin(const QString &pin, bool enabled);
     QDBusPendingReply<> changePin(const QString &oldPin, const QString &newPin);
 
+    QString uni() const;
 protected:
     Sim * d_ptr;
 #if 0

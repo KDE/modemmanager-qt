@@ -30,6 +30,7 @@ class SimPrivate
 public:
     SimPrivate(const QString &path);
     OrgFreedesktopModemManager1SimInterface simIface;
+    QString uni;
 };
 
 #endif

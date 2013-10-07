@@ -26,6 +26,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 SimPrivate::SimPrivate(const QString &path)
     : simIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+    , uni(path)
 {
 }
 
@@ -124,4 +125,10 @@ QDBusPendingReply<> ModemManager::Sim::changePin(const QString &oldPin, const QS
 {
     Q_D(Sim);
     return d->simIface.ChangePin(oldPin, newPin);
+}
+
+QString ModemManager::Sim::uni() const
+{
+    Q_D(const Sim);
+    return d->uni;
 }

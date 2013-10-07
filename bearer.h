@@ -67,6 +67,8 @@ public:
     void connectBearer();
     void disconnectBearer();
 
+    QString uni() const;
+
 Q_SIGNALS:
     void interfaceChanged(const QString &iface);
     void connectedChanged(bool connected);

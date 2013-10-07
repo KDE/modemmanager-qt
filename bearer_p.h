@@ -29,6 +29,7 @@ class BearerPrivate
 public:
     BearerPrivate(const QString &path);
     OrgFreedesktopModemManager1BearerInterface bearerIface;
+    QString uni;
 };
 
 #endif

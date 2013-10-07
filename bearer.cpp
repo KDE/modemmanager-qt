@@ -25,6 +25,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 BearerPrivate::BearerPrivate(const QString &path)
     : bearerIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+    , uni(path)
 {
 }
 
@@ -154,4 +155,10 @@ void ModemManager::Bearer::onPropertiesChanged(const QString &interface, const Q
             emit ip6ConfigChanged();
         }
     }
+}
+
+QString ModemManager::Bearer::uni() const
+{
+    Q_D(const Bearer);
+    return d->uni;
 }
