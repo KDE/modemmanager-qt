@@ -60,7 +60,7 @@ public:
     MMModemCdmaRegistrationState cdma1xRegistrationState() const;
     MMModemCdmaRegistrationState evdoRegistrationState() const;
 
-private slots:
+private Q_SLOTS:
     void onActivationStateChanged(uint activation_state, uint activation_error, const QVariantMap &status_changes);
 
 Q_SIGNALS:
