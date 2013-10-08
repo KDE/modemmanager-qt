@@ -50,7 +50,9 @@ typedef struct {
 } SignalQualityPair;
 Q_DECLARE_METATYPE(SignalQualityPair)
 
-Q_DECLARE_BUILTIN_METATYPE(MMModemMode, UInt)
+//typedef uint MMModemMode;
+//Q_DECLARE_METATYPE(MMModemMode)
+
 typedef struct {
 public:
     MMModemMode allowed; // bitfield
@@ -61,18 +63,21 @@ Q_DECLARE_METATYPE(CurrentModesType)
 typedef QList<CurrentModesType> SupportedModesType;
 Q_DECLARE_METATYPE(SupportedModesType)
 
-Q_DECLARE_BUILTIN_METATYPE(MMModemLock, UInt)
+//typedef uint MMModemLock;
+//Q_DECLARE_BUILTIN_METATYPE(MMModemLock, UInt)
+//Q_DECLARE_METATYPE(MMModemLock)
+
 typedef QMap</*MMModemLock*/uint, uint> UnlockRetriesMap;
 Q_DECLARE_METATYPE(UnlockRetriesMap)
 
 typedef QList<QVariantMap> ScanResultsType;
 Q_DECLARE_METATYPE(ScanResultsType)
 
-Q_DECLARE_BUILTIN_METATYPE(MMModemLocationSource, UInt)
+//Q_DECLARE_BUILTIN_METATYPE(MMModemLocationSource, UInt)
 typedef QMap<MMModemLocationSource, QVariant> LocationInformationMap;
 Q_DECLARE_METATYPE(LocationInformationMap)
 
-Q_DECLARE_BUILTIN_METATYPE(MMSmsValidityType, UInt)
+//Q_DECLARE_BUILTIN_METATYPE(MMSmsValidityType, UInt)
 typedef struct {
     MMSmsValidityType validity;
     uint value;

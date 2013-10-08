@@ -28,7 +28,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include "generic-types.h"
 #include "modem.h"
 
-MM_GLOBAL_STATIC(ModemManager::ModemManagerPrivate, globalModemManager)
+Q_GLOBAL_STATIC(ModemManager::ModemManagerPrivate, globalModemManager)
 
 ModemManager::ModemManagerPrivate::ModemManagerPrivate()
     : watcher(MM_DBUS_SERVICE, QDBusConnection::systemBus(), QDBusServiceWatcher::WatchForRegistration | QDBusServiceWatcher::WatchForUnregistration, this)
