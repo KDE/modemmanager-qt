@@ -10,10 +10,38 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_MODULE_PATH})
 
 set(LIB_SUFFIX "" CACHE STRING "Define suffix of library directory name (32/64)" )
 
-find_package(Qt4 REQUIRED)
-pkg_check_modules(MODEMMANAGER REQUIRED ModemManager>=0.8)
+#find_package(Qt4 REQUIRED)
+find_package(ECM 0.0.8 REQUIRED NO_MODULE)
+
+include(CMakePackageConfigHelpers)
+include(FeatureSummary)
+#include(WriteBasicConfigVersionFile)
+
+# where to look first for cmake modules, before ${CMAKE_ROOT}/Modules/ is checked
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH})
+
+#include(ECMOptionalAddSubdirectory)
+
+find_package(Qt5Core REQUIRED NO_MODULE)
+find_package(Qt5DBus REQUIRED NO_MODULE)
+find_package(Qt5Network REQUIRED NO_MODULE)
+find_package(Qt5Widgets REQUIRED NO_MODULE)
+find_package(Qt5Xml REQUIRED NO_MODULE)
+
+include_directories(${Qt5Widgets_INCLUDE_DIRS} ${Qt5DBus_INCLUDE_DIRS} ${Qt5Core_INCLUDE_DIRS} ${Qt5Network_INCLUDE_DIRS} ${Qt5Xml_INCLUDE_DIRS} )
+
+pkg_check_modules(MODEMMANAGER REQUIRED ModemManager>=0.7.9)
 
 add_definitions(${QT_DEFINITIONS})
+
+add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
+add_definitions(-DQT_NO_URL_CAST_FROM_STRING)
+
+remove_definitions(-DQT3_SUPPORT_WARNINGS -DQT3_SUPPORT)
+remove_definitions(-DQT_NO_CAST_FROM_ASCII -DQT_STRICT_ITERATORS -DQT_NO_CAST_FROM_BYTEARRAY -DQT_NO_KEYWORDS)
+
+
+
 
 include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${QT_INCLUDES} ${CMAKE_INCLUDE_PATH} ${MODEMMANAGER_INCLUDE_DIRS})
 link_directories(${CMAKE_LIBRARY_PATH})
@@ -110,8 +138,8 @@ set( DBUS_INTERFACES_HEADERS
    dbus/dbus_manager.h
 )
 
-qt4_wrap_cpp(ModemManagerQt_MOC ${ModemManagerQt_HEADERS} ${ModemManagerQt_PRIVATE_HEADERS} ${DBUS_INTERFACES_HEADERS})
-qt4_automoc(${DBUS_INTERFACES_FILES})
+#qt4_wrap_cpp(ModemManagerQt_MOC ${ModemManagerQt_HEADERS} ${ModemManagerQt_PRIVATE_HEADERS} ${DBUS_INTERFACES_HEADERS})
+#qt_automoc(${DBUS_INTERFACES_FILES})
 
 add_library(ModemManagerQt SHARED ${ModemManagerQt_MOC} ${ModemManagerQt_SRCS} ${DBUS_INTERFACES_FILES})
 
