@@ -56,6 +56,7 @@ public:
 
     // properties
     LocationSources capabilities() const;
+    LocationSources enabledCapabilities() const;
     bool isEnabled() const;
     bool signalsLocation() const;
 

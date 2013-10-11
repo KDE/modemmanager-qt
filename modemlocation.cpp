@@ -104,10 +104,16 @@ ModemManager::ModemLocation::LocationSources ModemManager::ModemLocation::capabi
     return (LocationSources)d->modemLocationIface.capabilities();
 }
 
+ModemManager::ModemLocation::LocationSources ModemManager::ModemLocation::enabledCapabilities() const
+{
+    Q_D(const ModemLocation);
+    return (LocationSources)d->modemLocationIface.enabled();
+}
+
 bool ModemManager::ModemLocation::isEnabled() const
 {
     Q_D(const ModemLocation);
-    return d->modemLocationIface.enabled();
+    return d->modemLocationIface.enabled() > MM_MODEM_LOCATION_SOURCE_NONE;
 }
 
 bool ModemManager::ModemLocation::signalsLocation() const
