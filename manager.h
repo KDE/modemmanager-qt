@@ -62,12 +62,6 @@ Q_SIGNALS:
      */
     void modemRemoved(const QString &udi);
 
-    void simAdded(const QString &udi);
-    void simRemoved(const QString &udi);
-
-    void bearerAdded(const QString &udi);
-    void bearerRemoved(const QString &udi);
-    
     /**
       * This signal is emitted when the ModemManager DBus service goes away
       */
@@ -98,11 +92,6 @@ MODEMMANAGERQT_EXPORT ModemDevice::List modemDevices();
   * @returns a valid Modem object if there's a device having the given UDI, an invalid one otherwise
   */
 MODEMMANAGERQT_EXPORT ModemDevice::Ptr findModemDevice(const QString &uni);
-
-MODEMMANAGERQT_EXPORT ModemManager::Bearer::Ptr findBearer(const QString &uni);
-MODEMMANAGERQT_EXPORT ModemManager::Bearer::List bearers();
-MODEMMANAGERQT_EXPORT ModemManager::Sim::Ptr findSim(const QString &uni);
-MODEMMANAGERQT_EXPORT ModemManager::Sim::List sims();
 
 /**
   * Start a new scan for connected modem devices.

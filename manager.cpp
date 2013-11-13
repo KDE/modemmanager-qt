@@ -89,20 +89,6 @@ void ModemManager::ModemManagerPrivate::init()
 
             modemList.insert(uni, ModemDevice::Ptr());
             emit modemAdded(uni);
-
-            ModemManager::ModemDevice::Ptr modemDevice = findModemDevice(uni);
-            if (modemDevice) {
-                if (modemDevice->hasInterface(ModemDevice::ModemInterface)) {
-                    ModemManager::Modem::Ptr modemInterface = modemDevice->interface(ModemDevice::ModemInterface).objectCast<ModemManager::Modem>();
-                    if (!modemInterface->simPath().isEmpty()) {
-                        simList.insert(modemInterface->simPath(), ModemManager::Sim::Ptr());
-                        emit simAdded(modemInterface->simPath());
-
-                        connect(modemInterface.data(), SIGNAL(simPathChanged(QString,QString)),
-                                SLOT(onSimPathChanged(QString,QString)));
-                    }
-                }
-            }
         }
     } else { // show error
         qWarning() << "Failed enumerating MM objects:" << reply.error().name() << "\n" << reply.error().message();
@@ -134,68 +120,6 @@ ModemManager::ModemDevice::List ModemManager::ModemManagerPrivate::modemDevices(
             list.append(modem);
         } else {
             qWarning() << "warning: null modem Interface for" << i.key();
-        }
-    }
-
-    return list;
-}
-
-ModemManager::Bearer::Ptr ModemManager::ModemManagerPrivate::findBearer(const QString &uni)
-{
-    Bearer::Ptr bearer;
-    if (bearerList.contains(uni)) {
-        if (bearerList.value(uni)) {
-            bearer = bearerList.value(uni);
-        } else {
-            bearer = Bearer::Ptr(new Bearer(uni), &QObject::deleteLater);
-            bearerList[uni] = bearer;
-        }
-    }
-    return bearer;
-}
-
-ModemManager::Bearer::List ModemManager::ModemManagerPrivate::bearers()
-{
-    Bearer::List list;
-
-    QMap<QString, Bearer::Ptr>::const_iterator i;
-    for (i = bearerList.constBegin(); i != bearerList.constEnd(); ++i) {
-        Bearer::Ptr modemBearer = findBearer(i.key());
-        if (!modemBearer.isNull()) {
-            list.append(modemBearer);
-        } else {
-            qWarning() << "warning: null bearer Interface for" << i.key();
-        }
-    }
-
-    return list;
-}
-
-ModemManager::Sim::Ptr ModemManager::ModemManagerPrivate::findSim(const QString &uni)
-{
-    Sim::Ptr sim;
-    if (simList.contains(uni)) {
-        if (simList.value(uni)) {
-            sim = simList.value(uni);
-        } else {
-            sim = Sim::Ptr(new Sim(uni), &QObject::deleteLater);
-            simList[uni] = sim;
-        }
-    }
-    return sim;
-}
-
-ModemManager::Sim::List ModemManager::ModemManagerPrivate::sims()
-{
-    Sim::List list;
-
-    QMap<QString, Sim::Ptr>::const_iterator i;
-    for (i = simList.constBegin(); i != simList.constEnd(); ++i) {
-        Sim::Ptr modemSim = findSim(i.key());
-        if (!modemSim.isNull()) {
-            list.append(modemSim);
-        } else {
-            qWarning() << "warning: null sim Interface for" << i.key();
         }
     }
 
@@ -236,20 +160,6 @@ void ModemManager::ModemManagerPrivate::onInterfacesAdded(const QDBusObjectPath 
     if (!modemList.contains(uni)) {
         modemList.insert(uni, ModemDevice::Ptr());
         emit modemAdded(uni);
-
-        ModemManager::ModemDevice::Ptr modemDevice = findModemDevice(uni);
-        if (modemDevice) {
-            if (modemDevice->hasInterface(ModemDevice::ModemInterface)) {
-                ModemManager::Modem::Ptr modemInterface = modemDevice->interface(ModemDevice::ModemInterface).objectCast<ModemManager::Modem>();
-                if (!modemInterface->simPath().isEmpty()) {
-                    simList.insert(modemInterface->simPath(), ModemManager::Sim::Ptr());
-                    emit simAdded(modemInterface->simPath());
-
-                    connect(modemInterface.data(), SIGNAL(simPathChanged(QString,QString)),
-                            SLOT(onSimPathChanged(QString,QString)));
-                }
-            }
-        }
     }
     // re-emit in case of modem type change (GSM <-> CDMA)
     else if (modemList.contains(uni) && (interfaces_and_properties.keys().contains(MM_DBUS_INTERFACE_MODEM_MODEM3GPP) ||
@@ -279,19 +189,6 @@ void ModemManager::ModemManagerPrivate::onInterfacesRemoved(const QDBusObjectPat
     }
 }
 
-void ModemManager::ModemManagerPrivate::onSimPathChanged(const QString &oldPath, const QString &newPath)
-{
-    if (!oldPath.isEmpty() && simList.contains(oldPath)) {
-        emit simRemoved(oldPath);
-        simList.remove(oldPath);
-    }
-
-    if (!newPath.isEmpty()) {
-        simList.insert(newPath, ModemManager::Sim::Ptr());
-        emit simAdded(newPath);
-    }
-}
-
 ModemManager::ModemDevice::Ptr ModemManager::findModemDevice(const QString &uni)
 {
     return globalModemManager->findModemDevice(uni);
@@ -300,26 +197,6 @@ ModemManager::ModemDevice::Ptr ModemManager::findModemDevice(const QString &uni)
 ModemManager::ModemDevice::List ModemManager::modemDevices()
 {
     return globalModemManager->modemDevices();
-}
-
-ModemManager::Bearer::Ptr ModemManager::findBearer(const QString &uni)
-{
-    return globalModemManager->findBearer(uni);
-}
-
-ModemManager::Bearer::List ModemManager::bearers()
-{
-    return globalModemManager->bearers();
-}
-
-ModemManager::Sim::Ptr ModemManager::findSim(const QString &uni)
-{
-    return globalModemManager->findSim(uni);
-}
-
-ModemManager::Sim::List ModemManager::sims()
-{
-    return globalModemManager->sims();
 }
 
 ModemManager::Notifier * ModemManager::notifier()

@@ -33,6 +33,8 @@
 
 #include "generic-types.h"
 #include "interface.h"
+#include "bearer.h"
+#include "sim.h"
 
 class ModemDevicePrivate;
 
@@ -69,6 +71,10 @@ public:
     bool hasInterface(InterfaceType type) const;
     ModemManager::Interface::List interfaces() const;
     ModemManager::Interface::Ptr interface(InterfaceType type) const;
+    ModemManager::Bearer::Ptr findBearer(const QString &uni);
+    ModemManager::Bearer::List bearers();
+    ModemManager::Sim::Ptr findSim(const QString &uni);
+    ModemManager::Sim::List sims();
 
     bool isGsmModem() const;
     bool isCdmaModem() const;
@@ -76,10 +82,18 @@ public:
 private Q_SLOTS:
     void onInterfacesAdded(const QDBusObjectPath &object_path, const NMVariantMapMap &interfaces_and_properties);
     void onInterfacesRemoved(const QDBusObjectPath &object_path, const QStringList &interfaces);
+    void onSimPathChanged(const QString &oldPath, const QString &newPath);
 private:
     void init();
     void initInterfaces();
     QString introspect() const;
+
+Q_SIGNALS:
+    void simAdded(const QString &udi);
+    void simRemoved(const QString &udi);
+
+    void bearerAdded(const QString &udi);
+    void bearerRemoved(const QString &udi);
 
 protected:
     ModemDevicePrivate * d_ptr;

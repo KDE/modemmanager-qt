@@ -28,6 +28,8 @@
 
 #include "modemdevice.h"
 #include "interface.h"
+#include "bearer.h"
+#include "sim.h"
 
 class ModemDevicePrivate
 {
@@ -36,9 +38,15 @@ public:
     virtual ~ModemDevicePrivate();
     QString uni;
     QMap<ModemManager::ModemDevice::InterfaceType, ModemManager::Interface::Ptr> interfaceList;
+    QMap<QString, ModemManager::Bearer::Ptr> bearerList;
+    QMap<QString, ModemManager::Sim::Ptr> simList;
     ModemManager::Interface::List interfaces() ;
     ModemManager::Interface::Ptr interface(ModemManager::ModemDevice::InterfaceType type);
     ModemManager::Interface::Ptr createInterface(ModemManager::ModemDevice::InterfaceType type);
+    ModemManager::Bearer::Ptr findBearer(const QString &uni);
+    ModemManager::Bearer::List bearers();
+    ModemManager::Sim::Ptr findSim(const QString &uni);
+    ModemManager::Sim::List sims();
 };
 
 #endif
