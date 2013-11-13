@@ -72,9 +72,9 @@ public:
     ModemManager::Interface::List interfaces() const;
     ModemManager::Interface::Ptr interface(InterfaceType type) const;
     ModemManager::Bearer::Ptr findBearer(const QString &uni);
-    ModemManager::Bearer::List bearers();
+    ModemManager::Bearer::List bearers() const;
     ModemManager::Sim::Ptr findSim(const QString &uni);
-    ModemManager::Sim::List sims();
+    ModemManager::Sim::List sims() const;
 
     bool isGsmModem() const;
     bool isCdmaModem() const;

@@ -299,12 +299,12 @@ ModemManager::Interface::List ModemManager::ModemDevice::interfaces() const
 
 ModemManager::Bearer::Ptr ModemManager::ModemDevice::findBearer(const QString &uni)
 {
-    Q_D(const ModemDevice);
+    Q_D(ModemDevice);
 
-    return const_cast<ModemDevicePrivate*>(d)->findBearer(uni);
+    return d->findBearer(uni);
 }
 
-ModemManager::Bearer::List ModemManager::ModemDevice::bearers()
+ModemManager::Bearer::List ModemManager::ModemDevice::bearers() const
 {
     Q_D(const ModemDevice);
 
@@ -313,12 +313,12 @@ ModemManager::Bearer::List ModemManager::ModemDevice::bearers()
 
 ModemManager::Sim::Ptr ModemManager::ModemDevice::findSim(const QString &uni)
 {
-    Q_D(const ModemDevice);
+    Q_D(ModemDevice);
 
-    return const_cast<ModemDevicePrivate*>(d)->findSim(uni);
+    return d->findSim(uni);
 }
 
-ModemManager::Sim::List ModemManager::ModemDevice::sims()
+ModemManager::Sim::List ModemManager::ModemDevice::sims() const
 {
     Q_D(const ModemDevice);
 
