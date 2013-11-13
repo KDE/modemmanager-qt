@@ -253,7 +253,7 @@ void ModemManager::ModemManagerPrivate::onInterfacesAdded(const QDBusObjectPath 
     }
     // re-emit in case of modem type change (GSM <-> CDMA)
     else if (modemList.contains(uni) && (interfaces_and_properties.keys().contains(MM_DBUS_INTERFACE_MODEM_MODEM3GPP) ||
-                                       interfaces_and_properties.keys().contains(MM_DBUS_INTERFACE_MODEM_MODEMCDMA))) {
+                                         interfaces_and_properties.keys().contains(MM_DBUS_INTERFACE_MODEM_MODEMCDMA))) {
         emit modemAdded(uni);
     }
 }
@@ -282,8 +282,8 @@ void ModemManager::ModemManagerPrivate::onInterfacesRemoved(const QDBusObjectPat
 void ModemManager::ModemManagerPrivate::onSimPathChanged(const QString &oldPath, const QString &newPath)
 {
     if (!oldPath.isEmpty() && simList.contains(oldPath)) {
-        simList.remove(oldPath);
         emit simRemoved(oldPath);
+        simList.remove(oldPath);
     }
 
     if (!newPath.isEmpty()) {
