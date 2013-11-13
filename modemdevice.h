@@ -35,6 +35,7 @@
 #include "interface.h"
 #include "bearer.h"
 #include "sim.h"
+#include "modemmessaging.h"
 
 class ModemDevicePrivate;
 
@@ -75,6 +76,7 @@ public:
     ModemManager::Bearer::List bearers() const;
     ModemManager::Sim::Ptr findSim(const QString &uni);
     ModemManager::Sim::List sims() const;
+    ModemManager::ModemMessaging::Ptr messaging();
 
     bool isGsmModem() const;
     bool isCdmaModem() const;

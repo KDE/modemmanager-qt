@@ -99,7 +99,7 @@ void ModemManager::ModemDevice::initInterfaces()
         /* Accept only MM interfaces so that when the device is unplugged,
          * d->interfaces goes empty and we can easily verify that the device is gone. */
         if (!ifaceElem.isNull() && ifaceElem.attribute("name").startsWith(MM_DBUS_SERVICE)) {
-            QString name = ifaceElem.attribute("name");
+            const QString name = ifaceElem.attribute("name");
             if (name == QLatin1String(MM_DBUS_INTERFACE_MODEM)) {
                 d->interfaceList.insert(ModemManager::ModemDevice::ModemInterface, ModemManager::Modem::Ptr());
                 if (hasInterface(ModemDevice::ModemInterface)) {
@@ -324,6 +324,13 @@ ModemManager::Sim::List ModemManager::ModemDevice::sims() const
     Q_D(const ModemDevice);
 
     return const_cast<ModemDevicePrivate*>(d)->sims();
+}
+
+ModemManager::ModemMessaging::Ptr ModemManager::ModemDevice::messaging()
+{
+    Q_D(ModemDevice);
+
+    return d->interface(ModemManager::ModemDevice::MessagingInterface);
 }
 
 bool ModemManager::ModemDevice::isGsmModem() const
