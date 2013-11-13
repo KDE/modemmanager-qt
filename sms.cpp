@@ -84,12 +84,12 @@ void ModemManager::Sms::onPropertiesChanged(const QString &interfaceName, const 
 
         QVariantMap::const_iterator it = changedProperties.constFind(state);
         if (it != changedProperties.constEnd()) {
-            d->state = (MMSmsState) it->toInt();
+            d->state = (MMSmsState) it->toUInt();
             emit stateChanged(d->state);
         }
         it = changedProperties.constFind(pduType);
         if (it != changedProperties.constEnd()) {
-            d->pduType = (MMSmsPduType) it->toInt();
+            d->pduType = (MMSmsPduType) it->toUInt();
         }
         it = changedProperties.constFind(number);
         if (it != changedProperties.constEnd()) {
@@ -121,7 +121,7 @@ void ModemManager::Sms::onPropertiesChanged(const QString &interfaceName, const 
         }
         it = changedProperties.constFind(messageReference);
         if (it != changedProperties.constEnd()) {
-            d->messageReference = it->toInt();
+            d->messageReference = it->toUInt();
         }
         it = changedProperties.constFind(timestamp);
         if (it != changedProperties.constEnd()) {
@@ -133,12 +133,12 @@ void ModemManager::Sms::onPropertiesChanged(const QString &interfaceName, const 
         }
         it = changedProperties.constFind(deliveryState);
         if (it != changedProperties.constEnd()) {
-            d->deliveryState = (MMSmsDeliveryState) it->toInt();
+            d->deliveryState = (MMSmsDeliveryState) it->toUInt();
             emit deliveryStateChanged(d->deliveryState);
         }
         it = changedProperties.constFind(storage);
         if (it != changedProperties.constEnd()) {
-            d->storage = (MMSmsStorage) it->toInt();
+            d->storage = (MMSmsStorage) it->toUInt();
         }
     }
 }
