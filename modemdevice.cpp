@@ -35,6 +35,7 @@
 #include "modemlocation.h"
 #include "modemmessaging.h"
 #include "modemtime.h"
+#include "mmdebug.h"
 
 #include "generic-types.h"
 
@@ -372,6 +373,13 @@ void ModemManager::ModemDevice::onInterfacesRemoved(const QDBusObjectPath &objec
     Q_D(ModemDevice);
     if (object_path.path() != d->uni) {
         return;
+    }
+
+    if (interfaces.contains(MM_DBUS_INTERFACE_MODEM) || interfaces.isEmpty()) {
+        foreach (ModemManager::Sim::Ptr sim, sims()) {
+            emit simRemoved(sim->uni());
+            d->simList.remove(sim->uni());
+        }
     }
 
     foreach(const QString & iface, interfaces) {
