@@ -143,16 +143,16 @@ void ModemManager::Sms::onPropertiesChanged(const QString &interfaceName, const 
     }
 }
 
-void ModemManager::Sms::send()
+QDBusPendingReply<> ModemManager::Sms::send()
 {
     Q_D(Sms);
-    d->smsIface.Send();
+    return d->smsIface.Send();
 }
 
-void ModemManager::Sms::store(MMSmsStorage storage)
+QDBusPendingReply<> ModemManager::Sms::store(MMSmsStorage storage)
 {
     Q_D(Sms);
-    d->smsIface.Store(storage);
+    return d->smsIface.Store(storage);
 }
 
 MMSmsState ModemManager::Sms::state() const

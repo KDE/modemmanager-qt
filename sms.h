@@ -55,14 +55,14 @@ public:
     /**
     * Send the SMS
     */
-    void send();
+    QDBusPendingReply<> send();
 
     /**
     * Store the SMS
     *
     * @param storage the storage location of the SMS (empty for default storage)
     */
-    void store(MMSmsStorage storage = MM_SMS_STORAGE_UNKNOWN);
+    QDBusPendingReply<> store(MMSmsStorage storage = MM_SMS_STORAGE_UNKNOWN);
 
     /**
     * This method returns the state of the SMS
