@@ -51,7 +51,7 @@ ModemManager::Sms::Sms(const QString &path, QObject *parent)
     d->timestamp =  QDateTime::fromString(d->smsIface.timestamp(), Qt::ISODate);
     d->dischargeTimestamp = QDateTime::fromString(d->smsIface.dischargeTimestamp(), Qt::ISODate);
     d->deliveryState = (MMSmsDeliveryState) d->smsIface.deliveryState();
-    d->storage =  (MMSmsStorage) d->smsIface.storage();
+    d->storage = (MMSmsStorage) d->smsIface.storage();
 
     QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
@@ -143,13 +143,13 @@ void ModemManager::Sms::onPropertiesChanged(const QString &interfaceName, const 
     }
 }
 
-QDBusPendingReply<> ModemManager::Sms::send()
+void ModemManager::Sms::send()
 {
     Q_D(Sms);
-    return d->smsIface.Send();
+    d->smsIface.Send();
 }
 
-QDBusPendingReply<> ModemManager::Sms::store(MMSmsStorage storage)
+void ModemManager::Sms::store(MMSmsStorage storage)
 {
     Q_D(Sms);
     return d->smsIface.Store(storage);
