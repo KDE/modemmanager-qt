@@ -35,6 +35,11 @@ class Modem3gppUssdPrivate;
 
 namespace ModemManager
 {
+/**
+ * @brief The Modem3gppUssd class
+ *
+ * This class provides access to actions based on the USSD protocol.
+ */
 class MODEMMANAGERQT_EXPORT Modem3gppUssd : public Interface
 {
     Q_OBJECT
@@ -47,14 +52,46 @@ public:
     explicit Modem3gppUssd(const QString &path, QObject *parent = 0);
     ~Modem3gppUssd();
 
-    // methods
+    /**
+     * Sends a USSD @p command string to the network initiating a USSD session.
+     *
+     * When the request is handled by the network, the method returns the
+     * response or an appropriate error. The network may be awaiting further
+     * response from the ME after returning from this method and no new command
+     * can be initiated until this one is cancelled or ended.
+     */
     QString initiate(const QString &command);
+
+    /**
+     * Respond to a USSD request that is either initiated by the mobile network,
+     * or that is awaiting further input after initiate() was called.
+     */
     QString respond(const QString &response);
+
+    /**
+     * Cancel an ongoing USSD session, either mobile or network initiated.
+     */
     void cancel();
 
-    // properties
+    /**
+     * @return the state of any ongoing USSD session
+     */
     MMModem3gppUssdSessionState state() const;
+
+    /**
+     * @return any network-initiated request to which no USSD response is required
+     *
+     * When no USSD session is active, or when there is no network- initiated request, this property will be an empty string.
+     */
     QString networkNotification() const;
+
+    /**
+     * @return any pending network-initiated request for a response. Client
+     * should call respond() with the appropriate response to this request.
+     *
+     * When no USSD session is active, or when there is no pending
+     * network-initiated request, this property will be an empty string.
+     */
     QString networkRequest() const;
 
 Q_SIGNALS:

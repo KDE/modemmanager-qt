@@ -35,6 +35,11 @@ class Modem3gppPrivate;
 
 namespace ModemManager
 {
+/**
+ * @brief The Modem3gpp class
+ *
+ * This class provides access to specific actions that may be performed in modems with 3GPP capabilities.
+ */
 class MODEMMANAGERQT_EXPORT Modem3gpp : public Interface
 {
     Q_OBJECT
@@ -50,14 +55,41 @@ public:
     explicit Modem3gpp(const QString &path, QObject *parent = 0);
     ~Modem3gpp();
 
-    // properties
+    /**
+     * @return the IMEI of the device
+     */
     QString imei() const;
+
+    /**
+     * @return mobile registration status as defined in 3GPP TS 27.007 section 10.1.19
+     */
     MMModem3gppRegistrationState registrationState() const;
+
+    /**
+     * @return code of the operator to which the mobile is currently registered.
+     *
+     * Returned in the format "MCCMNC", where MCC is the three-digit ITU E.212
+     * Mobile Country Code and MNC is the two- or three-digit GSM Mobile Network
+     * Code. e.g. e"31026" or "310260".
+     *
+     * If the MCC and MNC are not known or the mobile is not registered to a
+     * mobile network, this property will be an empty string.
+     */
     QString operatorCode() const;
+
+    /**
+     * @return name of the operator to which the mobile is currently registered.
+     *
+     * If the operator name is not known or the mobile is not registered to a
+     * mobile network, this property will be an empty string.
+     */
     QString operatorName() const;
+
+    /**
+     * @return QFlags of MMModem3gppFacility values for which PIN locking is enabled
+     */
     FacilityLocks enabledFacilityLocks() const;
 
-    // methods
     /**
       * Register the device to network.
       *
@@ -65,6 +97,30 @@ public:
     */
     void registerToNetwork(const QString &networkId = QString());
 
+    /**
+     * Scan for available networks.
+     *
+     * @return a QList<QVariantMap> with the results, where each map may contain these values:
+     *
+     * "status": A MMModem3gppNetworkAvailability value representing network
+     * availability status, given as an unsigned integer (signature "u"). This
+     * key will always be present.
+     *
+     * "operator-long": Long-format name of operator, given as a string value
+     * (signature "s"). If the name is unknown, this field should not be present.
+     *
+     * "operator-short": Short-format name of operator, given as a string value
+     * (signature "s"). If the name is unknown, this field should not be present.
+     *
+     * "operator-code": Mobile code of the operator, given as a string value
+     * (signature "s"). Returned in the format "MCCMNC", where MCC is the
+     * three-digit ITU E.212 Mobile Country Code and MNC is the two- or
+     * three-digit GSM Mobile Network Code. e.g. "31026" or "310260".
+     *
+     * "access-technology": A MMModemAccessTechnology value representing the
+     * generic access technology used by this mobile network, given as an
+     * unsigned integer (signature "u").
+     */
     QDBusPendingReply<ScanResultsType> scan();
 
 Q_SIGNALS:
