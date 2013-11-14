@@ -115,7 +115,7 @@ qt4_automoc(${DBUS_INTERFACES_FILES})
 
 add_library(ModemManagerQt SHARED ${ModemManagerQt_MOC} ${ModemManagerQt_SRCS} ${DBUS_INTERFACES_FILES})
 
-target_link_libraries(ModemManagerQt ${QT_QTCORE_LIBRARY} ${QT_QTDBUS_LIBRARY})
+target_link_libraries(ModemManagerQt ${QT_QTCORE_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY})
 install(TARGETS ModemManagerQt DESTINATION lib${LIB_SUFFIX})
 
 install( FILES
