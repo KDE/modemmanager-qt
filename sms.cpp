@@ -152,7 +152,7 @@ void ModemManager::Sms::send()
 void ModemManager::Sms::store(MMSmsStorage storage)
 {
     Q_D(Sms);
-    return d->smsIface.Store(storage);
+    d->smsIface.Store(storage);
 }
 
 MMSmsState ModemManager::Sms::state() const
