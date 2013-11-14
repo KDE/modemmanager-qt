@@ -98,7 +98,7 @@ Q_SIGNALS:
     void bearerRemoved(const QString &udi);
 
 protected:
-    ModemDevicePrivate * d_ptr;
+    ModemDevicePrivate *const d_ptr;
 };
 } // namespace ModemManager
 

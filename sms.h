@@ -157,7 +157,7 @@ private Q_SLOTS:
     void onPropertiesChanged(const QString &interface, const QVariantMap &changedProperties, const QStringList &invalidatedProps);
 
 private:
-    SmsPrivate *d_ptr;
+    SmsPrivate *const d_ptr;
 };
 
 } // namespace ModemManager

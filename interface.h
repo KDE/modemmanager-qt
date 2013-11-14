@@ -52,7 +52,7 @@ public:
     QString uni() const;
 
 protected:
-    InterfacePrivate * d_ptr;
+    InterfacePrivate *const d_ptr;
 };
 } // namespace ModemManager
 

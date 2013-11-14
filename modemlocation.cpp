@@ -32,7 +32,7 @@ ModemLocationPrivate::ModemLocationPrivate(const QString &path)
 }
 
 ModemManager::ModemLocation::ModemLocation(const QString &path, QObject *parent)
-    : Interface( *new ModemLocationPrivate(path), parent)
+    : Interface(*new ModemLocationPrivate(path), parent)
 {
     Q_D(ModemLocation);
 

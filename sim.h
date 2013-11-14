@@ -59,7 +59,7 @@ public:
 
     QString uni() const;
 private:
-    SimPrivate * d_ptr;
+    SimPrivate *const d_ptr;
 };
 } // namespace ModemManager
 
