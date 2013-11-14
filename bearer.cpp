@@ -41,6 +41,7 @@ ModemManager::Bearer::Bearer(const QString &path, QObject *parent)
 
 ModemManager::Bearer::~Bearer()
 {
+    delete d_ptr;
 }
 
 QString ModemManager::Bearer::interface() const

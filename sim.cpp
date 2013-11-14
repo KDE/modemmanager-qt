@@ -38,6 +38,7 @@ ModemManager::Sim::Sim(const QString &path, QObject *parent)
 
 ModemManager::Sim::~Sim()
 {
+    delete d_ptr;
 }
 
 QString ModemManager::Sim::simIdentifier() const
