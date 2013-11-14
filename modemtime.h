@@ -32,6 +32,11 @@ class ModemTimePrivate;
 
 namespace ModemManager
 {
+/**
+ * @brief The ModemTime class
+ *
+ * This class allows clients to receive network time and timezone updates broadcast by mobile networks.
+ */
 class MODEMMANAGERQT_EXPORT ModemTime : public Interface
 {
     Q_OBJECT
@@ -42,19 +47,34 @@ public:
     typedef QList<Ptr> List;
 
     struct NetworkTimeZone {
-        int offset;
-        int dst_offset;
-        int leap_seconds;
+        int offset; ///< Offset of the timezone from UTC, in minutes (including DST, if applicable)
+        int dst_offset; ///< Amount of offset that is due to DST (daylight saving time)
+        int leap_seconds; ///< Number of leap seconds included in the network time
     };
 
     explicit ModemTime(const QString &path, QObject *parent = 0);
     ~ModemTime();
 
+    /**
+     * @return the current network time in local time.
+     *
+     * This method will only work if the modem tracks, or can request, the
+     * current network time; it will not attempt to use previously-received
+     * network time updates on the host to guess the current network time.
+     */
     QDateTime networkTime();
 
+    /**
+     * @return the timezone data provided by the network.
+     * @see NetworkTimeZone
+     */
     NetworkTimeZone networkTimeZone() const;
 
 Q_SIGNALS:
+    /**
+     * Sent when the network time is updated.
+     * @param dateTime the new date and time
+     */
     void networkTimeChanged(const QDateTime &dateTime);
 
 private Q_SLOTS:
