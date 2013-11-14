@@ -87,17 +87,6 @@ void ModemManager::Modem::enable(bool enable)
     d->modemIface.Enable(enable);
 }
 
-QStringList ModemManager::Modem::listBearers()
-{
-    Q_D(Modem);
-    QStringList result;
-    QList<QDBusObjectPath> objects = d->modemIface.ListBearers();
-    foreach (const QDBusObjectPath & path, objects) {
-        result << path.path();
-    }
-    return result;
-}
-
 QString ModemManager::Modem::createBearer(const BearerStruct &bearer)
 {
     Q_D(Modem);

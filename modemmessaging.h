@@ -41,7 +41,6 @@ class MODEMMANAGERQT_EXPORT ModemMessaging : public Interface
     Q_DECLARE_PRIVATE(ModemMessaging)
 
 public:
-
     explicit ModemMessaging(const QString &path, QObject *parent = 0);
     ~ModemMessaging();
 
@@ -64,11 +63,6 @@ public:
      * Delete an SMS message
      */
     QDBusPendingReply<> deleteMessage(const QDBusObjectPath &path);
-
-    /**
-     * Create a new Sms object for a particular message
-     */
-    ModemManager::Sms::Ptr createSms(const QDBusObjectPath &path);
 
 private Q_SLOTS:
     void onPropertiesChanged(const QString &interface, const QVariantMap &changedProperties, const QStringList &invalidatedProps);

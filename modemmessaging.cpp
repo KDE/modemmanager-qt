@@ -130,9 +130,3 @@ QDBusPendingReply<> ModemManager::ModemMessaging::deleteMessage(const QDBusObjec
     Q_D(ModemMessaging);
     return d->modemMessagingIface.Delete(path);
 }
-
-ModemManager::Sms::Ptr ModemManager::ModemMessaging::createSms(const QDBusObjectPath &path)
-{
-    Q_D(ModemMessaging);
-    return Sms::Ptr(new ModemManager::Sms(path.path(), this));
-}

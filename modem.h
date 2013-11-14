@@ -81,7 +81,6 @@ public:
     // methods
     void enable(bool enable);
 
-    QStringList listBearers();
     QString createBearer(const BearerStruct &bearer);
     void deleteBearer(const QDBusObjectPath &bearer);
 
