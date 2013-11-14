@@ -41,6 +41,12 @@ class MODEMMANAGERQT_EXPORT ModemMessaging : public Interface
     Q_DECLARE_PRIVATE(ModemMessaging)
 
 public:
+    struct Message {
+        QString number;
+        QString text;
+        QByteArray data;
+    };
+
     typedef QSharedPointer<ModemMessaging> Ptr;
     typedef QList<Ptr> List;
 
@@ -60,7 +66,7 @@ public:
     /**
      * Create a new SMS message
      */
-    QDBusPendingReply<QDBusObjectPath> createMessage(const QVariantMap &properties);
+    QDBusPendingReply<QDBusObjectPath> createMessage(const Message &message);
 
     /**
      * Delete an SMS message
@@ -73,10 +79,14 @@ private Q_SLOTS:
     void onPropertiesChanged(const QString &interface, const QVariantMap &changedProperties, const QStringList &invalidatedProps);
     void onMessageAdded(const QDBusObjectPath &path, bool received);
     void onMessageDeleted(const QDBusObjectPath &path);
+    void onMessageListArrived(QDBusPendingCallWatcher *watcher);
 
 Q_SIGNALS:
     void messageAdded(const QString &uni, bool received);
     void messageDeleted(const QString &uni);
+
+private:
+    void initMessages();
 };
 
 } // namespace ModemManager

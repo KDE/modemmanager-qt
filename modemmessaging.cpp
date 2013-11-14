@@ -46,26 +46,27 @@ ModemManager::ModemMessaging::ModemMessaging(const QString &path, QObject *paren
     d->supportedStorages = storages;
     d->defaultStorage = (MMSmsStorage) d->modemMessagingIface.defaultStorage();
 
-    QDBusReply< QList <QDBusObjectPath> > messageList = d->modemMessagingIface.List();
-    if (messageList.isValid()) {
-        mmDebug() << "Message list";
-        QList <QDBusObjectPath> messages = messageList.value();
-        foreach (const QDBusObjectPath &op, messages) {
-            d->messageList.insert(op.path(), ModemManager::Sms::Ptr());
-            emit messageAdded(op.path(), false);
-            mmDebug() << "  " << op.path();
-        }
-    }
-
     connect(&d->modemMessagingIface, SIGNAL(Added(QDBusObjectPath,bool)), this, SLOT(onMessageAdded(QDBusObjectPath,bool)));
     connect(&d->modemMessagingIface, SIGNAL(Deleted(QDBusObjectPath)), this, SLOT(onMessageDeleted(QDBusObjectPath)));
 
     QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+
+    initMessages();
 }
 
 ModemManager::ModemMessaging::~ModemMessaging()
 {
+}
+
+void ModemManager::ModemMessaging::initMessages()
+{
+    Q_D(ModemMessaging);
+
+    qDBusRegisterMetaType<QList<QDBusObjectPath> >();
+    QDBusPendingCall messageList = d->modemMessagingIface.List();
+    QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(messageList, this);
+    connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), SLOT(onMessageListArrived(QDBusPendingCallWatcher*)));
 }
 
 ModemManager::Sms::Ptr ModemMessagingPrivate::findMessage(const QString &uni)
@@ -136,6 +137,24 @@ void ModemManager::ModemMessaging::onMessageDeleted(const QDBusObjectPath &path)
     emit messageDeleted(path.path());
 }
 
+void ModemManager::ModemMessaging::onMessageListArrived(QDBusPendingCallWatcher* watcher)
+{
+    Q_D(ModemMessaging);
+    qDebug() << "Message list arrived";
+    QDBusPendingReply<QList<QDBusObjectPath > > reply = *watcher;
+    if (reply.isValid()) {
+        mmDebug() << "Message list";
+        QList <QDBusObjectPath> messages = reply.value();
+        foreach (const QDBusObjectPath &op, messages) {
+            d->messageList.insert(op.path(), ModemManager::Sms::Ptr());
+            emit messageAdded(op.path(), false);
+            mmDebug() << "  " << op.path();
+        }
+    }
+    watcher->deleteLater();
+
+}
+
 QList<MMSmsStorage> ModemManager::ModemMessaging::supportedStorages() const
 {
     Q_D(const ModemMessaging);
@@ -160,10 +179,20 @@ ModemManager::Sms::List ModemManager::ModemMessaging::messages()
     return d->messages();
 }
 
-QDBusPendingReply<QDBusObjectPath> ModemManager::ModemMessaging::createMessage(const QVariantMap &properties)
+QDBusPendingReply<QDBusObjectPath> ModemManager::ModemMessaging::createMessage(const Message &message)
 {
     Q_D(ModemMessaging);
-    return d->modemMessagingIface.Create(properties);
+
+    if (message.number.isEmpty() || (message.data.isEmpty() && message.text.isEmpty())) {
+        return QDBusPendingReply<QDBusObjectPath>();
+    }
+
+    QVariantMap map;
+    map.insert("number", message.number);
+    map.insert("text", message.text);
+    map.insert("data", message.data);
+
+    return d->modemMessagingIface.Create(map);
 }
 
 void ModemManager::ModemMessaging::deleteMessage(const QString &uni)
