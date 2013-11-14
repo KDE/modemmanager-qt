@@ -24,6 +24,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "interface_p.h"
 #include "dbus/Messaging.h"
+#include "sms.h"
 
 class ModemMessagingPrivate: public InterfacePrivate
 {
@@ -31,9 +32,11 @@ public:
     ModemMessagingPrivate(const QString &path);
     OrgFreedesktopModemManager1ModemMessagingInterface modemMessagingIface;
 
-    QList<QDBusObjectPath> messageList;
+    QMap<QString, ModemManager::Sms::Ptr> messageList;
     QList<MMSmsStorage> supportedStorages;
     MMSmsStorage defaultStorage;
+    ModemManager::Sms::Ptr findMessage(const QString &uni);
+    ModemManager::Sms::List messages();
 };
 
 #endif

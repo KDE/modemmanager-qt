@@ -330,7 +330,7 @@ ModemManager::ModemMessaging::Ptr ModemManager::ModemDevice::messaging()
 {
     Q_D(ModemDevice);
 
-    return d->interface(ModemManager::ModemDevice::MessagingInterface);
+    return d->interface(ModemManager::ModemDevice::MessagingInterface).objectCast<ModemManager::ModemMessaging>();
 }
 
 bool ModemManager::ModemDevice::isGsmModem() const

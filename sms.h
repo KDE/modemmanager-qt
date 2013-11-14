@@ -49,7 +49,7 @@ public:
     typedef QSharedPointer<Sms> Ptr;
     typedef QList<Ptr> List;
 
-    Sms(const QString &path, QObject *parent);
+    Sms(const QString &path, QObject *parent = 0);
     ~Sms();
 
     /**
