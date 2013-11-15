@@ -152,7 +152,6 @@ void ModemManager::ModemMessaging::onMessageListArrived(QDBusPendingCallWatcher*
         }
     }
     watcher->deleteLater();
-
 }
 
 QList<MMSmsStorage> ModemManager::ModemMessaging::supportedStorages() const
