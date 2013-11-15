@@ -63,7 +63,6 @@ void ModemManager::ModemMessaging::initMessages()
 {
     Q_D(ModemMessaging);
 
-    qDBusRegisterMetaType<QList<QDBusObjectPath> >();
     QDBusPendingCall messageList = d->modemMessagingIface.List();
     QDBusPendingCallWatcher *watcher = new QDBusPendingCallWatcher(messageList, this);
     connect(watcher, SIGNAL(finished(QDBusPendingCallWatcher*)), SLOT(onMessageListArrived(QDBusPendingCallWatcher*)));
