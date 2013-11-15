@@ -130,3 +130,20 @@ set_property(TARGET ModemManagerQt PROPERTY SOVERSION 0)
 message(STATUS "Writing pkg-config file...")
 configure_file(${CMAKE_SOURCE_DIR}/ModemManagerQt.pc.cmake ${CMAKE_BINARY_DIR}/ModemManagerQt.pc @ONLY)
 install(FILES ${CMAKE_BINARY_DIR}/ModemManagerQt.pc DESTINATION "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}/pkgconfig/")
+
+##################  apidox ################################
+find_package(Doxygen)
+
+if(DOXYGEN_EXECUTABLE)
+  configure_file(${CMAKE_SOURCE_DIR}/.Doxyfile.cmake ${CMAKE_BINARY_DIR}/Doxyfile)
+
+  if(EXISTS ${QT_DOC_DIR}/html)
+    set(QTDOCS "${QT_DOC_DIR}/html")
+  else(EXISTS ${QT_DOC_DIR}/html)
+    set(QTDOCS "http://qt-project.org/doc/latest/")
+  endif(EXISTS ${QT_DOC_DIR}/html)
+
+  add_custom_target(
+    apidox
+    COMMAND ${DOXYGEN_EXECUTABLE} Doxyfile)
+endif(DOXYGEN_EXECUTABLE)

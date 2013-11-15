@@ -35,6 +35,13 @@ class ModemLocationPrivate;
 
 namespace ModemManager
 {
+/**
+ * @brief The ModemLocation class
+ *
+ * The Location class allows devices to provide location information to
+ * client applications. Not all devices can provide this information, or even if
+ * they do, they may not be able to provide it while a data session is active.
+ */
 class MODEMMANAGERQT_EXPORT ModemLocation : public Interface
 {
     Q_OBJECT
@@ -50,20 +57,58 @@ public:
     explicit ModemLocation(const QString &path, QObject *parent = 0);
     ~ModemLocation();
 
-    // methods
+    /**
+     * Configure the location sources to use when gathering location
+     * information. Also enable or disable location information gathering. This
+     * method may require the client to authenticate itself.
+     *
+     * When signals are emitted, any client application (including malicious
+     * ones!) can listen for location updates unless D-Bus permissions restrict
+     * these signals from certain users. If further security is desired, the
+     * @p signLocation argument can be set to FALSE to disable location updates
+     * via the locationChanged() signal and require applications to call authenticated APIs
+     * (like GetLocation() ) to get location information.
+     */
     void setup(ModemManager::ModemLocation::LocationSources sources, bool signalLocation);
+
+    /**
+     * @return current location information, if any. If the modem supports
+     * multiple location types it may return more than one. See the "Location"
+     * property for more information on the dictionary returned at location.
+     *
+     * This method may require the client to authenticate itself.
+     */
     LocationInformationMap location(); // TODO process this better
 
-    // properties
+    /**
+     * @return QFlags of MMModemLocationSource values, specifying the supported location sources.
+     */
     LocationSources capabilities() const;
+
+    /**
+     * @return QFlags specifying which of the supported MMModemLocationSource location sources is currently enabled in the device.
+     */
     LocationSources enabledCapabilities() const;
+
+    /**
+     * @return whether the device has any location capabilities
+     */
     bool isEnabled() const;
+
+    /**
+     * @return TRUE if location updates will be emitted via the locationChanged() signal, FALSE if location updates will not be emitted.
+     *
+     * See the setup() method for more information.
+     */
     bool signalsLocation() const;
 
 Q_SIGNALS:
     void capabilitiesChanged(LocationSources sources);
     void isEnabledChanged(bool enabled);
     void signalsLocationChanged(bool signalsLocation);
+    /**
+     * Emitted when the location has changed
+     */
     void locationChanged(const LocationInformationMap &location);
 
 private Q_SLOTS:

@@ -109,10 +109,10 @@ QString ModemManager::Modem::createBearer(const BearerStruct &bearer)
     return obj.path();
 }
 
-void ModemManager::Modem::deleteBearer(const QDBusObjectPath &bearer)
+void ModemManager::Modem::deleteBearer(const QString &bearer)
 {
     Q_D(Modem);
-    d->modemIface.DeleteBearer(bearer);
+    d->modemIface.DeleteBearer(QDBusObjectPath(bearer));
 }
 
 void ModemManager::Modem::reset()
