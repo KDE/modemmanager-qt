@@ -65,24 +65,23 @@ public:
     typedef QList<Ptr> List;
 
     struct BearerStruct {
-        QString apn; // required for 3GPP
-        MMBearerIpFamily ipType;
-        MMBearerAllowedAuth allowedAuth;
-        QString user;
-        QString password;
-        bool allowRoaming;
-        MMModemCdmaRmProtocol rmProtocol;
-        QString number; // required for POTS
+        QString apn; ///< Access Point Name, given as a string value. Required in 3GPP.
+        MMBearerIpFamily ipType; ///< Addressing type, given as a MMBearerIpFamily value. Optional in 3GPP and CDMA.
+        MMBearerAllowedAuth allowedAuth; ///< The authentication method to use, given as a MMBearerAllowedAuth value. Optional in 3GPP.
+        QString user; ///< User name (if any) required by the network, given as a string value. Optional in 3GPP.
+        QString password; ///< Password (if any) required by the network, given as a string value. Optional in 3GPP.
+        bool allowRoaming; ///< Flag to tell whether connection is allowed during roaming, given as a boolean value. Optional in 3GPP.
+        MMModemCdmaRmProtocol rmProtocol; ///< Protocol of the Rm interface, given as a MMModemCdmaRmProtocol value. Optional in CDMA.
+        QString number; ///< Telephone number to dial, given as a string value. Required in POTS.
     };
 
-    explicit Modem( const QString &path, QObject *parent = 0 );
+    explicit Modem(const QString &path, QObject *parent = 0 );
     ~Modem();
 
     QString uni() const;
     bool isEnabled() const;
     bool isValid() const;
 
-    // From org.freedesktop.ModemManager.Modem
     /**
      * Enable or disable the modem.
      *
