@@ -80,8 +80,7 @@ bool ModemManager::Modem::isValid() const
     return d->modemIface.isValid();
 }
 
-// From org.freedesktop.ModemManager.Modem
-void ModemManager::Modem::enable(bool enable)
+void ModemManager::Modem::setEnabled(bool enable)
 {
     Q_D(Modem);
     d->modemIface.Enable(enable);

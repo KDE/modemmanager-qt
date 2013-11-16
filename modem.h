@@ -81,6 +81,7 @@ public:
     QString uni() const;
     /**
      * @return @p true if the modem is fully functional, @p false when in low power mode or disabled
+     * @see setEnabled()
      */
     bool isEnabled() const;
     bool isValid() const;
@@ -92,7 +93,7 @@ public:
      *
      * When disabled, the modem enters low-power state and no network-related operations are available.
      */
-    void enable(bool enable);
+    void setEnabled(bool enable);
 
     /**
      * Create a new packet data bearer using the given characteristics.
