@@ -79,6 +79,9 @@ public:
     ~Modem();
 
     QString uni() const;
+    /**
+     * @return @p true if the modem is fully functional, @p false when in low power mode or disabled
+     */
     bool isEnabled() const;
     bool isValid() const;
 
@@ -395,6 +398,12 @@ Q_SIGNALS:
     void accessTechnologyChanged(ModemManager::Modem::AccessTechnologies tech);
     void currentModesChanged();
     void simPathChanged(const QString &oldPath, const QString &newPath);
+    /**
+     * Emitted when the modem's power state changes
+     * @param state the new state
+     * @see powerState()
+     */
+    void powerStateChanged(MMModemPowerState state);
 
 private Q_SLOTS:
     void onPropertiesChanged(const QString &ifaceName, const QVariantMap &changedProps, const QStringList &invalidatedProps);

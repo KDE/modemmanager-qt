@@ -353,6 +353,7 @@ void ModemManager::Modem::onPropertiesChanged(const QString &ifaceName, const QV
         QLatin1String tech(MM_MODEM_PROPERTY_ACCESSTECHNOLOGIES);
         QLatin1String currentModes(MM_MODEM_PROPERTY_CURRENTMODES);
         QLatin1String simPath(MM_MODEM_PROPERTY_SIM);
+        QLatin1String powerState(MM_MODEM_PROPERTY_POWERSTATE);
 
         QVariantMap::const_iterator it = changedProps.constFind(device);
         if (it != changedProps.constEnd()) {
@@ -392,6 +393,10 @@ void ModemManager::Modem::onPropertiesChanged(const QString &ifaceName, const QV
             const QString path = qdbus_cast<QDBusObjectPath>(*it).path();
             emit simPathChanged(d->simPath, path);
             d->simPath = path;
+        }
+        it = changedProps.constFind(powerState);
+        if (it != changedProps.constEnd()) {
+            emit powerStateChanged((MMModemPowerState)it->toUInt());
         }
     }
 }
