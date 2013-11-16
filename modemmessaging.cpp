@@ -179,7 +179,8 @@ QDBusPendingReply< QDBusObjectPath > ModemManager::ModemMessaging::createMessage
 
     if (!message.contains("number") || (!message.contains("text") && !message.contains("data"))) {
         mmDebug() << "Unable to create message, missing some property";
-        return QDBusPendingReply<QDBusObjectPath>();
+        QDBusPendingReply<QDBusObjectPath> tmp = QDBusPendingCall::fromError(QDBusError(QDBusError::InvalidArgs, "missing arguments"));
+        return tmp;
     }
 
     return d->modemMessagingIface.Create(message);
