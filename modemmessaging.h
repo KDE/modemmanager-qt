@@ -80,9 +80,15 @@ public:
 
     /**
      * Creates a new message object.
-     * The 'number' and either 'text' or 'data' properties are mandatory, others are optional.
+     * @param message Message structure with the 'number' and either 'text' or 'data' properties
      */
     QDBusPendingReply<QDBusObjectPath> createMessage(const Message &message);
+    /**
+     * Creates a new message object.
+     * @param message QVariantMap containing message properties
+     * The 'number' and either 'text' or 'data' properties are mandatory, others are optional.
+     */
+    QDBusPendingReply<QDBusObjectPath> createMessage(const QVariantMap &message);
 
     /**
      * Delete an SMS message.
@@ -101,7 +107,6 @@ private Q_SLOTS:
     void onPropertiesChanged(const QString &interface, const QVariantMap &changedProperties, const QStringList &invalidatedProps);
     void onMessageAdded(const QDBusObjectPath &path, bool received);
     void onMessageDeleted(const QDBusObjectPath &path);
-    void onMessageListArrived(QDBusPendingCallWatcher *watcher);
 
 Q_SIGNALS:
     /**
@@ -122,9 +127,6 @@ Q_SIGNALS:
      * @param uni path to the Sms object
      */
     void messageDeleted(const QString &uni);
-
-private:
-    void initMessages();
 };
 
 } // namespace ModemManager
