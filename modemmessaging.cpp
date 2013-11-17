@@ -161,7 +161,7 @@ ModemManager::Sms::List ModemManager::ModemMessaging::messages()
     return d->messages();
 }
 
-QDBusPendingReply<QDBusObjectPath> ModemManager::ModemMessaging::createMessage(const Message &message)
+QString ModemManager::ModemMessaging::createMessage(const Message &message)
 {
     Q_D(ModemMessaging);
 
@@ -173,17 +173,24 @@ QDBusPendingReply<QDBusObjectPath> ModemManager::ModemMessaging::createMessage(c
     return createMessage(map);
 }
 
-QDBusPendingReply< QDBusObjectPath > ModemManager::ModemMessaging::createMessage(const QVariantMap& message)
+QString ModemManager::ModemMessaging::createMessage(const QVariantMap& message)
 {
     Q_D(ModemMessaging);
 
     if (!message.contains("number") || (!message.contains("text") && !message.contains("data"))) {
         mmDebug() << "Unable to create message, missing some property";
-        QDBusPendingReply<QDBusObjectPath> tmp = QDBusPendingCall::fromError(QDBusError(QDBusError::InvalidArgs, "missing arguments"));
-        return tmp;
+        return QString();
     }
 
-    return d->modemMessagingIface.Create(message);
+    QDBusReply<QDBusObjectPath> msgPath = d->modemMessagingIface.Create(message);
+    if (msgPath.isValid()) {
+        const QString path = msgPath.value().path();
+        ModemManager::Sms::Ptr msg = ModemManager::Sms::Ptr(new ModemManager::Sms(path), &QObject::deleteLater);
+        d->messageList.insert(path, msg);
+        return path;
+    }
+
+    return QString();
 }
 
 void ModemManager::ModemMessaging::deleteMessage(const QString &uni)

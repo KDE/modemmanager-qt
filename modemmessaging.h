@@ -82,13 +82,13 @@ public:
      * Creates a new message object.
      * @param message Message structure with the 'number' and either 'text' or 'data' properties
      */
-    QDBusPendingReply<QDBusObjectPath> createMessage(const Message &message);
+    QString createMessage(const Message &message);
     /**
      * Creates a new message object.
      * @param message QVariantMap containing message properties
      * The 'number' and either 'text' or 'data' properties are mandatory, others are optional.
      */
-    QDBusPendingReply<QDBusObjectPath> createMessage(const QVariantMap &message);
+    QString createMessage(const QVariantMap &message);
 
     /**
      * Delete an SMS message.
