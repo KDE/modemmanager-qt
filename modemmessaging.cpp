@@ -140,13 +140,7 @@ void ModemManager::ModemMessaging::onMessageDeleted(const QDBusObjectPath &path)
 QList<MMSmsStorage> ModemManager::ModemMessaging::supportedStorages() const
 {
     Q_D(const ModemMessaging);
-    QList<MMSmsStorage> result;
-
-    foreach (uint storage, d->modemMessagingIface.supportedStorages()) {
-        result.append((MMSmsStorage)storage);
-    }
-
-    return result;
+    return d->supportedStorages;
 }
 
 MMSmsStorage ModemManager::ModemMessaging::defaultStorage() const
