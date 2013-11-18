@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 {
     qDebug() << "List of Modem Devices:";
     foreach (ModemManager::ModemDevice::Ptr modemdevice, ModemManager::modemDevices()) {
-        ModemManager::Modem::Ptr modemInterface = modemdevice->interface(ModemManager::ModemDevice::ModemInterface).objectCast<ModemManager::Modem>();
+        ModemManager::Modem::Ptr modemInterface = modemdevice->modemInterface();
         if (modemInterface) {
             qDebug() << "Modem: " << modemInterface->manufacturer() << modemInterface->model();
         } else {

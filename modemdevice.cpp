@@ -298,6 +298,20 @@ ModemManager::Interface::List ModemManager::ModemDevice::interfaces() const
     return const_cast<ModemDevicePrivate*>(d)->interfaces();
 }
 
+ModemManager::ModemMessaging::Ptr ModemManager::ModemDevice::messaging()
+{
+    Q_D(ModemDevice);
+
+    return d->interface(ModemManager::ModemDevice::MessagingInterface).objectCast<ModemManager::ModemMessaging>();
+}
+
+ModemManager::Modem::Ptr ModemManager::ModemDevice::modemInterface()
+{
+    Q_D(ModemDevice);
+
+    return d->interface(ModemManager::ModemDevice::ModemInterface).objectCast<ModemManager::Modem>();
+}
+
 ModemManager::Bearer::Ptr ModemManager::ModemDevice::findBearer(const QString &uni)
 {
     Q_D(ModemDevice);
@@ -324,13 +338,6 @@ ModemManager::Sim::List ModemManager::ModemDevice::sims() const
     Q_D(const ModemDevice);
 
     return const_cast<ModemDevicePrivate*>(d)->sims();
-}
-
-ModemManager::ModemMessaging::Ptr ModemManager::ModemDevice::messaging()
-{
-    Q_D(ModemDevice);
-
-    return d->interface(ModemManager::ModemDevice::MessagingInterface).objectCast<ModemManager::ModemMessaging>();
 }
 
 bool ModemManager::ModemDevice::isGsmModem() const

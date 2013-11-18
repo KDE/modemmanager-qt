@@ -32,10 +32,11 @@
 #include <QDBusObjectPath>
 
 #include "generic-types.h"
-#include "interface.h"
 #include "bearer.h"
-#include "sim.h"
+#include "interface.h"
+#include "modem.h"
 #include "modemmessaging.h"
+#include "sim.h"
 
 class ModemDevicePrivate;
 
@@ -72,11 +73,12 @@ public:
     bool hasInterface(InterfaceType type) const;
     ModemManager::Interface::List interfaces() const;
     ModemManager::Interface::Ptr interface(InterfaceType type) const;
+    ModemManager::ModemMessaging::Ptr messaging();
+    ModemManager::Modem::Ptr modemInterface();
     ModemManager::Bearer::Ptr findBearer(const QString &uni);
     ModemManager::Bearer::List bearers() const;
     ModemManager::Sim::Ptr findSim(const QString &uni);
     ModemManager::Sim::List sims() const;
-    ModemManager::ModemMessaging::Ptr messaging();
 
     bool isGsmModem() const;
     bool isCdmaModem() const;
