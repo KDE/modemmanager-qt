@@ -131,7 +131,7 @@ message(STATUS "Writing pkg-config file...")
 configure_file(${CMAKE_SOURCE_DIR}/ModemManagerQt.pc.cmake ${CMAKE_BINARY_DIR}/ModemManagerQt.pc @ONLY)
 install(FILES ${CMAKE_BINARY_DIR}/ModemManagerQt.pc DESTINATION "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}/pkgconfig/")
 
-##################  apidox ################################
+##################  apidox  ################################
 find_package(Doxygen)
 
 if(DOXYGEN_EXECUTABLE)
@@ -147,3 +147,9 @@ if(DOXYGEN_EXECUTABLE)
     apidox
     COMMAND ${DOXYGEN_EXECUTABLE} Doxyfile)
 endif(DOXYGEN_EXECUTABLE)
+
+##################  examples  ################################
+option(BUILD_EXAMPLES "Build example applications" FALSE)
+if (BUILD_EXAMPLES)
+    add_subdirectory(examples)
+endif(BUILD_EXAMPLES)
