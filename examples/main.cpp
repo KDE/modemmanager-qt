@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
         }
 
         qDebug() << "Messages: ";
-        ModemManager::ModemMessaging::Ptr messaging = modemdevice->messaging();
+        ModemManager::ModemMessaging::Ptr messaging = modemdevice->messagingInterface();
         if (messaging && !messaging->messages().isEmpty()) {
             ModemManager::Sms::List messages = messaging->messages();
             foreach (ModemManager::Sms::Ptr sms, messages) {

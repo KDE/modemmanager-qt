@@ -73,8 +73,10 @@ public:
     bool hasInterface(InterfaceType type) const;
     ModemManager::Interface::List interfaces() const;
     ModemManager::Interface::Ptr interface(InterfaceType type) const;
-    ModemManager::ModemMessaging::Ptr messaging();
+
+    ModemManager::ModemMessaging::Ptr messagingInterface();
     ModemManager::Modem::Ptr modemInterface();
+
     ModemManager::Bearer::Ptr findBearer(const QString &uni);
     ModemManager::Bearer::List bearers() const;
     ModemManager::Sim::Ptr findSim(const QString &uni);

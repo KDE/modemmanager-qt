@@ -298,7 +298,7 @@ ModemManager::Interface::List ModemManager::ModemDevice::interfaces() const
     return const_cast<ModemDevicePrivate*>(d)->interfaces();
 }
 
-ModemManager::ModemMessaging::Ptr ModemManager::ModemDevice::messaging()
+ModemManager::ModemMessaging::Ptr ModemManager::ModemDevice::messagingInterface()
 {
     Q_D(ModemDevice);
 
