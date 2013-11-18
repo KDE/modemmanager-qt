@@ -48,7 +48,6 @@ class MODEMMANAGERQT_EXPORT ModemDevice : public QObject
     Q_DECLARE_PRIVATE(ModemDevice)
 
     Q_PROPERTY(QString uni READ uni)
-
 public:
     typedef QSharedPointer<ModemDevice> Ptr;
     typedef QList<Ptr> List;
@@ -89,10 +88,6 @@ private Q_SLOTS:
     void onInterfacesAdded(const QDBusObjectPath &object_path, const NMVariantMapMap &interfaces_and_properties);
     void onInterfacesRemoved(const QDBusObjectPath &object_path, const QStringList &interfaces);
     void onSimPathChanged(const QString &oldPath, const QString &newPath);
-private:
-    void init();
-    void initInterfaces();
-    QString introspect() const;
 
 Q_SIGNALS:
     void simAdded(const QString &udi);

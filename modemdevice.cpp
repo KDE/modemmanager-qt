@@ -39,54 +39,38 @@
 
 #include "generic-types.h"
 
-ModemDevicePrivate::ModemDevicePrivate(const QString &path)
-    : uni(path)
+ModemDevicePrivate::ModemDevicePrivate(const QString &path, ModemManager::ModemDevice *q)
+    : uni(path),
+      q_ptr(q)
 {
+    init();
 }
 
 ModemDevicePrivate::~ModemDevicePrivate()
 {
 }
 
-ModemManager::ModemDevice::ModemDevice(const QString &path, QObject *parent)
-    : QObject(parent)
-    , d_ptr(new ModemDevicePrivate(path))
+void ModemDevicePrivate::init()
 {
-    init();
-}
-
-ModemManager::ModemDevice::ModemDevice(ModemDevicePrivate &dd, QObject *parent)
-    : QObject(parent)
-    , d_ptr(&dd)
-{
-    init();
-}
-
-ModemManager::ModemDevice::~ModemDevice()
-{
-    delete d_ptr;
-}
-
-void ModemManager::ModemDevice::init()
-{
-    Q_D(ModemDevice);
+    Q_Q(ModemManager::ModemDevice);
 
     QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, MM_DBUS_PATH, DBUS_INTERFACE_MANAGER, "InterfacesAdded",
-                                        this, SLOT(onInterfacesAdded(QDBusObjectPath,NMVariantMapMap)));
+                                         q, SLOT(onInterfacesAdded(QDBusObjectPath,NMVariantMapMap)));
     QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, MM_DBUS_PATH, DBUS_INTERFACE_MANAGER, "InterfacesRemoved",
-                                        this, SLOT(onInterfacesRemoved(QDBusObjectPath,QStringList)));
+                                         q, SLOT(onInterfacesRemoved(QDBusObjectPath,QStringList)));
 
     initInterfaces();
 }
 
-void ModemManager::ModemDevice::initInterfaces()
+void ModemDevicePrivate::initInterfaces()
 {
-    Q_D(ModemDevice);
-    d->interfaceList.clear();
+    Q_Q(ModemManager::ModemDevice);
+
+    interfaceList.clear();
 
     const QString xmlData = introspect();
     if (xmlData.isEmpty()) {
-        mmDebug() << d->uni << "has no interfaces!";
+        mmDebug() << uni << "has no interfaces!";
         return;
     }
 
@@ -97,47 +81,46 @@ void ModemManager::ModemDevice::initInterfaces()
     for (int i = 0; i < ifaceNodeList.count(); i++) {
         QDomElement ifaceElem = ifaceNodeList.item(i).toElement();
         /* Accept only MM interfaces so that when the device is unplugged,
-         * d->interfaces goes empty and we can easily verify that the device is gone. */
+         * interfaces goes empty and we can easily verify that the device is gone. */
         if (!ifaceElem.isNull() && ifaceElem.attribute("name").startsWith(MM_DBUS_SERVICE)) {
             const QString name = ifaceElem.attribute("name");
             if (name == QLatin1String(MM_DBUS_INTERFACE_MODEM)) {
-                d->interfaceList.insert(ModemManager::ModemDevice::ModemInterface, ModemManager::Modem::Ptr());
-                if (hasInterface(ModemDevice::ModemInterface)) {
-                    ModemManager::Modem::Ptr modemInterface = interface(ModemDevice::ModemInterface).objectCast<ModemManager::Modem>();
+                interfaceList.insert(ModemManager::ModemDevice::ModemInterface, ModemManager::Modem::Ptr());
+                if (q->hasInterface(ModemManager::ModemDevice::ModemInterface)) {
+                    ModemManager::Modem::Ptr modemInterface = q->modemInterface();
                     if (!modemInterface->simPath().isEmpty()) {
-                        d->simList.insert(modemInterface->simPath(), ModemManager::Sim::Ptr());
-                        emit simAdded(modemInterface->simPath());
+                        simList.insert(modemInterface->simPath(), ModemManager::Sim::Ptr());
+                        //q->simAdded(modemInterface->simPath());
 
-                        connect(modemInterface.data(), SIGNAL(simPathChanged(QString,QString)),
-                                SLOT(onSimPathChanged(QString,QString)));
+                        QObject::connect(modemInterface.data(), SIGNAL(simPathChanged(QString,QString)),
+                                         q, SLOT(onSimPathChanged(QString,QString)));
                     }
                 }
             } else if (name == QLatin1String(MM_DBUS_INTERFACE_MODEM_MODEM3GPP)) {
-                d->interfaceList.insert(ModemManager::ModemDevice::GsmInterface, ModemManager::Modem3gpp::Ptr());
+                interfaceList.insert(ModemManager::ModemDevice::GsmInterface, ModemManager::Modem3gpp::Ptr());
             } else if (name == QLatin1String(MM_DBUS_INTERFACE_MODEM_MODEM3GPP_USSD)) {
-                d->interfaceList.insert(ModemManager::ModemDevice::GsmUssdInterface, ModemManager::Modem3gppUssd::Ptr());
+                interfaceList.insert(ModemManager::ModemDevice::GsmUssdInterface, ModemManager::Modem3gppUssd::Ptr());
             } else if (name == QLatin1String(MM_DBUS_INTERFACE_MODEM_MODEMCDMA)) {
-                d->interfaceList.insert(ModemManager::ModemDevice::CdmaInterface, ModemManager::ModemCdma::Ptr());
+                interfaceList.insert(ModemManager::ModemDevice::CdmaInterface, ModemManager::ModemCdma::Ptr());
             } else if (name == QLatin1String(MM_DBUS_INTERFACE_MODEM_MESSAGING)) {
-                d->interfaceList.insert(ModemManager::ModemDevice::MessagingInterface, ModemManager::ModemMessaging::Ptr());
+                interfaceList.insert(ModemManager::ModemDevice::MessagingInterface, ModemManager::ModemMessaging::Ptr());
             } else if (name == QLatin1String(MM_DBUS_INTERFACE_MODEM_LOCATION)) {
-                d->interfaceList.insert(ModemManager::ModemDevice::LocationInterface, ModemManager::ModemLocation::Ptr());
+                interfaceList.insert(ModemManager::ModemDevice::LocationInterface, ModemManager::ModemLocation::Ptr());
             } else if (name == QLatin1String(MM_DBUS_INTERFACE_MODEM_TIME)) {
-                d->interfaceList.insert(ModemManager::ModemDevice::TimeInterface, ModemManager::ModemTime::Ptr());
+                interfaceList.insert(ModemManager::ModemDevice::TimeInterface, ModemManager::ModemTime::Ptr());
             } // TODO
             /* else if (name == QLatin1String(MM_DBUS_INTERFACE_MODEM_FIRMWARE)) {
-                d->interfaceList.insert(ModemManager::ModemDevice::FirmwareInterface, ModemManager::ModemFirmwareInterface::Ptr());
+                interfaceList.insert(ModemManager::ModemDevice::FirmwareInterface, ModemManager::ModemFirmwareInterface::Ptr());
             }*/
         }
     }
 
-    mmDebug() << d->uni << "has interfaces:" << d->interfaceList.keys();
+    mmDebug() << uni << "has interfaces:" << interfaceList.keys();
 }
 
-QString ModemManager::ModemDevice::introspect() const
+QString ModemDevicePrivate::introspect() const
 {
-    Q_D(const ModemDevice);
-    QDBusMessage call = QDBusMessage::createMethodCall(MM_DBUS_SERVICE, d->uni, DBUS_INTERFACE_INTROSPECT, "Introspect");
+    QDBusMessage call = QDBusMessage::createMethodCall(MM_DBUS_SERVICE, uni, DBUS_INTERFACE_INTROSPECT, "Introspect");
     QDBusPendingReply<QString> reply = QDBusConnection::systemBus().call(call);
 
     if (reply.isValid())
@@ -145,6 +128,23 @@ QString ModemManager::ModemDevice::introspect() const
     else {
         return QString();
     }
+}
+
+ModemManager::ModemDevice::ModemDevice(const QString &path, QObject *parent)
+    : QObject(parent)
+    , d_ptr(new ModemDevicePrivate(path, this))
+{
+}
+
+ModemManager::ModemDevice::ModemDevice(ModemDevicePrivate &dd, QObject *parent)
+    : QObject(parent)
+    , d_ptr(&dd)
+{
+}
+
+ModemManager::ModemDevice::~ModemDevice()
+{
+    delete d_ptr;
 }
 
 ModemManager::Interface::List ModemDevicePrivate::interfaces()

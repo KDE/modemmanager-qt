@@ -34,8 +34,11 @@
 class ModemDevicePrivate
 {
 public:
-    ModemDevicePrivate(const QString &path);
+    ModemDevicePrivate(const QString &path, ModemManager::ModemDevice *q);
     virtual ~ModemDevicePrivate();
+    void init();
+    void initInterfaces();
+    QString introspect() const;
     QString uni;
     QMap<ModemManager::ModemDevice::InterfaceType, ModemManager::Interface::Ptr> interfaceList;
     QMap<QString, ModemManager::Bearer::Ptr> bearerList;
@@ -47,6 +50,9 @@ public:
     ModemManager::Bearer::List bearers();
     ModemManager::Sim::Ptr findSim(const QString &uni);
     ModemManager::Sim::List sims();
+
+    Q_DECLARE_PUBLIC(ModemManager::ModemDevice)
+    ModemManager::ModemDevice *q_ptr;
 };
 
 #endif
