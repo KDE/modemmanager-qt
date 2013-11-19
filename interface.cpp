@@ -18,8 +18,8 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "interface_p.h"
 #include "interface.h"
+#include "interface_p.h"
 
 InterfacePrivate::InterfacePrivate(const QString &path)
     : uni(path)

@@ -46,7 +46,7 @@ public:
     typedef QList<Ptr> List;
 
     explicit Interface(const QString &path, QObject *parent = 0);
-    Interface(InterfacePrivate &dd, QObject *parent = 0);
+    explicit Interface(InterfacePrivate &dd, QObject *parent = 0);
     virtual ~Interface();
 
     QString uni() const;

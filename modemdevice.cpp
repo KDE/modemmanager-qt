@@ -19,25 +19,24 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <QDomDocument>
-
 #include "modemdevice.h"
 #include "modemdevice_p.h"
+
+#include "dbus/dbus.h"
+#include "generic-types.h"
 #include "manager.h"
 #include "mmdebug.h"
-#include "dbus/dbus.h"
-
 #include "modem.h"
 #include "modemcdma.h"
-#include "sim.h"
 #include "modem3gpp.h"
 #include "modem3gppussd.h"
 #include "modemlocation.h"
 #include "modemmessaging.h"
 #include "modemtime.h"
-#include "mmdebug.h"
+#include "sim.h"
 
-#include "generic-types.h"
+#include <QDomDocument>
+
 
 ModemDevicePrivate::ModemDevicePrivate(const QString &path, ModemManager::ModemDevice *q)
     : uni(path),
