@@ -113,6 +113,11 @@ public:
     void deleteBearer(const QString &bearer);
 
     /**
+     * @return the configured packet data bearers (EPS Bearers, PDP Contexts, or CDMA2000 Packet Data Sessions).
+     */
+    QStringList listBearers();
+
+    /**
      * Clear non-persistent configuration and state, and return the device to a newly-powered-on state.
      *
      * This command may power-cycle the device.
@@ -383,7 +388,7 @@ public:
     //  "cdma-nid":The Network Identifier of the serving network, if registered in a CDMA1x network and if known. Given as an unsigned integer value (signature "u").
     QVariantMap status();
 
-    void disconnectModem(const QDBusObjectPath &bearer);
+    void disconnectModem(const QString &bearer);
     void disconnectAllModems();
 
 Q_SIGNALS:

@@ -93,7 +93,7 @@ Q_SIGNALS:
     void simAdded(const QString &udi);
     void simRemoved(const QString &udi);
 
-    void bearerAdded(const QString &udi);
+    void bearerAdded(const QString &udi); // TODO emit these signals in the next version
     void bearerRemoved(const QString &udi);
 
 protected:

@@ -41,7 +41,7 @@ public:
     QString introspect() const;
     QString uni;
     QMap<ModemManager::ModemDevice::InterfaceType, ModemManager::Interface::Ptr> interfaceList;
-    QMap<QString, ModemManager::Bearer::Ptr> bearerList;
+    //QMap<QString, ModemManager::Bearer::Ptr> bearerList;
     QMap<QString, ModemManager::Sim::Ptr> simList;
     ModemManager::Interface::List interfaces() ;
     ModemManager::Interface::Ptr interface(ModemManager::ModemDevice::InterfaceType type);

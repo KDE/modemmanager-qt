@@ -114,6 +114,18 @@ void ModemManager::Modem::deleteBearer(const QString &bearer)
     d->modemIface.DeleteBearer(QDBusObjectPath(bearer));
 }
 
+QStringList ModemManager::Modem::listBearers()
+{
+    Q_D(Modem);
+    QStringList result;
+    QDBusReply<QList<QDBusObjectPath> > tmp = d->modemIface.ListBearers(); // TODO use the new property when it becomes available
+    foreach(const QDBusObjectPath & path, tmp.value()) {
+        result.append(path.path());
+    }
+
+    return result;
+}
+
 void ModemManager::Modem::reset()
 {
     Q_D(Modem);
@@ -419,13 +431,13 @@ QVariantMap ModemManager::Modem::status()
     return d->modemSimpleIface.GetStatus();
 }
 
-void ModemManager::Modem::disconnectModem(const QDBusObjectPath &bearer)
+void ModemManager::Modem::disconnectModem(const QString &bearer)
 {
     Q_D(Modem);
-    d->modemSimpleIface.Disconnect(bearer);
+    d->modemSimpleIface.Disconnect(QDBusObjectPath(bearer));
 }
 
 void ModemManager::Modem::disconnectAllModems()
 {
-    disconnectModem(QDBusObjectPath("/"));
+    disconnectModem(QLatin1String("/"));
 }

@@ -81,7 +81,7 @@ void ModemDevicePrivate::initInterfaces()
     for (int i = 0; i < ifaceNodeList.count(); i++) {
         QDomElement ifaceElem = ifaceNodeList.item(i).toElement();
         /* Accept only MM interfaces so that when the device is unplugged,
-         * interfaces goes empty and we can easily verify that the device is gone. */
+         * interfaceList goes empty and we can easily verify that the device is gone. */
         if (!ifaceElem.isNull() && ifaceElem.attribute("name").startsWith(MM_DBUS_SERVICE)) {
             const QString name = ifaceElem.attribute("name");
             if (name == QLatin1String(MM_DBUS_INTERFACE_MODEM)) {
@@ -212,33 +212,31 @@ ModemManager::Interface::Ptr ModemDevicePrivate::createInterface(ModemManager::M
 
 ModemManager::Bearer::Ptr ModemDevicePrivate::findBearer(const QString &uni)
 {
-    ModemManager::Bearer::Ptr bearer;
-    if (bearerList.contains(uni)) {
-        if (bearerList.value(uni)) {
-            bearer = bearerList.value(uni);
-        } else {
-            bearer = ModemManager::Bearer::Ptr(new ModemManager::Bearer(uni), &QObject::deleteLater);
-            bearerList[uni] = bearer;
+    ModemManager::Bearer::Ptr result;
+    foreach (const ModemManager::Bearer::Ptr & bearer, bearers()) {
+        if (bearer->uni() == uni) {
+            result = bearer;
+            break;
         }
     }
-    return bearer;
+
+    return result;
 }
 
 ModemManager::Bearer::List ModemDevicePrivate::bearers()
 {
-    ModemManager::Bearer::List list;
-
-    QMap<QString, ModemManager::Bearer::Ptr>::const_iterator i;
-    for (i = bearerList.constBegin(); i != bearerList.constEnd(); ++i) {
-        ModemManager::Bearer::Ptr modemBearer = findBearer(i.key());
-        if (!modemBearer.isNull()) {
-            list.append(modemBearer);
+    Q_Q(ModemManager::ModemDevice);
+    ModemManager::Bearer::List result;
+    foreach (const QString & path, q->modemInterface()->listBearers()) {
+        ModemManager::Bearer::Ptr modemBearer = ModemManager::Bearer::Ptr(new ModemManager::Bearer(path), &QObject::deleteLater);
+        if (modemBearer) {
+            result.append(modemBearer);
         } else {
-            qWarning() << "warning: null bearer Interface for" << i.key();
+            mmDebug() << "warning: null bearer interface for" << path;
         }
     }
 
-    return list;
+    return result;
 }
 
 ModemManager::Sim::Ptr ModemDevicePrivate::findSim(const QString &uni)
