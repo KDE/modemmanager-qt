@@ -162,7 +162,7 @@ void ModemManager::Modem::setCurrentBands(const QList<MMModemBand> &bands)
 {
     Q_D(Modem);
     QList<uint> tmp;
-    foreach (MMModemBand band, bands) {
+    foreach (const MMModemBand band, bands) {
         tmp.append(band);
     }
     d->modemIface.SetCurrentBands(tmp);

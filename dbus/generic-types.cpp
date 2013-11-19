@@ -110,3 +110,15 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, QList<QVariantMap
     argument.endArray();
     return argument;
 }
+
+void registerModemManagerTypes()
+{
+    qDBusRegisterMetaType<CurrentModesType>();
+    qDBusRegisterMetaType<SignalQualityPair>();
+    qDBusRegisterMetaType<SupportedModesType>();
+    qDBusRegisterMetaType<UnlockRetriesMap>();
+    qDBusRegisterMetaType<ScanResultsType>();
+    //qDBusRegisterMetaType<LocationInformationMap>();
+    qDBusRegisterMetaType<ValidityPair>();
+    qRegisterMetaType<MMModemLock>("MMModemLock");
+}
