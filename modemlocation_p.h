@@ -28,7 +28,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 class ModemLocationPrivate: public InterfacePrivate
 {
 public:
-    ModemLocationPrivate(const QString &path);
+    explicit ModemLocationPrivate(const QString &path);
     OrgFreedesktopModemManager1ModemLocationInterface modemLocationIface;
 };
 

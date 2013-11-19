@@ -26,7 +26,7 @@
 class InterfacePrivate
 {
 public:
-    InterfacePrivate(const QString &path);
+    explicit InterfacePrivate(const QString &path);
     QString uni;
 };
 

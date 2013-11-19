@@ -28,7 +28,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 class SimPrivate
 {
 public:
-    SimPrivate(const QString &path);
+    explicit SimPrivate(const QString &path);
     OrgFreedesktopModemManager1SimInterface simIface;
     QString uni;
 };

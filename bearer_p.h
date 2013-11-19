@@ -27,7 +27,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 class BearerPrivate
 {
 public:
-    BearerPrivate(const QString &path);
+    explicit BearerPrivate(const QString &path);
     OrgFreedesktopModemManager1BearerInterface bearerIface;
     QString uni;
 };

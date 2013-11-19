@@ -29,7 +29,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 class ModemMessagingPrivate: public InterfacePrivate
 {
 public:
-    ModemMessagingPrivate(const QString &path);
+    explicit ModemMessagingPrivate(const QString &path);
     OrgFreedesktopModemManager1ModemMessagingInterface modemMessagingIface;
 
     QMap<QString, ModemManager::Sms::Ptr> messageList;

@@ -28,7 +28,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 class ModemCdmaPrivate: public InterfacePrivate
 {
 public:
-    ModemCdmaPrivate(const QString &path);
+    explicit ModemCdmaPrivate(const QString &path);
     OrgFreedesktopModemManager1ModemModemCdmaInterface modemCdmaIface;
 };
 

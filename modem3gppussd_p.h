@@ -28,7 +28,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 class Modem3gppUssdPrivate: public InterfacePrivate
 {
 public:
-    Modem3gppUssdPrivate(const QString &path);
+    explicit Modem3gppUssdPrivate(const QString &path);
     OrgFreedesktopModemManager1ModemModem3gppUssdInterface ussdIface;
 };
 

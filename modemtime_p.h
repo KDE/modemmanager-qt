@@ -27,7 +27,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 class ModemTimePrivate: public InterfacePrivate
 {
 public:
-    ModemTimePrivate(const QString &path);
+    explicit ModemTimePrivate(const QString &path);
     OrgFreedesktopModemManager1ModemTimeInterface modemTimeIface;
 };
 
