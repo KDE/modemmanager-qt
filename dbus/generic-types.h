@@ -54,7 +54,7 @@ Q_DECLARE_BUILTIN_METATYPE(MMModemMode, UInt)
 typedef struct {
 public:
     MMModemMode allowed; // bitfield
-    MMModemMode prefered;
+    MMModemMode preferred;
 } CurrentModesType;
 Q_DECLARE_METATYPE(CurrentModesType)
 

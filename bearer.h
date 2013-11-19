@@ -69,7 +69,7 @@ public:
      * activation.
      *
      * If MM_BEARER_IP_METHOD_STATIC or MM_BEARER_IP_METHOD_DHCP methods are
-     * given, the interface will be an ethernet-style inteface suitable for DHCP
+     * given, the interface will be an ethernet-style interface suitable for DHCP
      * or setting static IP configuration on, while if the
      * MM_BEARER_IP_METHOD_PPP method is given, the interface will be a serial
      * TTY which must then have PPP run over it.
