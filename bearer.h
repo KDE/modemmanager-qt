@@ -19,8 +19,8 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_BEARERINTERFACE_H
-#define MODEMMANAGER_BEARERINTERFACE_H
+#ifndef MODEMMANAGERQT_BEARER_H
+#define MODEMMANAGERQT_BEARER_H
 
 #include "ModemManagerQt-export.h"
 

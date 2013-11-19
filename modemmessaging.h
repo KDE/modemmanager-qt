@@ -20,8 +20,8 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_MODEMMESSAGING_H
-#define MODEMMANAGER_MODEMMESSAGING_H
+#ifndef MODEMMANAGERQT_MODEMMESSAGING_H
+#define MODEMMANAGERQT_MODEMMESSAGING_H
 
 #include "ModemManagerQt-export.h"
 

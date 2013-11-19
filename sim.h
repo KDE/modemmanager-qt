@@ -21,8 +21,8 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_SIM_H
-#define MODEMMANAGER_SIM_H
+#ifndef MODEMMANAGERQT_SIM_H
+#define MODEMMANAGERQT_SIM_H
 
 #include "ModemManagerQt-export.h"
 

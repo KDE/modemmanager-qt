@@ -20,8 +20,8 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_SMS_H
-#define MODEMMANAGER_SMS_H
+#ifndef MODEMMANAGERQT_SMS_H
+#define MODEMMANAGERQT_SMS_H
 
 #include "ModemManagerQt-export.h"
 

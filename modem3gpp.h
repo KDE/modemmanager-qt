@@ -21,8 +21,8 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_MODEM3GPP_H
-#define MODEMMANAGER_MODEM3GPP_H
+#ifndef MODEMMANAGERQT_MODEM3GPP_H
+#define MODEMMANAGERQT_MODEM3GPP_H
 
 #include "ModemManagerQt-export.h"
 

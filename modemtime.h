@@ -19,8 +19,8 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_MODEMTIME_H
-#define MODEMMANAGER_MODEMTIME_H
+#ifndef MODEMMANAGERQT_MODEMTIME_H
+#define MODEMMANAGERQT_MODEMTIME_H
 
 #include "ModemManagerQt-export.h"
 #include "interface.h"
