@@ -54,7 +54,7 @@ Q_DECLARE_BUILTIN_METATYPE(MMModemMode, UInt)
 typedef struct {
 public:
     MMModemMode allowed; // bitfield
-    MMModemMode prefered;
+    MMModemMode preferred;
 } CurrentModesType;
 Q_DECLARE_METATYPE(CurrentModesType)
 
@@ -91,15 +91,6 @@ const QDBusArgument &operator >> (const QDBusArgument &arg, SignalQualityPair &s
 QDBusArgument &operator << (QDBusArgument &arg, const ValidityPair &vp);
 const QDBusArgument &operator >> (const QDBusArgument &arg, ValidityPair &vp);
 
-inline void registerModemManagerTypes() {
-    qDBusRegisterMetaType<CurrentModesType>();
-    qDBusRegisterMetaType<SignalQualityPair>();
-    qDBusRegisterMetaType<SupportedModesType>();
-    qDBusRegisterMetaType<UnlockRetriesMap>();
-    qDBusRegisterMetaType<ScanResultsType>();
-    //qDBusRegisterMetaType<LocationInformationMap>();
-    qDBusRegisterMetaType<ValidityPair>();
-    qRegisterMetaType<MMModemLock>("MMModemLock");
-}
+void registerModemManagerTypes();
 
 #endif // MODEMMANAGERQT_TYPES_H

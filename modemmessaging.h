@@ -73,7 +73,7 @@ public:
     /**
      * Retrieve all SMS messages.
      *
-     * This method should only be used once and subsequent information retreived
+     * This method should only be used once and subsequent information retrieved
      * either by listening for the messageAdded() signal, or by
      * querying the specific SMS object of interest using findMessage()
      */

@@ -26,7 +26,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 QDBusArgument &operator << (QDBusArgument &arg, const CurrentModesType &mode)
 {
     arg.beginStructure();
-    arg << mode.allowed << mode.prefered;
+    arg << mode.allowed << mode.preferred;
     arg.endStructure();
     return arg;
 }
@@ -38,7 +38,7 @@ const QDBusArgument &operator >> (const QDBusArgument &arg, CurrentModesType &mo
     arg.beginStructure();
     arg >> temp1 >> temp2;
     mode.allowed = (MMModemMode)temp1;
-    mode.prefered = (MMModemMode)temp2;
+    mode.preferred = (MMModemMode)temp2;
     arg.endStructure();
 
     return arg;
@@ -109,4 +109,16 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, QList<QVariantMap
 
     argument.endArray();
     return argument;
+}
+
+void registerModemManagerTypes()
+{
+    qDBusRegisterMetaType<CurrentModesType>();
+    qDBusRegisterMetaType<SignalQualityPair>();
+    qDBusRegisterMetaType<SupportedModesType>();
+    qDBusRegisterMetaType<UnlockRetriesMap>();
+    qDBusRegisterMetaType<ScanResultsType>();
+    //qDBusRegisterMetaType<LocationInformationMap>();
+    qDBusRegisterMetaType<ValidityPair>();
+    qRegisterMetaType<MMModemLock>("MMModemLock");
 }
