@@ -415,9 +415,6 @@ Q_SIGNALS:
 private Q_SLOTS:
     void onPropertiesChanged(const QString &ifaceName, const QVariantMap &changedProps, const QStringList &invalidatedProps);
     void onStateChanged(int oldState, int newState, uint reason);
-
-private:
-    void init();
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Modem::Capabilities)

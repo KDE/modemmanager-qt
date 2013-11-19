@@ -37,31 +37,25 @@ ModemPrivate::ModemPrivate(const QString &path)
     , modemIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
     , modemSimpleIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
+    device = modemIface.device();
+    drivers = modemIface.drivers();
+    simPath = modemIface.sim().path();
 }
 
 ModemManager::Modem::Modem(const QString &path, QObject *parent)
     : Interface(*new ModemPrivate(path), parent)
 {
-    init();
-}
-
-ModemManager::Modem::~Modem()
-{
-}
-
-void ModemManager::Modem::init()
-{
     Q_D(Modem);
-    d->device = d->modemIface.device();
-    d->drivers = d->modemIface.drivers();
-    d->simPath = d->modemIface.sim().path();
-
     if (d->modemIface.isValid()) {
         QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
                                              SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
     }
 
     connect(&d->modemIface, SIGNAL(StateChanged(int,int,uint)), SLOT(onStateChanged(int,int,uint)));
+}
+
+ModemManager::Modem::~Modem()
+{
 }
 
 QString ModemManager::Modem::uni() const
