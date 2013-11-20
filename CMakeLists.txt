@@ -19,14 +19,18 @@ pkg_check_modules(MODEMMANAGER REQUIRED ModemManager>=0.8)
 
 add_definitions(${QT_DEFINITIONS})
 
-include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${QT_INCLUDES} ${CMAKE_INCLUDE_PATH} ${MODEMMANAGER_INCLUDE_DIRS})
-link_directories(${CMAKE_LIBRARY_PATH})
-
 include_directories(
-   ${CMAKE_CURRENT_SOURCE_DIR}
-   ${CMAKE_CURRENT_SOURCE_DIR}/dbus
-   ${CMAKE_CURRENT_BUILD_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}/dbus
+    ${CMAKE_CURRENT_BUILD_DIR}
+    ${CMAKE_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}
+    ${CMAKE_INCLUDE_PATH}
+    ${QT_INCLUDES}
+    ${MODEMMANAGER_INCLUDE_DIRS}
 )
+
+link_directories(${CMAKE_LIBRARY_PATH})
 
 #add_subdirectory(dbus)
 
@@ -122,10 +126,7 @@ add_library(ModemManagerQt SHARED ${ModemManagerQt_MOC} ${ModemManagerQt_SRCS} $
 target_link_libraries(ModemManagerQt ${QT_QTCORE_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY})
 install(TARGETS ModemManagerQt DESTINATION ${LIB_DESTINATION})
 
-install( FILES
-${ModemManagerQt_HEADERS}
-DESTINATION
-include/ModemManagerQt COMPONENT Devel)
+install(FILES ${ModemManagerQt_HEADERS} DESTINATION include/ModemManagerQt COMPONENT Devel)
 
 set_property(TARGET ModemManagerQt PROPERTY COMPILE_DEFINITIONS MAKE_MODEMMANAGERQT_LIB)
 set_property(TARGET ModemManagerQt PROPERTY VERSION ${VERSION})
@@ -157,3 +158,12 @@ option(BUILD_EXAMPLES "Build example applications" FALSE)
 if (BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif(BUILD_EXAMPLES)
+
+##################  uninstall target  ########################
+configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
+    IMMEDIATE @ONLY)
+
+add_custom_target(uninstall
+    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
