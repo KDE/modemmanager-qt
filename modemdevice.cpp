@@ -39,8 +39,8 @@
 
 
 ModemDevicePrivate::ModemDevicePrivate(const QString &path, ModemManager::ModemDevice *q)
-    : uni(path),
-      q_ptr(q)
+    : uni(path)
+    , q_ptr(q)
 {
     init();
 }
@@ -85,10 +85,10 @@ void ModemDevicePrivate::initInterfaces()
             const QString name = ifaceElem.attribute("name");
             if (name == QLatin1String(MM_DBUS_INTERFACE_MODEM)) {
                 interfaceList.insert(ModemManager::ModemDevice::ModemInterface, ModemManager::Modem::Ptr());
-                if (q->hasInterface(ModemManager::ModemDevice::ModemInterface)) {
-                    ModemManager::Modem::Ptr modemInterface = q->modemInterface();
+                if (interfaceList.contains(ModemManager::ModemDevice::ModemInterface)) {
+                    ModemManager::Modem::Ptr modemInterface = interface(ModemManager::ModemDevice::ModemInterface).objectCast<ModemManager::Modem>();
                     if (!modemInterface->simPath().isEmpty()) {
-                        simList.insert(modemInterface->simPath(), ModemManager::Sim::Ptr());
+                        simCard = ModemManager::Sim::Ptr(new ModemManager::Sim(modemInterface->simPath()), &QObject::deleteLater);
                         //q->simAdded(modemInterface->simPath());
 
                         QObject::connect(modemInterface.data(), SIGNAL(simPathChanged(QString,QString)),
@@ -238,35 +238,9 @@ ModemManager::Bearer::List ModemDevicePrivate::bearers()
     return result;
 }
 
-ModemManager::Sim::Ptr ModemDevicePrivate::findSim(const QString &uni)
+ModemManager::Sim::Ptr ModemDevicePrivate::sim()
 {
-    ModemManager::Sim::Ptr sim;
-    if (simList.contains(uni)) {
-        if (simList.value(uni)) {
-            sim = simList.value(uni);
-        } else {
-            sim = ModemManager::Sim::Ptr(new ModemManager::Sim(uni), &QObject::deleteLater);
-            simList[uni] = sim;
-        }
-    }
-    return sim;
-}
-
-ModemManager::Sim::List ModemDevicePrivate::sims()
-{
-    ModemManager::Sim::List list;
-
-    QMap<QString, ModemManager::Sim::Ptr>::const_iterator i;
-    for (i = simList.constBegin(); i != simList.constEnd(); ++i) {
-        ModemManager::Sim::Ptr modemSim = findSim(i.key());
-        if (!modemSim.isNull()) {
-            list.append(modemSim);
-        } else {
-            qWarning() << "warning: null sim Interface for" << i.key();
-        }
-    }
-
-    return list;
+    return simCard;
 }
 
 QString ModemManager::ModemDevice::uni() const
@@ -323,18 +297,11 @@ ModemManager::Bearer::List ModemManager::ModemDevice::bearers() const
     return const_cast<ModemDevicePrivate*>(d)->bearers();
 }
 
-ModemManager::Sim::Ptr ModemManager::ModemDevice::findSim(const QString &uni)
-{
-    Q_D(ModemDevice);
-
-    return d->findSim(uni);
-}
-
-ModemManager::Sim::List ModemManager::ModemDevice::sims() const
+ModemManager::Sim::Ptr ModemManager::ModemDevice::sim() const
 {
     Q_D(const ModemDevice);
 
-    return const_cast<ModemDevicePrivate*>(d)->sims();
+    return const_cast<ModemDevicePrivate*>(d)->sim();
 }
 
 bool ModemManager::ModemDevice::isGsmModem() const
@@ -387,9 +354,9 @@ void ModemManager::ModemDevice::onInterfacesRemoved(const QDBusObjectPath &objec
     }
 
     if (interfaces.contains(MM_DBUS_INTERFACE_MODEM) || interfaces.isEmpty()) {
-        foreach (ModemManager::Sim::Ptr sim, sims()) {
-            emit simRemoved(sim->uni());
-            d->simList.remove(sim->uni());
+        if (d->simCard) {
+            emit simRemoved(d->simCard->uni());
+            d->simCard = ModemManager::Sim::Ptr();
         }
     }
 
@@ -419,13 +386,13 @@ void ModemManager::ModemDevice::onSimPathChanged(const QString &oldPath, const Q
 {
     Q_D(ModemDevice);
 
-    if (!oldPath.isEmpty() && d->simList.contains(oldPath)) {
+    if (!oldPath.isEmpty() && d->simCard->uni() == oldPath) {
         emit simRemoved(oldPath);
-        d->simList.remove(oldPath);
+        d->simCard = ModemManager::Sim::Ptr();
     }
 
     if (!newPath.isEmpty()) {
-        d->simList.insert(newPath, ModemManager::Sim::Ptr());
+        d->simCard = ModemManager::Sim::Ptr(new ModemManager::Sim(newPath), &QObject::deleteLater);
         emit simAdded(newPath);
     }
 }

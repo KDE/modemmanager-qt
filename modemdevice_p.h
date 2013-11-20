@@ -42,14 +42,13 @@ public:
     QString uni;
     QMap<ModemManager::ModemDevice::InterfaceType, ModemManager::Interface::Ptr> interfaceList;
     //QMap<QString, ModemManager::Bearer::Ptr> bearerList;
-    QMap<QString, ModemManager::Sim::Ptr> simList;
+    ModemManager::Sim::Ptr simCard;
     ModemManager::Interface::List interfaces() ;
     ModemManager::Interface::Ptr interface(ModemManager::ModemDevice::InterfaceType type);
     ModemManager::Interface::Ptr createInterface(ModemManager::ModemDevice::InterfaceType type);
     ModemManager::Bearer::Ptr findBearer(const QString &uni);
     ModemManager::Bearer::List bearers();
-    ModemManager::Sim::Ptr findSim(const QString &uni);
-    ModemManager::Sim::List sims();
+    ModemManager::Sim::Ptr sim();
 
     Q_DECLARE_PUBLIC(ModemManager::ModemDevice)
     ModemManager::ModemDevice *q_ptr;

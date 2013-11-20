@@ -78,8 +78,7 @@ public:
 
     ModemManager::Bearer::Ptr findBearer(const QString &uni);
     ModemManager::Bearer::List bearers() const;
-    ModemManager::Sim::Ptr findSim(const QString &uni);
-    ModemManager::Sim::List sims() const;
+    ModemManager::Sim::Ptr sim() const;
 
     bool isGsmModem() const;
     bool isCdmaModem() const;
