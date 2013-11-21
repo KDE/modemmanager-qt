@@ -149,7 +149,7 @@ Q_SIGNALS:
 private Q_SLOTS:
    void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps);
 
-protected:
+private:
     BearerPrivate *const d_ptr;
 };
 

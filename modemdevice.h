@@ -95,7 +95,7 @@ Q_SIGNALS:
     void bearerAdded(const QString &udi); // TODO emit these signals in the next version
     void bearerRemoved(const QString &udi);
 
-protected:
+private:
     ModemDevicePrivate *const d_ptr;
 };
 } // namespace ModemManager
