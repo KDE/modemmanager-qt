@@ -4,7 +4,7 @@ project(ModemManagerQt)
 
 include(FindPkgConfig)
 
-set(VERSION 0.9.50)
+set(VERSION 1.0.0)
 set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_MODULE_PATH})
 
