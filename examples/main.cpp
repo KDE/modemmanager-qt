@@ -63,13 +63,11 @@ int main(int argc, char *argv[])
         }
 
         qDebug() << "Interfaces: " << interfaces;
-        qDebug() << "SIM Cards: ";
-        if (modemdevice->sims().isEmpty()) {
+        qDebug() << "SIM Card: ";
+        if (!modemdevice->sim()) {
             qDebug() << "   no SIM card";
         } else {
-            foreach (ModemManager::Sim::Ptr sim, modemdevice->sims()) {
-                qDebug() << "   " << sim->uni() << "Operator: " << sim->operatorName();
-            }
+            qDebug() << "   " << modemdevice->sim()->uni() << "Operator: " << modemdevice->sim()->operatorName();
         }
 
         qDebug() << "Messages: ";
