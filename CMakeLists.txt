@@ -5,14 +5,16 @@ project(ModemManagerQt)
 include(FindPkgConfig)
 
 set(VERSION 1.0.0)
-set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_MODULE_PATH})
-
 set(LIB_SUFFIX "" CACHE STRING "Define suffix of library directory name (32/64)" )
 set(LIB_DESTINATION "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}" CACHE STRING
     "Library directory name")
 set(PKGCONFIG_INSTALL_PREFIX "${LIB_DESTINATION}/pkgconfig/" CACHE STRING
     "Base directory for pkgconfig files")
+
+if (NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug)
+endif()
 
 find_package(Qt4 REQUIRED)
 pkg_check_modules(MODEMMANAGER REQUIRED ModemManager>=0.8)
