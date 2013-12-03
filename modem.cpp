@@ -112,10 +112,9 @@ void ModemManager::Modem::deleteBearer(const QString &bearer)
 
 QStringList ModemManager::Modem::listBearers()
 {
-    Q_D(Modem);
+    Q_D(const Modem);
     QStringList result;
-    QDBusReply<QList<QDBusObjectPath> > tmp = d->modemIface.ListBearers(); // TODO use the new property when it becomes available
-    foreach(const QDBusObjectPath & path, tmp.value()) {
+    foreach(const QDBusObjectPath &path, d->modemIface.bearers()) {
         result.append(path.path());
     }
 
@@ -361,6 +360,7 @@ void ModemManager::Modem::onPropertiesChanged(const QString &ifaceName, const QV
         QLatin1String currentModes(MM_MODEM_PROPERTY_CURRENTMODES);
         QLatin1String simPath(MM_MODEM_PROPERTY_SIM);
         QLatin1String powerState(MM_MODEM_PROPERTY_POWERSTATE);
+        QLatin1String bearers(MM_MODEM_PROPERTY_BEARERS);
 
         QVariantMap::const_iterator it = changedProps.constFind(device);
         if (it != changedProps.constEnd()) {
@@ -404,6 +404,10 @@ void ModemManager::Modem::onPropertiesChanged(const QString &ifaceName, const QV
         it = changedProps.constFind(powerState);
         if (it != changedProps.constEnd()) {
             emit powerStateChanged((MMModemPowerState)it->toUInt());
+        }
+        it = changedProps.constFind(bearers);
+        if (it != changedProps.constEnd()) {
+            emit bearersChanged();
         }
     }
 }

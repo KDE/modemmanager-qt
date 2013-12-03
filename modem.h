@@ -411,6 +411,11 @@ Q_SIGNALS:
      * @see powerState()
      */
     void powerStateChanged(MMModemPowerState state);
+    /**
+     * Emitted when the list of bearers changed
+     * @since 1.1.90
+     */
+    void bearersChanged();
 
 private Q_SLOTS:
     void onPropertiesChanged(const QString &ifaceName, const QVariantMap &changedProps, const QStringList &invalidatedProps);

@@ -53,16 +53,11 @@ ModemManager::ModemMessaging::ModemMessaging(const QString &path, QObject *paren
     QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 
-    // FIXME We have to do it this way for MM 1.0, in MM 1.2 will be MessageList as a property
-    QDBusReply< QList <QDBusObjectPath> > messageList = d->modemMessagingIface.List();
-    if (messageList.isValid()) {
-        mmDebug() << "Message list";
-        QList <QDBusObjectPath> messages = messageList.value();
-        foreach (const QDBusObjectPath &op, messages) {
-            d->messageList.insert(op.path(), ModemManager::Sms::Ptr());
-            emit messageAdded(op.path(), false);
-            mmDebug() << "  " << op.path();
-        }
+    QList <QDBusObjectPath> messages = d->modemMessagingIface.messages();
+    foreach (const QDBusObjectPath &op, messages) {
+        const QString path = op.path();
+        d->messageList.insert(path, ModemManager::Sms::Ptr());
+        emit messageAdded(path, false);
     }
 }
 
@@ -91,7 +86,7 @@ ModemManager::Sms::List ModemMessagingPrivate::ModemMessagingPrivate::messages()
     QMap<QString, ModemManager::Sms::Ptr>::const_iterator i;
     for (i = messageList.constBegin(); i != messageList.constEnd(); ++i) {
         ModemManager::Sms::Ptr sms = findMessage(i.key());
-        if (!sms.isNull()) {
+        if (sms) {
             list.append(sms);
         } else {
             qWarning() << "warning: null message for" << i.key();
