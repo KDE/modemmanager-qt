@@ -17,7 +17,7 @@ if (NOT CMAKE_BUILD_TYPE)
 endif()
 
 find_package(Qt4 REQUIRED)
-pkg_check_modules(MODEMMANAGER REQUIRED ModemManager>=1.2)
+pkg_check_modules(MODEMMANAGER REQUIRED ModemManager>=1.1)
 
 add_definitions(${QT_DEFINITIONS})
 
