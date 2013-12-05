@@ -182,9 +182,9 @@ void ModemManager::ModemManagerPrivate::onInterfacesRemoved(const QDBusObjectPat
 
     mmDebug() << uni << "lost interfaces:" << interfaces;
 
-    ModemDevice modem(uni);
+    ModemDevice::Ptr modem = findModemDevice(uni);
 
-    if (!uni.isEmpty() && (interfaces.isEmpty() || modem.interfaces().isEmpty())) {
+    if (!uni.isEmpty() && (interfaces.isEmpty() || (modem && modem->interfaces().isEmpty()))) {
         emit modemRemoved(uni);
         modemList.remove(uni);
     }

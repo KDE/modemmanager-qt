@@ -43,8 +43,6 @@ ModemManager::Modem3gppUssd::Modem3gppUssd(const QString &path, QObject *parent)
 
 ModemManager::Modem3gppUssd::~Modem3gppUssd()
 {
-    Q_D(Modem3gppUssd);
-    delete d;
 }
 
 void ModemManager::Modem3gppUssd::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
