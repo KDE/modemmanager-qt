@@ -27,6 +27,7 @@ class InterfacePrivate
 {
 public:
     explicit InterfacePrivate(const QString &path);
+    virtual ~InterfacePrivate();
     QString uni;
 };
 

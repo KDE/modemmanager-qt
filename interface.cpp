@@ -26,6 +26,10 @@ InterfacePrivate::InterfacePrivate(const QString &path)
 {
 }
 
+InterfacePrivate::~InterfacePrivate()
+{
+}
+
 ModemManager::Interface::Interface(const QString &path, QObject *parent)
     : QObject(parent)
     , d_ptr(new InterfacePrivate(path))
