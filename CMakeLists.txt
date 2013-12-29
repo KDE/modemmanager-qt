@@ -17,7 +17,11 @@ if (NOT CMAKE_BUILD_TYPE)
 endif()
 
 find_package(Qt4 REQUIRED)
-pkg_check_modules(MODEMMANAGER REQUIRED ModemManager>=1.1)
+pkg_check_modules(MODEMMANAGER REQUIRED ModemManager >= 1.0)
+
+if (${MODEMMANAGER_VERSION} VERSION_LESS 1.1)
+   message(STATUS "This is a development version of this library and some functionality require a newer version of ModemManager")
+endif()
 
 add_definitions(${QT_DEFINITIONS})
 
