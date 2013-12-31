@@ -31,6 +31,26 @@ SmsPrivate::SmsPrivate(const QString &path)
     : smsIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
 }
+MMSmsCdmaServiceCategory SmsPrivate::getServiceCategory() const
+{
+    return serviceCategory;
+}
+
+void SmsPrivate::setServiceCategory(const MMSmsCdmaServiceCategory &value)
+{
+    serviceCategory = value;
+}
+
+MMSmsCdmaTeleserviceId SmsPrivate::getTeleserviceId() const
+{
+    return teleserviceId;
+}
+
+void SmsPrivate::setTeleserviceId(const MMSmsCdmaTeleserviceId &value)
+{
+    teleserviceId = value;
+}
+
 
 ModemManager::Sms::Sms(const QString &path, QObject *parent)
     : QObject(parent)
@@ -53,6 +73,8 @@ ModemManager::Sms::Sms(const QString &path, QObject *parent)
     d->dischargeTimestamp = QDateTime::fromString(d->smsIface.dischargeTimestamp(), Qt::ISODate);
     d->deliveryState = (MMSmsDeliveryState) d->smsIface.deliveryState();
     d->storage = (MMSmsStorage) d->smsIface.storage();
+    d->serviceCategory = (MMSmsCdmaServiceCategory) d->serviceCategory();
+    d->teleserviceId = (MMSmsCdmaTeleserviceId) d->teleserviceId();
 
     QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
@@ -80,6 +102,10 @@ void ModemManager::Sms::onPropertiesChanged(const QString &interfaceName, const 
         QLatin1String dischargeTimestamp(MM_SMS_PROPERTY_DISCHARGETIMESTAMP);
         QLatin1String deliveryState(MM_SMS_PROPERTY_DELIVERYSTATE);
         QLatin1String storage(MM_SMS_PROPERTY_STORAGE);
+#if 0
+        QLatin1String serviceCategory(MM_SMS_PROPERTY_SERVICE_CATEGORY); // FIXME those are not defined yet
+        QLatin1String teleserviceId(MM_SMS_PROPERTY_TELESERVICE_ID);
+#endif
 
         Q_D(Sms);
 
@@ -141,6 +167,16 @@ void ModemManager::Sms::onPropertiesChanged(const QString &interfaceName, const 
         if (it != changedProperties.constEnd()) {
             d->storage = (MMSmsStorage) it->toUInt();
         }
+#if 0
+        it = changedProperties.constFind(serviceCategory);
+        if (it != changedProperties.constEnd()) {
+            d->serviceCategory = (MMSmsCdmaServiceCategory) it->toUInt();
+        }
+        it = changedProperties.constFind(teleserviceId);
+        if (it != changedProperties.constEnd()) {
+            d->teleserviceId = (MMSmsCdmaTeleserviceId) it->toUInt();
+        }
+#endif
     }
 }
 
@@ -238,4 +274,16 @@ MMSmsStorage ModemManager::Sms::storage() const
 {
     Q_D(const Sms);
     return d->storage;
+}
+
+MMSmsCdmaServiceCategory ModemManager::Sms::serviceCategory() const
+{
+    Q_D(const Sms);
+    return d->serviceCategory;
+}
+
+MMSmsCdmaTeleserviceId ModemManager::Sms::teleserviceId() const
+{
+    Q_D(const Sms);
+    return d->teleserviceId;
 }
