@@ -19,7 +19,7 @@ endif()
 find_package(Qt4 REQUIRED)
 pkg_check_modules(MODEMMANAGER REQUIRED ModemManager >= 1.0)
 
-if (${MODEMMANAGER_VERSION} VERSION_LESS 1.1)
+if (MODEMMANAGER_FOUND AND "${MODEMMANAGER_VERSION}" VERSION_LESS 1.1)
    message(STATUS "This is a development version of this library and some functionality require a newer version of ModemManager")
 endif()
 
