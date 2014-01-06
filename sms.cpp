@@ -53,8 +53,8 @@ ModemManager::Sms::Sms(const QString &path, QObject *parent)
     d->dischargeTimestamp = QDateTime::fromString(d->smsIface.dischargeTimestamp(), Qt::ISODate);
     d->deliveryState = (MMSmsDeliveryState) d->smsIface.deliveryState();
     d->storage = (MMSmsStorage) d->smsIface.storage();
-    d->serviceCategory = (MMSmsCdmaServiceCategory) d->serviceCategory();
-    d->teleserviceId = (MMSmsCdmaTeleserviceId) d->teleserviceId();
+    d->serviceCategory = (MMSmsCdmaServiceCategory) d->smsIface.serviceCategory();
+    d->teleserviceId = (MMSmsCdmaTeleserviceId) d->smsIface.teleserviceId();
 
     QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
