@@ -31,26 +31,6 @@ SmsPrivate::SmsPrivate(const QString &path)
     : smsIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
 {
 }
-MMSmsCdmaServiceCategory SmsPrivate::getServiceCategory() const
-{
-    return serviceCategory;
-}
-
-void SmsPrivate::setServiceCategory(const MMSmsCdmaServiceCategory &value)
-{
-    serviceCategory = value;
-}
-
-MMSmsCdmaTeleserviceId SmsPrivate::getTeleserviceId() const
-{
-    return teleserviceId;
-}
-
-void SmsPrivate::setTeleserviceId(const MMSmsCdmaTeleserviceId &value)
-{
-    teleserviceId = value;
-}
-
 
 ModemManager::Sms::Sms(const QString &path, QObject *parent)
     : QObject(parent)
