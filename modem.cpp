@@ -165,7 +165,7 @@ void ModemManager::Modem::setCurrentBands(const QList<MMModemBand> &bands)
 QString ModemManager::Modem::command(const QString &cmd, uint timeout)
 {
     Q_D(Modem);
-    d->modemIface.Command(cmd, timeout);
+    return d->modemIface.Command(cmd, timeout);
 }
 
 QString ModemManager::Modem::simPath() const
