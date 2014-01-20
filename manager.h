@@ -32,8 +32,6 @@
 #include <QSharedPointer>
 
 #include "modemdevice.h"
-#include "bearer.h"
-#include "sim.h"
 
 /**
  * This namespace allows to query the underlying system to discover the available
