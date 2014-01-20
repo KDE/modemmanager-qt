@@ -44,6 +44,27 @@ const QDBusArgument &operator >> (const QDBusArgument &arg, CurrentModesType &mo
     return arg;
 }
 
+// Marshall the OmaSessionType data into a D-BUS argument
+QDBusArgument &operator << (QDBusArgument &arg, const OmaSessionType &sessionType)
+{
+    arg.beginStructure();
+    arg << sessionType.type << sessionType.id;
+    arg.endStructure();
+    return arg;
+}
+
+// Retrieve the OmaSessionType data from the D-BUS argument
+const QDBusArgument &operator >> (const QDBusArgument &arg, OmaSessionType &sessionType)
+{
+    uint type, id;
+    arg.beginStructure();
+    arg >> type >> id;
+    sessionType.type = (MMOmaSessionType)type;
+    sessionType.id = id;
+    arg.endStructure();
+
+    return arg;
+}
 
 // Marshall the SignalQualityPair data into a D-BUS argument
 QDBusArgument &operator << (QDBusArgument &arg, const SignalQualityPair &sqp)
@@ -118,7 +139,10 @@ void registerModemManagerTypes()
     qDBusRegisterMetaType<SupportedModesType>();
     qDBusRegisterMetaType<UnlockRetriesMap>();
     qDBusRegisterMetaType<ScanResultsType>();
+    qDBusRegisterMetaType<OmaSessionType>();
+    qDBusRegisterMetaType<OmaSessionTypes>();
     //qDBusRegisterMetaType<LocationInformationMap>();
     qDBusRegisterMetaType<ValidityPair>();
     qRegisterMetaType<MMModemLock>("MMModemLock");
+    qRegisterMetaType<MMModem3gppUssdSessionState>("MMModem3gppUssdSessionState");
 }

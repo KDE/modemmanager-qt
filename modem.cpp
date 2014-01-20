@@ -114,7 +114,14 @@ QStringList ModemManager::Modem::listBearers()
 {
     Q_D(const Modem);
     QStringList result;
-    foreach(const QDBusObjectPath &path, d->modemIface.bearers()) {
+
+#if MM_CHECK_VERSION(1,1,900)
+    QList<QDBusObjectPath> bearers = d->modemIface.bearers();
+#else
+    QList<QDBusObjectPath> bearers = const_cast<ModemPrivate *>(d)->modemIface.ListBearers();
+#endif
+
+    foreach(const QDBusObjectPath &path, bearers) {
         result.append(path.path());
     }
 
@@ -360,7 +367,9 @@ void ModemManager::Modem::onPropertiesChanged(const QString &ifaceName, const QV
         QLatin1String currentModes(MM_MODEM_PROPERTY_CURRENTMODES);
         QLatin1String simPath(MM_MODEM_PROPERTY_SIM);
         QLatin1String powerState(MM_MODEM_PROPERTY_POWERSTATE);
+#if MM_CHECK_VERSION(1,1,900)
         QLatin1String bearers(MM_MODEM_PROPERTY_BEARERS);
+#endif
 
         QVariantMap::const_iterator it = changedProps.constFind(device);
         if (it != changedProps.constEnd()) {
@@ -405,10 +414,12 @@ void ModemManager::Modem::onPropertiesChanged(const QString &ifaceName, const QV
         if (it != changedProps.constEnd()) {
             emit powerStateChanged((MMModemPowerState)it->toUInt());
         }
+#if MM_CHECK_VERSION(1, 1, 900)
         it = changedProps.constFind(bearers);
         if (it != changedProps.constEnd()) {
             emit bearersChanged();
         }
+#endif
     }
 }
 

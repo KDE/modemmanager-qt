@@ -1,5 +1,5 @@
 /*
-    Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
+    Copyright 2013, 2014 Lukas Tinkl <ltinkl@redhat.com>
     Copyright 2013 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
@@ -60,7 +60,8 @@ public:
         MessagingInterface,
         LocationInterface,
         TimeInterface,
-        FirmwareInterface
+        FirmwareInterface,
+        OmaInterface
     };
 
     explicit ModemDevice(const QString &path, QObject *parent = 0);

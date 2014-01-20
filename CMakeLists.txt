@@ -4,7 +4,7 @@ project(ModemManagerQt)
 
 include(FindPkgConfig)
 
-set(VERSION 1.1.91)
+set(VERSION 1.1.92)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_MODULE_PATH})
 set(LIB_SUFFIX "" CACHE STRING "Define suffix of library directory name (32/64)" )
 set(LIB_DESTINATION "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}" CACHE STRING
@@ -54,6 +54,7 @@ set(ModemManagerQt_HEADERS
     modemlocation.h
     modemmessaging.h
     modemtime.h
+    modemoma.h
     sim.h
     sms.h
 )
@@ -70,6 +71,7 @@ set(ModemManagerQt_PRIVATE_HEADERS
     modemlocation_p.h
     modemmessaging_p.h
     modemtime_p.h
+    modemoma_p.h
     sim_p.h
     sms_p.h
 )
@@ -86,6 +88,7 @@ set(ModemManagerQt_SRCS
     modemlocation.cpp
     modemmessaging.cpp
     modemtime.cpp
+    modemoma.cpp
     sim.cpp
     sms.cpp
 )
@@ -101,6 +104,7 @@ set( DBUS_INTERFACES_FILES
    dbus/Modem3gppUssd.cpp
    dbus/ModemCdma.cpp
    dbus/ModemSimple.cpp
+   dbus/ModemOma.cpp
    dbus/Sim.cpp
    dbus/Sms.cpp
    dbus/Time.cpp
@@ -118,6 +122,7 @@ set( DBUS_INTERFACES_HEADERS
    dbus/Modem3gppUssd.h
    dbus/ModemCdma.h
    dbus/ModemSimple.h
+   dbus/ModemOma.h
    dbus/Sim.h
    dbus/Sms.h
    dbus/Time.h

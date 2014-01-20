@@ -8,6 +8,7 @@ set( INTERFACE_INTROSPECTION_XML_FILES
    introspection/org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.xml
    introspection/org.freedesktop.ModemManager1.Modem.Modem3gpp.xml
    introspection/org.freedesktop.ModemManager1.Modem.ModemCdma.xml
+   introspection/org.freedesktop.ModemManager1.Modem.Oma.xml
    introspection/org.freedesktop.ModemManager1.Modem.Simple.xml
    introspection/org.freedesktop.ModemManager1.Modem.Time.xml
    introspection/org.freedesktop.ModemManager1.Modem.xml

@@ -1,5 +1,5 @@
 /*
-    Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
+    Copyright 2013, 2014 Lukas Tinkl <ltinkl@redhat.com>
     Copyright 2013 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
@@ -31,9 +31,8 @@
 #include "modem3gpp.h"
 #include "modem3gppussd.h"
 #include "modemlocation.h"
-#include "modemmessaging.h"
+#include "modemoma.h"
 #include "modemtime.h"
-#include "sim.h"
 
 #include <QDomDocument>
 
@@ -107,6 +106,8 @@ void ModemDevicePrivate::initInterfaces()
                 interfaceList.insert(ModemManager::ModemDevice::LocationInterface, ModemManager::ModemLocation::Ptr());
             } else if (name == QLatin1String(MM_DBUS_INTERFACE_MODEM_TIME)) {
                 interfaceList.insert(ModemManager::ModemDevice::TimeInterface, ModemManager::ModemTime::Ptr());
+            } else if (name == QLatin1String(MM_DBUS_INTERFACE_MODEM_OMA)) {
+                interfaceList.insert(ModemManager::ModemDevice::OmaInterface, ModemManager::ModemOma::Ptr());
             } // TODO
             /* else if (name == QLatin1String(MM_DBUS_INTERFACE_MODEM_FIRMWARE)) {
                 interfaceList.insert(ModemManager::ModemDevice::FirmwareInterface, ModemManager::ModemFirmwareInterface::Ptr());
@@ -203,6 +204,9 @@ ModemManager::Interface::Ptr ModemDevicePrivate::createInterface(ModemManager::M
             break;
         case ModemManager::ModemDevice::TimeInterface:
             createdInterface = ModemManager::Interface::Ptr(new ModemManager::ModemTime(uni), &QObject::deleteLater);
+            break;
+        case ModemManager::ModemDevice::OmaInterface:
+            createdInterface = ModemManager::Interface::Ptr(new ModemManager::ModemOma(uni), &QObject::deleteLater);
             break;
         // TODO - firmware
     }
@@ -338,6 +342,8 @@ void ModemManager::ModemDevice::onInterfacesAdded(const QDBusObjectPath &object_
                 d->interfaceList.insert(ModemManager::ModemDevice::LocationInterface, ModemManager::ModemLocation::Ptr());
             } else if (iface == QLatin1String(MM_DBUS_INTERFACE_MODEM_TIME)) {
                 d->interfaceList.insert(ModemManager::ModemDevice::TimeInterface, ModemManager::ModemTime::Ptr());
+            } else if (iface == QLatin1String(MM_DBUS_INTERFACE_MODEM_OMA)) {
+                d->interfaceList.insert(ModemManager::ModemDevice::OmaInterface, ModemManager::ModemOma::Ptr());
             } // TODO
             /* else if (iface == QLatin1String(MM_DBUS_INTERFACE_MODEM_FIRMWARE)) {
                 d->interfaceList.insert(ModemManager::ModemDevice::FirmwareInterface, ModemManager::ModemFirmwareInterface::Ptr());
@@ -375,6 +381,8 @@ void ModemManager::ModemDevice::onInterfacesRemoved(const QDBusObjectPath &objec
             d->interfaceList.remove(ModemManager::ModemDevice::LocationInterface);
         } else if (iface == QLatin1String(MM_DBUS_INTERFACE_MODEM_TIME)) {
             d->interfaceList.remove(ModemManager::ModemDevice::TimeInterface);
+        } else if (iface == QLatin1String(MM_DBUS_INTERFACE_MODEM_OMA)) {
+            d->interfaceList.remove(ModemManager::ModemDevice::OmaInterface);
         } // TODO
         /* else if (iface == QLatin1String(MM_DBUS_INTERFACE_MODEM_FIRMWARE)) {
             d->interfaceList.remove(ModemManager::ModemDevice::FirmwareInterface);

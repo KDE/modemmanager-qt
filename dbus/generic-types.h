@@ -61,6 +61,17 @@ Q_DECLARE_METATYPE(CurrentModesType)
 typedef QList<CurrentModesType> SupportedModesType;
 Q_DECLARE_METATYPE(SupportedModesType)
 
+Q_DECLARE_BUILTIN_METATYPE(MMOmaSessionType, UInt)
+typedef struct {
+public:
+    MMOmaSessionType type;
+    uint id;
+} OmaSessionType;
+Q_DECLARE_METATYPE(OmaSessionType)
+
+typedef QList<OmaSessionType> OmaSessionTypes;
+Q_DECLARE_METATYPE(OmaSessionTypes)
+
 Q_DECLARE_BUILTIN_METATYPE(MMModemLock, UInt)
 typedef QMap</*MMModemLock*/uint, uint> UnlockRetriesMap;
 Q_DECLARE_METATYPE(UnlockRetriesMap)

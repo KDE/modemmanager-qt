@@ -143,14 +143,14 @@ public:
      * @return service category for CDMA SMS, as defined in 3GPP2 C.R1001-D (section 9.3).
      * @since 1.1.91
      */
-    MMSmsCdmaServiceCategory serviceCategory() const;
+    /*MMSmsCdmaServiceCategory*/ uint serviceCategory() const;  // FIXME
 
     /**
      * @return teleservice IDs supported for CDMA SMS, as defined in 3GPP2 X.S0004-550-E
      * (section 2.256) and 3GPP2 C.S0015-B (section 3.4.3.1)
      * @since 1.1.91
      */
-    MMSmsCdmaTeleserviceId teleserviceId() const;
+    /*MMSmsCdmaTeleserviceId*/ uint teleserviceId() const;  // FIXME
 
 Q_SIGNALS:
     /**

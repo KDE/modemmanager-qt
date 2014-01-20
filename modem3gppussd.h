@@ -96,7 +96,6 @@ public:
     QString networkRequest() const;
 
 Q_SIGNALS:
-    // properties
     void stateChanged(MMModem3gppUssdSessionState state);
     void networkNotificationChanged(const QString &networkNotification);
     void networkRequestChanged(const QString &networkRequest);

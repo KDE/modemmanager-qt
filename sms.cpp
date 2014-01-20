@@ -53,8 +53,8 @@ ModemManager::Sms::Sms(const QString &path, QObject *parent)
     d->dischargeTimestamp = QDateTime::fromString(d->smsIface.dischargeTimestamp(), Qt::ISODate);
     d->deliveryState = (MMSmsDeliveryState) d->smsIface.deliveryState();
     d->storage = (MMSmsStorage) d->smsIface.storage();
-    d->serviceCategory = (MMSmsCdmaServiceCategory) d->smsIface.serviceCategory();
-    d->teleserviceId = (MMSmsCdmaTeleserviceId) d->smsIface.teleserviceId();
+    d->serviceCategory = /*(MMSmsCdmaServiceCategory)*/ d->smsIface.serviceCategory(); // FIXME
+    d->teleserviceId = /*(MMSmsCdmaTeleserviceId)*/ d->smsIface.teleserviceId();  // FIXME
 
     QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
@@ -256,13 +256,13 @@ MMSmsStorage ModemManager::Sms::storage() const
     return d->storage;
 }
 
-MMSmsCdmaServiceCategory ModemManager::Sms::serviceCategory() const
+uint ModemManager::Sms::serviceCategory() const
 {
     Q_D(const Sms);
     return d->serviceCategory;
 }
 
-MMSmsCdmaTeleserviceId ModemManager::Sms::teleserviceId() const
+uint ModemManager::Sms::teleserviceId() const
 {
     Q_D(const Sms);
     return d->teleserviceId;
