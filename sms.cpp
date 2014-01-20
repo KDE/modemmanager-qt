@@ -82,8 +82,8 @@ void ModemManager::Sms::onPropertiesChanged(const QString &interfaceName, const 
         QLatin1String dischargeTimestamp(MM_SMS_PROPERTY_DISCHARGETIMESTAMP);
         QLatin1String deliveryState(MM_SMS_PROPERTY_DELIVERYSTATE);
         QLatin1String storage(MM_SMS_PROPERTY_STORAGE);
-#if 0
-        QLatin1String serviceCategory(MM_SMS_PROPERTY_SERVICE_CATEGORY); // FIXME those are not defined yet
+#if MM_CHECK_VERSION(1,1,900)
+        QLatin1String serviceCategory(MM_SMS_PROPERTY_SERVICE_CATEGORY);
         QLatin1String teleserviceId(MM_SMS_PROPERTY_TELESERVICE_ID);
 #endif
 
@@ -147,7 +147,7 @@ void ModemManager::Sms::onPropertiesChanged(const QString &interfaceName, const 
         if (it != changedProperties.constEnd()) {
             d->storage = (MMSmsStorage) it->toUInt();
         }
-#if 0
+#if MM_CHECK_VERSION(1,1,900)
         it = changedProperties.constFind(serviceCategory);
         if (it != changedProperties.constEnd()) {
             d->serviceCategory = (MMSmsCdmaServiceCategory) it->toUInt();

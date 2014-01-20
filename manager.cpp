@@ -85,7 +85,7 @@ void ModemManager::ModemManagerPrivate::init()
             const QString uni = path.path();
             mmDebug() << "Adding device" << uni;
 
-            if (uni == MM_DBUS_PATH || !uni.startsWith(MM_DBUS_MODEM_PREFIX)) // TODO checkme
+            if (uni == MM_DBUS_PATH || !uni.startsWith(MM_DBUS_MODEM_PREFIX))
                 continue;
 
             modemList.insert(uni, ModemDevice::Ptr());
