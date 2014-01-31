@@ -83,8 +83,8 @@ void ModemManager::Sms::onPropertiesChanged(const QString &interfaceName, const 
         QLatin1String deliveryState(MM_SMS_PROPERTY_DELIVERYSTATE);
         QLatin1String storage(MM_SMS_PROPERTY_STORAGE);
 #if MM_CHECK_VERSION(1,1,900)
-        QLatin1String serviceCategory(MM_SMS_PROPERTY_SERVICE_CATEGORY);
-        QLatin1String teleserviceId(MM_SMS_PROPERTY_TELESERVICE_ID);
+        QLatin1String serviceCategory(MM_SMS_PROPERTY_SERVICECATEGORY);
+        QLatin1String teleserviceId(MM_SMS_PROPERTY_TELESERVICEID);
 #endif
 
         Q_D(Sms);
