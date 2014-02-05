@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <!--
- ModemManager 0.8 Interface Specification
+ ModemManager 1.0 Interface Specification
 
    Copyright (C) 2008 Novell, Inc.
    Copyright (C) 2008-2013 Red Hat, Inc.
@@ -203,8 +203,8 @@
         The modem's state (see #org.freedesktop.ModemManager1.Modem:State) changed.
     -->
     <signal name="StateChanged">
-      <arg name="oldState"    type="i" />
-      <arg name="newState"    type="i" />
+      <arg name="old"    type="i" />
+      <arg name="new"    type="i" />
       <arg name="reason" type="u" />
     </signal>
 
@@ -341,6 +341,18 @@
         The name of the primary port using to control the modem.
     -->
     <property name="PrimaryPort" type="s" access="read" />
+
+    <!--
+        Ports:
+
+        The list of ports in the modem, given as an array of string and unsigned
+        integer pairs. The string is the port name or path, and the integer is
+        the port type given as a
+        <link linkend="MMModemPortType">MMModemPortType</link> value.
+    -->
+    <property name="Ports" type="a(su)" access="read">
+        <annotation name="org.qtproject.QtDBus.QtTypeName" value="PortList"/>
+    </property>
 
     <!--
         EquipmentIdentifier:

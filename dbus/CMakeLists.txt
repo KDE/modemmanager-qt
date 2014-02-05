@@ -9,12 +9,14 @@ set( INTERFACE_INTROSPECTION_XML_FILES
    introspection/org.freedesktop.ModemManager1.Modem.Modem3gpp.xml
    introspection/org.freedesktop.ModemManager1.Modem.ModemCdma.xml
    introspection/org.freedesktop.ModemManager1.Modem.Oma.xml
+   introspection/org.freedesktop.ModemManager1.Modem.Signal.xml
    introspection/org.freedesktop.ModemManager1.Modem.Simple.xml
    introspection/org.freedesktop.ModemManager1.Modem.Time.xml
    introspection/org.freedesktop.ModemManager1.Modem.xml
    introspection/org.freedesktop.ModemManager1.Sim.xml
    introspection/org.freedesktop.ModemManager1.Sms.xml
    introspection/org.freedesktop.ModemManager1.xml
+#    introspection/wip-org.freedesktop.ModemManager1.Modem.Contacts.xml
    )
 
 set( ADAPTER_INTROSPECTION_XML_FILES

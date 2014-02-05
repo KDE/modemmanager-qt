@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <!--
- ModemManager 0.8 Interface Specification
+ ModemManager 1.0 Interface Specification
 
    Copyright (C) 2011-2013 Red Hat, Inc.
    Copyright (C) 2011-2013 Google, Inc.
@@ -101,23 +101,23 @@
         Indicates when the SMS expires in the SMSC.
 
         This value is composed of a
-	<link linkend="MMSmsValidityType">MMSmsValidityType</link>
-	key, with an associated data which contains type-specific validity
-	information:
+        <link linkend="MMSmsValidityType">MMSmsValidityType</link>
+        key, with an associated data which contains type-specific validity
+        information:
 
-	<variablelist>
-	  <varlistentry><term><link linkend="MM-SMS-VALIDITY-TYPE-RELATIVE:CAPS">MM_SMS_VALIDITY_TYPE_RELATIVE</link></term>
+	    <variablelist>
+	     <varlistentry><term><link linkend="MM-SMS-VALIDITY-TYPE-RELATIVE:CAPS">MM_SMS_VALIDITY_TYPE_RELATIVE</link></term>
           <listitem>
-            <para>
-	      The value is the length of the validity period in minutes, given
-	      as an unsigned integer (D-Bus signature <literal>'u'</literal>).
+           <para>
+	        The value is the length of the validity period in minutes, given
+	        as an unsigned integer (D-Bus signature <literal>'u'</literal>).
             </para>
           </listitem>
-          </varlistentry>
+         </varlistentry>
         </variablelist>
     -->
     <property name="Validity" type="(uv)" access="read">
-	<annotation name="org.qtproject.QtDBus.QtTypeName" value="ValidityPair"/>
+    <annotation name="org.qtproject.QtDBus.QtTypeName" value="ValidityPair"/>
     </property>
 
     <!--

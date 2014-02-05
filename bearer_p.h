@@ -22,7 +22,7 @@
 #ifndef MODEMMANAGER_BEARER_P_H
 #define MODEMMANAGER_BEARER_P_H
 
-#include "dbus/Bearer.h"
+#include "dbus/bearerinterface.h"
 #include "interface_p.h"
 
 class BearerPrivate

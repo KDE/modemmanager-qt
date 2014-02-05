@@ -38,7 +38,7 @@ include_directories(
 
 link_directories(${CMAKE_LIBRARY_PATH})
 
-#add_subdirectory(dbus)
+# add_subdirectory(dbus)
 
 set(ModemManagerQt_HEADERS
     dbus/generic-types.h
@@ -94,39 +94,43 @@ set(ModemManagerQt_SRCS
 )
 
 set( DBUS_INTERFACES_FILES
-   dbus/generic-types.cpp
-   dbus/Bearer.cpp
-   dbus/Location.cpp
-   dbus/Manager.cpp
-   dbus/Messaging.cpp
-   dbus/Modem.cpp
-   dbus/Modem3gpp.cpp
-   dbus/Modem3gppUssd.cpp
-   dbus/ModemCdma.cpp
-   dbus/ModemSimple.cpp
-   dbus/ModemOma.cpp
-   dbus/Sim.cpp
-   dbus/Sms.cpp
-   dbus/Time.cpp
+   dbus/bearerinterface.cpp
+   # contacts
    dbus/dbus_manager.cpp
+   dbus/generic-types.cpp
+   dbus/locationinterface.cpp
+   dbus/messaginginterface.cpp
+   dbus/modem3gppinterface.cpp
+   dbus/modemcdmainterface.cpp
+   dbus/modeminterface.cpp
+   dbus/modemmanager1interface.cpp
+   dbus/omainterface.cpp
+   dbus/signalinterface.cpp
+   dbus/siminterface.cpp
+   dbus/simpleinterface.cpp
+   dbus/smsinterface.cpp
+   dbus/timeinterface.cpp
+   dbus/ussdinterface.cpp
 )
 
 set( DBUS_INTERFACES_HEADERS
-   dbus/generic-types.h
-   dbus/Bearer.h
-   dbus/Location.h
-   dbus/Manager.h
-   dbus/Messaging.h
-   dbus/Modem.h
-   dbus/Modem3gpp.h
-   dbus/Modem3gppUssd.h
-   dbus/ModemCdma.h
-   dbus/ModemSimple.h
-   dbus/ModemOma.h
-   dbus/Sim.h
-   dbus/Sms.h
-   dbus/Time.h
+   dbus/bearerinterface.h
+   # contacts
    dbus/dbus_manager.h
+   dbus/generic-types.h
+   dbus/locationinterface.h
+   dbus/messaginginterface.h
+   dbus/modem3gppinterface.h
+   dbus/modemcdmainterface.h
+   dbus/modeminterface.h
+   dbus/modemmanager1interface.h
+   dbus/omainterface.h
+   dbus/signalinterface.h
+   dbus/siminterface.h
+   dbus/simpleinterface.h
+   dbus/smsinterface.h
+   dbus/timeinterface.h
+   dbus/ussdinterface.h
 )
 
 qt4_wrap_cpp(ModemManagerQt_MOC ${ModemManagerQt_HEADERS} ${ModemManagerQt_PRIVATE_HEADERS} ${DBUS_INTERFACES_HEADERS})

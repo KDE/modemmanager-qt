@@ -45,6 +45,15 @@ typedef QMap<QString, QString> NMStringMap;
 Q_DECLARE_METATYPE(NMStringMap)
 
 typedef struct {
+    QString name;
+    MMModemPortType type;
+} Port;
+Q_DECLARE_METATYPE(Port)
+
+typedef QList<Port> PortList;
+Q_DECLARE_METATYPE(PortList)
+
+typedef struct {
     uint signal;
     bool recent;
 } SignalQualityPair;
@@ -76,8 +85,8 @@ Q_DECLARE_BUILTIN_METATYPE(MMModemLock, UInt)
 typedef QMap</*MMModemLock*/uint, uint> UnlockRetriesMap;
 Q_DECLARE_METATYPE(UnlockRetriesMap)
 
-typedef QList<QVariantMap> ScanResultsType;
-Q_DECLARE_METATYPE(ScanResultsType)
+typedef QList<QVariantMap> QVariantMapList;
+Q_DECLARE_METATYPE(QVariantMapList)
 
 Q_DECLARE_BUILTIN_METATYPE(MMModemLocationSource, UInt)
 typedef QMap<MMModemLocationSource, QVariant> LocationInformationMap;
@@ -89,6 +98,10 @@ typedef struct {
     uint value;
 } ValidityPair;
 Q_DECLARE_METATYPE(ValidityPair)
+
+// Port
+QDBusArgument &operator << (QDBusArgument &arg, const Port &port);
+const QDBusArgument &operator >> (const QDBusArgument &arg, Port &port);
 
 // CurrentModesType
 QDBusArgument &operator << (QDBusArgument &arg, const CurrentModesType &mode);

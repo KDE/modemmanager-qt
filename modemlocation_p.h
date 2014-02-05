@@ -24,7 +24,7 @@
 #define MODEMMANAGERQT_MODEMLOCATION_P_H
 
 #include "interface_p.h"
-#include "dbus/Location.h"
+#include "dbus/locationinterface.h"
 
 class ModemLocationPrivate: public InterfacePrivate
 {

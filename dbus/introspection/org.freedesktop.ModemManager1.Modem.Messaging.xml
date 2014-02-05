@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <!--
- ModemManager 0.8 Interface Specification
+ ModemManager 1.0 Interface Specification
 
    Copyright (C) 2008 Novell, Inc.
    Copyright (C) 2008-2013 Red Hat, Inc.
@@ -27,9 +27,8 @@
         Retrieve all SMS messages.
 
         This method should only be used once and subsequent information
-        retreived either by listening for the
-        #org.freedesktop.ModemManager1.Modem.Messaging::Added and
-        #org.freedesktop.ModemManager1.Modem.Messaging::Completed signals,
+        retrieved either by listening for the
+        #org.freedesktop.ModemManager1.Modem.Messaging::Added signal,
         or by querying the specific SMS object of interest.
     -->
     <method name="List">
@@ -81,9 +80,7 @@
 
         Check the
         '<link linkend="gdbus-property-org-freedesktop-ModemManager1-Sms.State">State</link>'
-        property to determine if the message is complete. The
-        #org.freedesktop.ModemManager1.Modem.Messaging::Completed
-        signal will also be emitted when the message is complete.
+        property to determine if the message is complete.
     -->
     <signal name="Added">
       <arg name="path" type="o" />
@@ -115,7 +112,7 @@
         receiving SMS.
     -->
     <property name="SupportedStorages" type="au" access="read">
-	<annotation name="org.qtproject.QtDBus.QtTypeName" value="UIntList"/>
+    <annotation name="org.qtproject.QtDBus.QtTypeName" value="UIntList"/>
     </property>
 
     <!--

@@ -21,7 +21,7 @@
 #ifndef MODEMMANAGERQT_MODEMOMA_P_H
 #define MODEMMANAGERQT_MODEMOMA_P_H
 
-#include "dbus/ModemOma.h"
+#include "dbus/omainterface.h"
 #include "interface_p.h"
 
 class ModemOmaPrivate: public InterfacePrivate

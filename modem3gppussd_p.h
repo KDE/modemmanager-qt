@@ -23,7 +23,7 @@
 #ifndef MODEMMANAGERQT_MODEM3GPPUSSD_P_H
 #define MODEMMANAGERQT_MODEM3GPPUSSD_P_H
 
-#include "dbus/Modem3gppUssd.h"
+#include "dbus/ussdinterface.h"
 #include "interface_p.h"
 
 class Modem3gppUssdPrivate: public InterfacePrivate

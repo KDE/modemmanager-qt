@@ -23,7 +23,7 @@
 #ifndef MODEMMANAGER_SIM_P_H
 #define MODEMMANAGER_SIM_P_H
 
-#include "dbus/Sim.h"
+#include "dbus/siminterface.h"
 #include "interface_p.h"
 
 class SimPrivate

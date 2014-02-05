@@ -24,7 +24,7 @@
 #define MODEMMANAGER_MODEMMESSAGING_P_H
 
 #include "interface_p.h"
-#include "dbus/Messaging.h"
+#include "dbus/messaginginterface.h"
 #include "sms.h"
 
 class ModemMessagingPrivate: public InterfacePrivate

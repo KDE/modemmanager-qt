@@ -8,8 +8,8 @@
  * Do not edit! All changes made to it will be lost.
  */
 
-#ifndef DBUS_MANAGER_H_1372025949
-#define DBUS_MANAGER_H_1372025949
+#ifndef MODEMMANAGERQT_DBUS_MANAGER_H
+#define MODEMMANAGERQT_DBUS_MANAGER_H
 
 #include <QtCore/QObject>
 #include <QtCore/QByteArray>

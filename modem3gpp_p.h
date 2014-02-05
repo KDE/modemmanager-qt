@@ -23,7 +23,7 @@
 #ifndef MODEMMANAGER_MODEM3GPP_P_H
 #define MODEMMANAGER_MODEM3GPP_P_H
 
-#include "dbus/Modem3gpp.h"
+#include "dbus/modem3gppinterface.h"
 #include "interface_p.h"
 
 class Modem3gppPrivate: public InterfacePrivate

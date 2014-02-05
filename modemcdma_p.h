@@ -24,7 +24,7 @@
 #define MODEMMANAGERQT_MODEMCDMA_P_H
 
 #include "interface_p.h"
-#include "dbus/ModemCdma.h"
+#include "dbus/modemcdmainterface.h"
 
 class ModemCdmaPrivate: public InterfacePrivate
 {

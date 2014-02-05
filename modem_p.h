@@ -23,8 +23,8 @@
 #ifndef MODEMMANAGERQT_MODEM_P_H
 #define MODEMMANAGERQT_MODEM_P_H
 
-#include "dbus/Modem.h"
-#include "dbus/ModemSimple.h"
+#include "dbus/modeminterface.h"
+#include "dbus/simpleinterface.h"
 
 #include "interface_p.h"
 

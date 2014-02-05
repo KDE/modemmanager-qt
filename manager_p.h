@@ -26,9 +26,8 @@
 #include <QObject>
 #include <QDBusServiceWatcher>
 
-#include "dbus/Modem.h"
-#include "dbus/Manager.h"
-#include "dbus/Modem3gpp.h"
+#include "dbus/modem3gppinterface.h"
+#include "dbus/modemmanager1interface.h"
 #include "dbus/dbus_manager.h"
 
 #include "manager.h"

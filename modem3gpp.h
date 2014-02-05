@@ -122,7 +122,7 @@ public:
      * generic access technology used by this mobile network, given as an
      * unsigned integer (signature "u").
      */
-    QDBusPendingReply<ScanResultsType> scan();
+    QDBusPendingReply<QVariantMapList> scan();
 
 Q_SIGNALS:
     void registrationStateChanged(MMModem3gppRegistrationState registrationState);

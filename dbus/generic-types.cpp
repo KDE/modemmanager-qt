@@ -21,6 +21,26 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "generic-types.h"
 
+QDBusArgument &operator << (QDBusArgument &arg, const Port &port)
+{
+    arg.beginStructure();
+    arg << port.name << port.type;
+    arg.endStructure();
+    return arg;
+}
+
+const QDBusArgument &operator >> (const QDBusArgument &arg, Port &port)
+{
+    QString temp1;
+    uint temp2;
+    arg.beginStructure();
+    arg >> temp1 >> temp2;
+    port.name = temp1;
+    port.type = (MMModemPortType)temp2;
+    arg.endStructure();
+
+    return arg;
+}
 
 // Marshall the CurrentModesType data into a D-BUS argument
 QDBusArgument &operator << (QDBusArgument &arg, const CurrentModesType &mode)
@@ -138,7 +158,7 @@ void registerModemManagerTypes()
     qDBusRegisterMetaType<SignalQualityPair>();
     qDBusRegisterMetaType<SupportedModesType>();
     qDBusRegisterMetaType<UnlockRetriesMap>();
-    qDBusRegisterMetaType<ScanResultsType>();
+    qDBusRegisterMetaType<QVariantMapList>();
     qDBusRegisterMetaType<OmaSessionType>();
     qDBusRegisterMetaType<OmaSessionTypes>();
     //qDBusRegisterMetaType<LocationInformationMap>();

@@ -25,7 +25,7 @@
 #ifndef MODEMMANAGER_SMS_P_H
 #define MODEMMANAGER_SMS_P_H
 
-#include "dbus/Sms.h"
+#include "dbus/smsinterface.h"
 
 class SmsPrivate
 {

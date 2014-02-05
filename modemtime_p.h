@@ -23,7 +23,7 @@
 #define MODEMMANAGER_MODEMTIME_P_H
 
 #include "interface_p.h"
-#include "dbus/Time.h"
+#include "dbus/timeinterface.h"
 
 class ModemTimePrivate: public InterfacePrivate
 {
