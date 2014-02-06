@@ -4,7 +4,7 @@ project(ModemManagerQt)
 
 include(FindPkgConfig)
 
-set(VERSION 1.1.92)
+set(VERSION 1.1.93)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_MODULE_PATH})
 set(LIB_SUFFIX "" CACHE STRING "Define suffix of library directory name (32/64)" )
 set(LIB_DESTINATION "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}" CACHE STRING
