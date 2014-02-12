@@ -21,6 +21,12 @@ pkg_check_modules(MODEMMANAGER REQUIRED ModemManager>=0.8)
 
 add_definitions(${QT_DEFINITIONS})
 
+include(CheckCXXCompilerFlag)
+check_cxx_compiler_flag("-Werror=return-type" HAVE_GCC_ERROR_RETURN_TYPE)
+if (HAVE_GCC_ERROR_RETURN_TYPE)
+    set(CMAKE_CXX_FLAGS "-Werror=return-type")
+endif()
+
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/dbus
