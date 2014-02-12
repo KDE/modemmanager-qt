@@ -40,8 +40,11 @@ add_definitions(-DQT_NO_URL_CAST_FROM_STRING)
 remove_definitions(-DQT3_SUPPORT_WARNINGS -DQT3_SUPPORT)
 remove_definitions(-DQT_NO_CAST_FROM_ASCII -DQT_STRICT_ITERATORS -DQT_NO_CAST_FROM_BYTEARRAY -DQT_NO_KEYWORDS)
 
-
-
+include(CheckCXXCompilerFlag)
+check_cxx_compiler_flag("-Werror=return-type" HAVE_GCC_ERROR_RETURN_TYPE)
+if (HAVE_GCC_ERROR_RETURN_TYPE)
+    set(CMAKE_CXX_FLAGS "-Werror=return-type")
+endif()
 
 include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${QT_INCLUDES} ${CMAKE_INCLUDE_PATH} ${MODEMMANAGER_INCLUDE_DIRS})
 link_directories(${CMAKE_LIBRARY_PATH})
