@@ -160,7 +160,7 @@ public:
      */
     void setCurrentBands(const QList<MMModemBand> &bands);
 
-    QString command(const QString &cmd, uint timeout);
+    QDBusPendingReply<QString> command(const QString &cmd, uint timeout);
 
     /**
      * @return The path of the SIM object available in this device, if any.
