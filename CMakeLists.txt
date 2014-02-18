@@ -4,7 +4,7 @@ project(ModemManagerQt)
 
 include(FindPkgConfig)
 
-set(VERSION 1.1.93)
+set(VERSION 1.1.94)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_MODULE_PATH})
 set(LIB_SUFFIX "" CACHE STRING "Define suffix of library directory name (32/64)" )
 set(LIB_DESTINATION "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}" CACHE STRING
@@ -44,7 +44,7 @@ include_directories(
 
 link_directories(${CMAKE_LIBRARY_PATH})
 
-# add_subdirectory(dbus)
+#add_subdirectory(dbus)
 
 set(ModemManagerQt_HEADERS
     dbus/generic-types.h
@@ -57,6 +57,7 @@ set(ModemManagerQt_HEADERS
     modem3gppussd.h
     modemcdma.h
     modemdevice.h
+    modemfirmware.h
     modemlocation.h
     modemmessaging.h
     modemtime.h
@@ -74,6 +75,7 @@ set(ModemManagerQt_PRIVATE_HEADERS
     modem3gppussd_p.h
     modemcdma_p.h
     modemdevice_p.h
+    modemfirmware_p.h
     modemlocation_p.h
     modemmessaging_p.h
     modemtime_p.h
@@ -91,6 +93,7 @@ set(ModemManagerQt_SRCS
     modem3gppussd.cpp
     modemcdma.cpp
     modemdevice.cpp
+    modemfirmware.cpp
     modemlocation.cpp
     modemmessaging.cpp
     modemtime.cpp
@@ -101,8 +104,8 @@ set(ModemManagerQt_SRCS
 
 set( DBUS_INTERFACES_FILES
    dbus/bearerinterface.cpp
-   # contacts
    dbus/dbus_manager.cpp
+   dbus/firmwareinterface.cpp
    dbus/generic-types.cpp
    dbus/locationinterface.cpp
    dbus/messaginginterface.cpp
@@ -121,8 +124,8 @@ set( DBUS_INTERFACES_FILES
 
 set( DBUS_INTERFACES_HEADERS
    dbus/bearerinterface.h
-   # contacts
    dbus/dbus_manager.h
+   dbus/firmwareinterface.h
    dbus/generic-types.h
    dbus/locationinterface.h
    dbus/messaginginterface.h

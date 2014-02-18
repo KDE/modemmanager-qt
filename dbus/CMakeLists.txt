@@ -3,6 +3,7 @@ find_package(Qt4 REQUIRED)
 add_definitions(${QT_DEFINITIONS})
 set( INTERFACE_INTROSPECTION_XML_FILES
    introspection/org.freedesktop.ModemManager1.Bearer.xml
+   introspection/org.freedesktop.ModemManager1.Modem.Firmware.xml
    introspection/org.freedesktop.ModemManager1.Modem.Location.xml
    introspection/org.freedesktop.ModemManager1.Modem.Messaging.xml
    introspection/org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.xml

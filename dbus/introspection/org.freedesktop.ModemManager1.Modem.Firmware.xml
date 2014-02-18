@@ -93,7 +93,7 @@
     <method name="List">
       <arg name="selected"  type="s"        direction="out" />
       <arg name="installed" type="aa{sv}" direction="out" />
-      <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantMapList"/>
+      <annotation name="org.qtproject.QtDBus.QtTypeName.Out1" value="QVariantMapList"/>
     </method>
 
     <!--

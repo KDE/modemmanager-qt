@@ -41,4 +41,3 @@
 #endif
 
 #endif /*MODEMMANAGERQT_EXPORT_H*/
-

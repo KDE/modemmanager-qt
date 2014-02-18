@@ -115,6 +115,14 @@ const QDBusArgument &operator >> (const QDBusArgument &arg, SignalQualityPair &s
 QDBusArgument &operator << (QDBusArgument &arg, const ValidityPair &vp);
 const QDBusArgument &operator >> (const QDBusArgument &arg, ValidityPair &vp);
 
+// OmaSessionType
+QDBusArgument &operator << (QDBusArgument &arg, const OmaSessionType &sessionType);
+const QDBusArgument &operator >> (const QDBusArgument &arg, OmaSessionType &sessionType);
+
+// QVariantMapList
+QDBusArgument &operator<<(QDBusArgument &argument, const QVariantMapList &variantMapList);
+const QDBusArgument &operator>>(const QDBusArgument &argument, QVariantMapList &variantMapList);
+
 void registerModemManagerTypes();
 
 #endif // MODEMMANAGERQT_TYPES_H
