@@ -163,6 +163,7 @@ void registerModemManagerTypes()
     qDBusRegisterMetaType<OmaSessionTypes>();
     //qDBusRegisterMetaType<LocationInformationMap>();
     qDBusRegisterMetaType<ValidityPair>();
+    qDBusRegisterMetaType<PortList>();
     qRegisterMetaType<MMModemLock>("MMModemLock");
     qRegisterMetaType<MMModem3gppUssdSessionState>("MMModem3gppUssdSessionState");
 }

@@ -258,6 +258,12 @@ QString ModemManager::Modem::primaryPort() const
     return d->modemIface.primaryPort();
 }
 
+PortList ModemManager::Modem::ports() const
+{
+    Q_D(const Modem);
+    return d->modemIface.ports();
+}
+
 QString ModemManager::Modem::equipmentIdentifier() const
 {
     Q_D(const Modem);

@@ -255,6 +255,14 @@ public:
     QString primaryPort() const;
 
     /**
+     * @return The list of ports in the modem, given as an array of string and unsigned integer pairs.
+     * The string is the port name or path, and the integer is the port type given as a MMModemPortType value.
+     *
+     * @since 1.1.94
+     */
+    PortList ports() const;
+
+    /**
      * @return The identity of the device.
      *
      * This will be the IMEI number for GSM devices and the hex-format ESN/MEID for CDMA devices.
