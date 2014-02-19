@@ -138,7 +138,7 @@ install(FILES ${ModemManagerQt_HEADERS} DESTINATION include/ModemManagerQt COMPO
 
 set_property(TARGET ModemManagerQt PROPERTY COMPILE_DEFINITIONS MAKE_MODEMMANAGERQT_LIB)
 set_property(TARGET ModemManagerQt PROPERTY VERSION ${VERSION})
-set_property(TARGET ModemManagerQt PROPERTY SOVERSION 0)
+set_property(TARGET ModemManagerQt PROPERTY SOVERSION 1)
 
 message(STATUS "Writing pkg-config file...")
 configure_file(${CMAKE_SOURCE_DIR}/ModemManagerQt.pc.cmake ${CMAKE_BINARY_DIR}/ModemManagerQt.pc @ONLY)
