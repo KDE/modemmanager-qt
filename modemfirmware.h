@@ -34,7 +34,7 @@ namespace ModemManager
 /**
  * @brief The ModemFirmware class
  *
- * This interface allows clients to select or install firmware images on modems.
+ * This class allows clients to select or install firmware images on modems.
  *
  * Firmware slots and firmware images are identified by arbitrary opaque strings.
  *
@@ -58,9 +58,9 @@ public:
      * Depending on the type of modem, installed images may be stored on the host or the modem.
      * Installed images can be selected non-destructively.
      *
-     * @return @param QString selected:
+     * @return @param selected (QString)
      *         The unique name of the selected firmware image, or the empty string if no image is selected.
-     *         @param QVariantMapList installed:
+     *         @param installed (QVariantMapList)
      *         A map of dictionaries containing the properties of the installed firmware images.
      */
     QDBusPendingReply<QString, QVariantMapList> listImages();

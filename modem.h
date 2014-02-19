@@ -356,37 +356,48 @@ public:
 
     // From org.freedesktop.ModemManager.Modem.Simple
 
-    //  Dictionary of properties needed to get the modem connected.
-    //  Each implementation is free to add its own specific key-value pairs. The predefined
-    //  common ones are:
-    //
-    //  "pin": SIM-PIN unlock code, given as a string value (signature "s").
-    //  "operator-id": ETSI MCC-MNC of a network to force registration with, given as a string value (signature "s").
-    //  "apn": For GSM/UMTS and LTE devices the APN to use, given as a string value (signature "s").
-    //  "ip-type": For GSM/UMTS and LTE devices the IP addressing type to use, given as a MMBearerIpFamily value (signature "u").
-    //  "allowed-auth": The authentication method to use, given as a MMBearerAllowedAuth value (signature "u"). Optional in 3GPP.
-    //  "user": User name (if any) required by the network, given as a string value (signature "s"). Optional in 3GPP.
-    //  "password": Password (if any) required by the network, given as a string value (signature "s"). Optional in 3GPP.
-    //  "number": For POTS devices the number to dial,, given as a string value (signature "s").
-    //  "allow-roaming": FALSE to allow only connections to home networks, given as a boolean value (signature "b").
-    //  "rm-protocol": For CDMA devices, the protocol of the Rm interface, given as a MMModemCdmaRmProtocol value (signature "u").
+    /**
+     * Dictionary of properties needed to get the modem connected.
+     * Each implementation is free to add its own specific key-value pairs. The predefined
+     * common ones are:
+     *
+     * @param pin SIM-PIN unlock code, given as a string value (signature "s").
+     * @param operator-id ETSI MCC-MNC of a network to force registration with, given as a string value (signature "s").
+     * @param apn For GSM/UMTS and LTE devices the APN to use, given as a string value (signature "s").
+     * @param ip-type For GSM/UMTS and LTE devices the IP addressing type to use, given as a MMBearerIpFamily value (signature "u").
+     * @param allowed-auth The authentication method to use, given as a MMBearerAllowedAuth value (signature "u"). Optional in 3GPP.
+     * @param user User name (if any) required by the network, given as a string value (signature "s"). Optional in 3GPP.
+     * @param password Password (if any) required by the network, given as a string value (signature "s"). Optional in 3GPP.
+     * @param number For POTS devices the number to dial,, given as a string value (signature "s").
+     * @param allow-roaming FALSE to allow only connections to home networks, given as a boolean value (signature "b").
+     * @param rm-protocol For CDMA devices, the protocol of the Rm interface, given as a MMModemCdmaRmProtocol value (signature "u").
+     *
+     * @return On successful connect, returns the object path of the connected packet data bearer used for the connection attempt.
+    */
     QDBusObjectPath connectModem(const QVariantMap &properties);
 
-    //  Dictionary of properties.
-    //  Each implementation is free to add it's own specific key-value pairs. The predefined
-    //  common ones are:
-    //
-    //  "state": A MMModemState value specifying the overall state of the modem, given as an unsigned integer value (signature "u").
-    //  "signal-quality": Signal quality value, given only when registered, as an unsigned integer value (signature "u").
-    //  "current-bands": List of MMModemBand values, given only when registered, as a list of unsigned integer values (signature "au").
-    //  "access-technology": A MMModemAccessTechnology value, given only when registered, as an unsigned integer value (signature "u").
-    //  "m3gpp-registration-state":A MMModem3gppRegistrationState value specifying the state of the registration, given only when registered in a 3GPP network, as an unsigned integer value (signature "u").
-    //  "m3gpp-operator-code":Operator MCC-MNC, given only when registered in a 3GPP network, as a string value (signature "s").
-    //  "m3gpp-operator-name":Operator name, given only when registered in a 3GPP network, as a string value (signature "s").
-    //  "cdma-cdma1x-registration-state":A MMModemCdmaRegistrationState value specifying the state of the registration, given only when registered in a CDMA1x network, as an unsigned integer value (signature "u").
-    //  "cdma-evdo-registration-state":A MMModemCdmaRegistrationState value specifying the state of the registration, given only when registered in a EV-DO network, as an unsigned integer value (signature "u").
-    //  "cdma-sid":The System Identifier of the serving network, if registered in a CDMA1x network and if known. Given as an unsigned integer value (signature "u").
-    //  "cdma-nid":The Network Identifier of the serving network, if registered in a CDMA1x network and if known. Given as an unsigned integer value (signature "u").
+    /**
+     *  Dictionary of properties.
+     *  Each implementation is free to add it's own specific key-value pairs. The predefined
+     *  common ones are:
+     *
+     * @param state A MMModemState value specifying the overall state of the modem, given as an unsigned integer value (signature "u").
+     * @param signal-quality Signal quality value, given only when registered, as an unsigned integer value (signature "u").
+     * @param current-bands List of MMModemBand values, given only when registered, as a list of unsigned integer values (signature "au").
+     * @param access-technology A MMModemAccessTechnology value, given only when registered, as an unsigned integer value (signature "u").
+     * @param m3gpp-registration-state A MMModem3gppRegistrationState value specifying the state of the registration,
+     *   given only when registered in a 3GPP network, as an unsigned integer value (signature "u").
+     * @param m3gpp-operator-code Operator MCC-MNC, given only when registered in a 3GPP network, as a string value (signature "s").
+     * @param m3gpp-operator-name Operator name, given only when registered in a 3GPP network, as a string value (signature "s").
+     * @param cdma-cdma1x-registration-state A MMModemCdmaRegistrationState value specifying the state of the registration,
+     *   given only when registered in a CDMA1x network, as an unsigned integer value (signature "u").
+     * @param cdma-evdo-registration-state A MMModemCdmaRegistrationState value specifying the state of the registration,
+     *   given only when registered in a EV-DO network, as an unsigned integer value (signature "u").
+     * @param cdma-sid The System Identifier of the serving network, if registered in a CDMA1x network and if known.
+     *   Given as an unsigned integer value (signature "u").
+     * @param cdma-nid The Network Identifier of the serving network, if registered in a CDMA1x network and if known.
+     *   Given as an unsigned integer value (signature "u").
+    */
     QVariantMap status();
 
     void disconnectModem(const QString &bearer);

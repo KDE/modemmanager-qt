@@ -106,9 +106,7 @@
         </variablelist>
     -->
     <method name="Connect">
-      <arg name="properties" type="a{sv}" direction="in">
-        <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="QVariantMap"/>
-      </arg>
+      <arg name="properties" type="a{sv}" direction="in"  />
       <arg name="bearer"     type="o"     direction="out" />
     </method>
 
@@ -211,9 +209,7 @@
         </variablelist>
     -->
     <method name="GetStatus">
-      <arg name="properties" type="a{sv}" direction="out">
-        <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantMap"/>
-      </arg>
+      <arg name="properties" type="a{sv}" direction="out" />
     </method>
 
   </interface>
