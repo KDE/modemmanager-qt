@@ -60,6 +60,7 @@ set(ModemManagerQt_HEADERS
     modemfirmware.h
     modemlocation.h
     modemmessaging.h
+    modemsignal.h
     modemtime.h
     modemoma.h
     sim.h
@@ -78,6 +79,7 @@ set(ModemManagerQt_PRIVATE_HEADERS
     modemfirmware_p.h
     modemlocation_p.h
     modemmessaging_p.h
+    modemsignal_p.h
     modemtime_p.h
     modemoma_p.h
     sim_p.h
@@ -96,6 +98,7 @@ set(ModemManagerQt_SRCS
     modemfirmware.cpp
     modemlocation.cpp
     modemmessaging.cpp
+    modemsignal.cpp
     modemtime.cpp
     modemoma.cpp
     sim.cpp

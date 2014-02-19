@@ -34,6 +34,7 @@
 #include "modemoma.h"
 #include "modemtime.h"
 #include "modemfirmware.h"
+#include "modemsignal.h"
 
 #include <QDomDocument>
 
@@ -111,6 +112,8 @@ void ModemDevicePrivate::initInterfaces()
                 interfaceList.insert(ModemManager::ModemDevice::OmaInterface, ModemManager::ModemOma::Ptr());
             } else if (name == QLatin1String(MM_DBUS_INTERFACE_MODEM_FIRMWARE)) {
                 interfaceList.insert(ModemManager::ModemDevice::FirmwareInterface, ModemManager::ModemFirmware::Ptr());
+            } else if (name == QLatin1String(MM_DBUS_INTERFACE_MODEM_SIGNAL)) {
+                interfaceList.insert(ModemManager::ModemDevice::SignalInterface, ModemManager::ModemSignal::Ptr());
             }
         }
     }
@@ -210,6 +213,9 @@ ModemManager::Interface::Ptr ModemDevicePrivate::createInterface(ModemManager::M
             break;
         case ModemManager::ModemDevice::FirmwareInterface:
             createdInterface = ModemManager::Interface::Ptr(new ModemManager::ModemFirmware(uni), &QObject::deleteLater);
+            break;
+        case ModemManager::ModemDevice::SignalInterface:
+            createdInterface = ModemManager::Interface::Ptr(new ModemManager::ModemSignal(uni), &QObject::deleteLater);
             break;
     }
     return createdInterface;
@@ -348,6 +354,8 @@ void ModemManager::ModemDevice::onInterfacesAdded(const QDBusObjectPath &object_
                 d->interfaceList.insert(ModemManager::ModemDevice::OmaInterface, ModemManager::ModemOma::Ptr());
             } else if (iface == QLatin1String(MM_DBUS_INTERFACE_MODEM_FIRMWARE)) {
                 d->interfaceList.insert(ModemManager::ModemDevice::FirmwareInterface, ModemManager::ModemFirmware::Ptr());
+            } else if (iface == QLatin1String(MM_DBUS_INTERFACE_MODEM_SIGNAL)) {
+                d->interfaceList.insert(ModemManager::ModemDevice::SignalInterface, ModemManager::ModemSignal::Ptr());
             }
         }
     }
@@ -386,6 +394,8 @@ void ModemManager::ModemDevice::onInterfacesRemoved(const QDBusObjectPath &objec
             d->interfaceList.remove(ModemManager::ModemDevice::OmaInterface);
         } else if (iface == QLatin1String(MM_DBUS_INTERFACE_MODEM_FIRMWARE)) {
             d->interfaceList.remove(ModemManager::ModemDevice::FirmwareInterface);
+        } else if (iface == QLatin1String(MM_DBUS_INTERFACE_MODEM_SIGNAL)) {
+            d->interfaceList.remove(ModemManager::ModemDevice::SignalInterface);
         }
     }
 }
