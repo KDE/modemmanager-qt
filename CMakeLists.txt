@@ -3,14 +3,10 @@ cmake_minimum_required(VERSION 2.8)
 project(ModemManagerQt)
 
 include(FindPkgConfig)
+include(GNUInstallDirs)
 
 set(VERSION 1.1.94)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_MODULE_PATH})
-set(LIB_SUFFIX "" CACHE STRING "Define suffix of library directory name (32/64)" )
-set(LIB_DESTINATION "${CMAKE_INSTALL_PREFIX}/lib${LIB_SUFFIX}" CACHE STRING
-    "Library directory name")
-set(PKGCONFIG_INSTALL_PREFIX "${LIB_DESTINATION}/pkgconfig/" CACHE STRING
-    "Base directory for pkgconfig files")
 
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
@@ -151,9 +147,9 @@ qt4_automoc(${DBUS_INTERFACES_FILES})
 add_library(ModemManagerQt SHARED ${ModemManagerQt_MOC} ${ModemManagerQt_SRCS} ${DBUS_INTERFACES_FILES})
 
 target_link_libraries(ModemManagerQt ${QT_QTCORE_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY})
-install(TARGETS ModemManagerQt DESTINATION ${LIB_DESTINATION})
+install(TARGETS ModemManagerQt DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
-install(FILES ${ModemManagerQt_HEADERS} DESTINATION include/ModemManagerQt COMPONENT Devel)
+install(FILES ${ModemManagerQt_HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/ModemManagerQt COMPONENT Devel)
 
 set_property(TARGET ModemManagerQt PROPERTY COMPILE_DEFINITIONS MAKE_MODEMMANAGERQT_LIB)
 set_property(TARGET ModemManagerQt PROPERTY VERSION ${VERSION})
@@ -161,7 +157,7 @@ set_property(TARGET ModemManagerQt PROPERTY SOVERSION 0)
 
 message(STATUS "Writing pkg-config file...")
 configure_file(${CMAKE_SOURCE_DIR}/ModemManagerQt.pc.cmake ${CMAKE_BINARY_DIR}/ModemManagerQt.pc @ONLY)
-install(FILES ${CMAKE_BINARY_DIR}/ModemManagerQt.pc DESTINATION "${PKGCONFIG_INSTALL_PREFIX}")
+install(FILES ${CMAKE_BINARY_DIR}/ModemManagerQt.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
 
 ##################  apidox  ################################
 find_package(Doxygen)
