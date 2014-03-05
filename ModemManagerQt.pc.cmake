@@ -1,4 +1,4 @@
-# Copyright 2011‐2013 Lamarque Souza <lamarque@kde.org>
+# Copyright 2011‐2014 Lamarque Souza <lamarque@kde.org>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -18,7 +18,7 @@
 
 prefix=@CMAKE_INSTALL_PREFIX@
 exec_prefix=${prefix}
-libdir=@LIB_DESTINATION@
+libdir=@CMAKE_INSTALL_FULL_LIBDIR@
 includedir=${prefix}/include
 
 Name: ModemManagerQt
