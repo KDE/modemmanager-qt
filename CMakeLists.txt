@@ -51,9 +51,6 @@ if (HAVE_GCC_ERROR_RETURN_TYPE)
     set(CMAKE_CXX_FLAGS "-Werror=return-type")
 endif()
 
-include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${QT_INCLUDES} ${CMAKE_INCLUDE_PATH} ${MODEMMANAGER_INCLUDE_DIRS})
-link_directories(${CMAKE_LIBRARY_PATH})
-
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/dbus
