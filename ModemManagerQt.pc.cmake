@@ -1,4 +1,5 @@
 # Copyright 2011‐2014 Lamarque Souza <lamarque@kde.org>
+# Copyright 2014 Lukáš Tinkl <ltinkl@redhat.com>
 #
 # This library is free software; you can redistribute it and/or
 # modify it under the terms of the GNU Lesser General Public
@@ -19,12 +20,12 @@
 prefix=@CMAKE_INSTALL_PREFIX@
 exec_prefix=${prefix}
 libdir=@CMAKE_INSTALL_FULL_LIBDIR@
-includedir=${prefix}/include
+includedir=${prefix}/include/ModemManagerQt5
 
-Name: ModemManagerQt
-Description: Convenience Qt library for clients of ModemManager
+Name: ModemManagerQt5
+Description: Convenience Qt5 library for clients of ModemManager
 Version: @VERSION@
 
 Requires: QtCore QtDBus QtXml
 Cflags: -I${includedir} -I@MODEMMANAGER_INCLUDE_DIRS@
-Libs: -L${libdir} -lModemManagerQt
+Libs: -L${libdir} -lModemManagerQt5

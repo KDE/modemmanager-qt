@@ -3,29 +3,56 @@ cmake_minimum_required(VERSION 2.8)
 project(ModemManagerQt)
 
 include(FindPkgConfig)
+include(CMakePackageConfigHelpers)
+include(FeatureSummary)
 include(GNUInstallDirs)
 
-set(VERSION 1.1.94)
+set(VERSION 1.1.95)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_MODULE_PATH})
+#set(CMAKE_AUTOMOC TRUE)
 
 if (NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
-find_package(Qt4 REQUIRED)
 pkg_check_modules(MODEMMANAGER REQUIRED ModemManager>=1.0)
 
 if (MODEMMANAGER_FOUND AND "${MODEMMANAGER_VERSION}" VERSION_LESS 1.1)
    message(STATUS "This is a development version of this library and some functionality require a newer version of ModemManager")
 endif()
 
+#add_definitions(${QT_DEFINITIONS})
+
+include(CMakePackageConfigHelpers)
+include(FeatureSummary)
+#include(WriteBasicConfigVersionFile)
+
+find_package(Qt5 COMPONENTS
+    Core
+    DBus
+    Network
+    Xml
+    Test
+)
+
+include_directories(${Qt5DBus_INCLUDE_DIRS} ${Qt5Core_INCLUDE_DIRS} ${Qt5Network_INCLUDE_DIRS} ${Qt5Xml_INCLUDE_DIRS})
+
 add_definitions(${QT_DEFINITIONS})
+
+add_definitions(-DQT_USE_FAST_CONCATENATION -DQT_USE_FAST_OPERATOR_PLUS)
+add_definitions(-DQT_NO_URL_CAST_FROM_STRING)
+
+remove_definitions(-DQT3_SUPPORT_WARNINGS -DQT3_SUPPORT)
+remove_definitions(-DQT_NO_CAST_FROM_ASCII -DQT_STRICT_ITERATORS -DQT_NO_CAST_FROM_BYTEARRAY -DQT_NO_KEYWORDS)
 
 include(CheckCXXCompilerFlag)
 check_cxx_compiler_flag("-Werror=return-type" HAVE_GCC_ERROR_RETURN_TYPE)
 if (HAVE_GCC_ERROR_RETURN_TYPE)
     set(CMAKE_CXX_FLAGS "-Werror=return-type")
 endif()
+
+include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${QT_INCLUDES} ${CMAKE_INCLUDE_PATH} ${MODEMMANAGER_INCLUDE_DIRS})
+link_directories(${CMAKE_LIBRARY_PATH})
 
 include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
@@ -141,23 +168,26 @@ set( DBUS_INTERFACES_HEADERS
    dbus/ussdinterface.h
 )
 
-qt4_wrap_cpp(ModemManagerQt_MOC ${ModemManagerQt_HEADERS} ${ModemManagerQt_PRIVATE_HEADERS} ${DBUS_INTERFACES_HEADERS})
-qt4_automoc(${DBUS_INTERFACES_FILES})
+qt5_wrap_cpp(ModemManagerQt_MOC ${ModemManagerQt_HEADERS} ${ModemManagerQt_PRIVATE_HEADERS} ${DBUS_INTERFACES_HEADERS})
 
-add_library(ModemManagerQt SHARED ${ModemManagerQt_MOC} ${ModemManagerQt_SRCS} ${DBUS_INTERFACES_FILES})
+add_library(ModemManagerQt5 SHARED ${ModemManagerQt_MOC} ${ModemManagerQt_SRCS} ${DBUS_INTERFACES_FILES})
+qt5_use_modules(ModemManagerQt5
+  Core
+  DBus
+  Network
+  Xml
+)
+install(TARGETS ModemManagerQt5 DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
-target_link_libraries(ModemManagerQt ${QT_QTCORE_LIBRARY} ${QT_QTXML_LIBRARY} ${QT_QTDBUS_LIBRARY})
-install(TARGETS ModemManagerQt DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install(FILES ${ModemManagerQt_HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/ModemManagerQt5/ModemManagerQt COMPONENT Devel)
 
-install(FILES ${ModemManagerQt_HEADERS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/ModemManagerQt COMPONENT Devel)
-
-set_property(TARGET ModemManagerQt PROPERTY COMPILE_DEFINITIONS MAKE_MODEMMANAGERQT_LIB)
-set_property(TARGET ModemManagerQt PROPERTY VERSION ${VERSION})
-set_property(TARGET ModemManagerQt PROPERTY SOVERSION 0)
+set_property(TARGET ModemManagerQt5 PROPERTY COMPILE_DEFINITIONS MAKE_MODEMMANAGERQT_LIB)
+set_property(TARGET ModemManagerQt5 PROPERTY VERSION ${VERSION})
+set_property(TARGET ModemManagerQt5 PROPERTY SOVERSION 0)
 
 message(STATUS "Writing pkg-config file...")
-configure_file(${CMAKE_SOURCE_DIR}/ModemManagerQt.pc.cmake ${CMAKE_BINARY_DIR}/ModemManagerQt.pc @ONLY)
-install(FILES ${CMAKE_BINARY_DIR}/ModemManagerQt.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+configure_file(${CMAKE_SOURCE_DIR}/ModemManagerQt.pc.cmake ${CMAKE_BINARY_DIR}/ModemManagerQt5.pc @ONLY)
+install(FILES ${CMAKE_BINARY_DIR}/ModemManagerQt5.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
 
 ##################  apidox  ################################
 find_package(Doxygen)
