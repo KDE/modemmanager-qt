@@ -26,6 +26,6 @@ Name: ModemManagerQt5
 Description: Convenience Qt5 library for clients of ModemManager
 Version: @VERSION@
 
-Requires: QtCore QtDBus QtXml
+Requires: Qt5Core Qt5DBus Qt5Xml Qt5Network
 Cflags: -I${includedir} -I@MODEMMANAGER_INCLUDE_DIRS@
 Libs: -L${libdir} -lModemManagerQt5
