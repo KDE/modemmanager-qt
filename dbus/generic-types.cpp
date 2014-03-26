@@ -20,6 +20,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "generic-types.h"
+#include "generic-types_p.h"
 
 QDBusArgument &operator << (QDBusArgument &arg, const Port &port)
 {

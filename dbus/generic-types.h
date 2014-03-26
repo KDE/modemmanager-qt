@@ -27,76 +27,41 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMetaType>
 #include <QtDBus/QtDBus>
 
-Q_DECLARE_METATYPE(MMModemLock)
-
 typedef QMap<QString, QVariantMap> NMVariantMapMap;
-Q_DECLARE_METATYPE(NMVariantMapMap)
-
 typedef QMap<QDBusObjectPath, NMVariantMapMap> DBUSManagerStruct;
-Q_DECLARE_METATYPE(DBUSManagerStruct)
-
 typedef QList<uint> UIntList;
-Q_DECLARE_METATYPE(UIntList)
-
 typedef QList<QList<uint> > UIntListList;
-Q_DECLARE_METATYPE(UIntListList)
-
 typedef QMap<QString, QString> NMStringMap;
-Q_DECLARE_METATYPE(NMStringMap)
-
 typedef struct {
     QString name;
     MMModemPortType type;
 } Port;
-Q_DECLARE_METATYPE(Port)
 
 typedef QList<Port> PortList;
-Q_DECLARE_METATYPE(PortList)
-
 typedef struct {
     uint signal;
     bool recent;
 } SignalQualityPair;
-Q_DECLARE_METATYPE(SignalQualityPair)
-
-Q_DECLARE_METATYPE(MMModemMode)
-
 typedef struct {
 public:
     MMModemMode allowed; // bitfield
     MMModemMode preferred;
 } CurrentModesType;
-Q_DECLARE_METATYPE(CurrentModesType)
 
 typedef QList<CurrentModesType> SupportedModesType;
-Q_DECLARE_METATYPE(SupportedModesType)
-
 typedef struct {
 public:
     MMOmaSessionType type;
     uint id;
 } OmaSessionType;
-Q_DECLARE_METATYPE(OmaSessionType)
-
 typedef QList<OmaSessionType> OmaSessionTypes;
-Q_DECLARE_METATYPE(OmaSessionTypes)
-
-//Q_DECLARE_METATYPE(MMModemLock)
-
 typedef QMap</*MMModemLock*/uint, uint> UnlockRetriesMap;
-Q_DECLARE_METATYPE(UnlockRetriesMap)
-
 typedef QList<QVariantMap> QVariantMapList;
-Q_DECLARE_METATYPE(QVariantMapList)
-
 typedef QMap<MMModemLocationSource, QVariant> LocationInformationMap;
-Q_DECLARE_METATYPE(LocationInformationMap)
-
 typedef struct {
     MMSmsValidityType validity;
     uint value;
 } ValidityPair;
-Q_DECLARE_METATYPE(ValidityPair)
 
 // Port
 QDBusArgument &operator << (QDBusArgument &arg, const Port &port);
@@ -124,4 +89,4 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, QVariantMapList &
 
 void registerModemManagerTypes();
 
-#endif // MODEMMANAGERQT_TYPES_H
+#endif // MODEMMANAGERQT_GENERIC_TYPES_P_H

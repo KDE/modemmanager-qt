@@ -21,6 +21,7 @@
 #include <QtDBus/QtDBus>
 
 #include "generic-types.h"
+#include "generic-types_p.h"
 
 /*
  * Proxy class for interface org.freedesktop.ModemManager1.Modem.Firmware
