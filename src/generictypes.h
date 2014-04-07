@@ -22,6 +22,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #ifndef MODEMMANAGERQT_GENERIC_TYPES_H
 #define MODEMMANAGERQT_GENERIC_TYPES_H
 
+#include <modemmanagerqt_export.h>
 #include <ModemManager/ModemManager.h>
 
 #include <QMetaType>
@@ -64,29 +65,29 @@ typedef struct {
 } ValidityPair;
 
 // Port
-QDBusArgument &operator << (QDBusArgument &arg, const Port &port);
-const QDBusArgument &operator >> (const QDBusArgument &arg, Port &port);
+MODEMMANAGERQT_EXPORT QDBusArgument &operator << (QDBusArgument &arg, const Port &port);
+MODEMMANAGERQT_EXPORT const QDBusArgument &operator >> (const QDBusArgument &arg, Port &port);
 
 // CurrentModesType
-QDBusArgument &operator << (QDBusArgument &arg, const CurrentModesType &mode);
-const QDBusArgument &operator >> (const QDBusArgument &arg, CurrentModesType &mode);
+MODEMMANAGERQT_EXPORT QDBusArgument &operator << (QDBusArgument &arg, const CurrentModesType &mode);
+MODEMMANAGERQT_EXPORT const QDBusArgument &operator >> (const QDBusArgument &arg, CurrentModesType &mode);
 
 // SignalQualityPair
-QDBusArgument &operator << (QDBusArgument &arg, const SignalQualityPair &sqp);
-const QDBusArgument &operator >> (const QDBusArgument &arg, SignalQualityPair &sqp);
+MODEMMANAGERQT_EXPORT QDBusArgument &operator << (QDBusArgument &arg, const SignalQualityPair &sqp);
+MODEMMANAGERQT_EXPORT const QDBusArgument &operator >> (const QDBusArgument &arg, SignalQualityPair &sqp);
 
 // ValidityPair
-QDBusArgument &operator << (QDBusArgument &arg, const ValidityPair &vp);
-const QDBusArgument &operator >> (const QDBusArgument &arg, ValidityPair &vp);
+MODEMMANAGERQT_EXPORT QDBusArgument &operator << (QDBusArgument &arg, const ValidityPair &vp);
+MODEMMANAGERQT_EXPORT const QDBusArgument &operator >> (const QDBusArgument &arg, ValidityPair &vp);
 
 // OmaSessionType
-QDBusArgument &operator << (QDBusArgument &arg, const OmaSessionType &sessionType);
-const QDBusArgument &operator >> (const QDBusArgument &arg, OmaSessionType &sessionType);
+MODEMMANAGERQT_EXPORT QDBusArgument &operator << (QDBusArgument &arg, const OmaSessionType &sessionType);
+MODEMMANAGERQT_EXPORT const QDBusArgument &operator >> (const QDBusArgument &arg, OmaSessionType &sessionType);
 
 // QVariantMapList
-QDBusArgument &operator<<(QDBusArgument &argument, const QVariantMapList &variantMapList);
-const QDBusArgument &operator>>(const QDBusArgument &argument, QVariantMapList &variantMapList);
+MODEMMANAGERQT_EXPORT QDBusArgument &operator<<(QDBusArgument &argument, const QVariantMapList &variantMapList);
+MODEMMANAGERQT_EXPORT const QDBusArgument &operator>>(const QDBusArgument &argument, QVariantMapList &variantMapList);
 
-void registerModemManagerTypes();
+MODEMMANAGERQT_EXPORT void registerModemManagerTypes();
 
 #endif // MODEMMANAGERQT_GENERIC_TYPES_P_H
