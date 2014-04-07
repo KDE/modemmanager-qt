@@ -27,7 +27,7 @@
 
 #include <ModemManager/ModemManager.h>
 
-#include "ModemManagerQt-export.h"
+#include <modemmanagerqt_export.h>
 
 #include <QObject>
 #include <QVariant>

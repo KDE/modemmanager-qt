@@ -21,7 +21,7 @@
 #ifndef MODEMMANAGERQT_MODEMOMA_H
 #define MODEMMANAGERQT_MODEMOMA_H
 
-#include "ModemManagerQt-export.h"
+#include <modemmanagerqt_export.h>
 
 #include <QObject>
 #include <QSharedPointer>

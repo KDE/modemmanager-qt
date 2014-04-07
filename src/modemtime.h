@@ -22,7 +22,7 @@
 #ifndef MODEMMANAGERQT_MODEMTIME_H
 #define MODEMMANAGERQT_MODEMTIME_H
 
-#include "ModemManagerQt-export.h"
+#include <modemmanagerqt_export.h>
 #include "interface.h"
 
 #include <QObject>

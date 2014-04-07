@@ -21,7 +21,7 @@
 #ifndef MODEMMANAGERQT_MODEMSIGNAL_H
 #define MODEMMANAGERQT_MODEMSIGNAL_H
 
-#include "ModemManagerQt-export.h"
+#include <modemmanagerqt_export.h>
 #include "interface.h"
 
 #include <QObject>

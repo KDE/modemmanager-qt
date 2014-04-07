@@ -23,7 +23,7 @@
 #ifndef MODEMMANAGERQT_MODEMMESSAGING_H
 #define MODEMMANAGERQT_MODEMMESSAGING_H
 
-#include "ModemManagerQt-export.h"
+#include <modemmanagerqt_export.h>
 
 #include <QObject>
 #include <QSharedPointer>

@@ -25,7 +25,7 @@
 #ifndef MODEMMANAGERQT_MANAGER_H
 #define MODEMMANAGERQT_MANAGER_H
 
-#include "ModemManagerQt-export.h"
+#include <modemmanagerqt_export.h>
 
 #include <QObject>
 #include <QDBusObjectPath>

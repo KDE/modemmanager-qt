@@ -22,7 +22,7 @@
 #ifndef MODEMMANAGERQT_BEARER_H
 #define MODEMMANAGERQT_BEARER_H
 
-#include "ModemManagerQt-export.h"
+#include <modemmanagerqt_export.h>
 
 #include <QObject>
 #include <QSharedPointer>

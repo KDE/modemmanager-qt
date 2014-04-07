@@ -24,7 +24,7 @@
 #ifndef MODEMMANAGERQT_SIM_H
 #define MODEMMANAGERQT_SIM_H
 
-#include "ModemManagerQt-export.h"
+#include <modemmanagerqt_export.h>
 
 #include <QObject>
 #include <QSharedPointer>

@@ -24,7 +24,7 @@
 #ifndef MODEMMANAGERQT_MODEM3GPPUSSD_H
 #define MODEMMANAGERQT_MODEM3GPPUSSD_H
 
-#include "ModemManagerQt-export.h"
+#include <modemmanagerqt_export.h>
 
 #include <QObject>
 #include <QSharedPointer>
