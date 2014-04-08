@@ -37,7 +37,7 @@ ModemManager::ModemLocation::ModemLocation(const QString &path, QObject *parent)
 {
     Q_D(ModemLocation);
 
-    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
+    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), this,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 }
 
@@ -47,6 +47,7 @@ ModemManager::ModemLocation::~ModemLocation()
 
 void ModemManager::ModemLocation::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
 {
+    Q_UNUSED(invalidatedProps);
     mmDebug() << interface << properties.keys();
 
     if (interface == QString(MM_DBUS_INTERFACE_MODEM_LOCATION)) {

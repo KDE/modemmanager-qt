@@ -37,7 +37,7 @@ ModemManager::Modem3gpp::Modem3gpp(const QString &path, QObject *parent)
 {
     Q_D(Modem3gpp);
 
-    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
+    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), this,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 }
 
@@ -89,7 +89,7 @@ QDBusPendingReply<QVariantMapList> ModemManager::Modem3gpp::scan()
 
 void ModemManager::Modem3gpp::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
 {
-    Q_D(Modem3gpp);
+    Q_UNUSED(invalidatedProps);
     mmDebug() << interface << properties.keys();
 
     if (interface == QString(MM_DBUS_INTERFACE_MODEM_MODEM3GPP)) {

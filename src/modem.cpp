@@ -360,6 +360,7 @@ ModemManager::Modem::IpBearerFamilies ModemManager::Modem::supportedIpFamilies()
 
 void ModemManager::Modem::onPropertiesChanged(const QString &ifaceName, const QVariantMap &changedProps, const QStringList &invalidatedProps)
 {
+    Q_UNUSED(invalidatedProps);
     Q_D(Modem);
     mmDebug() << ifaceName << changedProps.keys();
 
@@ -456,5 +457,5 @@ void ModemManager::Modem::disconnectModem(const QString &bearer)
 
 void ModemManager::Modem::disconnectAllModems()
 {
-    disconnectModem(QLatin1String("/"));
+    disconnectModem(QStringLiteral("/"));
 }

@@ -34,9 +34,7 @@ ModemManager::Bearer::Bearer(const QString &path, QObject *parent)
     : QObject(parent)
     , d_ptr(new BearerPrivate(path))
 {
-    Q_D(Bearer);
-
-    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
+    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), this,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 }
 
@@ -127,6 +125,7 @@ void ModemManager::Bearer::disconnectBearer()
 
 void ModemManager::Bearer::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
 {
+    Q_UNUSED(invalidatedProps);
     mmDebug() << interface << properties.keys();
 
     if (interface == QString(MM_DBUS_INTERFACE_BEARER)) {

@@ -54,9 +54,9 @@ void ModemDevicePrivate::init()
 {
     Q_Q(ModemManager::ModemDevice);
 
-    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, MM_DBUS_PATH, DBUS_INTERFACE_MANAGER, "InterfacesAdded",
+    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, MM_DBUS_PATH, DBUS_INTERFACE_MANAGER, QStringLiteral("InterfacesAdded"),
                                          q, SLOT(onInterfacesAdded(QDBusObjectPath,NMVariantMapMap)));
-    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, MM_DBUS_PATH, DBUS_INTERFACE_MANAGER, "InterfacesRemoved",
+    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, MM_DBUS_PATH, DBUS_INTERFACE_MANAGER, QStringLiteral("InterfacesRemoved"),
                                          q, SLOT(onInterfacesRemoved(QDBusObjectPath,QStringList)));
 
     initInterfaces();

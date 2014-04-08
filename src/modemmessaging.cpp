@@ -50,7 +50,7 @@ ModemManager::ModemMessaging::ModemMessaging(const QString &path, QObject *paren
     connect(&d->modemMessagingIface, &OrgFreedesktopModemManager1ModemMessagingInterface::Added, this, &ModemMessaging::onMessageAdded);
     connect(&d->modemMessagingIface, &OrgFreedesktopModemManager1ModemMessagingInterface::Deleted, this, &ModemMessaging::onMessageDeleted);
 
-    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
+    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), this,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 
     QList <QDBusObjectPath> messages = d->modemMessagingIface.messages();

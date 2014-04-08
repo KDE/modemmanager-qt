@@ -56,7 +56,7 @@ ModemManager::Sms::Sms(const QString &path, QObject *parent)
     d->serviceCategory = (MMSmsCdmaServiceCategory) d->smsIface.serviceCategory();
     d->teleserviceId = (MMSmsCdmaTeleserviceId) d->smsIface.teleserviceId();
 
-    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
+    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), this,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 }
 
@@ -67,6 +67,7 @@ ModemManager::Sms::~Sms()
 
 void ModemManager::Sms::onPropertiesChanged(const QString &interfaceName, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
 {
+    Q_UNUSED(invalidatedProperties);
     if (interfaceName == QString(MM_DBUS_INTERFACE_SMS)) {
         QLatin1String state(MM_SMS_PROPERTY_STATE);
         QLatin1String pduType(MM_SMS_PROPERTY_PDUTYPE);
