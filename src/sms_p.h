@@ -48,8 +48,8 @@ public:
     QDateTime dischargeTimestamp;
     MMSmsDeliveryState deliveryState;
     MMSmsStorage storage;
-    /*MMSmsCdmaServiceCategory*/ uint serviceCategory;
-    /*MMSmsCdmaTeleserviceId*/ uint teleserviceId;
+    MMSmsCdmaServiceCategory serviceCategory;
+    MMSmsCdmaTeleserviceId teleserviceId;
 };
 
 #endif
