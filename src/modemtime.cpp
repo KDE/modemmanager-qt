@@ -34,7 +34,7 @@ ModemManager::ModemTime::ModemTime(const QString &path, QObject *parent)
 {
     Q_D(ModemTime);
 
-    connect(&d->modemTimeIface, SIGNAL(NetworkTimeChanged(QString)), SLOT(onNetworkTimeChanged(QString)));
+    connect(&d->modemTimeIface, &OrgFreedesktopModemManager1ModemTimeInterface::NetworkTimeChanged, this, &ModemTime::onNetworkTimeChanged);
 }
 
 ModemManager::ModemTime::~ModemTime()
@@ -72,8 +72,6 @@ ModemManager::ModemTime::NetworkTimeZone ModemManager::ModemTime::networkTimeZon
 
 void ModemManager::ModemTime::onNetworkTimeChanged(const QString &isoDateTime)
 {
-    Q_D(ModemTime);
-
     const QDateTime result = QDateTime::fromString(isoDateTime, Qt::ISODate);
     if (result.isValid())
         emit networkTimeChanged(result);

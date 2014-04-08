@@ -36,8 +36,7 @@ ModemManager::ModemCdma::ModemCdma(const QString &path, QObject *parent)
 {
     Q_D(ModemCdma);
 
-    connect(&d->modemCdmaIface, SIGNAL(ActivationStateChanged(uint,uint,QVariantMap)),
-            SLOT(onActivationStateChanged(uint,uint,QVariantMap)));
+    connect(&d->modemCdmaIface, &OrgFreedesktopModemManager1ModemModemCdmaInterface::ActivationStateChanged, this, &ModemCdma::onActivationStateChanged);
 }
 
 ModemManager::ModemCdma::~ModemCdma()

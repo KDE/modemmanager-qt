@@ -47,8 +47,8 @@ ModemManager::ModemMessaging::ModemMessaging(const QString &path, QObject *paren
     d->supportedStorages = storages;
     d->defaultStorage = (MMSmsStorage) d->modemMessagingIface.defaultStorage();
 
-    connect(&d->modemMessagingIface, SIGNAL(Added(QDBusObjectPath,bool)), this, SLOT(onMessageAdded(QDBusObjectPath,bool)));
-    connect(&d->modemMessagingIface, SIGNAL(Deleted(QDBusObjectPath)), this, SLOT(onMessageDeleted(QDBusObjectPath)));
+    connect(&d->modemMessagingIface, &OrgFreedesktopModemManager1ModemMessagingInterface::Added, this, &ModemMessaging::onMessageAdded);
+    connect(&d->modemMessagingIface, &OrgFreedesktopModemManager1ModemMessagingInterface::Deleted, this, &ModemMessaging::onMessageDeleted);
 
     QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
@@ -98,6 +98,7 @@ ModemManager::Sms::List ModemMessagingPrivate::ModemMessagingPrivate::messages()
 
 void ModemManager::ModemMessaging::onPropertiesChanged(const QString &interfaceName, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
 {
+    Q_UNUSED(invalidatedProperties);
     if (interfaceName == QString(MM_DBUS_INTERFACE_MODEM_MESSAGING)) {
         QLatin1String supportedStorages(MM_MODEM_MESSAGING_PROPERTY_SUPPORTEDSTORAGES);
         QLatin1String defaultStorage(MM_MODEM_MESSAGING_PROPERTY_DEFAULTSTORAGE);
@@ -153,8 +154,6 @@ ModemManager::Sms::List ModemManager::ModemMessaging::messages()
 
 QString ModemManager::ModemMessaging::createMessage(const Message &message)
 {
-    Q_D(ModemMessaging);
-
     QVariantMap map;
     map.insert("number", message.number);
     map.insert("text", message.text);

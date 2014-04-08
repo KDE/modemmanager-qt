@@ -51,7 +51,7 @@ ModemManager::Modem::Modem(const QString &path, QObject *parent)
                                              SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
     }
 
-    connect(&d->modemIface, SIGNAL(StateChanged(int,int,uint)), SLOT(onStateChanged(int,int,uint)));
+    connect(&d->modemIface, &OrgFreedesktopModemManager1ModemInterface::StateChanged, this, &Modem::onStateChanged);
 }
 
 ModemManager::Modem::~Modem()

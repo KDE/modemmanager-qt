@@ -58,14 +58,12 @@ ModemManager::ModemManagerPrivate::ModemManagerPrivate()
     }
 
     if (serviceFound) {
-        connect(&manager, SIGNAL(InterfacesAdded(QDBusObjectPath,NMVariantMapMap)),
-                this, SLOT(onInterfacesAdded(QDBusObjectPath,NMVariantMapMap)));
-        connect(&manager, SIGNAL(InterfacesRemoved(QDBusObjectPath,QStringList)),
-                this, SLOT(onInterfacesRemoved(QDBusObjectPath,QStringList)));
+        connect(&manager, &OrgFreedesktopDBusObjectManagerInterface::InterfacesAdded, this, &ModemManagerPrivate::onInterfacesAdded);
+        connect(&manager, &OrgFreedesktopDBusObjectManagerInterface::InterfacesRemoved, this, &ModemManagerPrivate::onInterfacesRemoved);
     }
 
-    connect(&watcher, SIGNAL(serviceRegistered(QString)), SLOT(daemonRegistered()));
-    connect(&watcher, SIGNAL(serviceUnregistered(QString)), SLOT(daemonUnregistered()));
+    connect(&watcher, &QDBusServiceWatcher::serviceRegistered, this, &ModemManagerPrivate::daemonRegistered);
+    connect(&watcher, &QDBusServiceWatcher::serviceUnregistered, this, &ModemManagerPrivate::daemonUnregistered);
 
     init();
 }
