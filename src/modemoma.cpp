@@ -32,7 +32,6 @@ ModemOmaPrivate::ModemOmaPrivate(const QString &path)
 ModemManager::ModemOma::ModemOma(const QString &path, QObject *parent)
     : Interface(*new ModemOmaPrivate(path), parent)
 {
-    Q_D(ModemOma);
 }
 
 ModemManager::ModemOma::~ModemOma()
@@ -48,8 +47,6 @@ ModemManager::ModemOma::Features ModemManager::ModemOma::features() const
 
 OmaSessionTypes ModemManager::ModemOma::pendingNetworkInitiatedSessions() const
 {
-    Q_D(const ModemOma);
-
     OmaSessionTypes result;
     return result;  // TODO
 }
