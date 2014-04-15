@@ -30,7 +30,6 @@ ModemFirmwarePrivate::ModemFirmwarePrivate(const QString &path)
 ModemManager::ModemFirmware::ModemFirmware(const QString &path, QObject *parent)
     : Interface(*new ModemFirmwarePrivate(path), parent)
 {
-    Q_D(ModemFirmware);
 }
 
 ModemManager::ModemFirmware::~ModemFirmware()

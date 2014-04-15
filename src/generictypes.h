@@ -28,6 +28,11 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMetaType>
 #include <QtDBus/QtDBus>
 
+#if !MM_CHECK_VERSION(1, 2, 0)
+typedef uint MMSmsCdmaTeleserviceId;
+typedef uint MMSmsCdmaServiceCategory;
+#endif
+
 typedef QMap<QString, QVariantMap> NMVariantMapMap;
 typedef QMap<QDBusObjectPath, NMVariantMapMap> DBUSManagerStruct;
 typedef QList<uint> UIntList;

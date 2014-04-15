@@ -32,7 +32,6 @@ ModemOmaPrivate::ModemOmaPrivate(const QString &path)
 ModemManager::ModemOma::ModemOma(const QString &path, QObject *parent)
     : Interface(*new ModemOmaPrivate(path), parent)
 {
-    Q_D(ModemOma);
 }
 
 ModemManager::ModemOma::~ModemOma()

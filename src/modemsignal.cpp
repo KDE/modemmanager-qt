@@ -30,7 +30,6 @@ ModemSignalPrivate::ModemSignalPrivate(const QString &path)
 ModemManager::ModemSignal::ModemSignal(const QString &path, QObject *parent)
     : Interface(*new ModemSignalPrivate(path), parent)
 {
-    Q_D(ModemSignal);
 }
 
 ModemManager::ModemSignal::~ModemSignal()
