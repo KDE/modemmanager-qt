@@ -47,8 +47,6 @@ ModemManager::ModemOma::Features ModemManager::ModemOma::features() const
 
 OmaSessionTypes ModemManager::ModemOma::pendingNetworkInitiatedSessions() const
 {
-    Q_D(const ModemOma);
-
     OmaSessionTypes result;
     return result;  // TODO
 }
