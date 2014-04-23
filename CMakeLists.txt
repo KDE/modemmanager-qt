@@ -12,7 +12,7 @@ include(KDEFrameworkCompilerSettings)
 include(KDECMakeSettings)
 
 set(REQUIRED_QT_VERSION 5.2.0)
-find_package(Qt5 ${REQUIRED_QT_VERSION} REQUIRED Core DBus Network Xml Test)
+find_package(Qt5 ${REQUIRED_QT_VERSION} REQUIRED Core DBus Xml)
 
 pkg_check_modules(MODEMMANAGER REQUIRED ModemManager>=1.0)
 

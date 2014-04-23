@@ -49,7 +49,7 @@ add_library(KF5::ModemManagerQt ALIAS KF5ModemManagerQt)
 
 target_include_directories(KF5ModemManagerQt INTERFACE "$<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}/ModemManagerQt>")
 
-target_link_libraries(KF5ModemManagerQt PUBLIC Qt5::Core Qt5::Network Qt5::DBus Qt5::Xml)
+target_link_libraries(KF5ModemManagerQt PUBLIC Qt5::Core Qt5::DBus Qt5::Xml)
 
 set_target_properties(KF5ModemManagerQt PROPERTIES VERSION ${MODEMMANAGERQT_VERSION_STRING}
                                                    SOVERSION ${MODEMMANAGERQT_SOVERSION}
