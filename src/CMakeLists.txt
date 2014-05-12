@@ -47,7 +47,7 @@ add_library(KF5ModemManagerQt SHARED ${ModemManagerQt_SRCS} ${DBUS_INTERFACES_FI
 generate_export_header(KF5ModemManagerQt BASE_NAME ModemManagerQt)
 add_library(KF5::ModemManagerQt ALIAS KF5ModemManagerQt)
 
-target_include_directories(KF5ModemManagerQt INTERFACE "$<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}/ModemManagerQt>")
+target_include_directories(KF5ModemManagerQt INTERFACE "$<INSTALL_INTERFACE:${KF5_INCLUDE_INSTALL_DIR}/ModemManagerQt>")
 
 target_link_libraries(KF5ModemManagerQt PUBLIC Qt5::Core Qt5::DBus Qt5::Xml)
 
@@ -79,12 +79,12 @@ ecm_generate_headers(ModemManagerQt_HEADERS
   REQUIRED_HEADERS ModemManagerQt_HEADERS
 )
 
-install(TARGETS KF5ModemManagerQt EXPORT KF5ModemManagerQtTargets ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS KF5ModemManagerQt EXPORT KF5ModemManagerQtTargets ${KF5_INSTALL_TARGETS_DEFAULT_ARGS})
 
 install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/modemmanagerqt_export.h
   ${ModemManagerQt_HEADERS}
-  DESTINATION ${INCLUDE_INSTALL_DIR}/ModemManagerQt COMPONENT Devel
+  DESTINATION ${KF5_INCLUDE_INSTALL_DIR}/ModemManagerQt COMPONENT Devel
 )
 
 include(ECMGeneratePriFile)
