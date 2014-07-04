@@ -138,7 +138,7 @@ public:
     * This method returns the storage area/location of the SMS
     */
     MMSmsStorage storage() const;
-
+#if MM_CHECK_VERSION(1, 2, 0)
     /**
      * @return service category for CDMA SMS, as defined in 3GPP2 C.R1001-D (section 9.3).
      * @since 1.1.91
@@ -151,7 +151,7 @@ public:
      * @since 1.1.91
      */
     MMSmsCdmaTeleserviceId teleserviceId() const;
-
+#endif
 Q_SIGNALS:
     /**
     * This signal is emitted when the state of the SMS has changed

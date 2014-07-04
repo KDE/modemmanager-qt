@@ -17,9 +17,7 @@ set(ModemManagerQt_SRCS
     modemfirmware.cpp
     modemlocation.cpp
     modemmessaging.cpp
-    modemsignal.cpp
     modemtime.cpp
-    modemoma.cpp
     sim.cpp
     sms.cpp
 )
@@ -34,14 +32,26 @@ set(DBUS_INTERFACES_FILES
    dbus/modemcdmainterface.cpp
    dbus/modeminterface.cpp
    dbus/modemmanager1interface.cpp
-   dbus/omainterface.cpp
-   dbus/signalinterface.cpp
    dbus/siminterface.cpp
    dbus/simpleinterface.cpp
    dbus/smsinterface.cpp
    dbus/timeinterface.cpp
    dbus/ussdinterface.cpp
 )
+
+if (${MODEMMANAGER_VERSION} VERSION_EQUAL 1.2.0 OR ${MODEMMANAGER_VERSION} VERSION_GREATER 1.2.0)
+    set(ModemManagerQt_SRCS
+        ${ModemManagerQt_SRCS}
+        modemoma.cpp
+        modemsignal.cpp
+        )
+
+    set(DBUS_INTERFACES_FILES
+        ${DBUS_INTERFACES_FILES}
+        dbus/omainterface.cpp
+        dbus/signalinterface.cpp
+        )
+endif()
 
 add_library(KF5ModemManagerQt SHARED ${ModemManagerQt_SRCS} ${DBUS_INTERFACES_FILES})
 generate_export_header(KF5ModemManagerQt BASE_NAME ModemManagerQt)

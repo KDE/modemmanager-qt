@@ -28,7 +28,7 @@ License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 #include <QMetaType>
 #include <QtDBus/QtDBus>
 
-#if !MM_CHECK_VERSION(1, 2, 0)
+#if MM_CHECK_VERSION(1, 2, 0)
 typedef uint MMSmsCdmaTeleserviceId;
 typedef uint MMSmsCdmaServiceCategory;
 #endif
@@ -55,12 +55,14 @@ public:
 } CurrentModesType;
 
 typedef QList<CurrentModesType> SupportedModesType;
+#if MM_CHECK_VERSION(1, 2, 0)
 typedef struct {
 public:
     MMOmaSessionType type;
     uint id;
 } OmaSessionType;
 typedef QList<OmaSessionType> OmaSessionTypes;
+#endif
 typedef QMap</*MMModemLock*/uint, uint> UnlockRetriesMap;
 typedef QList<QVariantMap> QVariantMapList;
 typedef QMap<MMModemLocationSource, QVariant> LocationInformationMap;
@@ -85,9 +87,11 @@ MODEMMANAGERQT_EXPORT const QDBusArgument &operator >> (const QDBusArgument &arg
 MODEMMANAGERQT_EXPORT QDBusArgument &operator << (QDBusArgument &arg, const ValidityPair &vp);
 MODEMMANAGERQT_EXPORT const QDBusArgument &operator >> (const QDBusArgument &arg, ValidityPair &vp);
 
+#if MM_CHECK_VERSION(1, 2, 0)
 // OmaSessionType
 MODEMMANAGERQT_EXPORT QDBusArgument &operator << (QDBusArgument &arg, const OmaSessionType &sessionType);
 MODEMMANAGERQT_EXPORT const QDBusArgument &operator >> (const QDBusArgument &arg, OmaSessionType &sessionType);
+#endif
 
 // QVariantMapList
 MODEMMANAGERQT_EXPORT QDBusArgument &operator<<(QDBusArgument &argument, const QVariantMapList &variantMapList);

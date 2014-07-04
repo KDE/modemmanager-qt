@@ -31,10 +31,12 @@
 #include "modem3gpp.h"
 #include "modem3gppussd.h"
 #include "modemlocation.h"
+#if MM_CHECK_VERSION(1, 2, 0)
 #include "modemoma.h"
+#include "modemsignal.h"
+#endif
 #include "modemtime.h"
 #include "modemfirmware.h"
-#include "modemsignal.h"
 
 #include <QDomDocument>
 
@@ -108,12 +110,16 @@ void ModemDevicePrivate::initInterfaces()
                 interfaceList.insert(ModemManager::ModemDevice::LocationInterface, ModemManager::ModemLocation::Ptr());
             } else if (name == QLatin1String(MM_DBUS_INTERFACE_MODEM_TIME)) {
                 interfaceList.insert(ModemManager::ModemDevice::TimeInterface, ModemManager::ModemTime::Ptr());
-            } else if (name == QLatin1String(MM_DBUS_INTERFACE_MODEM_OMA)) {
+            }
+#if MM_CHECK_VERSION(1, 2, 0)
+              else if (name == QLatin1String(MM_DBUS_INTERFACE_MODEM_OMA)) {
                 interfaceList.insert(ModemManager::ModemDevice::OmaInterface, ModemManager::ModemOma::Ptr());
-            } else if (name == QLatin1String(MM_DBUS_INTERFACE_MODEM_FIRMWARE)) {
-                interfaceList.insert(ModemManager::ModemDevice::FirmwareInterface, ModemManager::ModemFirmware::Ptr());
             } else if (name == QLatin1String(MM_DBUS_INTERFACE_MODEM_SIGNAL)) {
                 interfaceList.insert(ModemManager::ModemDevice::SignalInterface, ModemManager::ModemSignal::Ptr());
+            }
+#endif
+            else if (name == QLatin1String(MM_DBUS_INTERFACE_MODEM_FIRMWARE)) {
+                interfaceList.insert(ModemManager::ModemDevice::FirmwareInterface, ModemManager::ModemFirmware::Ptr());
             }
         }
     }
@@ -208,14 +214,16 @@ ModemManager::Interface::Ptr ModemDevicePrivate::createInterface(ModemManager::M
         case ModemManager::ModemDevice::TimeInterface:
             createdInterface = ModemManager::Interface::Ptr(new ModemManager::ModemTime(uni), &QObject::deleteLater);
             break;
+#if MM_CHECK_VERSION(1, 2, 0)
         case ModemManager::ModemDevice::OmaInterface:
             createdInterface = ModemManager::Interface::Ptr(new ModemManager::ModemOma(uni), &QObject::deleteLater);
             break;
-        case ModemManager::ModemDevice::FirmwareInterface:
-            createdInterface = ModemManager::Interface::Ptr(new ModemManager::ModemFirmware(uni), &QObject::deleteLater);
-            break;
         case ModemManager::ModemDevice::SignalInterface:
             createdInterface = ModemManager::Interface::Ptr(new ModemManager::ModemSignal(uni), &QObject::deleteLater);
+            break;
+#endif
+        case ModemManager::ModemDevice::FirmwareInterface:
+            createdInterface = ModemManager::Interface::Ptr(new ModemManager::ModemFirmware(uni), &QObject::deleteLater);
             break;
     }
     return createdInterface;
@@ -350,12 +358,16 @@ void ModemManager::ModemDevice::onInterfacesAdded(const QDBusObjectPath &object_
                 d->interfaceList.insert(ModemManager::ModemDevice::LocationInterface, ModemManager::ModemLocation::Ptr());
             } else if (iface == QLatin1String(MM_DBUS_INTERFACE_MODEM_TIME)) {
                 d->interfaceList.insert(ModemManager::ModemDevice::TimeInterface, ModemManager::ModemTime::Ptr());
-            } else if (iface == QLatin1String(MM_DBUS_INTERFACE_MODEM_OMA)) {
+            }
+#if MM_CHECK_VERSION(1, 2, 0)
+              else if (iface == QLatin1String(MM_DBUS_INTERFACE_MODEM_OMA)) {
                 d->interfaceList.insert(ModemManager::ModemDevice::OmaInterface, ModemManager::ModemOma::Ptr());
-            } else if (iface == QLatin1String(MM_DBUS_INTERFACE_MODEM_FIRMWARE)) {
-                d->interfaceList.insert(ModemManager::ModemDevice::FirmwareInterface, ModemManager::ModemFirmware::Ptr());
             } else if (iface == QLatin1String(MM_DBUS_INTERFACE_MODEM_SIGNAL)) {
                 d->interfaceList.insert(ModemManager::ModemDevice::SignalInterface, ModemManager::ModemSignal::Ptr());
+            }
+#endif
+            else if (iface == QLatin1String(MM_DBUS_INTERFACE_MODEM_FIRMWARE)) {
+                d->interfaceList.insert(ModemManager::ModemDevice::FirmwareInterface, ModemManager::ModemFirmware::Ptr());
             }
         }
     }
@@ -390,12 +402,16 @@ void ModemManager::ModemDevice::onInterfacesRemoved(const QDBusObjectPath &objec
             d->interfaceList.remove(ModemManager::ModemDevice::LocationInterface);
         } else if (iface == QLatin1String(MM_DBUS_INTERFACE_MODEM_TIME)) {
             d->interfaceList.remove(ModemManager::ModemDevice::TimeInterface);
-        } else if (iface == QLatin1String(MM_DBUS_INTERFACE_MODEM_OMA)) {
+        }
+#if MM_CHECK_VERSION(1, 2, 0)
+          else if (iface == QLatin1String(MM_DBUS_INTERFACE_MODEM_OMA)) {
             d->interfaceList.remove(ModemManager::ModemDevice::OmaInterface);
-        } else if (iface == QLatin1String(MM_DBUS_INTERFACE_MODEM_FIRMWARE)) {
-            d->interfaceList.remove(ModemManager::ModemDevice::FirmwareInterface);
         } else if (iface == QLatin1String(MM_DBUS_INTERFACE_MODEM_SIGNAL)) {
             d->interfaceList.remove(ModemManager::ModemDevice::SignalInterface);
+        }
+#endif
+          else if (iface == QLatin1String(MM_DBUS_INTERFACE_MODEM_FIRMWARE)) {
+            d->interfaceList.remove(ModemManager::ModemDevice::FirmwareInterface);
         }
     }
 }

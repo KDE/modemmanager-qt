@@ -115,7 +115,7 @@ QStringList ModemManager::Modem::listBearers()
     Q_D(const Modem);
     QStringList result;
 
-#if MM_CHECK_VERSION(1,1,900)
+#if MM_CHECK_VERSION(1, 2, 0)
     QList<QDBusObjectPath> bearers = d->modemIface.bearers();
 #else
     QList<QDBusObjectPath> bearers = const_cast<ModemPrivate *>(d)->modemIface.ListBearers();

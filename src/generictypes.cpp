@@ -65,6 +65,7 @@ const QDBusArgument &operator >> (const QDBusArgument &arg, CurrentModesType &mo
     return arg;
 }
 
+#if MM_CHECK_VERSION(1, 2, 0)
 // Marshall the OmaSessionType data into a D-BUS argument
 QDBusArgument &operator << (QDBusArgument &arg, const OmaSessionType &sessionType)
 {
@@ -86,6 +87,7 @@ const QDBusArgument &operator >> (const QDBusArgument &arg, OmaSessionType &sess
 
     return arg;
 }
+#endif
 
 // Marshall the SignalQualityPair data into a D-BUS argument
 QDBusArgument &operator << (QDBusArgument &arg, const SignalQualityPair &sqp)
@@ -160,8 +162,10 @@ void registerModemManagerTypes()
     qDBusRegisterMetaType<SupportedModesType>();
     qDBusRegisterMetaType<UnlockRetriesMap>();
     qDBusRegisterMetaType<QVariantMapList>();
+#if MM_CHECK_VERSION(1, 2, 0)
     qDBusRegisterMetaType<OmaSessionType>();
     qDBusRegisterMetaType<OmaSessionTypes>();
+#endif
     //qDBusRegisterMetaType<LocationInformationMap>();
     qDBusRegisterMetaType<ValidityPair>();
     qDBusRegisterMetaType<PortList>();

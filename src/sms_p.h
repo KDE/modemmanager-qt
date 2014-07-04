@@ -48,8 +48,11 @@ public:
     QDateTime dischargeTimestamp;
     MMSmsDeliveryState deliveryState;
     MMSmsStorage storage;
+#if MM_CHECK_VERSION(1, 2, 0)
     MMSmsCdmaServiceCategory serviceCategory;
     MMSmsCdmaTeleserviceId teleserviceId;
+#endif
+
 };
 
 #endif
