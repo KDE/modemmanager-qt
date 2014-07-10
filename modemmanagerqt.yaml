@@ -1,1 +1,10 @@
+maintainer: Lamarque Souza, Jan Grulich, Lukáš Tinkl
+description: Qt wrapper for ModemManager API
 tier: 1
+type: integration
+platforms:
+    - name: Linux
+    - note: Functional only with running ModemManager
+portingAid: false
+deprecated: false
+release: false
