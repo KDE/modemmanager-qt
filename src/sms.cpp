@@ -53,7 +53,7 @@ ModemManager::Sms::Sms(const QString &path, QObject *parent)
     d->dischargeTimestamp = QDateTime::fromString(d->smsIface.dischargeTimestamp(), Qt::ISODate);
     d->deliveryState = (MMSmsDeliveryState) d->smsIface.deliveryState();
     d->storage = (MMSmsStorage) d->smsIface.storage();
-#if MM_CHECK_VERSION(1,1,900)
+#if MM_CHECK_VERSION(1, 2, 0)
     d->serviceCategory = (MMSmsCdmaServiceCategory) d->smsIface.serviceCategory();
     d->teleserviceId = (MMSmsCdmaTeleserviceId) d->smsIface.teleserviceId();
 #endif
