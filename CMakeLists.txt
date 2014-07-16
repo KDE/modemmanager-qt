@@ -4,21 +4,16 @@ project(ModemManagerQt)
 
 find_package(ECM 1.0.0 REQUIRED NO_MODULE)
 
-set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
-include(FindPkgConfig)
+find_package(ModemManager 1.0 REQUIRED)
+
 include(KDEInstallDirs)
 include(KDEFrameworkCompilerSettings)
 include(KDECMakeSettings)
 
 set(REQUIRED_QT_VERSION 5.2.0)
-find_package(Qt5 ${REQUIRED_QT_VERSION} REQUIRED Core DBus Xml)
-
-pkg_check_modules(MODEMMANAGER REQUIRED ModemManager>=1.0)
-
-if (MODEMMANAGER_FOUND AND "${MODEMMANAGER_VERSION}" VERSION_LESS 1.1)
-   message(STATUS "This is a development version of this library and some functionality require a newer version of ModemManager")
-endif()
+find_package(Qt5 ${REQUIRED_QT_VERSION} REQUIRED Core DBus Network Xml)
 
 add_definitions(${QT_DEFINITIONS})
 
