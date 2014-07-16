@@ -1,22 +1,26 @@
 project(exampleModemManagerQt)
-cmake_minimum_required(VERSION 2.6)
+
+cmake_minimum_required(VERSION 2.8.12)
 
 include(FindPkgConfig)
-find_package(Qt4 REQUIRED)
+pkg_check_modules(MODEMMANAGER REQUIRED ModemManager>=1.0)
 
-pkg_check_modules(MODEMMANAGERQT REQUIRED ModemManagerQt)
-if (NOT MODEMMANAGERQT_FOUND)
-    message(FATAL_ERROR "ERROR: ModemManagerQt not found. http://projects.kde.org/search?q=networkmanager&scope=all&all_words=1&projects=1&submit=Submit")
-endif (NOT MODEMMANAGERQT_FOUND)
+find_package(KF5ModemManagerQt ${KF5_VERSION} REQUIRED)
 
-pkg_check_modules(MODEMMANAGER REQUIRED ModemManager)
+find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
+    Core
+    DBus
+    Xml
+)
 
-include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_BINARY_DIR} ${QTNETWORK_INCLUDE_DIRS} ${MODEMMANAGERQT_INCLUDE_DIRS} ${MODEMMANAGER_INCLUDE_DIRS} ${QT_INCLUDES})
-link_directories(${QTNETWORK_LIBRARY_DIRS} ${MODEMMANAGERQT_LIBRARY_DIRS} ${QT_QTDBUS_LIBRARY_DIRS})
+include_directories(${MODEMMANAGER_INCLUDE_DIRS})
 
 set(exampleModemManagerQt_SRCS
    main.cpp
 )
 
 add_executable(exampleModemManagerQt ${exampleModemManagerQt_SRCS})
-target_link_libraries(exampleModemManagerQt ModemManagerQt QtCore)
+target_link_libraries(exampleModemManagerQt
+    KF5::ModemManagerQt
+    Qt5::Core
+)

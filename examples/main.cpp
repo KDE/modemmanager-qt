@@ -30,6 +30,8 @@
 
 int main(int argc, char *argv[])
 {
+    Q_UNUSED(argc);
+    Q_UNUSED(argv);
     qDebug() << "List of Modem Devices:";
     foreach (ModemManager::ModemDevice::Ptr modemdevice, ModemManager::modemDevices()) {
         ModemManager::Modem::Ptr modemInterface = modemdevice->modemInterface();

@@ -36,13 +36,13 @@ ecm_setup_version(${KF5_VERSION} VARIABLE_PREFIX MODEMMANAGERQT
                         PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF5ModemManagerQtConfigVersion.cmake"
                         SOVERSION 5)
 
-add_subdirectory(src)
-
 ##################  examples  ################################
-# option(BUILD_EXAMPLES "Build example applications" FALSE)
-# if (BUILD_EXAMPLES)
-#     add_subdirectory(examples)
-# endif(BUILD_EXAMPLES)
+option(BUILD_EXAMPLES "Build example applications" FALSE)
+if (BUILD_EXAMPLES)
+    add_subdirectory(examples)
+endif(BUILD_EXAMPLES)
+
+add_subdirectory(src)
 
 # create a Config.cmake and a ConfigVersion.cmake file and install them
 set(CMAKECONFIG_INSTALL_DIR "${CMAKECONFIG_INSTALL_PREFIX}/KF5ModemManagerQt")
