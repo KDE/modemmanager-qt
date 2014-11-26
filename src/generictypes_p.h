@@ -41,7 +41,6 @@ Q_DECLARE_METATYPE(SupportedModesType)
 Q_DECLARE_METATYPE(OmaSessionType)
 Q_DECLARE_METATYPE(OmaSessionTypes)
 #endif
-//Q_DECLARE_METATYPE(MMModemLock)
 Q_DECLARE_METATYPE(UnlockRetriesMap)
 Q_DECLARE_METATYPE(QVariantMapList)
 Q_DECLARE_METATYPE(LocationInformationMap)
