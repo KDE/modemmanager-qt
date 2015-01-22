@@ -4,7 +4,8 @@ tier: 1
 type: integration
 platforms:
     - name: Linux
-    - note: Functional only with running ModemManager
+      note: Functional only with running ModemManager
 portingAid: false
 deprecated: false
 release: false
+cmakename: KF5ModemManagerQt
