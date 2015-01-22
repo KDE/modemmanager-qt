@@ -48,7 +48,7 @@ ModemManager::ModemLocation::~ModemLocation()
 void ModemManager::ModemLocation::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
 {
     Q_UNUSED(invalidatedProps);
-    mmDebug() << interface << properties.keys();
+    qCDebug(MMQT) << interface << properties.keys();
 
     if (interface == QString(MM_DBUS_INTERFACE_MODEM_LOCATION)) {
         QLatin1String capabilities(MM_MODEM_LOCATION_PROPERTY_CAPABILITIES);
@@ -75,7 +75,7 @@ void ModemManager::ModemLocation::onPropertiesChanged(const QString &interface, 
             if (v.canConvert<LocationInformationMap>()) {
                 map = v.value<LocationInformationMap>();
             } else {
-                mmDebug() << "Error converting LocationInformationMap property";
+                qCDebug(MMQT) << "Error converting LocationInformationMap property";
             }
             emit locationChanged(map);
         }

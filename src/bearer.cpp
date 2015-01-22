@@ -24,6 +24,8 @@
 #include "mmdebug.h"
 #include "dbus/dbus.h"
 
+Q_LOGGING_CATEGORY(MMQT, "modemmanager-qt")
+
 BearerPrivate::BearerPrivate(const QString &path)
     : bearerIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
     , uni(path)
@@ -126,7 +128,7 @@ void ModemManager::Bearer::disconnectBearer()
 void ModemManager::Bearer::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
 {
     Q_UNUSED(invalidatedProps);
-    mmDebug() << interface << properties.keys();
+    qCDebug(MMQT) << interface << properties.keys();
 
     if (interface == QString(MM_DBUS_INTERFACE_BEARER)) {
         QLatin1String interface(MM_BEARER_PROPERTY_INTERFACE);

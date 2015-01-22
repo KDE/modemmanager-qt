@@ -72,7 +72,7 @@ void ModemDevicePrivate::initInterfaces()
 
     const QString xmlData = introspect();
     if (xmlData.isEmpty()) {
-        mmDebug() << uni << "has no interfaces!";
+        qCDebug(MMQT) << uni << "has no interfaces!";
         return;
     }
 
@@ -124,7 +124,7 @@ void ModemDevicePrivate::initInterfaces()
         }
     }
 
-    mmDebug() << uni << "has interfaces:" << interfaceList.keys();
+    qCDebug(MMQT) << uni << "has interfaces:" << interfaceList.keys();
 }
 
 QString ModemDevicePrivate::introspect() const
@@ -251,7 +251,7 @@ ModemManager::Bearer::List ModemDevicePrivate::bearers()
         if (modemBearer) {
             result.append(modemBearer);
         } else {
-            mmDebug() << "warning: null bearer interface for" << path;
+            qCDebug(MMQT) << "warning: null bearer interface for" << path;
         }
     }
 

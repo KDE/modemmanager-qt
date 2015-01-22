@@ -48,7 +48,7 @@ ModemManager::Modem3gppUssd::~Modem3gppUssd()
 void ModemManager::Modem3gppUssd::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
 {
     Q_UNUSED(invalidatedProps);
-    mmDebug() << interface << properties.keys();
+    qCDebug(MMQT) << interface << properties.keys();
 
     if (interface == QString(MM_DBUS_INTERFACE_MODEM_MODEM3GPP_USSD)) {
         QLatin1String state(MM_MODEM_MODEM3GPP_USSD_PROPERTY_STATE);

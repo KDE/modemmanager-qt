@@ -362,7 +362,7 @@ void ModemManager::Modem::onPropertiesChanged(const QString &ifaceName, const QV
 {
     Q_UNUSED(invalidatedProps);
     Q_D(Modem);
-    mmDebug() << ifaceName << changedProps.keys();
+    qCDebug(MMQT) << ifaceName << changedProps.keys();
 
     if (ifaceName == QString(MM_DBUS_INTERFACE_MODEM)) {
         QLatin1String device(MM_MODEM_PROPERTY_DEVICE);

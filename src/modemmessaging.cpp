@@ -167,7 +167,7 @@ QString ModemManager::ModemMessaging::createMessage(const QVariantMap& message)
     Q_D(ModemMessaging);
 
     if (!message.contains("number") || (!message.contains("text") && !message.contains("data"))) {
-        mmDebug() << "Unable to create message, missing some property";
+        qCDebug(MMQT) << "Unable to create message, missing some property";
         return QString();
     }
 

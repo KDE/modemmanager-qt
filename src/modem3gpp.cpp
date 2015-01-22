@@ -90,7 +90,7 @@ QDBusPendingReply<QVariantMapList> ModemManager::Modem3gpp::scan()
 void ModemManager::Modem3gpp::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
 {
     Q_UNUSED(invalidatedProps);
-    mmDebug() << interface << properties.keys();
+    qCDebug(MMQT) << interface << properties.keys();
 
     if (interface == QString(MM_DBUS_INTERFACE_MODEM_MODEM3GPP)) {
         QVariantMap::const_iterator it = properties.constFind(MM_MODEM_MODEM3GPP_PROPERTY_REGISTRATIONSTATE);

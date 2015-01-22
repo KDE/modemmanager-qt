@@ -36,6 +36,9 @@ ModemManager::ModemManagerPrivate::ModemManagerPrivate()
     , iface(MM_DBUS_SERVICE, MM_DBUS_PATH, QDBusConnection::systemBus(), this)
     , manager(MM_DBUS_SERVICE, MM_DBUS_PATH, QDBusConnection::systemBus(), this)
 {
+    QLoggingCategory::setFilterRules(QStringLiteral("modemmaanger-qt.debug = true"));
+    QLoggingCategory::setFilterRules(QStringLiteral("modemmanager-qt.warning = true"));
+
     qDBusRegisterMetaType<QList<QDBusObjectPath> >();
     qDBusRegisterMetaType<NMVariantMapMap>();
     qDBusRegisterMetaType<DBUSManagerStruct>();
@@ -81,7 +84,7 @@ void ModemManager::ModemManagerPrivate::init()
     if (!reply.isError()) {  // enum devices
         Q_FOREACH(const QDBusObjectPath &path, reply.value().keys()) {
             const QString uni = path.path();
-            mmDebug() << "Adding device" << uni;
+            qCDebug(MMQT) << "Adding device" << uni;
 
             if (uni == MM_DBUS_PATH || !uni.startsWith(MM_DBUS_MODEM_PREFIX))
                 continue;
@@ -153,7 +156,7 @@ void ModemManager::ModemManagerPrivate::onInterfacesAdded(const QDBusObjectPath 
         return;
     }
 
-    mmDebug() << uni << "has new interfaces:" << interfaces_and_properties.keys();
+    qCDebug(MMQT) << uni << "has new interfaces:" << interfaces_and_properties.keys();
 
     // new device, we don't know it yet
     if (!modemList.contains(uni)) {
@@ -178,7 +181,7 @@ void ModemManager::ModemManagerPrivate::onInterfacesRemoved(const QDBusObjectPat
         return;
     }
 
-    mmDebug() << uni << "lost interfaces:" << interfaces;
+    qCDebug(MMQT) << uni << "lost interfaces:" << interfaces;
 
     ModemDevice::Ptr modem = findModemDevice(uni);
 

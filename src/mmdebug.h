@@ -18,13 +18,11 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGERQT_MMDEBUG_H
+#ifndef MODEMMANAGERQT_MMEBUG_H
 #define MODEMMANAGERQT_MMDEBUG_H
 
-#include <QCoreApplication>
-#include <QDebug>
+#include <QLoggingCategory>
 
-#define mmDebug() \
-	qDebug() << "ModemManagerQt" << QCoreApplication::applicationName() << '(' << QCoreApplication::applicationPid() << ')' << __PRETTY_FUNCTION__ << ':'
+Q_DECLARE_LOGGING_CATEGORY(MMQT)
 
 #endif
