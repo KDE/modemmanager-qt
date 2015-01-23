@@ -1,6 +1,6 @@
 /*
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -19,24 +19,34 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "bearer.h"
 #include "bearer_p.h"
 #include "mmdebug.h"
 #include "dbus/dbus.h"
 
 Q_LOGGING_CATEGORY(MMQT, "modemmanager-qt")
 
-BearerPrivate::BearerPrivate(const QString &path)
+ModemManager::BearerPrivate::BearerPrivate(const QString &path, Bearer *q)
     : bearerIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
     , uni(path)
+    , q_ptr(q)
 {
+    if (bearerIface.isValid()) {
+        bearerInterface = bearerIface.interface();
+        isConnected = bearerIface.connected();
+        isSuspended = bearerIface.suspended();
+        ipv4Config = ipConfigFromMap(bearerIface.ip4Config());
+        ipv6Config = ipConfigFromMap(bearerIface.ip6Config());
+        ipTimeout = bearerIface.ipTimeout();
+        bearerProperties = bearerIface.properties();
+    }
 }
 
 ModemManager::Bearer::Bearer(const QString &path, QObject *parent)
     : QObject(parent)
-    , d_ptr(new BearerPrivate(path))
+    , d_ptr(new BearerPrivate(path, this))
 {
-    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), this,
+    Q_D(Bearer);
+    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 }
 
@@ -48,45 +58,60 @@ ModemManager::Bearer::~Bearer()
 QString ModemManager::Bearer::interface() const
 {
     Q_D(const Bearer);
-    return d->bearerIface.interface();
+    return d->bearerInterface;
 }
 
 bool ModemManager::Bearer::isConnected() const
 {
     Q_D(const Bearer);
-    return d->bearerIface.connected();
+    return d->isConnected;
 }
 
 bool ModemManager::Bearer::isSuspended() const
 {
     Q_D(const Bearer);
-    return d->bearerIface.suspended();
+    return d->isSuspended;
 }
 
 ModemManager::Bearer::IpConfig ModemManager::Bearer::ip4Config() const
 {
     Q_D(const Bearer);
-    IpConfig result;
-    const QVariantMap map = d->bearerIface.ip4Config();
-    result.method = (MMBearerIpMethod)map.value("method").toUInt();
-
-    if (result.method == MM_BEARER_IP_METHOD_STATIC) {
-        result.address = map.value("address").toString();
-        result.prefix = map.value("prefix").toUInt();
-        result.dns1 = map.value("dns1").toString();
-        result.dns2 = map.value("dns2").toString();
-        result.dns3 = map.value("dns3").toString();
-        result.gateway = map.value("gateway").toString();
-    }
-
-    return result;
+    return d->ipv4Config;
 }
 
 ModemManager::Bearer::IpConfig ModemManager::Bearer::ip6Config() const
 {
     Q_D(const Bearer);
-    IpConfig result;
-    const QVariantMap map = d->bearerIface.ip6Config();
+    return d->ipv6Config;
+}
+
+uint ModemManager::Bearer::ipTimeout() const
+{
+    Q_D(const Bearer);
+    return d->ipTimeout;
+}
+
+QVariantMap ModemManager::Bearer::properties() const
+{
+    Q_D(const Bearer);
+    return d->bearerProperties;
+}
+
+QDBusPendingReply<void> ModemManager::Bearer::connectBearer()
+{
+    Q_D(Bearer);
+    return d->bearerIface.Connect();
+}
+
+QDBusPendingReply<void> ModemManager::Bearer::disconnectBearer()
+{
+    Q_D(Bearer);
+    return d->bearerIface.Disconnect();
+}
+
+ModemManager::Bearer::IpConfig ModemManager::BearerPrivate::ipConfigFromMap(const QVariantMap &map)
+{
+    Bearer::IpConfig result;
     result.method = (MMBearerIpMethod)map.value("method").toUInt();
 
     if (result.method == MM_BEARER_IP_METHOD_STATIC) {
@@ -101,61 +126,47 @@ ModemManager::Bearer::IpConfig ModemManager::Bearer::ip6Config() const
     return result;
 }
 
-uint ModemManager::Bearer::ipTimeout() const
+void ModemManager::BearerPrivate::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
 {
-    Q_D(const Bearer);
-    return d->bearerIface.ipTimeout();
-}
-
-QVariantMap ModemManager::Bearer::properties() const
-{
-    Q_D(const Bearer);
-    return d->bearerIface.properties();
-}
-
-void ModemManager::Bearer::connectBearer()
-{
-    Q_D(Bearer);
-    d->bearerIface.Connect();
-}
-
-void ModemManager::Bearer::disconnectBearer()
-{
-    Q_D(Bearer);
-    d->bearerIface.Disconnect();
-}
-
-void ModemManager::Bearer::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
-{
+    Q_Q(Bearer);
     Q_UNUSED(invalidatedProps);
     qCDebug(MMQT) << interface << properties.keys();
 
     if (interface == QString(MM_DBUS_INTERFACE_BEARER)) {
-        QLatin1String interface(MM_BEARER_PROPERTY_INTERFACE);
-        QLatin1String connected(MM_BEARER_PROPERTY_CONNECTED);
-        QLatin1String suspended(MM_BEARER_PROPERTY_SUSPENDED);
-        QLatin1String ip4Config(MM_BEARER_PROPERTY_IP4CONFIG);
-        QLatin1String ip6Config(MM_BEARER_PROPERTY_IP6CONFIG);
-
-        QVariantMap::const_iterator it = properties.constFind(interface);
+        QVariantMap::const_iterator it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_INTERFACE));
         if (it != properties.constEnd()) {
-            emit interfaceChanged(it->toString());
+            bearerInterface = it->toString();
+            emit q->interfaceChanged(bearerInterface);
         }
-        it = properties.constFind(connected);
+        it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_CONNECTED));
         if (it != properties.constEnd()) {
-            emit connectedChanged(it->toBool());
+            isConnected = it->toBool();
+            emit q->connectedChanged(isConnected);
         }
-        it = properties.constFind(suspended);
+        it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_SUSPENDED));
         if (it != properties.constEnd()) {
-            emit suspendedChanged(it->toBool());
+            isSuspended = it->toBool();
+            emit q->suspendedChanged(isSuspended);
         }
-        it = properties.constFind(ip4Config);
+        it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_IP4CONFIG));
         if (it != properties.constEnd()) {
-            emit ip4ConfigChanged();
+            ipv4Config = ipConfigFromMap(it->toMap());
+            emit q->ip4ConfigChanged(ipv4Config);
         }
-        it = properties.constFind(ip6Config);
+        it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_IP6CONFIG));
         if (it != properties.constEnd()) {
-            emit ip6ConfigChanged();
+            ipv6Config = ipConfigFromMap(it->toMap());
+            emit q->ip6ConfigChanged(ipv6Config);
+        }
+        it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_IPTIMEOUT));
+        if (it != properties.constEnd()) {
+            ipTimeout = it->toUInt();
+            emit q->ipTimeoutChanged(ipTimeout);
+        }
+        it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_PROPERTIES));
+        if (it != properties.constEnd()) {
+            bearerProperties = it->toMap();
+            emit q->propertiesChanged(bearerProperties);
         }
     }
 }

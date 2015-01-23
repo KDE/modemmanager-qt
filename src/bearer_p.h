@@ -1,6 +1,6 @@
 /*
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -19,18 +19,40 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_BEARER_P_H
-#define MODEMMANAGER_BEARER_P_H
+#ifndef MODEMMANAGERQT_BEARER_P_H
+#define MODEMMANAGERQT_BEARER_P_H
 
+#include "bearer.h"
 #include "dbus/bearerinterface.h"
-#include "interface_p.h"
 
-class BearerPrivate
+namespace ModemManager
 {
+
+class BearerPrivate : public QObject
+{
+    Q_OBJECT
 public:
-    explicit BearerPrivate(const QString &path);
+    explicit BearerPrivate(const QString &path, Bearer *q);
+
     OrgFreedesktopModemManager1BearerInterface bearerIface;
     QString uni;
+    QString bearerInterface;
+    bool isConnected;
+    bool isSuspended;
+    mutable Bearer::IpConfig ipv4Config;
+    mutable Bearer::IpConfig ipv6Config;
+    uint ipTimeout;
+    QVariantMap bearerProperties;
+
+    Bearer::IpConfig ipConfigFromMap(const QVariantMap &map);
+
+    Q_DECLARE_PUBLIC(Bearer)
+    Bearer *q_ptr;
+private Q_SLOTS:
+   void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps);
+
 };
 
-#endif
+} // namespace ModemManager
+
+#endif // MODEMMANAGERQT_BEARER_P_H

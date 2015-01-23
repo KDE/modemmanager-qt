@@ -1,6 +1,6 @@
 /*
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -29,10 +29,11 @@
 
 #include "generictypes.h"
 
-class BearerPrivate;
-
 namespace ModemManager
 {
+
+class BearerPrivate;
+
 /**
  * @brief The Bearer class
  *
@@ -41,8 +42,6 @@ namespace ModemManager
 class MODEMMANAGERQT_EXPORT Bearer: public QObject
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(Bearer)
-
 public:
     typedef QSharedPointer<Bearer> Ptr;
     typedef QList<Ptr> List;
@@ -125,14 +124,14 @@ public:
      * valid and may contain IP configuration information for the data interface
      * associated with this bearer.
      */
-    void connectBearer();
+    QDBusPendingReply<void> connectBearer();
 
     /**
      * Disconnect and deactivate this packet data connection.
      *
      * Any ongoing data session will be terminated and IP addresses become invalid when this method is called.
      */
-    void disconnectBearer();
+    QDBusPendingReply<void> disconnectBearer();
 
     /**
      * @return the DBUS path (uni) to the object
@@ -143,13 +142,13 @@ Q_SIGNALS:
     void interfaceChanged(const QString &iface);
     void connectedChanged(bool connected);
     void suspendedChanged(bool suspended);
-    void ip4ConfigChanged();
-    void ip6ConfigChanged();
-
-private Q_SLOTS:
-   void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps);
+    void ip4ConfigChanged(IpConfig ipv4Config);
+    void ip6ConfigChanged(IpConfig ipv6Config);
+    void ipTimeoutChanged(uint ipTimeout);
+    void propertiesChanged(const QVariantMap &properties);
 
 private:
+    Q_DECLARE_PRIVATE(Bearer)
     BearerPrivate *const d_ptr;
 };
 
