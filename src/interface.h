@@ -1,5 +1,5 @@
 /*
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -30,17 +30,17 @@
 
 #include "generictypes.h"
 
-class InterfacePrivate;
-
 namespace ModemManager
 {
+
+class InterfacePrivate;
+
 class MODEMMANAGERQT_EXPORT Interface : public QObject
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(Interface)
 
     Q_PROPERTY(QString uni READ uni)
-
 public:
     typedef QSharedPointer<Interface> Ptr;
     typedef QList<Ptr> List;

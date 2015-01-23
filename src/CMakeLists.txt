@@ -8,18 +8,18 @@ set(ModemManagerQt_SRCS
     bearer.cpp
     generictypes.cpp
     interface.cpp
-    manager.cpp
+#     manager.cpp
     modem.cpp
-    modem3gpp.cpp
-    modem3gppussd.cpp
-    modemcdma.cpp
-    modemdevice.cpp
-    modemfirmware.cpp
-    modemlocation.cpp
-    modemmessaging.cpp
-    modemtime.cpp
-    sim.cpp
-    sms.cpp
+#     modem3gpp.cpp
+#     modem3gppussd.cpp
+#     modemcdma.cpp
+#     modemdevice.cpp
+#     modemfirmware.cpp
+#     modemlocation.cpp
+#     modemmessaging.cpp
+#     modemtime.cpp
+#     sim.cpp
+#     sms.cpp
 )
 
 set(DBUS_INTERFACES_FILES
@@ -42,8 +42,8 @@ set(DBUS_INTERFACES_FILES
 if (${MODEMMANAGER_VERSION} VERSION_EQUAL 1.2.0 OR ${MODEMMANAGER_VERSION} VERSION_GREATER 1.2.0)
     set(ModemManagerQt_SRCS
         ${ModemManagerQt_SRCS}
-        modemoma.cpp
-        modemsignal.cpp
+#         modemoma.cpp
+#         modemsignal.cpp
         )
 
     set(DBUS_INTERFACES_FILES
