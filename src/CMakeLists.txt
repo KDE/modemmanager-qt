@@ -11,7 +11,7 @@ set(ModemManagerQt_SRCS
 #     manager.cpp
     modem.cpp
     modemsimple.cpp
-#     modem3gpp.cpp
+    modem3gpp.cpp
 #     modem3gppussd.cpp
 #     modemcdma.cpp
 #     modemdevice.cpp

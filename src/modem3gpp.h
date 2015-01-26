@@ -2,7 +2,7 @@
     Copyright 2008,2011 Will Stephenson <wstephenson@kde.org>
     Copyright 2010 Lamarque Souza <lamarque@kde.org>
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -32,10 +32,11 @@
 #include "generictypes.h"
 #include "interface.h"
 
-class Modem3gppPrivate;
-
 namespace ModemManager
 {
+
+class Modem3gppPrivate;
+
 /**
  * @brief The Modem3gpp class
  *
@@ -50,6 +51,14 @@ class MODEMMANAGERQT_EXPORT Modem3gpp : public Interface
 public:
     typedef QSharedPointer<Modem3gpp> Ptr;
     typedef QList<Ptr> List;
+
+    struct MobileNetworkStruct {
+        MMModem3gppNetworkAvailability status; /// < Value representing network availability status.
+        QString operatorName; /// < Long-format name of operator. If the name is unknown, this field should not be present.
+        QString operatorNameShort; /// < Short-format name of operator. If the name is unknown, this field should not be present.
+        QString operatorCode; /// < Mobile code of the operator. Returned in the format "MCCMNC", where MCC is the three-digit ITU E.212 Mobile Country Code and MNC is the two- or three-digit GSM Mobile Network Code.
+        MMModemAccessTechnology accessTechnology; /// < Value representing the generic access technology used by this mobile network
+    };
 
     Q_DECLARE_FLAGS(FacilityLocks, MMModem3gppFacility)
 
@@ -92,6 +101,11 @@ public:
     FacilityLocks enabledFacilityLocks() const;
 
     /**
+     * @return Value representing the subscription status of the account and whether there is any data remaining.
+     */
+    MMModem3gppSubscriptionState subscriptionState() const;
+
+    /**
       * Register the device to network.
       *
       * @param networkId The operator ID (ie, "MCCMNC", like "310260") to register. An empty string can be used to register to the home network.
@@ -124,12 +138,18 @@ public:
      */
     QDBusPendingReply<QVariantMapList> scan();
 
-Q_SIGNALS:
-    void registrationStateChanged(MMModem3gppRegistrationState registrationState);
-    void enabledFacilityLocksChanged(FacilityLocks locks);
+    /**
+     * Transforms passed QVariantMap to MobileNetworkStruct
+     */
+    MobileNetworkStruct mapToMobileNetworkStruct(const QVariantMap &map);
 
-private Q_SLOTS:
-    void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps);
+Q_SIGNALS:
+    void imeiChanged(const QString &imei);
+    void registrationStateChanged(MMModem3gppRegistrationState registrationState);
+    void operatorCodeChanged(const QString &operatorCode);
+    void operatorNameChanged(const QString &operatorName);
+    void enabledFacilityLocksChanged(FacilityLocks locks);
+    void subscriptionStateChanged(MMModem3gppSubscriptionState subscriptionState);
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Modem3gpp::FacilityLocks)
