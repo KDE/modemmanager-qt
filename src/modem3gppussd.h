@@ -2,7 +2,7 @@
     Copyright 2008,2011 Will Stephenson <wstephenson@kde.org>
     Copyright 2010 Lamarque Souza <lamarque@kde.org>
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -32,10 +32,11 @@
 #include "generictypes.h"
 #include "interface.h"
 
-class Modem3gppUssdPrivate;
-
 namespace ModemManager
 {
+
+class Modem3gppUssdPrivate;
+
 /**
  * @brief The Modem3gppUssd class
  *
@@ -61,13 +62,13 @@ public:
      * response from the ME after returning from this method and no new command
      * can be initiated until this one is cancelled or ended.
      */
-    QString initiate(const QString &command);
+    QDBusPendingReply<QString> initiate(const QString &command);
 
     /**
      * Respond to a USSD request that is either initiated by the mobile network,
      * or that is awaiting further input after initiate() was called.
      */
-    QString respond(const QString &response);
+    QDBusPendingReply<QString> respond(const QString &response);
 
     /**
      * Cancel an ongoing USSD session, either mobile or network initiated.
@@ -99,9 +100,6 @@ Q_SIGNALS:
     void stateChanged(MMModem3gppUssdSessionState state);
     void networkNotificationChanged(const QString &networkNotification);
     void networkRequestChanged(const QString &networkRequest);
-
-private Q_SLOTS:
-    void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps);
 };
 
 } // namespace ModemManager

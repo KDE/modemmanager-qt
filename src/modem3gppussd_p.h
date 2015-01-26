@@ -1,7 +1,7 @@
 /*
     Copyright 2008 Will Stephenson <wstephenson@kde.org>
     Copyright 2010 Lamarque Souza <lamarque@kde.org>
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -25,12 +25,28 @@
 
 #include "dbus/ussdinterface.h"
 #include "interface_p.h"
+#include "modem3gppussd.h"
+
+namespace ModemManager
+{
 
 class Modem3gppUssdPrivate: public InterfacePrivate
 {
+    Q_OBJECT
 public:
-    explicit Modem3gppUssdPrivate(const QString &path);
+    explicit Modem3gppUssdPrivate(const QString &path, Modem3gppUssd *q);
     OrgFreedesktopModemManager1ModemModem3gppUssdInterface ussdIface;
+
+    MMModem3gppUssdSessionState state;
+    QString networkNotification;
+    QString networkRequest;
+
+    Q_DECLARE_PUBLIC(Modem3gppUssd)
+    Modem3gppUssd *q_ptr;
+private Q_SLOTS:
+    virtual void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) Q_DECL_OVERRIDE;
 };
+
+} // namespace ModemManager
 
 #endif
