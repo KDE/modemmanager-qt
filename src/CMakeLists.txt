@@ -10,6 +10,7 @@ set(ModemManagerQt_SRCS
     interface.cpp
 #     manager.cpp
     modem.cpp
+    modemsimple.cpp
 #     modem3gpp.cpp
 #     modem3gppussd.cpp
 #     modemcdma.cpp
@@ -81,6 +82,7 @@ ecm_generate_headers(ModemManagerQt_HEADERS
   ModemLocation
   ModemMessaging
   ModemSignal
+  ModemSimple
   ModemTime
   ModemOma
   Sim

@@ -24,7 +24,6 @@
 #define MODEMMANAGERQT_MODEM_P_H
 
 #include "dbus/modeminterface.h"
-#include "dbus/simpleinterface.h"
 
 #include "interface_p.h"
 #include "bearer.h"
