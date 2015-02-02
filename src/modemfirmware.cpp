@@ -21,14 +21,15 @@
 #include "modemfirmware.h"
 #include "modemfirmware_p.h"
 
-ModemFirmwarePrivate::ModemFirmwarePrivate(const QString &path)
-    : InterfacePrivate(path)
+ModemManager::ModemFirmwarePrivate::ModemFirmwarePrivate(const QString &path, ModemFirmware *q)
+    : InterfacePrivate(path, q)
     , modemFirmwareIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+    , q_ptr(q)
 {
 }
 
 ModemManager::ModemFirmware::ModemFirmware(const QString &path, QObject *parent)
-    : Interface(*new ModemFirmwarePrivate(path), parent)
+    : Interface(*new ModemFirmwarePrivate(path, this), parent)
 {
 }
 
