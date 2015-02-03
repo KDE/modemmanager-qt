@@ -23,14 +23,30 @@
 #ifndef MODEMMANAGERQT_MODEMLOCATION_P_H
 #define MODEMMANAGERQT_MODEMLOCATION_P_H
 
-#include "interface_p.h"
 #include "dbus/locationinterface.h"
+#include "interface_p.h"
+#include "modemlocation.h"
+
+namespace ModemManager
+{
 
 class ModemLocationPrivate: public InterfacePrivate
 {
 public:
-    explicit ModemLocationPrivate(const QString &path);
+    explicit ModemLocationPrivate(const QString &path, ModemLocation *q);
     OrgFreedesktopModemManager1ModemLocationInterface modemLocationIface;
+
+    QFlags<MMModemLocationSource> capabilities;
+    QFlags<MMModemLocationSource> enabledCapabilities;
+    bool signalsLocation;
+    LocationInformationMap location;
+
+    Q_DECLARE_PUBLIC(ModemLocation)
+    ModemLocation *q_ptr;
+private Q_SLOTS:
+   void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps);
 };
+
+} // namespace ModemManager
 
 #endif

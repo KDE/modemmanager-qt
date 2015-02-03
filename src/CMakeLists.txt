@@ -16,7 +16,7 @@ set(ModemManagerQt_SRCS
     modemcdma.cpp
 #     modemdevice.cpp
     modemfirmware.cpp
-#     modemlocation.cpp
+    modemlocation.cpp
 #     modemmessaging.cpp
 #     modemtime.cpp
 #     sim.cpp
