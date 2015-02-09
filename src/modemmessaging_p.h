@@ -1,7 +1,7 @@
 /*
     Copyright 2013 Anant Kamath <kamathanant@gmail.com>
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -23,14 +23,18 @@
 #ifndef MODEMMANAGER_MODEMMESSAGING_P_H
 #define MODEMMANAGER_MODEMMESSAGING_P_H
 
-#include "interface_p.h"
 #include "dbus/messaginginterface.h"
+#include "interface_p.h"
+#include "modemmessaging.h"
 #include "sms.h"
 
-class ModemMessagingPrivate: public InterfacePrivate
+namespace ModemManager
+{
+
+class ModemMessagingPrivate : public InterfacePrivate
 {
 public:
-    explicit ModemMessagingPrivate(const QString &path);
+    explicit ModemMessagingPrivate(const QString &path, ModemMessaging *q);
     OrgFreedesktopModemManager1ModemMessagingInterface modemMessagingIface;
 
     QMap<QString, ModemManager::Sms::Ptr> messageList;
@@ -38,6 +42,15 @@ public:
     MMSmsStorage defaultStorage;
     ModemManager::Sms::Ptr findMessage(const QString &uni);
     ModemManager::Sms::List messages();
+
+    Q_DECLARE_PUBLIC(ModemMessaging)
+    ModemMessaging *q_ptr;
+private Q_SLOTS:
+    virtual void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) Q_DECL_OVERRIDE;
+    void onMessageAdded(const QDBusObjectPath &path, bool received);
+    void onMessageDeleted(const QDBusObjectPath &path);
 };
+
+} // namespace ModemManager
 
 #endif

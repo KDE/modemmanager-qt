@@ -17,10 +17,10 @@ set(ModemManagerQt_SRCS
 #     modemdevice.cpp
     modemfirmware.cpp
     modemlocation.cpp
-#     modemmessaging.cpp
+    modemmessaging.cpp
 #     modemtime.cpp
-#     sim.cpp
-#     sms.cpp
+    sim.cpp
+    sms.cpp
 )
 
 set(DBUS_INTERFACES_FILES
