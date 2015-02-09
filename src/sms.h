@@ -1,7 +1,7 @@
 /*
     Copyright 2013 Anant Kamath <kamathanant@gmail.com>
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -31,10 +31,11 @@
 
 #include "generictypes.h"
 
-class SmsPrivate;
-
 namespace ModemManager
 {
+
+class SmsPrivate;
+
 /**
 * Provides an interface to manipulate and control an SMS
 *
@@ -52,6 +53,8 @@ public:
 
     explicit Sms(const QString &path, QObject *parent = 0);
     ~Sms();
+
+    QString uni() const;
 
     /**
     * Send the SMS
@@ -159,16 +162,28 @@ Q_SIGNALS:
     * @param newState the new state of the SMS
     */
     void stateChanged(MMSmsState newState);
-
+    void pduTypeChanged(MMSmsPduType pduType);
+    void numberChanged(const QString &number);
+    void smscChanged(const QString &smsc);
+    void dataChanged(const QByteArray &data);
+    void textChanged(const QString &text);
+    void validityChanged(ValidityPair validity);
+    void smsClassChanged(int smsClass);
+    void deliveryReportRequestChanged(bool deliveryReportRequest);
+    void messageReferenceChanged(uint messageReference);
+    void timestampChanged(const QDateTime &timestamp);
+    void dischargeTimestampChanged(const QDateTime &dischargeTimestamp);
     /**
     * This signal is emitted when the delivery state of the SMS has changed
     *
     * @param newDeliveryState the new delivery state of the SMS
     */
     void deliveryStateChanged(MMSmsDeliveryState newDeliveryState);
-
-private Q_SLOTS:
-    void onPropertiesChanged(const QString &interface, const QVariantMap &changedProperties, const QStringList &invalidatedProps);
+    void storageChanged(MMSmsStorage storage);
+// #if MM_CHECK_VERSION(1, 2, 0)
+    void serviceCategoryChanged(MMSmsCdmaServiceCategory serviceCategory);
+    void teleserviceIdChanged(MMSmsCdmaTeleserviceId teleserviceId);
+// #endif
 
 private:
     SmsPrivate *const d_ptr;

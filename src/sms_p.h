@@ -3,7 +3,7 @@
     Copyright 2010 Lamarque Souza <lamarque@kde.org>
     Copyright 2013 Anant Kamath <kamathanant@gmail.com>
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -26,14 +26,19 @@
 #define MODEMMANAGER_SMS_P_H
 
 #include "dbus/smsinterface.h"
+#include "sms.h"
 
-class SmsPrivate
+namespace ModemManager
 {
+
+class SmsPrivate : public QObject
+{
+    Q_OBJECT
 public:
-    explicit SmsPrivate(const QString &path);
+    explicit SmsPrivate(const QString &path, Sms *q);
     OrgFreedesktopModemManager1SmsInterface smsIface;
 
-    QString dBusPath;
+    QString uni;
     MMSmsState state;
     MMSmsPduType pduType;
     QString number;
@@ -53,6 +58,12 @@ public:
     MMSmsCdmaTeleserviceId teleserviceId;
 #endif
 
+    Q_DECLARE_PUBLIC(Sms)
+    Sms *q_ptr;
+private Q_SLOTS:
+    void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps);
 };
+
+} // namespace ModemManager
 
 #endif
