@@ -2,7 +2,7 @@
     Copyright 2008,2011 Will Stephenson <wstephenson@kde.org>
     Copyright 2010-2011 Lamarque Souza <lamarque@kde.org>
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -30,10 +30,11 @@
 #include <QSharedPointer>
 #include <QDBusPendingReply>
 
-class SimPrivate;
-
 namespace ModemManager
 {
+
+class SimPrivate;
+
 /**
  * @brief The Sim class
  *
@@ -101,6 +102,12 @@ public:
     QDBusPendingReply<> changePin(const QString &oldPin, const QString &newPin);
 
     QString uni() const;
+
+Q_SIGNALS:
+    void simIdentifierChanged(const QString &identifier);
+    void imsiChanged(const QString &imsi);
+    void operatorIdentifierChanged(const QString &identifier);
+    void operatorNameChanged(const QString &name);
 
 private:
     SimPrivate *const d_ptr;
