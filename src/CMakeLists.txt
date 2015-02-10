@@ -18,7 +18,7 @@ set(ModemManagerQt_SRCS
     modemfirmware.cpp
     modemlocation.cpp
     modemmessaging.cpp
-#     modemtime.cpp
+    modemtime.cpp
     sim.cpp
     sms.cpp
 )

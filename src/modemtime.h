@@ -29,10 +29,11 @@
 #include <QDateTime>
 #include <QSharedPointer>
 
-class ModemTimePrivate;
-
 namespace ModemManager
 {
+
+class ModemTimePrivate;
+
 /**
  * @brief The ModemTime class
  *
@@ -63,7 +64,7 @@ public:
      * current network time; it will not attempt to use previously-received
      * network time updates on the host to guess the current network time.
      */
-    QDateTime networkTime();
+    QDBusPendingReply<QString> networkTime();
 
     /**
      * @return the timezone data provided by the network.
@@ -77,9 +78,7 @@ Q_SIGNALS:
      * @param dateTime the new date and time
      */
     void networkTimeChanged(const QDateTime &dateTime);
-
-private Q_SLOTS:
-    void onNetworkTimeChanged(const QString &isoDateTime);
+    void networkTimeZoneChanged(NetworkTimeZone timeZone);
 };
 
 } // namespace ModemManager

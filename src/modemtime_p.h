@@ -22,14 +22,29 @@
 #ifndef MODEMMANAGER_MODEMTIME_P_H
 #define MODEMMANAGER_MODEMTIME_P_H
 
-#include "interface_p.h"
 #include "dbus/timeinterface.h"
+#include "interface_p.h"
+#include "modemtime.h"
+
+namespace ModemManager
+{
 
 class ModemTimePrivate: public InterfacePrivate
 {
 public:
-    explicit ModemTimePrivate(const QString &path);
+    explicit ModemTimePrivate(const QString &path, ModemTime *q);
     OrgFreedesktopModemManager1ModemTimeInterface modemTimeIface;
+    ModemTime::NetworkTimeZone networkTimeZone;
+
+    ModemTime::NetworkTimeZone variantMapToTimeZone(const QVariantMap &map);
+
+    Q_DECLARE_PUBLIC(ModemTime)
+    ModemTime *q_ptr;
+private Q_SLOTS:
+    void onNetworkTimeChanged(const QString &isoDateTime);
+    virtual void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) Q_DECL_OVERRIDE;
 };
+
+} // namespace ModemManager
 
 #endif

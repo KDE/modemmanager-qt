@@ -19,60 +19,83 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "dbus/dbus.h"
 #include "modemtime.h"
 #include "modemtime_p.h"
 #include "mmdebug.h"
 
-ModemTimePrivate::ModemTimePrivate(const QString &path)
-    : InterfacePrivate(path)
+ModemManager::ModemTimePrivate::ModemTimePrivate(const QString &path, ModemTime *q)
+    : InterfacePrivate(path, q)
     , modemTimeIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+    , q_ptr(q)
 {
+    if (modemTimeIface.isValid()) {
+        networkTimeZone = variantMapToTimeZone(modemTimeIface.networkTimezone());
+    }
 }
 
 ModemManager::ModemTime::ModemTime(const QString &path, QObject *parent)
-    : Interface(*new ModemTimePrivate(path), parent)
+    : Interface(*new ModemTimePrivate(path, this), parent)
 {
     Q_D(ModemTime);
 
-    connect(&d->modemTimeIface, &OrgFreedesktopModemManager1ModemTimeInterface::NetworkTimeChanged, this, &ModemTime::onNetworkTimeChanged);
+    connect(&d->modemTimeIface, &OrgFreedesktopModemManager1ModemTimeInterface::NetworkTimeChanged, d, &ModemTimePrivate::onNetworkTimeChanged);
+    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 }
 
 ModemManager::ModemTime::~ModemTime()
 {
 }
 
-QDateTime ModemManager::ModemTime::networkTime()
+QDBusPendingReply<QString> ModemManager::ModemTime::networkTime()
 {
     Q_D(ModemTime);
-    QDBusPendingReply<QString> reply = d->modemTimeIface.GetNetworkTime();
-    reply.waitForFinished();
-    if (reply.isValid()) {
-        return QDateTime::fromString(reply.value(), Qt::ISODate);
-    }
 
-    return QDateTime();
+    return d->modemTimeIface.GetNetworkTime();
 }
 
 ModemManager::ModemTime::NetworkTimeZone ModemManager::ModemTime::networkTimeZone() const
 {
     Q_D(const ModemTime);
 
-    NetworkTimeZone result;
-    const QVariantMap map = d->modemTimeIface.networkTimezone();
-    if (map.contains("offset"))
+    return d->networkTimeZone;
+}
+
+ModemManager::ModemTime::NetworkTimeZone ModemManager::ModemTimePrivate::variantMapToTimeZone(const QVariantMap &map)
+{
+    ModemManager::ModemTime::NetworkTimeZone result;
+    if (map.contains("offset")) {
         result.offset = map.value("offset").toInt();
-    if (map.contains("dst-offset"))
+    } if (map.contains("dst-offset")) {
         result.dst_offset = map.value("dst-offset").toInt();
-    if (map.contains("leap-seconds"))
+    } if (map.contains("leap-seconds")) {
         result.leap_seconds = map.value("leap-seconds").toInt();
+    }
 
     return result;
 }
 
-
-void ModemManager::ModemTime::onNetworkTimeChanged(const QString &isoDateTime)
+void ModemManager::ModemTimePrivate::onNetworkTimeChanged(const QString &isoDateTime)
 {
+    Q_Q(ModemTime);
+
     const QDateTime result = QDateTime::fromString(isoDateTime, Qt::ISODate);
     if (result.isValid())
-        emit networkTimeChanged(result);
+        Q_EMIT q->networkTimeChanged(result);
+}
+
+void ModemManager::ModemTimePrivate::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
+{
+    Q_Q(ModemTime);
+    Q_UNUSED(invalidatedProps);
+    qCDebug(MMQT) << interface << properties.keys();
+
+    if (interface == QString(MM_DBUS_INTERFACE_MODEM_TIME)) {
+        QVariantMap::const_iterator it = properties.constFind(QLatin1String(MM_MODEM_TIME_PROPERTY_NETWORKTIMEZONE));
+        if (it != properties.constEnd()) {
+            networkTimeZone = variantMapToTimeZone(it->toMap());
+            Q_EMIT q->networkTimeZoneChanged(networkTimeZone);
+        }
+    }
 }
