@@ -1,5 +1,6 @@
 /*
     Copyright 2014 Lukas Tinkl <ltinkl@redhat.com>
+    Copyright 2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -27,10 +28,11 @@
 #include <QObject>
 #include <QSharedPointer>
 
-class ModemSignalPrivate;
-
 namespace ModemManager
 {
+
+class ModemSignalPrivate;
+
 /**
  * @brief The ModemSignal class
  *
@@ -108,7 +110,15 @@ public:
      * Setup extended signal quality information retrieval.
      * @param rate refresh rate to set, in seconds. 0 to disable retrieval.
      */
-    void setup(uint rate);
+    QDBusPendingReply<void> setup(uint rate);
+
+Q_SIGNALS:
+    void rateChanged(uint rate);
+    void cdmaChanged(const QVariantMap &cdma);
+    void evdoChanged(const QVariantMap &evdo);
+    void gsmChanged(const QVariantMap &gsm);
+    void umtsChanged(const QVariantMap &umts);
+    void lteChanged(const QString &lte);
 };
 
 } // namespace ModemManager

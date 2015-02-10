@@ -1,5 +1,6 @@
 /*
     Copyright 2014 Lukas Tinkl <ltinkl@redhat.com>
+    Copyright 2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -21,14 +22,32 @@
 #ifndef MODEMMANAGERQT_MODEMSIGNAL_P_H
 #define MODEMMANAGERQT_MODEMSIGNAL_P_H
 
-#include "interface_p.h"
 #include "dbus/signalinterface.h"
+#include "interface_p.h"
+#include "modemsignal.h"
+
+namespace ModemManager
+{
 
 class ModemSignalPrivate: public InterfacePrivate
 {
 public:
-    explicit ModemSignalPrivate(const QString &path);
+    explicit ModemSignalPrivate(const QString &path, ModemSignal *q);
     OrgFreedesktopModemManager1ModemSignalInterface modemSignalIface;
+
+    uint rate;
+    QVariantMap cdma;
+    QVariantMap evdo;
+    QVariantMap gsm;
+    QVariantMap umts;
+    QVariantMap lte;
+
+    Q_DECLARE_PUBLIC(ModemSignal)
+    ModemSignal *q_ptr;
+private Q_SLOTS:
+    virtual void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) Q_DECL_OVERRIDE;
 };
+
+} // namespace ModemManager
 
 #endif
