@@ -43,7 +43,7 @@ set(DBUS_INTERFACES_FILES
 if (${MODEMMANAGER_VERSION} VERSION_EQUAL 1.2.0 OR ${MODEMMANAGER_VERSION} VERSION_GREATER 1.2.0)
     set(ModemManagerQt_SRCS
         ${ModemManagerQt_SRCS}
-#         modemoma.cpp
+        modemoma.cpp
 #         modemsignal.cpp
         )
 
