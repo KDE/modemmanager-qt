@@ -8,7 +8,7 @@ set(ModemManagerQt_SRCS
     bearer.cpp
     generictypes.cpp
     interface.cpp
-#     manager.cpp
+    manager.cpp
     modem.cpp
     modemsimple.cpp
     modem3gpp.cpp

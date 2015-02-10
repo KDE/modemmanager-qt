@@ -93,7 +93,7 @@ void ModemManager::ModemManagerPrivate::init()
             emit modemAdded(uni);
         }
     } else { // show error
-        qWarning() << "Failed enumerating MM objects:" << reply.error().name() << "\n" << reply.error().message();
+        qCWarning(MMQT) << "Failed enumerating MM objects:" << reply.error().name() << "\n" << reply.error().message();
     }
 }
 
@@ -121,7 +121,7 @@ ModemManager::ModemDevice::List ModemManager::ModemManagerPrivate::modemDevices(
         if (!modem.isNull()) {
             list.append(modem);
         } else {
-            qWarning() << "warning: null modem Interface for" << i.key();
+            qCWarning(MMQT) << "warning: null modem Interface for" << i.key();
         }
     }
 
