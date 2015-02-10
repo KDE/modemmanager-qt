@@ -82,7 +82,7 @@ void ModemManager::ModemManagerPrivate::init()
     QDBusPendingReply<DBUSManagerStruct> reply = manager.GetManagedObjects();
     reply.waitForFinished();
     if (!reply.isError()) {  // enum devices
-        Q_FOREACH(const QDBusObjectPath &path, reply.value().keys()) {
+        Q_FOREACH (const QDBusObjectPath &path, reply.value().keys()) {
             const QString uni = path.path();
             qCDebug(MMQT) << "Adding device" << uni;
 
@@ -90,7 +90,7 @@ void ModemManager::ModemManagerPrivate::init()
                 continue;
 
             modemList.insert(uni, ModemDevice::Ptr());
-            emit modemAdded(uni);
+            Q_EMIT modemAdded(uni);
         }
     } else { // show error
         qCWarning(MMQT) << "Failed enumerating MM objects:" << reply.error().name() << "\n" << reply.error().message();
@@ -136,12 +136,12 @@ void ModemManager::ModemManagerPrivate::scanDevices()
 void ModemManager::ModemManagerPrivate::daemonRegistered()
 {
     init();
-    emit serviceAppeared();
+    Q_EMIT serviceAppeared();
 }
 
 void ModemManager::ModemManagerPrivate::daemonUnregistered()
 {
-    emit serviceDisappeared();
+    Q_EMIT serviceDisappeared();
     modemList.clear();
 }
 
@@ -161,12 +161,12 @@ void ModemManager::ModemManagerPrivate::onInterfacesAdded(const QDBusObjectPath 
     // new device, we don't know it yet
     if (!modemList.contains(uni)) {
         modemList.insert(uni, ModemDevice::Ptr());
-        emit modemAdded(uni);
+        Q_EMIT modemAdded(uni);
     }
-    // re-emit in case of modem type change (GSM <-> CDMA)
+    // re-Q_EMIT in case of modem type change (GSM <-> CDMA)
     else if (modemList.contains(uni) && (interfaces_and_properties.keys().contains(MM_DBUS_INTERFACE_MODEM_MODEM3GPP) ||
                                          interfaces_and_properties.keys().contains(MM_DBUS_INTERFACE_MODEM_MODEMCDMA))) {
-        emit modemAdded(uni);
+        Q_EMIT modemAdded(uni);
     }
 }
 
@@ -186,7 +186,7 @@ void ModemManager::ModemManagerPrivate::onInterfacesRemoved(const QDBusObjectPat
     ModemDevice::Ptr modem = findModemDevice(uni);
 
     if (!uni.isEmpty() && (interfaces.isEmpty() || (modem && modem->interfaces().isEmpty()))) {
-        emit modemRemoved(uni);
+        Q_EMIT modemRemoved(uni);
         modemList.remove(uni);
     }
 }

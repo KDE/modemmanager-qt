@@ -136,37 +136,37 @@ void ModemManager::BearerPrivate::onPropertiesChanged(const QString &interface, 
         QVariantMap::const_iterator it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_INTERFACE));
         if (it != properties.constEnd()) {
             bearerInterface = it->toString();
-            emit q->interfaceChanged(bearerInterface);
+            Q_EMIT q->interfaceChanged(bearerInterface);
         }
         it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_CONNECTED));
         if (it != properties.constEnd()) {
             isConnected = it->toBool();
-            emit q->connectedChanged(isConnected);
+            Q_EMIT q->connectedChanged(isConnected);
         }
         it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_SUSPENDED));
         if (it != properties.constEnd()) {
             isSuspended = it->toBool();
-            emit q->suspendedChanged(isSuspended);
+            Q_EMIT q->suspendedChanged(isSuspended);
         }
         it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_IP4CONFIG));
         if (it != properties.constEnd()) {
             ipv4Config = ipConfigFromMap(it->toMap());
-            emit q->ip4ConfigChanged(ipv4Config);
+            Q_EMIT q->ip4ConfigChanged(ipv4Config);
         }
         it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_IP6CONFIG));
         if (it != properties.constEnd()) {
             ipv6Config = ipConfigFromMap(it->toMap());
-            emit q->ip6ConfigChanged(ipv6Config);
+            Q_EMIT q->ip6ConfigChanged(ipv6Config);
         }
         it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_IPTIMEOUT));
         if (it != properties.constEnd()) {
             ipTimeout = it->toUInt();
-            emit q->ipTimeoutChanged(ipTimeout);
+            Q_EMIT q->ipTimeoutChanged(ipTimeout);
         }
         it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_PROPERTIES));
         if (it != properties.constEnd()) {
             bearerProperties = it->toMap();
-            emit q->propertiesChanged(bearerProperties);
+            Q_EMIT q->propertiesChanged(bearerProperties);
         }
     }
 }

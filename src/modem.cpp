@@ -59,7 +59,7 @@ ModemManager::ModemPrivate::ModemPrivate(const QString &path, Modem *q)
 #endif
 
         simPath = modemIface.sim().path();
-        foreach (uint cap, modemIface.supportedCapabilities()) {
+        Q_FOREACH (uint cap, modemIface.supportedCapabilities()) {
             supportedCapabilities.append((MMModemCapability)cap);
         }
         currentCapabilities = (QFlags<MMModemCapability>)modemIface.currentCapabilities();
@@ -85,10 +85,10 @@ ModemManager::ModemPrivate::ModemPrivate(const QString &path, Modem *q)
         powerState = (MMModemPowerState)modemIface.powerState();
         supportedModes = modemIface.supportedModes();
         currentModes = modemIface.currentModes();
-        foreach (uint band, modemIface.supportedBands()) {
+        Q_FOREACH (uint band, modemIface.supportedBands()) {
             supportedBands.append((MMModemBand)band);
         }
-        foreach (uint band, modemIface.currentBands()) {
+        Q_FOREACH (uint band, modemIface.currentBands()) {
             currentBands.append((MMModemBand)band);
         }
         supportedIpFamilies = (ModemManager::Modem::IpBearerFamilies)modemIface.supportedIpFamilies();
@@ -218,7 +218,7 @@ QDBusPendingReply<void> ModemManager::Modem::setCurrentBands(const QList<MMModem
 {
     Q_D(Modem);
     QList<uint> tmp;
-    foreach (const MMModemBand band, bands) {
+    Q_FOREACH (const MMModemBand band, bands) {
         tmp.append(band);
     }
     return d->modemIface.SetCurrentBands(tmp);
@@ -464,7 +464,7 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_SUPPORTEDCAPABILITIES));
         if (it != changedProps.constEnd()) {
             supportedCapabilities.clear();
-            foreach (QVariant cap, it->toList()) {
+            Q_FOREACH (QVariant cap, it->toList()) {
                 supportedCapabilities.append((MMModemCapability)cap.toUInt());
             }
             Q_EMIT q->supportedCapabilitiesChanged(supportedCapabilities);
@@ -588,7 +588,7 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_SUPPORTEDBANDS));
         if (it != changedProps.constEnd()) {
             supportedBands.clear();
-            foreach (QVariant cap, it->toList()) {
+            Q_FOREACH (QVariant cap, it->toList()) {
                 supportedBands.append((MMModemBand)cap.toUInt());
             }
             Q_EMIT q->supportedBandsChanged(supportedBands);
@@ -596,7 +596,7 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_CURRENTBANDS));
         if (it != changedProps.constEnd()) {
             currentBands.clear();
-            foreach (QVariant cap, it->toList()) {
+            Q_FOREACH (QVariant cap, it->toList()) {
                 currentBands.append((MMModemBand)cap.toUInt());
             }
             Q_EMIT q->currentBandsChanged(supportedBands);

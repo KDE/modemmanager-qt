@@ -232,7 +232,7 @@ ModemManager::Interface::Ptr ModemManager::ModemDevicePrivate::createInterface(M
 ModemManager::Bearer::Ptr ModemManager::ModemDevicePrivate::findBearer(const QString &uni)
 {
     ModemManager::Bearer::Ptr result;
-    foreach (const ModemManager::Bearer::Ptr & bearer, bearers()) {
+    Q_FOREACH (const ModemManager::Bearer::Ptr & bearer, bearers()) {
         if (bearer->uni() == uni) {
             result = bearer;
             break;
@@ -332,7 +332,7 @@ void ModemManager::ModemDevicePrivate::onInterfacesAdded(const QDBusObjectPath &
         return;
     }
 
-    foreach(const QString & iface, interfaces_and_properties.keys()) {
+    Q_FOREACH (const QString & iface, interfaces_and_properties.keys()) {
         /* Don't store generic DBus interfaces */
         if (iface.startsWith(MM_DBUS_SERVICE)) {
             if (iface == QLatin1String(MM_DBUS_INTERFACE_MODEM)) {
@@ -378,7 +378,7 @@ void ModemManager::ModemDevicePrivate::onInterfacesRemoved(const QDBusObjectPath
         }
     }
 
-    foreach(const QString & iface, interfaces) {
+    Q_FOREACH (const QString & iface, interfaces) {
         if (iface == QLatin1String(MM_DBUS_INTERFACE_MODEM)) {
             interfaceList.remove(ModemManager::ModemDevice::ModemInterface);
         } else if (iface == QLatin1String(MM_DBUS_INTERFACE_MODEM_MODEM3GPP)) {
