@@ -35,7 +35,6 @@
 
 namespace ModemManager
 {
-
 class Modem;
 class ModemManagerPrivate : public Notifier
 {

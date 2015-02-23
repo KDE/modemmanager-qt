@@ -46,23 +46,11 @@ QString ModemManager::ModemSimple::uni() const
     return d->uni;
 }
 
-QDBusPendingReply<QDBusObjectPath> ModemManager::ModemSimple::connectModem(ConnectPropertiesStruct properties)
+QDBusPendingReply<QDBusObjectPath> ModemManager::ModemSimple::connectModem(const QVariantMap &properties)
 {
     Q_D(ModemSimple);
 
-    QVariantMap map;
-    map.insert(QLatin1String("pin"), properties.pin);
-    map.insert(QLatin1String("operator-id"), properties.operatorId);
-    map.insert(QLatin1String("apn"), properties.apn);
-    map.insert(QLatin1String("ip-type"), properties.ipType);
-    map.insert(QLatin1String("allowed-auth"), properties.allowedAuth);
-    map.insert(QLatin1String("user"), properties.user);
-    map.insert(QLatin1String("password"), properties.password);
-    map.insert(QLatin1String("number"), properties.number);
-    map.insert(QLatin1String("allow-roaming"), properties.allowRoaming);
-    map.insert(QLatin1String("rm-protocol"), properties.rmProtocol);
-
-    return d->modemSimpleIface.Connect(map);
+    return d->modemSimpleIface.Connect(properties);
 }
 
 QDBusPendingReply<QVariantMap> ModemManager::ModemSimple::getStatus()
@@ -80,45 +68,4 @@ QDBusPendingReply<void> ModemManager::ModemSimple::disconnectModem(const QString
 QDBusPendingReply<void> ModemManager::ModemSimple::disconnectAllModems()
 {
     return disconnectModem(QStringLiteral("/"));
-}
-
-ModemManager::ModemSimple::ModemStatusStruct ModemManager::ModemSimple::mapToModemStatusStruct(const QVariantMap& map)
-{
-    ModemStatusStruct modemStatus;
-
-    if (map.contains("state")) {
-        modemStatus.state = (MMModemState)map.value("state").toUInt();
-    }
-    if (map.contains("signal-quality")) {
-        modemStatus.signalQuality = map.value("signal-quality").toUInt();
-    }
-    if (map.contains("current-bands")) {
-        modemStatus.currentBands = (MMModemBand)map.value("current-bands").toUInt();
-    }
-    if (map.contains("access-technology")) {
-        modemStatus.accessTechnology = (MMModemAccessTechnology)map.value("access-technology").toUInt();
-    }
-    if (map.contains("m3gpp-registration-state")) {
-        modemStatus.m3gppRegistrationState = (MMModem3gppRegistrationState)map.value("m3gpp-registration-state").toUInt();
-    }
-    if (map.contains("m3gpp-operator-code")) {
-        modemStatus.m3gppOperatorCode = map.value("m3gpp-operator-code").toString();
-    }
-    if (map.contains("m3gpp-operator-name")) {
-        modemStatus.m3gppOperatorName = map.value("m3gpp-operator-name").toString();
-    }
-    if (map.contains("cdma-cdma1x-registration-state")) {
-        modemStatus.cdma1xRegistrationState = (MMModemCdmaRegistrationState)map.value("cdma-cdma1x-registration-state").toUInt();
-    }
-    if (map.contains("cdma-evdo-registration-state")) {
-        modemStatus.evdoRegistrationState = (MMModemCdmaRegistrationState)map.value("cdma-evdo-registration-state").toUInt();
-    }
-    if (map.contains("cdma-sid")) {
-        modemStatus.cdmaSid = map.value("cdma-sid").toUInt();
-    }
-    if (map.contains("cdma-nid")) {
-        modemStatus.cdmaNid = map.value("cdma-nid").toUInt();
-    }
-
-    return modemStatus;
 }

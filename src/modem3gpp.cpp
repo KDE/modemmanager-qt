@@ -102,29 +102,6 @@ QDBusPendingReply<QVariantMapList> ModemManager::Modem3gpp::scan()
     return d->modem3gppIface.Scan();
 }
 
-ModemManager::Modem3gpp::MobileNetworkStruct ModemManager::Modem3gpp::mapToMobileNetworkStruct(const QVariantMap& map)
-{
-    MobileNetworkStruct mobileNetwork;
-
-    if (map.contains("status")) {
-        mobileNetwork.status = (MMModem3gppNetworkAvailability)map.value("status").toUInt();
-    }
-    if (map.contains("operator-long")) {
-        mobileNetwork.operatorName = map.value("operator-long").toString();
-    }
-    if (map.contains("operator-short")) {
-        mobileNetwork.operatorNameShort = map.value("operator-short").toString();
-    }
-    if (map.contains("operator-code")) {
-        mobileNetwork.operatorCode = map.value("operator-code").toString();
-    }
-    if (map.contains("access-technology")) {
-        mobileNetwork.accessTechnology = (MMModemAccessTechnology)map.value("access-technology").toUInt();
-    }
-
-    return mobileNetwork;
-}
-
 void ModemManager::Modem3gppPrivate::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
 {
     Q_Q(Modem3gpp);

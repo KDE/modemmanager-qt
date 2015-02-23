@@ -52,14 +52,6 @@ public:
     typedef QSharedPointer<Modem3gpp> Ptr;
     typedef QList<Ptr> List;
 
-    struct MobileNetworkStruct {
-        MMModem3gppNetworkAvailability status; /// < Value representing network availability status.
-        QString operatorName; /// < Long-format name of operator. If the name is unknown, this field should not be present.
-        QString operatorNameShort; /// < Short-format name of operator. If the name is unknown, this field should not be present.
-        QString operatorCode; /// < Mobile code of the operator. Returned in the format "MCCMNC", where MCC is the three-digit ITU E.212 Mobile Country Code and MNC is the two- or three-digit GSM Mobile Network Code.
-        MMModemAccessTechnology accessTechnology; /// < Value representing the generic access technology used by this mobile network
-    };
-
     Q_DECLARE_FLAGS(FacilityLocks, MMModem3gppFacility)
 
     explicit Modem3gpp(const QString &path, QObject *parent = 0);
@@ -137,11 +129,6 @@ public:
      * unsigned integer (signature "u").
      */
     QDBusPendingReply<QVariantMapList> scan();
-
-    /**
-     * Transforms passed QVariantMap to MobileNetworkStruct
-     */
-    MobileNetworkStruct mapToMobileNetworkStruct(const QVariantMap &map);
 
 Q_SIGNALS:
     void imeiChanged(const QString &imei);

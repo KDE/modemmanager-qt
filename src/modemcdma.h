@@ -50,16 +50,6 @@ public:
     typedef QSharedPointer<ModemCdma> Ptr;
     typedef QList<Ptr> List;
 
-    struct ModemPropertiesStruct {
-        QString spc; ///< The Service Programming Code, given as a string of exactly 6 digit characters. Mandatory parameter.
-        quint16 sid; ///< The System Identification Number. Mandatory parameter.
-        QString mdn; ///< The Mobile Directory Number, given as a string of maximum 15 characters. Mandatory parameter.
-        QString min; ///< The Mobile Identification Number, given as a string of maximum 15 characters. Mandatory parameter.
-        QString mnHaKey; ///< The MN-HA key, given as a string of maximum 16 characters.
-        QString mnAaaKey; ///< The MN-AAA key, given as a string of maximum 16 characters.
-        QByteArray prl; ///< The Preferred Roaming List, given as an array of maximum 16384 bytes.
-    };
-
     explicit ModemCdma(const QString &path, QObject *parent = 0);
     ~ModemCdma();
 
@@ -78,9 +68,17 @@ public:
      *
      * Some modems will reboot after this call is made.
      *
-     * @param properties Structure with properties to set on the modem
+     * @param properties QVariantMap consisting of:
+     *
+     * "spc": The Service Programming Code, given as a string of exactly 6 digit characters. Mandatory parameter.
+     * "sid": The System Identification Number, given as a 16-bit unsigned integer (signature "q"). Mandatory parameter.
+     * "mdn": The Mobile Directory Number, given as a string of maximum 15 characters. Mandatory parameter.
+     * "min": The Mobile Identification Number, given as a string of maximum 15 characters. Mandatory parameter.
+     * "mn-ha-key": The MN-HA key, given as a string of maximum 16 characters.
+     * "mn-aaa-key": The MN-AAA key, given as a string of maximum 16 characters.
+     * "prl": The Preferred Roaming List, given as an array of maximum 16384 bytes.
      */
-    QDBusPendingReply<void> activateManual(const ModemPropertiesStruct &properties);
+    QDBusPendingReply<void> activateManual(const QVariantMap &properties);
 
     /**
      * @return a MMModemCdmaActivationState value specifying the state of the activation in the 3GPP2 network.

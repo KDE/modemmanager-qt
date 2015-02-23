@@ -61,26 +61,10 @@ QDBusPendingReply<void> ModemManager::ModemCdma::activate(const QString &carrier
     return d->modemCdmaIface.Activate(carrierCode);
 }
 
-QDBusPendingReply<void> ModemManager::ModemCdma::activateManual(const ModemPropertiesStruct &properties)
+QDBusPendingReply<void> ModemManager::ModemCdma::activateManual(const QVariantMap &properties)
 {
     Q_D(ModemCdma);
-    QVariantMap map;
-
-    map.insert(QLatin1String("spc"), properties.spc);
-    map.insert(QLatin1String("sid"), properties.sid);
-    map.insert(QLatin1String("mdn"), properties.mdn);
-    map.insert(QLatin1String("min"), properties.min);
-    if (!properties.mnHaKey.isEmpty()) {
-        map.insert(QLatin1String("mn-ha-key"), properties.mnHaKey);
-    }
-    if (!properties.mnAaaKey.isEmpty()) {
-        map.insert(QLatin1String("mn-aaa-key"), properties.mnAaaKey);
-    }
-    if (!properties.prl.isEmpty()) {
-        map.insert(QLatin1String("prl"), properties.prl);
-    }
-
-    return d->modemCdmaIface.ActivateManual(map);
+    return d->modemCdmaIface.ActivateManual(properties);
 }
 
 MMModemCdmaActivationState ModemManager::ModemCdma::activationState() const
