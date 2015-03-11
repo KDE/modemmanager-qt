@@ -19,14 +19,22 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "dbus/dbus.h"
 #include "modemtime.h"
 #include "modemtime_p.h"
 #include "mmdebug.h"
+#ifdef MMQT_STATIC
+#include "dbus/fakedbus.h"
+#else
+#include "dbus/dbus.h"
+#endif
 
 ModemManager::ModemTimePrivate::ModemTimePrivate(const QString &path, ModemTime *q)
     : InterfacePrivate(path, q)
-    , modemTimeIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+#ifdef MMQT_STATIC
+    , modemTimeIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
+#else
+    , modemTimeIface(MMQT_DBUS_SERVICE, path, QDBusConnection::systemBus())
+#endif
     , q_ptr(q)
 {
     if (modemTimeIface.isValid()) {
@@ -40,8 +48,13 @@ ModemManager::ModemTime::ModemTime(const QString &path, QObject *parent)
     Q_D(ModemTime);
 
     connect(&d->modemTimeIface, &OrgFreedesktopModemManager1ModemTimeInterface::NetworkTimeChanged, d, &ModemTimePrivate::onNetworkTimeChanged);
-    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+#ifdef MMQT_STATIC
+    QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#else
+    QDBusConnection::systemBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#endif
 }
 
 ModemManager::ModemTime::~ModemTime()
@@ -91,7 +104,7 @@ void ModemManager::ModemTimePrivate::onPropertiesChanged(const QString &interfac
     Q_UNUSED(invalidatedProps);
     qCDebug(MMQT) << interface << properties.keys();
 
-    if (interface == QString(MM_DBUS_INTERFACE_MODEM_TIME)) {
+    if (interface == QString(MMQT_DBUS_INTERFACE_MODEM_TIME)) {
         QVariantMap::const_iterator it = properties.constFind(QLatin1String(MM_MODEM_TIME_PROPERTY_NETWORKTIMEZONE));
         if (it != properties.constEnd()) {
             networkTimeZone = variantMapToTimeZone(it->toMap());

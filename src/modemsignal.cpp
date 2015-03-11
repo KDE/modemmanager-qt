@@ -19,14 +19,22 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "dbus/dbus.h"
 #include "mmdebug.h"
 #include "modemsignal.h"
 #include "modemsignal_p.h"
+#ifdef MMQT_STATIC
+#include "dbus/fakedbus.h"
+#else
+#include "dbus/dbus.h"
+#endif
 
 ModemManager::ModemSignalPrivate::ModemSignalPrivate(const QString &path, ModemSignal *q)
     : InterfacePrivate(path, q)
-    , modemSignalIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+#ifdef MMQT_STATIC
+    , modemSignalIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
+#else
+    , modemSignalIface(MMQT_DBUS_SERVICE, path, QDBusConnection::systemBus())
+#endif
     , q_ptr(q)
 {
     if (modemSignalIface.isValid()) {
@@ -43,9 +51,13 @@ ModemManager::ModemSignal::ModemSignal(const QString &path, QObject *parent)
     : Interface(*new ModemSignalPrivate(path, this), parent)
 {
     Q_D(ModemSignal);
-
-    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+#ifdef MMQT_STATIC
+    QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#else
+    QDBusConnection::systemBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+                                        SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#endif
 }
 
 ModemManager::ModemSignal::~ModemSignal()
@@ -100,7 +112,7 @@ void ModemManager::ModemSignalPrivate::onPropertiesChanged(const QString &interf
     Q_UNUSED(invalidatedProps);
     qCDebug(MMQT) << interface << properties.keys();
 
-    if (interface == QString(MM_DBUS_INTERFACE_MODEM_SIGNAL)) {
+    if (interface == QString(MMQT_DBUS_INTERFACE_MODEM_SIGNAL)) {
         QVariantMap::const_iterator it = properties.constFind(QLatin1String(MM_MODEM_SIGNAL_PROPERTY_RATE));
         if (it != properties.constEnd()) {
             rate = it->toUInt();

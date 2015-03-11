@@ -23,7 +23,11 @@
 #include "modemmessaging.h"
 #include "modemmessaging_p.h"
 
+#ifdef MMQT_STATIC
+#include "dbus/fakedbus.h"
+#else
 #include "dbus/dbus.h"
+#endif
 #include "mmdebug.h"
 
 #include "sms.h"
@@ -31,7 +35,11 @@
 
 ModemManager::ModemMessagingPrivate::ModemMessagingPrivate(const QString &path, ModemMessaging *q)
     : InterfacePrivate(path, q)
-    , modemMessagingIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+#ifdef MMQT_STATIC
+    , modemMessagingIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
+#else
+    , modemMessagingIface(MMQT_DBUS_SERVICE, path, QDBusConnection::systemBus())
+#endif
     , q_ptr(q)
 {
     if (modemMessagingIface.isValid()) {
@@ -51,10 +59,13 @@ ModemManager::ModemMessaging::ModemMessaging(const QString &path, QObject *paren
     : Interface(*new ModemMessagingPrivate(path, this), parent)
 {
     Q_D(ModemMessaging);
-
-    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), this,
+#ifdef MMQT_STATIC
+    QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), this,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
-
+#else
+    QDBusConnection::systemBus().connect(MMQT_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), this,
+                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#endif
     QList <QDBusObjectPath> messages = d->modemMessagingIface.messages();
     Q_FOREACH (const QDBusObjectPath &op, messages) {
         const QString path = op.path();
@@ -103,7 +114,7 @@ void ModemManager::ModemMessagingPrivate::onPropertiesChanged(const QString &int
     Q_UNUSED(invalidatedProperties);
     Q_Q(ModemMessaging);
 
-    if (interfaceName == QLatin1String(MM_DBUS_INTERFACE_MODEM_MESSAGING)) {
+    if (interfaceName == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_MESSAGING)) {
         QVariantMap::const_iterator it = changedProperties.constFind(QLatin1String(MM_MODEM_MESSAGING_PROPERTY_SUPPORTEDSTORAGES));
         if (it != changedProperties.constEnd()) {
             QList<MMSmsStorage> storages;

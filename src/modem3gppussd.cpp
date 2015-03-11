@@ -24,11 +24,19 @@
 #include "modem3gppussd.h"
 #include "modem3gppussd_p.h"
 #include "mmdebug.h"
+#ifdef MMQT_STATIC
+#include "dbus/fakedbus.h"
+#else
 #include "dbus/dbus.h"
+#endif
 
 ModemManager::Modem3gppUssdPrivate::Modem3gppUssdPrivate(const QString &path, Modem3gppUssd *q)
     : InterfacePrivate(path, q)
-    , ussdIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+#ifdef MMQT_STATIC
+    , ussdIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
+#else
+    , ussdIface(MMQT_DBUS_SERVICE, path, QDBusConnection::systemBus())
+#endif
     , q_ptr(q)
 {
     if (ussdIface.isValid()) {
@@ -42,9 +50,13 @@ ModemManager::Modem3gppUssd::Modem3gppUssd(const QString &path, QObject *parent)
     : Interface(*new Modem3gppUssdPrivate(path, this), parent)
 {
     Q_D(Modem3gppUssd);
-
-    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+#ifdef MMQT_STATIC
+    QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#else
+    QDBusConnection::systemBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#endif
 }
 
 ModemManager::Modem3gppUssd::~Modem3gppUssd()
@@ -57,7 +69,7 @@ void ModemManager::Modem3gppUssdPrivate::onPropertiesChanged(const QString &inte
     Q_UNUSED(invalidatedProps);
     qCDebug(MMQT) << interface << properties.keys();
 
-    if (interface == QString(MM_DBUS_INTERFACE_MODEM_MODEM3GPP_USSD)) {
+    if (interface == QString(MMQT_DBUS_INTERFACE_MODEM_MODEM3GPP_USSD)) {
         QVariantMap::const_iterator it = properties.constFind(QLatin1String(MM_MODEM_MODEM3GPP_USSD_PROPERTY_STATE));
         if ( it != properties.constEnd()) {
             Q_EMIT q->stateChanged((MMModem3gppUssdSessionState)it->toUInt());

@@ -21,12 +21,20 @@
 
 #include "bearer_p.h"
 #include "mmdebug.h"
+#ifdef MMQT_STATIC
+#include "dbus/fakedbus.h"
+#else
 #include "dbus/dbus.h"
+#endif
 
 Q_LOGGING_CATEGORY(MMQT, "modemmanager-qt")
 
 ModemManager::BearerPrivate::BearerPrivate(const QString &path, Bearer *q)
-    : bearerIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+#ifdef MMQT_STATIC
+    : bearerIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
+#else
+    : bearerIface(MMQT_DBUS_SERVICE, path, QDBusConnection::systemBus())
+#endif
     , uni(path)
     , q_ptr(q)
 {
@@ -46,8 +54,13 @@ ModemManager::Bearer::Bearer(const QString &path, QObject *parent)
     , d_ptr(new BearerPrivate(path, this))
 {
     Q_D(Bearer);
-    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+#ifdef MMQT_STATIC
+    QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#else
+    QDBusConnection::systemBus().connect(MMQT_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#endif
 }
 
 ModemManager::Bearer::~Bearer()
@@ -132,7 +145,7 @@ void ModemManager::BearerPrivate::onPropertiesChanged(const QString &interface, 
     Q_UNUSED(invalidatedProps);
     qCDebug(MMQT) << interface << properties.keys();
 
-    if (interface == QString(MM_DBUS_INTERFACE_BEARER)) {
+    if (interface == QString(MMQT_DBUS_INTERFACE_BEARER)) {
         QVariantMap::const_iterator it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_INTERFACE));
         if (it != properties.constEnd()) {
             bearerInterface = it->toString();

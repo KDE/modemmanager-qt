@@ -25,7 +25,11 @@
 #include "modem.h"
 #include "modem_p.h"
 
+#ifdef MMQT_STATIC
+#include "dbus/fakedbus.h"
+#else
 #include "dbus/dbus.h"
+#endif
 #include "generictypes.h"
 #include "mmdebug.h"
 
@@ -33,7 +37,11 @@
 
 ModemManager::ModemPrivate::ModemPrivate(const QString &path, Modem *q)
     : InterfacePrivate(path, q)
-    , modemIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+#ifdef MMQT_STATIC
+    , modemIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
+#else
+    , modemIface(MMQT_DBUS_SERVICE, path, QDBusConnection::systemBus())
+#endif
     , q_ptr(q)
 {
     if (modemIface.isValid()) {
@@ -100,8 +108,13 @@ ModemManager::Modem::Modem(const QString &path, QObject *parent)
 {
     Q_D(Modem);
     if (d->modemIface.isValid()) {
-        QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, "PropertiesChanged", d,
+#ifdef MMQT_STATIC
+        QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, "PropertiesChanged", d,
                                              SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#else
+        QDBusConnection::systemBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, "PropertiesChanged", d,
+                                             SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#endif
     }
 
     connect(&d->modemIface, &OrgFreedesktopModemManager1ModemInterface::StateChanged, d, &ModemPrivate::onStateChanged);
@@ -423,7 +436,7 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
     Q_Q(Modem);
     qCDebug(MMQT) << ifaceName << changedProps.keys();
 
-    if (ifaceName == QString(MM_DBUS_INTERFACE_MODEM)) {
+    if (ifaceName == QString(MMQT_DBUS_INTERFACE_MODEM)) {
 
         QVariantMap::const_iterator it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_SIM));
 

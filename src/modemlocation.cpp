@@ -23,12 +23,20 @@
 
 #include "modemlocation.h"
 #include "modemlocation_p.h"
-#include "dbus/dbus.h"
 #include "mmdebug.h"
+#ifdef MMQT_STATIC
+#include "dbus/fakedbus.h"
+#else
+#include "dbus/dbus.h"
+#endif
 
 ModemManager::ModemLocationPrivate::ModemLocationPrivate(const QString &path, ModemLocation *q)
     : InterfacePrivate(path, q)
-    , modemLocationIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+#ifdef MMQT_STATIC
+    , modemLocationIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
+#else
+    , modemLocationIface(MMQT_DBUS_SERVICE, path, QDBusConnection::systemBus())
+#endif
     , q_ptr(q)
 {
     if (modemLocationIface.isValid()) {
@@ -43,9 +51,13 @@ ModemManager::ModemLocation::ModemLocation(const QString &path, QObject *parent)
     : Interface(*new ModemLocationPrivate(path, this), parent)
 {
     Q_D(ModemLocation);
-
-    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+#ifdef MMQT_STATIC
+    QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#else
+    QDBusConnection::systemBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#endif
 }
 
 ModemManager::ModemLocation::~ModemLocation()
@@ -100,7 +112,7 @@ void ModemManager::ModemLocationPrivate::onPropertiesChanged(const QString &inte
     Q_UNUSED(invalidatedProps);
     qCDebug(MMQT) << interface << properties.keys();
 
-    if (interface == QString(MM_DBUS_INTERFACE_MODEM_LOCATION)) {
+    if (interface == QString(MMQT_DBUS_INTERFACE_MODEM_LOCATION)) {
         QVariantMap::const_iterator it = properties.constFind(QLatin1String(MM_MODEM_LOCATION_PROPERTY_CAPABILITIES));
         if ( it != properties.constEnd()) {
             capabilities = (ModemManager::ModemLocation::LocationSources)it->toUInt();

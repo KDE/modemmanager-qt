@@ -3,7 +3,7 @@
     Copyright 2010 Lamarque Souza <lamarque@kde.org>
     Copyright 2013 Daniel Nicoletti <dantti12@gmail.com>
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -22,6 +22,11 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#ifdef MMQT_STATIC
+#include "dbus/fakedbus.h"
+#else
+#include "dbus/dbus.h"
+#endif
 #include "manager.h"
 #include "manager_p.h"
 #include "macros.h"
@@ -32,9 +37,15 @@
 Q_GLOBAL_STATIC(ModemManager::ModemManagerPrivate, globalModemManager)
 
 ModemManager::ModemManagerPrivate::ModemManagerPrivate()
-    : watcher(MM_DBUS_SERVICE, QDBusConnection::systemBus(), QDBusServiceWatcher::WatchForRegistration | QDBusServiceWatcher::WatchForUnregistration, this)
-    , iface(MM_DBUS_SERVICE, MM_DBUS_PATH, QDBusConnection::systemBus(), this)
-    , manager(MM_DBUS_SERVICE, MM_DBUS_PATH, QDBusConnection::systemBus(), this)
+#ifdef MMQT_STATIC
+    : watcher(MMQT_DBUS_SERVICE, QDBusConnection::sessionBus(), QDBusServiceWatcher::WatchForRegistration | QDBusServiceWatcher::WatchForUnregistration, this)
+    , iface(MMQT_DBUS_SERVICE, MMQT_DBUS_PATH, QDBusConnection::sessionBus(), this)
+    , manager(MMQT_DBUS_SERVICE, MMQT_DBUS_PATH, QDBusConnection::sessionBus(), this)
+#else
+    : watcher(MMQT_DBUS_SERVICE, QDBusConnection::systemBus(), QDBusServiceWatcher::WatchForRegistration | QDBusServiceWatcher::WatchForUnregistration, this)
+    , iface(MMQT_DBUS_SERVICE, MMQT_DBUS_PATH, QDBusConnection::systemBus(), this)
+    , manager(MMQT_DBUS_SERVICE, MMQT_DBUS_PATH, QDBusConnection::systemBus(), this)
+#endif
 {
     QLoggingCategory::setFilterRules(QStringLiteral("modemmaanger-qt.debug = true"));
     QLoggingCategory::setFilterRules(QStringLiteral("modemmanager-qt.warning = true"));
@@ -52,13 +63,21 @@ ModemManager::ModemManagerPrivate::ModemManagerPrivate()
                                                               "/org/freedesktop/DBus",
                                                               "org.freedesktop.DBus",
                                                               "ListActivatableNames");
-
-        QDBusReply<QStringList> reply = QDBusConnection::systemBus().call(message);
-        if (reply.isValid() && reply.value().contains(MM_DBUS_SERVICE)) {
-            QDBusConnection::systemBus().interface()->startService(MM_DBUS_SERVICE);
+#ifdef MMQT_STATIC
+        QDBusReply<QStringList> reply = QDBusConnection::sessionBus().call(message);
+        if (reply.isValid() && reply.value().contains(MMQT_DBUS_SERVICE)) {
+            QDBusConnection::sessionBus().interface()->startService(MMQT_DBUS_SERVICE);
             serviceFound = true;
         }
     }
+#else
+        QDBusReply<QStringList> reply = QDBusConnection::systemBus().call(message);
+        if (reply.isValid() && reply.value().contains(MMQT_DBUS_SERVICE)) {
+            QDBusConnection::systemBus().interface()->startService(MMQT_DBUS_SERVICE);
+            serviceFound = true;
+        }
+    }
+#endif
 
     if (serviceFound) {
         connect(&manager, &OrgFreedesktopDBusObjectManagerInterface::InterfacesAdded, this, &ModemManagerPrivate::onInterfacesAdded);
@@ -86,7 +105,7 @@ void ModemManager::ModemManagerPrivate::init()
             const QString uni = path.path();
             qCDebug(MMQT) << "Adding device" << uni;
 
-            if (uni == MM_DBUS_PATH || !uni.startsWith(MM_DBUS_MODEM_PREFIX))
+            if (uni == MMQT_DBUS_PATH || !uni.startsWith(MMQT_DBUS_MODEM_PREFIX))
                 continue;
 
             modemList.insert(uni, ModemDevice::Ptr());
@@ -152,7 +171,7 @@ void ModemManager::ModemManagerPrivate::onInterfacesAdded(const QDBusObjectPath 
     const QString uni = object_path.path();
 
     /* Ignore non-modems */
-    if (!uni.startsWith(MM_DBUS_MODEM_PREFIX)) {
+    if (!uni.startsWith(MMQT_DBUS_MODEM_PREFIX)) {
         return;
     }
 
@@ -164,8 +183,8 @@ void ModemManager::ModemManagerPrivate::onInterfacesAdded(const QDBusObjectPath 
         Q_EMIT modemAdded(uni);
     }
     // re-Q_EMIT in case of modem type change (GSM <-> CDMA)
-    else if (modemList.contains(uni) && (interfaces_and_properties.keys().contains(MM_DBUS_INTERFACE_MODEM_MODEM3GPP) ||
-                                         interfaces_and_properties.keys().contains(MM_DBUS_INTERFACE_MODEM_MODEMCDMA))) {
+    else if (modemList.contains(uni) && (interfaces_and_properties.keys().contains(MMQT_DBUS_INTERFACE_MODEM_MODEM3GPP) ||
+                                         interfaces_and_properties.keys().contains(MMQT_DBUS_INTERFACE_MODEM_MODEMCDMA))) {
         Q_EMIT modemAdded(uni);
     }
 }
@@ -177,7 +196,7 @@ void ModemManager::ModemManagerPrivate::onInterfacesRemoved(const QDBusObjectPat
     const QString uni = object_path.path();
 
     /* Ignore non-modems */
-    if (!uni.startsWith(MM_DBUS_MODEM_PREFIX)) {
+    if (!uni.startsWith(MMQT_DBUS_MODEM_PREFIX)) {
         return;
     }
 
@@ -185,7 +204,8 @@ void ModemManager::ModemManagerPrivate::onInterfacesRemoved(const QDBusObjectPat
 
     ModemDevice::Ptr modem = findModemDevice(uni);
 
-    if (!uni.isEmpty() && (interfaces.isEmpty() || (modem && modem->interfaces().isEmpty()))) {
+    // Remove modem when there is no interface or Modem interfaces has been removed
+    if (!uni.isEmpty() && (interfaces.isEmpty() || (modem && modem->interfaces().isEmpty()) || interfaces.contains(MMQT_DBUS_INTERFACE_MODEM))) {
         Q_EMIT modemRemoved(uni);
         modemList.remove(uni);
     }

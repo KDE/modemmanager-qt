@@ -20,13 +20,21 @@
 
 #include "modemsimple_p.h"
 
-#include "dbus/dbus.h"
 #include "generictypes.h"
 #include "mmdebug.h"
+#ifdef MMQT_STATIC
+#include "dbus/fakedbus.h"
+#else
+#include "dbus/dbus.h"
+#endif
 
 ModemManager::ModemSimplePrivate::ModemSimplePrivate(const QString &path, ModemSimple *q)
     : InterfacePrivate(path, q)
-    , modemSimpleIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+#ifdef MMQT_STATIC
+    , modemSimpleIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
+#else
+    , modemSimpleIface(MMQT_DBUS_SERVICE, path, QDBusConnection::systemBus())
+#endif
     , q_ptr(q)
 {
 }

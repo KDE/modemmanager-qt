@@ -21,13 +21,21 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "dbus/dbus.h"
 #include "sim.h"
 #include "sim_p.h"
 #include "mmdebug.h"
+#ifdef MMQT_STATIC
+#include "dbus/fakedbus.h"
+#else
+#include "dbus/dbus.h"
+#endif
 
 ModemManager::SimPrivate::SimPrivate(const QString &path, Sim *q)
-    : simIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+#ifdef MMQT_STATIC
+    : simIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
+#else
+    : simIface(MMQT_DBUS_SERVICE, path, QDBusConnection::systemBus())
+#endif
     , uni(path)
     , q_ptr(q)
 {
@@ -44,8 +52,13 @@ ModemManager::Sim::Sim(const QString &path, QObject *parent)
     , d_ptr(new SimPrivate(path, this))
 {
     Q_D(Sim);
-    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+#ifdef MMQT_STATIC
+    QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#else
+    QDBusConnection::systemBus().connect(MMQT_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#endif
 }
 
 ModemManager::Sim::~Sim()
@@ -113,7 +126,7 @@ void ModemManager::SimPrivate::onPropertiesChanged(const QString &interface, con
     Q_UNUSED(invalidatedProps);
     qCDebug(MMQT) << interface << properties.keys();
 
-    if (interface == QString(MM_DBUS_INTERFACE_SIM)) {
+    if (interface == QString(MMQT_DBUS_INTERFACE_SIM)) {
         QVariantMap::const_iterator it = properties.constFind(QLatin1String(MM_SIM_PROPERTY_SIMIDENTIFIER));
         if (it != properties.constEnd()) {
             simIdentifier = it->toString();

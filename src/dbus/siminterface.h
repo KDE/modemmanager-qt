@@ -30,8 +30,11 @@ class OrgFreedesktopModemManager1SimInterface: public QDBusAbstractInterface
     Q_OBJECT
 public:
     static inline const char *staticInterfaceName()
+#ifdef MMQT_STATIC
+    { return "org.kde.fakemodem.Sim"; }
+#else
     { return "org.freedesktop.ModemManager1.Sim"; }
-
+#endif
 public:
     OrgFreedesktopModemManager1SimInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = 0);
 

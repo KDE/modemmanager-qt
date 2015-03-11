@@ -24,11 +24,19 @@
 #include "modem3gpp.h"
 #include "modem3gpp_p.h"
 #include "mmdebug.h"
+#ifdef MMQT_STATIC
+#include "dbus/fakedbus.h"
+#else
 #include "dbus/dbus.h"
+#endif
 
 ModemManager::Modem3gppPrivate::Modem3gppPrivate(const QString &path, Modem3gpp *q)
     : InterfacePrivate(path, q)
-    , modem3gppIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+#ifdef MMQT_STATIC
+    , modem3gppIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
+#else
+    , modem3gppIface(MMQT_DBUS_SERVICE, path, QDBusConnection::systemBus())
+#endif
     , q_ptr(q)
 {
     if (modem3gppIface.isValid()) {
@@ -45,9 +53,13 @@ ModemManager::Modem3gpp::Modem3gpp(const QString &path, QObject *parent)
     : Interface(*new Modem3gppPrivate(path, this), parent)
 {
     Q_D(Modem3gpp);
-
-    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+#ifdef MMQT_STATIC
+    QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#else
+    QDBusConnection::systemBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#endif
 }
 
 ModemManager::Modem3gpp::~Modem3gpp()
@@ -108,7 +120,7 @@ void ModemManager::Modem3gppPrivate::onPropertiesChanged(const QString &interfac
     Q_UNUSED(invalidatedProps);
     qCDebug(MMQT) << interface << properties.keys();
 
-    if (interface == QString(MM_DBUS_INTERFACE_MODEM_MODEM3GPP)) {
+    if (interface == QString(MMQT_DBUS_INTERFACE_MODEM_MODEM3GPP)) {
         QVariantMap::const_iterator it = properties.constFind(QLatin1String(MM_MODEM_MODEM3GPP_PROPERTY_IMEI));
         if (it != properties.constEnd()) {
             imei = it->toString();

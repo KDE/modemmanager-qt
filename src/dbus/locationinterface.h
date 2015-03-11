@@ -30,8 +30,11 @@ class OrgFreedesktopModemManager1ModemLocationInterface: public QDBusAbstractInt
     Q_OBJECT
 public:
     static inline const char *staticInterfaceName()
+#ifdef MMQT_STATIC
+    { return "org.kde.fakemodem.Modem.Location"; }
+#else
     { return "org.freedesktop.ModemManager1.Modem.Location"; }
-
+#endif
 public:
     OrgFreedesktopModemManager1ModemLocationInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = 0);
 

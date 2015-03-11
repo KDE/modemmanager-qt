@@ -30,8 +30,11 @@ class OrgFreedesktopModemManager1BearerInterface: public QDBusAbstractInterface
     Q_OBJECT
 public:
     static inline const char *staticInterfaceName()
+#ifdef MMQT_STATIC
+    { return "org.kde.fakemodem.Bearer"; }
+#else
     { return "org.freedesktop.ModemManager1.Bearer"; }
-
+#endif
 public:
     OrgFreedesktopModemManager1BearerInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = 0);
 
