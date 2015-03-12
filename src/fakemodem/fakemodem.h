@@ -32,7 +32,7 @@
 class FakeModem : public QObject
 {
     Q_OBJECT
-    Q_CLASSINFO("D-Bus Interface", MMQT_DBUS_SERVICE)
+    Q_CLASSINFO("D-Bus Interface", "org.kde.fakemodem")
 public:
     explicit FakeModem(QObject* parent = 0);
     virtual ~FakeModem();
