@@ -191,12 +191,12 @@ UnlockRetriesMap Modem::unlockRetries() const
 
 void Modem::addBearer(const QDBusObjectPath& bearer)
 {
-
+    Q_UNUSED(bearer);
 }
 
 void Modem::removeBearer(const QDBusObjectPath& bearer)
 {
-
+    Q_UNUSED(bearer);
 }
 
 void Modem::setDevice(const QString& device)
@@ -346,28 +346,34 @@ void Modem::SetPowerState(uint state)
 
 QString Modem::Command(const QString& cmd, uint timeout)
 {
+    Q_UNUSED(cmd);
+    Q_UNUSED(timeout);
     // TODO
     return QString();
 }
 
 QDBusObjectPath Modem::CreateBearer(const QVariantMap& properties)
 {
+    Q_UNUSED(properties);
     // TODO
     return QDBusObjectPath();
 }
 
 void Modem::DeleteBearer(const QDBusObjectPath& bearer)
 {
+    Q_UNUSED(bearer);
     // TODO
 }
 
 void Modem::Enable(bool enable)
 {
+    Q_UNUSED(enable);
     // TODO
 }
 
 void Modem::FactoryReset(const QString& code)
 {
+    Q_UNUSED(code);
     // TODO
 }
 

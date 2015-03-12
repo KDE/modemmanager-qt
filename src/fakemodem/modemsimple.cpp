@@ -31,12 +31,14 @@ ModemSimple::~ModemSimple()
 
 QDBusObjectPath ModemSimple::Connect(const QVariantMap& properties)
 {
+    Q_UNUSED(properties);
     // TODO
     return QDBusObjectPath();
 }
 
 void ModemSimple::Disconnect(const QDBusObjectPath& bearer)
 {
+    Q_UNUSED(bearer);
     // TODO
 }
 

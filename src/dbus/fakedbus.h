@@ -22,8 +22,8 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGER_DBUS_H
-#define MODEMMANAGER_DBUS_H
+#ifndef MODEMMANAGER_FAKE_DBUS_H
+#define MODEMMANAGER_FAKE_DBUS_H
 
 #define DBUS_INTERFACE_PROPS             QLatin1String("org.freedesktop.DBus.Properties")
 #define DBUS_INTERFACE_INTROSPECT        QLatin1String("org.freedesktop.DBus.Introspectable")

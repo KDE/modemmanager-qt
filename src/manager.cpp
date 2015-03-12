@@ -22,13 +22,14 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "manager.h"
+#include "manager_p.h"
+
 #ifdef MMQT_STATIC
 #include "dbus/fakedbus.h"
 #else
 #include "dbus/dbus.h"
 #endif
-#include "manager.h"
-#include "manager_p.h"
 #include "macros.h"
 #include "mmdebug.h"
 #include "generictypes.h"

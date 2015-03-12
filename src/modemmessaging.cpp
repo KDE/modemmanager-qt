@@ -112,7 +112,6 @@ ModemManager::Sms::List ModemManager::ModemMessagingPrivate::ModemMessagingPriva
 void ModemManager::ModemMessagingPrivate::onPropertiesChanged(const QString &interfaceName, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
 {
     Q_UNUSED(invalidatedProperties);
-    Q_Q(ModemMessaging);
 
     if (interfaceName == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_MESSAGING)) {
         QVariantMap::const_iterator it = changedProperties.constFind(QLatin1String(MM_MODEM_MESSAGING_PROPERTY_SUPPORTEDSTORAGES));

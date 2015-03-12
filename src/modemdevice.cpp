@@ -76,8 +76,6 @@ void ModemManager::ModemDevicePrivate::init()
 
 void ModemManager::ModemDevicePrivate::initInterfaces()
 {
-    Q_Q(ModemManager::ModemDevice);
-
     interfaceList.clear();
 
     const QString xmlData = introspect();
@@ -341,7 +339,6 @@ bool ModemManager::ModemDevice::isCdmaModem() const
 
 void ModemManager::ModemDevicePrivate::onInterfacesAdded(const QDBusObjectPath &object_path, const NMVariantMapMap &interfaces_and_properties)
 {
-    Q_Q(ModemDevice);
     if (object_path.path() != uni) {
         return;
     }
