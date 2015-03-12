@@ -18,7 +18,7 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGERQT_MMEBUG_H
+#ifndef MODEMMANAGERQT_MMDEBUG_H
 #define MODEMMANAGERQT_MMDEBUG_H
 
 #include <QLoggingCategory>
