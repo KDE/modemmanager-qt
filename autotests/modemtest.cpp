@@ -112,9 +112,9 @@ void ModemTest::testModemAdded(const QString &dev)
     PortList ports = {{QLatin1String("ttyUSB0"), MM_MODEM_PORT_TYPE_AT}, {QLatin1String("ttyUSB1"), MM_MODEM_PORT_TYPE_QCDM}, {QLatin1String("ttyUSB2"), MM_MODEM_PORT_TYPE_AT}};
     PortList modemPorts = modem->ports();
     QCOMPARE(ports.count(), modemPorts.count());
-    Q_FOREACH (Port port, ports) {
+    Q_FOREACH (const Port port, ports) {
         bool found = false;
-        Q_FOREACH(Port modemPort, modemPorts) {
+        Q_FOREACH(const Port modemPort, modemPorts) {
             if (port.name == modemPort.name) {
                 found = true;
                 QCOMPARE(port.type, modemPort.type);
