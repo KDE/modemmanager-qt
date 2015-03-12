@@ -78,7 +78,7 @@ public:
      * either by listening for the messageAdded() signal, or by
      * querying the specific SMS object of interest using findMessage()
      */
-    ModemManager::Sms::List messages();
+    ModemManager::Sms::List messages() const;
 
     /**
      * Creates a new message object.

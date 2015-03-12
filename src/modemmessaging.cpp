@@ -156,10 +156,10 @@ MMSmsStorage ModemManager::ModemMessaging::defaultStorage() const
     return d->defaultStorage;
 }
 
-ModemManager::Sms::List ModemManager::ModemMessaging::messages()
+ModemManager::Sms::List ModemManager::ModemMessaging::messages() const
 {
-    Q_D(ModemMessaging);
-    return d->messages();
+    Q_D(const ModemMessaging);
+    return const_cast<ModemMessagingPrivate*>(d)->messages();
 }
 
 QDBusPendingReply<QDBusObjectPath> ModemManager::ModemMessaging::createMessage(const Message &message)
