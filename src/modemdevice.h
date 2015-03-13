@@ -62,10 +62,8 @@ public:
         LocationInterface,
         TimeInterface,
         FirmwareInterface,
-#if MM_CHECK_VERSION(1, 2, 0)
         OmaInterface,
         SignalInterface
-#endif
     };
 
     explicit ModemDevice(const QString &path, QObject *parent = 0);
