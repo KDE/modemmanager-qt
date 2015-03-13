@@ -175,14 +175,14 @@ QDBusPendingReply<void> ModemManager::Modem::deleteBearer(const QString &bearer)
     return d->modemIface.DeleteBearer(QDBusObjectPath(bearer));
 }
 
-ModemManager::Bearer::List ModemManager::Modem::listBearers()
+ModemManager::Bearer::List ModemManager::Modem::listBearers() const
 {
-    Q_D(Modem);
+    Q_D(const Modem);
 
     ModemManager::Bearer::List list;
     QMap<QString, Bearer::Ptr>::const_iterator i = d->bearers.constBegin();
     while (i != d->bearers.constEnd()) {
-        ModemManager::Bearer::Ptr bearer = d->findRegisteredBearer(i.key());
+        ModemManager::Bearer::Ptr bearer = const_cast<ModemPrivate*>(d)->findRegisteredBearer(i.key());
         if (bearer) {
             list << bearer;
         }
@@ -191,10 +191,10 @@ ModemManager::Bearer::List ModemManager::Modem::listBearers()
     return list;
 }
 
-ModemManager::Bearer::Ptr ModemManager::Modem::findBearer(const QString& bearer)
+ModemManager::Bearer::Ptr ModemManager::Modem::findBearer(const QString& bearer) const
 {
-    Q_D(Modem);
-    return d->findRegisteredBearer(bearer);
+    Q_D(const Modem);
+    return const_cast<ModemPrivate*>(d)->findRegisteredBearer(bearer);
 }
 
 QDBusPendingReply<void> ModemManager::Modem::reset()

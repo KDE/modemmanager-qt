@@ -118,12 +118,12 @@ public:
     /**
      * @return the configured packet data bearers (EPS Bearers, PDP Contexts, or CDMA2000 Packet Data Sessions).
      */
-    ModemManager::Bearer::List listBearers();
+    ModemManager::Bearer::List listBearers() const;
 
     /**
      * @return the configured packet data bearer on given path
      */
-    ModemManager::Bearer::Ptr findBearer(const QString &bearer);
+    ModemManager::Bearer::Ptr findBearer(const QString &bearer) const;
 
     /**
      * Clear non-persistent configuration and state, and return the device to a newly-powered-on state.
