@@ -78,7 +78,7 @@ Q_SIGNALS:
      * @param dateTime the new date and time
      */
     void networkTimeChanged(const QDateTime &dateTime);
-    void networkTimeZoneChanged(NetworkTimeZone timeZone);
+    void networkTimeZoneChanged(const NetworkTimeZone &timeZone);
 };
 
 } // namespace ModemManager
