@@ -31,7 +31,7 @@
 #include "dbus/dbus.h"
 #endif
 #include "generictypes.h"
-#include "mmdebug.h"
+#include "mmdebug_p.h"
 
 #include <QDomDocument>
 

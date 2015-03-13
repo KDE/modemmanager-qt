@@ -30,8 +30,8 @@
 #else
 #include "dbus/dbus.h"
 #endif
-#include "macros.h"
-#include "mmdebug.h"
+#include "macros_p.h"
+#include "mmdebug_p.h"
 #include "generictypes.h"
 #include "modem.h"
 

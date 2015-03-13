@@ -28,7 +28,7 @@
 #else
 #include "dbus/dbus.h"
 #endif
-#include "mmdebug.h"
+#include "mmdebug_p.h"
 
 #include "sms.h"
 #include <ModemManager/ModemManager.h>

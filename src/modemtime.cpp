@@ -21,7 +21,7 @@
 
 #include "modemtime.h"
 #include "modemtime_p.h"
-#include "mmdebug.h"
+#include "mmdebug_p.h"
 #ifdef MMQT_STATIC
 #include "dbus/fakedbus.h"
 #else

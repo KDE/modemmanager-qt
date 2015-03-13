@@ -29,7 +29,7 @@
 #endif
 #include "generictypes.h"
 #include "manager.h"
-#include "mmdebug.h"
+#include "mmdebug_p.h"
 #include "modem.h"
 #include "modemcdma.h"
 #include "modem3gpp.h"
