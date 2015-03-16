@@ -87,10 +87,10 @@ int main(int argc, char *argv[])
             ModemManager::ModemMessaging::Message msg;
             msg.number = "number";
             msg.text = "message text";
-            QString sms = messaging->createMessage(msg);
-            if (!sms.isEmpty()) {
+            QDBusReply<QString> sms = messaging->createMessage(msg);
+            if (sms.isValid() && !sms.value().isEmpty()) {
                 qDebug() << "Message created";
-                ModemManager::Sms::Ptr tmp = messaging->findMessage(sms);
+                ModemManager::Sms::Ptr tmp = messaging->findMessage(sms.value());
                 if (tmp) {
                     qDebug() << "Message text:";
                     qDebug() << tmp->text();
