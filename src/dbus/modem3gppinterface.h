@@ -20,7 +20,6 @@
 #include <QtCore/QVariant>
 #include <QtDBus/QtDBus>
 #include "generictypes.h"
-#include "generictypes_p.h"
 
 /*
  * Proxy class for interface org.freedesktop.ModemManager1.Modem.Modem3gpp
@@ -72,7 +71,7 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QLatin1String("Register"), argumentList);
     }
 
-    inline QDBusPendingReply<QVariantMapList> Scan()
+    inline QDBusPendingReply<ModemManager::QVariantMapList> Scan()
     {
         QList<QVariant> argumentList;
         return asyncCallWithArgumentList(QLatin1String("Scan"), argumentList);

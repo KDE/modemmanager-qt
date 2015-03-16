@@ -1,28 +1,29 @@
-/* This file is part of the KDE project
-   Copyright 2010 Lamarque Souza <lamarque@kde.org>
-   Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
+/*
+    Copyright 2010 Lamarque Souza <lamarque@kde.org>
+    Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 2.1 of the License, or (at your option) version 3, or any
-later version accepted by the membership of KDE e.V. (or its
-successor approved by the membership of KDE e.V.), which shall
-act as a proxy defined in Section 6 of version 3 of the license.
+    This library is free software; you can redistribute it and/or
+    modify it under the terms of the GNU Lesser General Public
+    License as published by the Free Software Foundation; either
+    version 2.1 of the License, or (at your option) version 3, or any
+    later version accepted by the membership of KDE e.V. (or its
+    successor approved by the membership of KDE e.V.), which shall
+    act as a proxy defined in Section 6 of version 3 of the license.
 
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+    This library is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+    Lesser General Public License for more details.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library.  If not, see <http://www.gnu.org/licenses/>.
+    You should have received a copy of the GNU Lesser General Public
+    License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include "generictypes.h"
 #include "generictypes_p.h"
 
-QDBusArgument &operator << (QDBusArgument &arg, const Port &port)
+QDBusArgument &operator << (QDBusArgument &arg, const ModemManager::Port &port)
 {
     arg.beginStructure();
     arg << port.name << port.type;
@@ -30,7 +31,7 @@ QDBusArgument &operator << (QDBusArgument &arg, const Port &port)
     return arg;
 }
 
-const QDBusArgument &operator >> (const QDBusArgument &arg, Port &port)
+const QDBusArgument &operator >> (const QDBusArgument &arg, ModemManager::Port &port)
 {
     QString temp1;
     uint temp2;
@@ -44,7 +45,7 @@ const QDBusArgument &operator >> (const QDBusArgument &arg, Port &port)
 }
 
 // Marshall the CurrentModesType data into a D-BUS argument
-QDBusArgument &operator << (QDBusArgument &arg, const CurrentModesType &mode)
+QDBusArgument &operator << (QDBusArgument &arg, const ModemManager::CurrentModesType &mode)
 {
     arg.beginStructure();
     arg << mode.allowed << mode.preferred;
@@ -53,7 +54,7 @@ QDBusArgument &operator << (QDBusArgument &arg, const CurrentModesType &mode)
 }
 
 // Retrieve the CurrentModesType data from the D-BUS argument
-const QDBusArgument &operator >> (const QDBusArgument &arg, CurrentModesType &mode)
+const QDBusArgument &operator >> (const QDBusArgument &arg, ModemManager::CurrentModesType &mode)
 {
     uint temp1, temp2;
     arg.beginStructure();
@@ -67,7 +68,7 @@ const QDBusArgument &operator >> (const QDBusArgument &arg, CurrentModesType &mo
 
 #if MM_CHECK_VERSION(1, 2, 0)
 // Marshall the OmaSessionType data into a D-BUS argument
-QDBusArgument &operator << (QDBusArgument &arg, const OmaSessionType &sessionType)
+QDBusArgument &operator << (QDBusArgument &arg, const ModemManager::OmaSessionType &sessionType)
 {
     arg.beginStructure();
     arg << sessionType.type << sessionType.id;
@@ -76,7 +77,7 @@ QDBusArgument &operator << (QDBusArgument &arg, const OmaSessionType &sessionTyp
 }
 
 // Retrieve the OmaSessionType data from the D-BUS argument
-const QDBusArgument &operator >> (const QDBusArgument &arg, OmaSessionType &sessionType)
+const QDBusArgument &operator >> (const QDBusArgument &arg, ModemManager::OmaSessionType &sessionType)
 {
     uint type, id;
     arg.beginStructure();
@@ -90,7 +91,7 @@ const QDBusArgument &operator >> (const QDBusArgument &arg, OmaSessionType &sess
 #endif
 
 // Marshall the SignalQualityPair data into a D-BUS argument
-QDBusArgument &operator << (QDBusArgument &arg, const SignalQualityPair &sqp)
+QDBusArgument &operator << (QDBusArgument &arg, const ModemManager::SignalQualityPair &sqp)
 {
     arg.beginStructure();
     arg << sqp.signal << sqp.recent;
@@ -99,7 +100,7 @@ QDBusArgument &operator << (QDBusArgument &arg, const SignalQualityPair &sqp)
 }
 
 // Retrieve the SignalQualityPair data from the D-BUS argument
-const QDBusArgument &operator >> (const QDBusArgument &arg, SignalQualityPair &sqp)
+const QDBusArgument &operator >> (const QDBusArgument &arg, ModemManager::SignalQualityPair &sqp)
 {
     arg.beginStructure();
     arg >> sqp.signal >> sqp.recent;
@@ -108,7 +109,7 @@ const QDBusArgument &operator >> (const QDBusArgument &arg, SignalQualityPair &s
 }
 
 // Marshall the ValidityPair data into a D-BUS argument
-QDBusArgument &operator <<(QDBusArgument &arg, const ValidityPair &vp)
+QDBusArgument &operator <<(QDBusArgument &arg, const ModemManager::ValidityPair &vp)
 {
     arg.beginStructure();
     arg << vp.validity << vp.value;
@@ -117,7 +118,7 @@ QDBusArgument &operator <<(QDBusArgument &arg, const ValidityPair &vp)
 }
 
 // Retrieve the ValidityPair data from the D-BUS argument
-const QDBusArgument &operator >>(const QDBusArgument &arg, ValidityPair &vp)
+const QDBusArgument &operator >>(const QDBusArgument &arg, ModemManager::ValidityPair &vp)
 {
     uint temp1, temp2;
     arg.beginStructure();
@@ -130,7 +131,7 @@ const QDBusArgument &operator >>(const QDBusArgument &arg, ValidityPair &vp)
 }
 
 // Marshal QList<QVariantMap> into a D-BUS argument
-QDBusArgument &operator<<(QDBusArgument &argument, const QVariantMapList &variantMapList)
+QDBusArgument &operator<<(QDBusArgument &argument, const ModemManager::QVariantMapList &variantMapList)
 {
     argument.beginArray(qMetaTypeId<QVariantMap>());
     for (int i = 0; i < variantMapList.length(); ++i)
@@ -140,7 +141,7 @@ QDBusArgument &operator<<(QDBusArgument &argument, const QVariantMapList &varian
 }
 
 // Retrieve QList<QVariantMap> from a D-BUS argument
-const QDBusArgument &operator>>(const QDBusArgument &argument, QVariantMapList &variantMapList)
+const QDBusArgument &operator>>(const QDBusArgument &argument, ModemManager::QVariantMapList &variantMapList)
 {
     argument.beginArray();
     variantMapList.clear();
@@ -157,18 +158,18 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, QVariantMapList &
 
 void registerModemManagerTypes()
 {
-    qDBusRegisterMetaType<CurrentModesType>();
-    qDBusRegisterMetaType<SignalQualityPair>();
-    qDBusRegisterMetaType<SupportedModesType>();
-    qDBusRegisterMetaType<UnlockRetriesMap>();
-    qDBusRegisterMetaType<QVariantMapList>();
+    qDBusRegisterMetaType<ModemManager::CurrentModesType>();
+    qDBusRegisterMetaType<ModemManager::SignalQualityPair>();
+    qDBusRegisterMetaType<ModemManager::SupportedModesType>();
+    qDBusRegisterMetaType<ModemManager::UnlockRetriesMap>();
+    qDBusRegisterMetaType<ModemManager::QVariantMapList>();
 #if MM_CHECK_VERSION(1, 2, 0)
-    qDBusRegisterMetaType<OmaSessionType>();
-    qDBusRegisterMetaType<OmaSessionTypes>();
+    qDBusRegisterMetaType<ModemManager::OmaSessionType>();
+    qDBusRegisterMetaType<ModemManager::OmaSessionTypes>();
 #endif
     //qDBusRegisterMetaType<LocationInformationMap>();
-    qDBusRegisterMetaType<ValidityPair>();
-    qDBusRegisterMetaType<PortList>();
+    qDBusRegisterMetaType<ModemManager::ValidityPair>();
+    qDBusRegisterMetaType<ModemManager::PortList>();
     qRegisterMetaType<MMModemMode>("MMModemMode");
     qRegisterMetaType<MMModemLock>("MMModemLock");
     qRegisterMetaType<MMModem3gppUssdSessionState>("MMModem3gppUssdSessionState");

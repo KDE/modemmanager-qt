@@ -109,12 +109,12 @@ void ModemTest::testModemAdded(const QString &dev)
     QCOMPARE(modem->model(), QLatin1String("K2540"));
     // TODO ownNumbers
     QCOMPARE(modem->plugin(), QLatin1String("Huawei"));
-    PortList ports = {{QLatin1String("ttyUSB0"), MM_MODEM_PORT_TYPE_AT}, {QLatin1String("ttyUSB1"), MM_MODEM_PORT_TYPE_QCDM}, {QLatin1String("ttyUSB2"), MM_MODEM_PORT_TYPE_AT}};
-    PortList modemPorts = modem->ports();
+    ModemManager::PortList ports = {{QLatin1String("ttyUSB0"), MM_MODEM_PORT_TYPE_AT}, {QLatin1String("ttyUSB1"), MM_MODEM_PORT_TYPE_QCDM}, {QLatin1String("ttyUSB2"), MM_MODEM_PORT_TYPE_AT}};
+    ModemManager::PortList modemPorts = modem->ports();
     QCOMPARE(ports.count(), modemPorts.count());
-    Q_FOREACH (const Port port, ports) {
+    Q_FOREACH (const ModemManager::Port port, ports) {
         bool found = false;
-        Q_FOREACH(const Port modemPort, modemPorts) {
+        Q_FOREACH(const ModemManager::Port modemPort, modemPorts) {
             if (port.name == modemPort.name) {
                 found = true;
                 QCOMPARE(port.type, modemPort.type);
@@ -126,8 +126,8 @@ void ModemTest::testModemAdded(const QString &dev)
     QCOMPARE(modem->powerState(), MM_MODEM_POWER_STATE_ON);
     QCOMPARE(modem->primaryPort(), QLatin1String("ttyUSB2"));
     QCOMPARE(modem->revision(), QLatin1String("11.001.05.00.11"));
-    SignalQualityPair signalQuality = {93, true};
-    SignalQualityPair modemSignalQuality = modem->signalQuality();
+    ModemManager::SignalQualityPair signalQuality = {93, true};
+    ModemManager::SignalQualityPair modemSignalQuality = modem->signalQuality();
     QCOMPARE(modemSignalQuality.recent, signalQuality.recent);
     QCOMPARE(modemSignalQuality.signal, signalQuality.signal);
     QCOMPARE(modem->simPath(), QLatin1String("/org/kde/fakemodem/SIM/1"));
@@ -139,7 +139,7 @@ void ModemTest::testModemAdded(const QString &dev)
     QCOMPARE(modem->supportedCapabilities(), supportedCapabilities);
     QCOMPARE(modem->supportedIpFamilies(), 3);
     QCOMPARE(modem->unlockRequired(), MM_MODEM_LOCK_NONE);
-    UnlockRetriesMap unlockRetries = {{2, 3}, {3, 3}, {4, 10}, {5, 10}};
+    ModemManager::UnlockRetriesMap unlockRetries = {{2, 3}, {3, 3}, {4, 10}, {5, 10}};
     QCOMPARE(modem->unlockRetries(), unlockRetries);
 }
 

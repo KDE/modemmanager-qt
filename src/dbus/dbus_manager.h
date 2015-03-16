@@ -19,7 +19,6 @@
 #include <QtCore/QStringList>
 #include <QtCore/QVariant>
 #include <QtDBus/QtDBus>
-
 #include "generictypes.h"
 #include "generictypes_p.h"
 
@@ -39,14 +38,14 @@ public:
     ~OrgFreedesktopDBusObjectManagerInterface();
 
 public Q_SLOTS: // METHODS
-    inline QDBusPendingReply<DBUSManagerStruct> GetManagedObjects()
+    inline QDBusPendingReply<ModemManager::DBUSManagerStruct> GetManagedObjects()
     {
         QList<QVariant> argumentList;
         return asyncCallWithArgumentList(QLatin1String("GetManagedObjects"), argumentList);
     }
 
 Q_SIGNALS: // SIGNALS
-    void InterfacesAdded(const QDBusObjectPath &object_path, const NMVariantMapMap &interfaces_and_properties);
+    void InterfacesAdded(const QDBusObjectPath &object_path, const ModemManager::MMVariantMapMap &interfaces_and_properties);
     void InterfacesRemoved(const QDBusObjectPath &object_path, const QStringList &interfaces);
 };
 

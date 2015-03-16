@@ -20,7 +20,6 @@
 #include <QtCore/QVariant>
 #include <QtDBus/QtDBus>
 #include "generictypes.h"
-#include "generictypes_p.h"
 
 /*
  * Proxy class for interface org.freedesktop.ModemManager1.Sms
@@ -100,9 +99,9 @@ public:
     inline QString timestamp() const
     { return qvariant_cast< QString >(property("Timestamp")); }
 
-    Q_PROPERTY(ValidityPair Validity READ validity)
-    inline ValidityPair validity() const
-    { return qvariant_cast< ValidityPair >(property("Validity")); }
+    Q_PROPERTY(ModemManager::ValidityPair Validity READ validity)
+    inline ModemManager::ValidityPair validity() const
+    { return qvariant_cast< ModemManager::ValidityPair >(property("Validity")); }
 
 public Q_SLOTS: // METHODS
     inline QDBusPendingReply<> Send()

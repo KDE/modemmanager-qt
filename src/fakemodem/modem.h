@@ -23,7 +23,6 @@
 
 #include "dbus/fakedbus.h"
 #include "generictypes.h"
-#include "generictypes_p.h"
 
 #include <QObject>
 
@@ -41,9 +40,9 @@ public:
 
     Q_PROPERTY(uint AccessTechnologies READ accessTechnologies)
     Q_PROPERTY(QList<QDBusObjectPath> Bearers READ bearers)
-    Q_PROPERTY(UIntList CurrentBands READ currentBands)
+    Q_PROPERTY(ModemManager::UIntList CurrentBands READ currentBands)
     Q_PROPERTY(uint CurrentCapabilities READ currentCapabilities)
-    Q_PROPERTY(CurrentModesType CurrentModes READ currentModes)
+    Q_PROPERTY(ModemManager::CurrentModesType CurrentModes READ currentModes)
     Q_PROPERTY(QString Device READ device)
     Q_PROPERTY(QString DeviceIdentifier READ deviceIdentifier)
     Q_PROPERTY(QStringList Drivers READ drivers)
@@ -54,26 +53,26 @@ public:
     Q_PROPERTY(QString Model READ model)
     Q_PROPERTY(QStringList OwnNumbers READ ownNumbers)
     Q_PROPERTY(QString Plugin READ plugin)
-    Q_PROPERTY(PortList Ports READ ports)
+    Q_PROPERTY(ModemManager::PortList Ports READ ports)
     Q_PROPERTY(uint PowerState READ powerState)
     Q_PROPERTY(QString PrimaryPort READ primaryPort)
     Q_PROPERTY(QString Revision READ revision)
-    Q_PROPERTY(SignalQualityPair SignalQuality READ signalQuality)
+    Q_PROPERTY(ModemManager::SignalQualityPair SignalQuality READ signalQuality)
     Q_PROPERTY(QDBusObjectPath Sim READ sim)
     Q_PROPERTY(int State READ state)
     Q_PROPERTY(uint StateFailedReason READ stateFailedReason)
-    Q_PROPERTY(UIntList SupportedBands READ supportedBands)
-    Q_PROPERTY(UIntList SupportedCapabilities READ supportedCapabilities)
+    Q_PROPERTY(ModemManager::UIntList SupportedBands READ supportedBands)
+    Q_PROPERTY(ModemManager::UIntList SupportedCapabilities READ supportedCapabilities)
     Q_PROPERTY(uint SupportedIpFamilies READ supportedIpFamilies)
-    Q_PROPERTY(SupportedModesType SupportedModes READ supportedModes)
+    Q_PROPERTY(ModemManager::SupportedModesType SupportedModes READ supportedModes)
     Q_PROPERTY(uint UnlockRequired READ unlockRequired)
-    Q_PROPERTY(UnlockRetriesMap UnlockRetries READ unlockRetries)
+    Q_PROPERTY(ModemManager::UnlockRetriesMap UnlockRetries READ unlockRetries)
 
     uint accessTechnologies() const;
     QList<QDBusObjectPath> bearers() const;
-    UIntList currentBands() const;
+    ModemManager::UIntList currentBands() const;
     uint currentCapabilities() const;
-    CurrentModesType currentModes() const;
+    ModemManager::CurrentModesType currentModes() const;
     QString device() const;
     QString deviceIdentifier() const;
     QStringList drivers() const;
@@ -84,20 +83,20 @@ public:
     QString model() const;
     QStringList ownNumbers() const;
     QString plugin() const;
-    PortList ports() const;
+    ModemManager::PortList ports() const;
     uint powerState() const;
     QString primaryPort() const;
     QString revision() const;
-    SignalQualityPair signalQuality() const;
+    ModemManager::SignalQualityPair signalQuality() const;
     QDBusObjectPath sim() const;
     int state() const;
     uint stateFailedReason() const;
-    UIntList supportedBands() const;
-    UIntList supportedCapabilities() const;
+    ModemManager::UIntList supportedBands() const;
+    ModemManager::UIntList supportedCapabilities() const;
     uint supportedIpFamilies() const;
-    SupportedModesType supportedModes() const;
+    ModemManager::SupportedModesType supportedModes() const;
     uint unlockRequired() const;
-    UnlockRetriesMap unlockRetries() const;
+    ModemManager::UnlockRetriesMap unlockRetries() const;
 
     /* Not part of DBus interface */
     void addBearer(const QDBusObjectPath &bearer);
@@ -115,19 +114,19 @@ public:
     void setModel(const QString &model);
     void setOwnNumbers(const QStringList &numbers);
     void setPlugin(const QString &plugin);
-    void setPorts(const PortList &ports);
+    void setPorts(const ModemManager::PortList &ports);
     void setPrimaryPort(const QString &port);
     void setRevision(const QString &revision);
-    void setSignalQuality(const SignalQualityPair &signalQuality);
+    void setSignalQuality(const ModemManager::SignalQualityPair &signalQuality);
     void setSim(const QDBusObjectPath &sim);
     void setState(int state);
     void setStateFailedReason(uint reason);
-    void setSupportedBands(const UIntList &bands);
-    void setSupportedCapabilities(const UIntList &capabilities);
+    void setSupportedBands(const ModemManager::UIntList &bands);
+    void setSupportedCapabilities(const ModemManager::UIntList &capabilities);
     void setSupportedIpFamilies(uint families);
-    void setSupportedModes(const SupportedModesType &modes);
+    void setSupportedModes(const ModemManager::SupportedModesType &modes);
     void setUnlockRequired(uint unlockRequired);
-    void setUnlockRetries(const UnlockRetriesMap &unlockRetries);
+    void setUnlockRetries(const ModemManager::UnlockRetriesMap &unlockRetries);
 
     QVariantMap toMap() const;
 
@@ -141,7 +140,7 @@ public Q_SLOTS:
     Q_SCRIPTABLE void Reset();
     Q_SCRIPTABLE void SetCurrentBands(const QList<uint> &bands);
     Q_SCRIPTABLE void SetCurrentCapabilities(uint capabilities);
-    Q_SCRIPTABLE void SetCurrentModes(CurrentModesType modes);
+    Q_SCRIPTABLE void SetCurrentModes(ModemManager::CurrentModesType modes);
     Q_SCRIPTABLE void SetPowerState(uint state);
 
 Q_SIGNALS:
@@ -150,9 +149,9 @@ Q_SIGNALS:
 private:
     uint m_accessTechnologies;
     QList<QDBusObjectPath> m_bearers;
-    UIntList m_currentBands;
+    ModemManager::UIntList m_currentBands;
     uint m_currentCapabilities;
-    CurrentModesType m_currentModes;
+    ModemManager::CurrentModesType m_currentModes;
     QString m_device;
     QString m_deviceIdentifier;
     QStringList m_drivers;
@@ -164,20 +163,20 @@ private:
     QString m_model;
     QStringList m_ownNumbers;
     QString m_plugin;
-    PortList m_ports;
+    ModemManager::PortList m_ports;
     uint m_powerState;
     QString m_primaryPort;
     QString m_revision;
-    SignalQualityPair m_signalQuality;
+    ModemManager::SignalQualityPair m_signalQuality;
     QDBusObjectPath m_sim;
     int m_state;
     uint m_stateFailedReason;
-    UIntList m_supportedBands;
-    UIntList m_supportedCapabilities;
+    ModemManager::UIntList m_supportedBands;
+    ModemManager::UIntList m_supportedCapabilities;
     uint m_supportedIpFamilies;
-    SupportedModesType m_supportedModes;
+    ModemManager::SupportedModesType m_supportedModes;
     uint m_unlockRequired;
-    UnlockRetriesMap m_unlockRetries;
+    ModemManager::UnlockRetriesMap m_unlockRetries;
 };
 
 #endif

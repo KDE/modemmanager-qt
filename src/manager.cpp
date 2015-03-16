@@ -30,9 +30,10 @@
 #else
 #include "dbus/dbus.h"
 #endif
+#include "generictypes.h"
+#include "generictypes_p.h"
 #include "macros_p.h"
 #include "mmdebug_p.h"
-#include "generictypes.h"
 #include "modem.h"
 
 Q_GLOBAL_STATIC(ModemManager::ModemManagerPrivate, globalModemManager)
@@ -52,7 +53,7 @@ ModemManager::ModemManagerPrivate::ModemManagerPrivate()
     QLoggingCategory::setFilterRules(QStringLiteral("modemmanager-qt.warning = true"));
 
     qDBusRegisterMetaType<QList<QDBusObjectPath> >();
-    qDBusRegisterMetaType<NMVariantMapMap>();
+    qDBusRegisterMetaType<MMVariantMapMap>();
     qDBusRegisterMetaType<DBUSManagerStruct>();
     qDBusRegisterMetaType<UIntList>();
     registerModemManagerTypes();
@@ -165,7 +166,7 @@ void ModemManager::ModemManagerPrivate::daemonUnregistered()
     modemList.clear();
 }
 
-void ModemManager::ModemManagerPrivate::onInterfacesAdded(const QDBusObjectPath &object_path, const NMVariantMapMap &interfaces_and_properties)
+void ModemManager::ModemManagerPrivate::onInterfacesAdded(const QDBusObjectPath &object_path, const MMVariantMapMap &interfaces_and_properties)
 {
     //TODO control added bearers and sim cards
 

@@ -61,12 +61,12 @@ void ModemManager::ModemDevicePrivate::init()
     Q_Q(ModemManager::ModemDevice);
 #ifdef MMQT_STATIC
     QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, MMQT_DBUS_PATH, DBUS_INTERFACE_MANAGER, QStringLiteral("InterfacesAdded"),
-                                         q, SLOT(onInterfacesAdded(QDBusObjectPath,NMVariantMapMap)));
+                                         q, SLOT(onInterfacesAdded(QDBusObjectPath,MMVariantMapMap)));
     QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, MMQT_DBUS_PATH, DBUS_INTERFACE_MANAGER, QStringLiteral("InterfacesRemoved"),
                                          q, SLOT(onInterfacesRemoved(QDBusObjectPath,QStringList)));
 #else
     QDBusConnection::systemBus().connect(MMQT_DBUS_SERVICE, MMQT_DBUS_PATH, DBUS_INTERFACE_MANAGER, QStringLiteral("InterfacesAdded"),
-                                         q, SLOT(onInterfacesAdded(QDBusObjectPath,NMVariantMapMap)));
+                                         q, SLOT(onInterfacesAdded(QDBusObjectPath,MMVariantMapMap)));
     QDBusConnection::systemBus().connect(MMQT_DBUS_SERVICE, MMQT_DBUS_PATH, DBUS_INTERFACE_MANAGER, QStringLiteral("InterfacesRemoved"),
                                          q, SLOT(onInterfacesRemoved(QDBusObjectPath,QStringList)));
 #endif
@@ -337,7 +337,7 @@ bool ModemManager::ModemDevice::isCdmaModem() const
     return hasInterface(ModemManager::ModemDevice::CdmaInterface);
 }
 
-void ModemManager::ModemDevicePrivate::onInterfacesAdded(const QDBusObjectPath &object_path, const NMVariantMapMap &interfaces_and_properties)
+void ModemManager::ModemDevicePrivate::onInterfacesAdded(const QDBusObjectPath &object_path, const MMVariantMapMap &interfaces_and_properties)
 {
     if (object_path.path() != uni) {
         return;

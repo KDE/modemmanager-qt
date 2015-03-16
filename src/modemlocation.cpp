@@ -70,7 +70,7 @@ QDBusPendingReply<void> ModemManager::ModemLocation::setup(ModemManager::ModemLo
     return d->modemLocationIface.Setup(sources, signalLocation);
 }
 
-QDBusPendingReply<LocationInformationMap> ModemManager::ModemLocation::getLocation()
+QDBusPendingReply<ModemManager::LocationInformationMap> ModemManager::ModemLocation::getLocation()
 {
     Q_D(ModemLocation);
     return d->modemLocationIface.GetLocation();
@@ -100,7 +100,7 @@ bool ModemManager::ModemLocation::signalsLocation() const
     return d->signalsLocation;
 }
 
-LocationInformationMap ModemManager::ModemLocation::location() const
+ModemManager::LocationInformationMap ModemManager::ModemLocation::location() const
 {
     Q_D(const ModemLocation);
     return d->location;

@@ -49,7 +49,7 @@ QList< QDBusObjectPath > Modem::bearers() const
     return m_bearers;
 }
 
-UIntList Modem::currentBands() const
+ModemManager::UIntList Modem::currentBands() const
 {
     return m_currentBands;
 }
@@ -59,7 +59,7 @@ uint Modem::currentCapabilities() const
     return m_currentCapabilities;
 }
 
-CurrentModesType Modem::currentModes() const
+ModemManager::CurrentModesType Modem::currentModes() const
 {
     return m_currentModes;
 }
@@ -119,7 +119,7 @@ QString Modem::plugin() const
     return m_plugin;
 }
 
-PortList Modem::ports() const
+ModemManager::PortList Modem::ports() const
 {
     return m_ports;
 }
@@ -139,7 +139,7 @@ QString Modem::revision() const
     return m_revision;
 }
 
-SignalQualityPair Modem::signalQuality() const
+ModemManager::SignalQualityPair Modem::signalQuality() const
 {
     return m_signalQuality;
 }
@@ -159,12 +159,12 @@ uint Modem::stateFailedReason() const
     return m_stateFailedReason;
 }
 
-UIntList Modem::supportedBands() const
+ModemManager::UIntList Modem::supportedBands() const
 {
     return m_supportedBands;
 }
 
-UIntList Modem::supportedCapabilities() const
+ModemManager::UIntList Modem::supportedCapabilities() const
 {
     return m_supportedCapabilities;
 }
@@ -174,7 +174,7 @@ uint Modem::supportedIpFamilies() const
     return m_supportedIpFamilies;
 }
 
-SupportedModesType Modem::supportedModes() const
+ModemManager::SupportedModesType Modem::supportedModes() const
 {
     return m_supportedModes;
 }
@@ -184,7 +184,7 @@ uint Modem::unlockRequired() const
     return m_unlockRequired;
 }
 
-UnlockRetriesMap Modem::unlockRetries() const
+ModemManager::UnlockRetriesMap Modem::unlockRetries() const
 {
     return m_unlockRetries;
 }
@@ -254,7 +254,7 @@ void Modem::setPlugin(const QString& plugin)
     m_plugin = plugin;
 }
 
-void Modem::setPorts(const PortList& ports)
+void Modem::setPorts(const ModemManager::PortList& ports)
 {
     m_ports = ports;
 }
@@ -269,7 +269,7 @@ void Modem::setRevision(const QString& revision)
     m_revision = revision;
 }
 
-void Modem::setSignalQuality(const SignalQualityPair& signalQuality)
+void Modem::setSignalQuality(const ModemManager::SignalQualityPair& signalQuality)
 {
     m_signalQuality = signalQuality;
 }
@@ -289,12 +289,12 @@ void Modem::setStateFailedReason(uint reason)
     m_stateFailedReason = reason;
 }
 
-void Modem::setSupportedBands(const UIntList& bands)
+void Modem::setSupportedBands(const ModemManager::UIntList& bands)
 {
     m_supportedBands = bands;
 }
 
-void Modem::setSupportedCapabilities(const UIntList& capabilities)
+void Modem::setSupportedCapabilities(const ModemManager::UIntList& capabilities)
 {
     m_supportedCapabilities = capabilities;
 }
@@ -304,7 +304,7 @@ void Modem::setSupportedIpFamilies(uint families)
     m_supportedIpFamilies = families;
 }
 
-void Modem::setSupportedModes(const SupportedModesType& modes)
+void Modem::setSupportedModes(const ModemManager::SupportedModesType& modes)
 {
     m_supportedModes = modes;
 }
@@ -314,7 +314,7 @@ void Modem::setUnlockRequired(uint unlockRequired)
     m_unlockRequired = unlockRequired;
 }
 
-void Modem::setUnlockRetries(const UnlockRetriesMap& unlockRetries)
+void Modem::setUnlockRetries(const ModemManager::UnlockRetriesMap& unlockRetries)
 {
     m_unlockRetries = unlockRetries;
 }
@@ -334,7 +334,7 @@ void Modem::SetCurrentCapabilities(uint capabilities)
     m_currentCapabilities = capabilities;
 }
 
-void Modem::SetCurrentModes(CurrentModesType modes)
+void Modem::SetCurrentModes(ModemManager::CurrentModesType modes)
 {
     m_currentModes = modes;
 }
@@ -393,7 +393,7 @@ QVariantMap Modem::toMap() const
     QVariantMap map;
     map.insert(QLatin1String(MM_MODEM_PROPERTY_SIM), QVariant::fromValue<QDBusObjectPath>(m_sim));
     map.insert(QLatin1String(MM_MODEM_PROPERTY_BEARERS), QVariant::fromValue<QList<QDBusObjectPath> >(m_bearers));
-    map.insert(QLatin1String(MM_MODEM_PROPERTY_SUPPORTEDCAPABILITIES), QVariant::fromValue<UIntList>(m_supportedCapabilities));
+    map.insert(QLatin1String(MM_MODEM_PROPERTY_SUPPORTEDCAPABILITIES), QVariant::fromValue<ModemManager::UIntList>(m_supportedCapabilities));
     map.insert(QLatin1String(MM_MODEM_PROPERTY_CURRENTCAPABILITIES), m_currentCapabilities);
     map.insert(QLatin1String(MM_MODEM_PROPERTY_MAXBEARERS), m_maxBearers);
     map.insert(QLatin1String(MM_MODEM_PROPERTY_MAXACTIVEBEARERS), m_maxActiveBearers);
@@ -405,20 +405,20 @@ QVariantMap Modem::toMap() const
     map.insert(QLatin1String(MM_MODEM_PROPERTY_DRIVERS), m_drivers);
     map.insert(QLatin1String(MM_MODEM_PROPERTY_PLUGIN), m_plugin);
     map.insert(QLatin1String(MM_MODEM_PROPERTY_PRIMARYPORT), m_primaryPort);
-    map.insert(QLatin1String(MM_MODEM_PROPERTY_PORTS), QVariant::fromValue<PortList>(m_ports));
+    map.insert(QLatin1String(MM_MODEM_PROPERTY_PORTS), QVariant::fromValue<ModemManager::PortList>(m_ports));
     map.insert(QLatin1String(MM_MODEM_PROPERTY_EQUIPMENTIDENTIFIER), m_equipmentIdentifier);
     map.insert(QLatin1String(MM_MODEM_PROPERTY_UNLOCKREQUIRED), m_unlockRequired);
-    map.insert(QLatin1String(MM_MODEM_PROPERTY_UNLOCKRETRIES), QVariant::fromValue<UnlockRetriesMap>(m_unlockRetries));
+    map.insert(QLatin1String(MM_MODEM_PROPERTY_UNLOCKRETRIES), QVariant::fromValue<ModemManager::UnlockRetriesMap>(m_unlockRetries));
     map.insert(QLatin1String(MM_MODEM_PROPERTY_STATE), m_state);
     map.insert(QLatin1String(MM_MODEM_PROPERTY_STATEFAILEDREASON), m_stateFailedReason);
     map.insert(QLatin1String(MM_MODEM_PROPERTY_ACCESSTECHNOLOGIES), m_accessTechnologies);
-    map.insert(QLatin1String(MM_MODEM_PROPERTY_SIGNALQUALITY), QVariant::fromValue<SignalQualityPair>(m_signalQuality));
+    map.insert(QLatin1String(MM_MODEM_PROPERTY_SIGNALQUALITY), QVariant::fromValue<ModemManager::SignalQualityPair>(m_signalQuality));
     map.insert(QLatin1String(MM_MODEM_PROPERTY_OWNNUMBERS), m_ownNumbers);
     map.insert(QLatin1String(MM_MODEM_PROPERTY_POWERSTATE), m_powerState);
-    map.insert(QLatin1String(MM_MODEM_PROPERTY_SUPPORTEDMODES), QVariant::fromValue<SupportedModesType>(m_supportedModes));
-    map.insert(QLatin1String(MM_MODEM_PROPERTY_CURRENTMODES), QVariant::fromValue<CurrentModesType>(m_currentModes));
-    map.insert(QLatin1String(MM_MODEM_PROPERTY_SUPPORTEDBANDS), QVariant::fromValue<UIntList>(m_supportedBands));
-    map.insert(QLatin1String(MM_MODEM_PROPERTY_CURRENTBANDS), QVariant::fromValue<UIntList>(m_currentBands));
+    map.insert(QLatin1String(MM_MODEM_PROPERTY_SUPPORTEDMODES), QVariant::fromValue<ModemManager::SupportedModesType>(m_supportedModes));
+    map.insert(QLatin1String(MM_MODEM_PROPERTY_CURRENTMODES), QVariant::fromValue<ModemManager::CurrentModesType>(m_currentModes));
+    map.insert(QLatin1String(MM_MODEM_PROPERTY_SUPPORTEDBANDS), QVariant::fromValue<ModemManager::UIntList>(m_supportedBands));
+    map.insert(QLatin1String(MM_MODEM_PROPERTY_CURRENTBANDS), QVariant::fromValue<ModemManager::UIntList>(m_currentBands));
     map.insert(QLatin1String(MM_MODEM_PROPERTY_SUPPORTEDIPFAMILIES), m_supportedIpFamilies);
     return map;
 }

@@ -48,9 +48,9 @@ public:
     inline QList<QDBusObjectPath> messages() const
     { return qvariant_cast< QList<QDBusObjectPath> >(property("Messages")); }
 
-    Q_PROPERTY(UIntList SupportedStorages READ supportedStorages)
-    inline UIntList supportedStorages() const
-    { return qvariant_cast< UIntList >(property("SupportedStorages")); }
+    Q_PROPERTY(ModemManager::UIntList SupportedStorages READ supportedStorages)
+    inline ModemManager::UIntList supportedStorages() const
+    { return qvariant_cast< ModemManager::UIntList >(property("SupportedStorages")); }
 
 public Q_SLOTS: // METHODS
     inline QDBusPendingReply<QDBusObjectPath> Create(const QVariantMap &properties)

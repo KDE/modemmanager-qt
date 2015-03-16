@@ -19,9 +19,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QVariant>
 #include <QtDBus/QtDBus>
-
 #include "generictypes.h"
-#include "generictypes_p.h"
 
 /*
  * Proxy class for interface org.freedesktop.ModemManager1.Modem.Firmware
@@ -42,7 +40,7 @@ public:
     ~OrgFreedesktopModemManager1ModemFirmwareInterface();
 
 public Q_SLOTS: // METHODS
-    inline QDBusPendingReply<QString, QVariantMapList> List()
+    inline QDBusPendingReply<QString, ModemManager::QVariantMapList> List()
     {
         QList<QVariant> argumentList;
         return asyncCallWithArgumentList(QLatin1String("List"), argumentList);

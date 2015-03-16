@@ -46,7 +46,7 @@ ModemManager::ModemFirmware::~ModemFirmware()
 {
 }
 
-QDBusPendingReply<QString, QVariantMapList> ModemManager::ModemFirmware::listImages()
+QDBusPendingReply<QString, ModemManager::QVariantMapList> ModemManager::ModemFirmware::listImages()
 {
     Q_D(ModemFirmware);
     return d->modemFirmwareIface.List();

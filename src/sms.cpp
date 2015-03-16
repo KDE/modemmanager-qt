@@ -135,7 +135,7 @@ QByteArray ModemManager::Sms::data() const
     return d->data;
 }
 
-ValidityPair ModemManager::Sms::validity() const
+ModemManager::ValidityPair ModemManager::Sms::validity() const
 {
     Q_D(const Sms);
     return d->validity;

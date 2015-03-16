@@ -37,17 +37,17 @@ public:
     explicit ObjectManager(QObject * parent = 0);
     virtual ~ObjectManager();
 
-    void addInterfaces(const QDBusObjectPath &object_path, const NMVariantMapMap &interfaces_and_properties);
+    void addInterfaces(const QDBusObjectPath &object_path, const ModemManager::MMVariantMapMap &interfaces_and_properties);
     void removeInterfaces(const QDBusObjectPath &object_path, const QStringList &interfaces);
 public Q_SLOTS:
-    Q_SCRIPTABLE DBUSManagerStruct GetManagedObjects();
+    Q_SCRIPTABLE ModemManager::DBUSManagerStruct GetManagedObjects();
 
 Q_SIGNALS:
-    Q_SCRIPTABLE void InterfacesAdded(const QDBusObjectPath &object_path, const NMVariantMapMap &interfaces_and_properties);
+    Q_SCRIPTABLE void InterfacesAdded(const QDBusObjectPath &object_path, const ModemManager::MMVariantMapMap &interfaces_and_properties);
     Q_SCRIPTABLE void InterfacesRemoved(const QDBusObjectPath &object_path, const QStringList &interfaces);
 
 private:
-    QMap<QDBusObjectPath, NMVariantMapMap> m_managedObjects;
+    QMap<QDBusObjectPath, ModemManager::MMVariantMapMap> m_managedObjects;
 };
 
 #endif

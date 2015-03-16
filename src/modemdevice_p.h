@@ -58,7 +58,7 @@ public:
     ModemManager::ModemDevice *q_ptr;
 
 private Q_SLOTS:
-    void onInterfacesAdded(const QDBusObjectPath &object_path, const NMVariantMapMap &interfaces_and_properties);
+    void onInterfacesAdded(const QDBusObjectPath &object_path, const ModemManager::MMVariantMapMap &interfaces_and_properties);
     void onInterfacesRemoved(const QDBusObjectPath &object_path, const QStringList &interfaces);
     void onSimPathChanged(const QString &oldPath, const QString &newPath);
 };

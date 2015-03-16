@@ -48,17 +48,17 @@ public:
     inline QList<QDBusObjectPath> bearers() const
     { return qvariant_cast< QList<QDBusObjectPath> >(property("Bearers")); }
 
-    Q_PROPERTY(UIntList CurrentBands READ currentBands)
-    inline UIntList currentBands() const
-    { return qvariant_cast< UIntList >(property("CurrentBands")); }
+    Q_PROPERTY(ModemManager::UIntList CurrentBands READ currentBands)
+    inline ModemManager::UIntList currentBands() const
+    { return qvariant_cast< ModemManager::UIntList >(property("CurrentBands")); }
 
     Q_PROPERTY(uint CurrentCapabilities READ currentCapabilities)
     inline uint currentCapabilities() const
     { return qvariant_cast< uint >(property("CurrentCapabilities")); }
 
-    Q_PROPERTY(CurrentModesType CurrentModes READ currentModes)
-    inline CurrentModesType currentModes() const
-    { return qvariant_cast< CurrentModesType >(property("CurrentModes")); }
+    Q_PROPERTY(ModemManager::CurrentModesType CurrentModes READ currentModes)
+    inline ModemManager::CurrentModesType currentModes() const
+    { return qvariant_cast< ModemManager::CurrentModesType >(property("CurrentModes")); }
 
     Q_PROPERTY(QString Device READ device)
     inline QString device() const
@@ -100,9 +100,9 @@ public:
     inline QString plugin() const
     { return qvariant_cast< QString >(property("Plugin")); }
 
-    Q_PROPERTY(PortList Ports READ ports)
-    inline PortList ports() const
-    { return qvariant_cast< PortList >(property("Ports")); }
+    Q_PROPERTY(ModemManager::PortList Ports READ ports)
+    inline ModemManager::PortList ports() const
+    { return qvariant_cast< ModemManager::PortList >(property("Ports")); }
 
     Q_PROPERTY(uint PowerState READ powerState)
     inline uint powerState() const
@@ -116,9 +116,9 @@ public:
     inline QString revision() const
     { return qvariant_cast< QString >(property("Revision")); }
 
-    Q_PROPERTY(SignalQualityPair SignalQuality READ signalQuality)
-    inline SignalQualityPair signalQuality() const
-    { return qvariant_cast< SignalQualityPair >(property("SignalQuality")); }
+    Q_PROPERTY(ModemManager::SignalQualityPair SignalQuality READ signalQuality)
+    inline ModemManager::SignalQualityPair signalQuality() const
+    { return qvariant_cast< ModemManager::SignalQualityPair >(property("SignalQuality")); }
 
     Q_PROPERTY(QDBusObjectPath Sim READ sim)
     inline QDBusObjectPath sim() const
@@ -132,29 +132,29 @@ public:
     inline uint stateFailedReason() const
     { return qvariant_cast< uint >(property("StateFailedReason")); }
 
-    Q_PROPERTY(UIntList SupportedBands READ supportedBands)
-    inline UIntList supportedBands() const
-    { return qvariant_cast< UIntList >(property("SupportedBands")); }
+    Q_PROPERTY(ModemManager::UIntList SupportedBands READ supportedBands)
+    inline ModemManager::UIntList supportedBands() const
+    { return qvariant_cast< ModemManager::UIntList >(property("SupportedBands")); }
 
-    Q_PROPERTY(UIntList SupportedCapabilities READ supportedCapabilities)
-    inline UIntList supportedCapabilities() const
-    { return qvariant_cast< UIntList >(property("SupportedCapabilities")); }
+    Q_PROPERTY(ModemManager::UIntList SupportedCapabilities READ supportedCapabilities)
+    inline ModemManager::UIntList supportedCapabilities() const
+    { return qvariant_cast< ModemManager::UIntList >(property("SupportedCapabilities")); }
 
     Q_PROPERTY(uint SupportedIpFamilies READ supportedIpFamilies)
     inline uint supportedIpFamilies() const
     { return qvariant_cast< uint >(property("SupportedIpFamilies")); }
 
-    Q_PROPERTY(SupportedModesType SupportedModes READ supportedModes)
-    inline SupportedModesType supportedModes() const
-    { return qvariant_cast< SupportedModesType >(property("SupportedModes")); }
+    Q_PROPERTY(ModemManager::SupportedModesType SupportedModes READ supportedModes)
+    inline ModemManager::SupportedModesType supportedModes() const
+    { return qvariant_cast< ModemManager::SupportedModesType >(property("SupportedModes")); }
 
     Q_PROPERTY(uint UnlockRequired READ unlockRequired)
     inline uint unlockRequired() const
     { return qvariant_cast< uint >(property("UnlockRequired")); }
 
-    Q_PROPERTY(UnlockRetriesMap UnlockRetries READ unlockRetries)
-    inline UnlockRetriesMap unlockRetries() const
-    { return qvariant_cast< UnlockRetriesMap >(property("UnlockRetries")); }
+    Q_PROPERTY(ModemManager::UnlockRetriesMap UnlockRetries READ unlockRetries)
+    inline ModemManager::UnlockRetriesMap unlockRetries() const
+    { return qvariant_cast< ModemManager::UnlockRetriesMap >(property("UnlockRetries")); }
 
 public Q_SLOTS: // METHODS
     inline QDBusPendingReply<QString> Command(const QString &cmd, uint timeout)
@@ -218,7 +218,7 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QLatin1String("SetCurrentCapabilities"), argumentList);
     }
 
-    inline QDBusPendingReply<> SetCurrentModes(CurrentModesType modes)
+    inline QDBusPendingReply<> SetCurrentModes(ModemManager::CurrentModesType modes)
     {
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(modes);

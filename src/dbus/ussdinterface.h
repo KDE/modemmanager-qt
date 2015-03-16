@@ -20,7 +20,6 @@
 #include <QtCore/QVariant>
 #include <QtDBus/QtDBus>
 #include "generictypes.h"
-#include "generictypes_p.h"
 
 /*
  * Proxy class for interface org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd

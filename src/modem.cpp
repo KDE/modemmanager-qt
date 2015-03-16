@@ -31,6 +31,7 @@
 #include "dbus/dbus.h"
 #endif
 #include "generictypes.h"
+#include "generictypes_p.h"
 #include "mmdebug_p.h"
 
 #include <QDomDocument>
@@ -447,7 +448,7 @@ QString ModemManager::Modem::primaryPort() const
     return d->primaryPort;
 }
 
-PortList ModemManager::Modem::ports() const
+ModemManager::PortList ModemManager::Modem::ports() const
 {
     Q_D(const Modem);
     return d->ports;
@@ -465,7 +466,7 @@ MMModemLock ModemManager::Modem::unlockRequired() const
     return d->unlockRequired;
 }
 
-UnlockRetriesMap ModemManager::Modem::unlockRetries() const
+ModemManager::UnlockRetriesMap ModemManager::Modem::unlockRetries() const
 {
     Q_D(const Modem);
     return d->unlockRetries;
@@ -489,7 +490,7 @@ ModemManager::Modem::AccessTechnologies ModemManager::Modem::accessTechnologies(
     return d->accessTechnologies;
 }
 
-SignalQualityPair ModemManager::Modem::signalQuality() const
+ModemManager::SignalQualityPair ModemManager::Modem::signalQuality() const
 {
     Q_D(const Modem);
     return d->signalQuality;
@@ -507,13 +508,13 @@ MMModemPowerState ModemManager::Modem::powerState() const
     return d->powerState;
 }
 
-SupportedModesType ModemManager::Modem::supportedModes() const
+ModemManager::SupportedModesType ModemManager::Modem::supportedModes() const
 {
     Q_D(const Modem);
     return d->supportedModes;
 }
 
-CurrentModesType ModemManager::Modem::currentModes() const
+ModemManager::CurrentModesType ModemManager::Modem::currentModes() const
 {
     Q_D(const Modem);
     return d->currentModes;

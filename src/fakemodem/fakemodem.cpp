@@ -27,14 +27,14 @@ FakeModem::FakeModem(QObject* parent)
     , m_modemCounter(0)
     , m_objectManager(new ObjectManager(this))
 {
-    qDBusRegisterMetaType<NMVariantMapMap> ();
-    qDBusRegisterMetaType<UIntList> ();
-    qDBusRegisterMetaType<CurrentModesType> ();
-    qDBusRegisterMetaType<SupportedModesType> ();
-    qDBusRegisterMetaType<SignalQualityPair> ();
-    qDBusRegisterMetaType<PortList> ();
-    qDBusRegisterMetaType<UnlockRetriesMap> ();
-    qDBusRegisterMetaType<Port> ();
+    qDBusRegisterMetaType<ModemManager::MMVariantMapMap> ();
+    qDBusRegisterMetaType<ModemManager::UIntList> ();
+    qDBusRegisterMetaType<ModemManager::CurrentModesType> ();
+    qDBusRegisterMetaType<ModemManager::SupportedModesType> ();
+    qDBusRegisterMetaType<ModemManager::SignalQualityPair> ();
+    qDBusRegisterMetaType<ModemManager::PortList> ();
+    qDBusRegisterMetaType<ModemManager::UnlockRetriesMap> ();
+    qDBusRegisterMetaType<ModemManager::Port> ();
 
     QDBusConnection::sessionBus().registerService(QLatin1Literal(MMQT_DBUS_SERVICE));
     QDBusConnection::sessionBus().registerObject(QLatin1Literal(MMQT_DBUS_PATH), this, QDBusConnection::ExportScriptableContents | QDBusConnection::ExportAdaptors);
@@ -53,7 +53,7 @@ void FakeModem::addModem(Modem* modem)
     m_modems.insert(QDBusObjectPath(newModemPath), modem);
     QDBusConnection::sessionBus().registerObject(newModemPath, modem, QDBusConnection::ExportScriptableContents | QDBusConnection::ExportAdaptors);
 
-    NMVariantMapMap interfaces;
+    ModemManager::MMVariantMapMap interfaces;
     interfaces.insert(QLatin1String(MMQT_DBUS_INTERFACE_MODEM), modem->toMap());
 
     m_objectManager->addInterfaces(QDBusObjectPath(newModemPath), interfaces);

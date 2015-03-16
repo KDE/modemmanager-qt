@@ -23,7 +23,6 @@
 
 #include "dbus/fakedbus.h"
 #include "generictypes.h"
-#include "generictypes_p.h"
 
 #include <QObject>
 
