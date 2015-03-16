@@ -35,6 +35,132 @@
 
 #include <QDomDocument>
 
+namespace ModemManager
+{
+
+class ModemManager::BearerProperties::Private
+{
+public:
+    Private()
+    { }
+    QString apn;
+    MMBearerIpFamily ipType;
+    MMBearerAllowedAuth allowedAuth;
+    QString user;
+    QString password;
+    bool allowRoaming;
+    MMModemCdmaRmProtocol rmProtocol;
+    QString number;
+};
+
+}
+
+ModemManager::BearerProperties::BearerProperties()
+    : d(new Private())
+{
+}
+
+ModemManager::BearerProperties::BearerProperties(const ModemManager::BearerProperties& other)
+    : d(new Private)
+{
+    *this = other;
+}
+
+ModemManager::BearerProperties::~BearerProperties()
+{
+    delete d;
+}
+
+QString ModemManager::BearerProperties::apn() const
+{
+    return d->apn;
+}
+
+void ModemManager::BearerProperties::setApn(const QString& apn)
+{
+    d->apn = apn;
+}
+
+MMBearerIpFamily ModemManager::BearerProperties::ipType() const
+{
+    return d->ipType;
+}
+
+void ModemManager::BearerProperties::setIpType(MMBearerIpFamily ipType)
+{
+    d->ipType = ipType;
+}
+
+MMBearerAllowedAuth ModemManager::BearerProperties::allowedAuthentication() const
+{
+    return d->allowedAuth;
+}
+
+void ModemManager::BearerProperties::setAllowedAuthentication(MMBearerAllowedAuth allowedAuth)
+{
+    d->allowedAuth = allowedAuth;
+}
+
+QString ModemManager::BearerProperties::user() const
+{
+    return d->user;
+}
+
+void ModemManager::BearerProperties::setUser(const QString& user)
+{
+    d->user = user;
+}
+
+QString ModemManager::BearerProperties::password() const
+{
+    return d->password;
+}
+
+void ModemManager::BearerProperties::setPassword(const QString& password)
+{
+    d->password = password;
+}
+
+bool ModemManager::BearerProperties::allowRoaming() const
+{
+    return d->allowRoaming;
+}
+
+void ModemManager::BearerProperties::setAllowRoaming(bool allow)
+{
+    d->allowRoaming = allow;
+}
+
+MMModemCdmaRmProtocol ModemManager::BearerProperties::rmProtocol() const
+{
+    return d->rmProtocol;
+}
+
+void ModemManager::BearerProperties::setRmProtocol(MMModemCdmaRmProtocol rmProtocol)
+{
+    d->rmProtocol = rmProtocol;
+}
+
+QString ModemManager::BearerProperties::number() const
+{
+    return d->number;
+}
+
+void ModemManager::BearerProperties::setNumber(const QString& number)
+{
+    d->number = number;
+}
+
+ModemManager::BearerProperties& ModemManager::BearerProperties::operator=(const ModemManager::BearerProperties& other)
+{
+    if (this == &other) {
+        return *this;
+    }
+
+    *d = *other.d;
+    return *this;
+}
+
 ModemManager::ModemPrivate::ModemPrivate(const QString &path, Modem *q)
     : InterfacePrivate(path, q)
 #ifdef MMQT_STATIC
@@ -148,24 +274,24 @@ QDBusPendingReply<void> ModemManager::Modem::setEnabled(bool enable)
     return d->modemIface.Enable(enable);
 }
 
-QDBusPendingReply<QDBusObjectPath> ModemManager::Modem::createBearer(const BearerStruct &bearer)
+QDBusPendingReply<QDBusObjectPath> ModemManager::Modem::createBearer(const ModemManager::BearerProperties &bearerProperties)
 {
     Q_D(Modem);
     QVariantMap map;
-    map.insert("apn", bearer.apn);
-    if (bearer.ipType != MM_BEARER_IP_FAMILY_NONE)
-        map.insert("ip-type", (uint)bearer.ipType);
-    if (bearer.allowedAuth != MM_BEARER_ALLOWED_AUTH_UNKNOWN)
-        map.insert("allowed-auth", (uint)bearer.allowedAuth);
-    if (!bearer.user.isEmpty())
-        map.insert("user", bearer.user);
-    if (!bearer.password.isEmpty())
-        map.insert("password", bearer.password);
-    map.insert("allow-roaming", bearer.allowRoaming);
-    if (bearer.rmProtocol != MM_MODEM_CDMA_RM_PROTOCOL_UNKNOWN)
-        map.insert("rm-protocol", (uint)bearer.rmProtocol);
-    if (!bearer.number.isEmpty())
-        map.insert("number", bearer.number);
+    map.insert("apn", bearerProperties.apn());
+    if (bearerProperties.ipType() != MM_BEARER_IP_FAMILY_NONE)
+        map.insert("ip-type", (uint)bearerProperties.ipType());
+    if (bearerProperties.allowedAuthentication() != MM_BEARER_ALLOWED_AUTH_UNKNOWN)
+        map.insert("allowed-auth", (uint)bearerProperties.allowedAuthentication());
+    if (!bearerProperties.user().isEmpty())
+        map.insert("user", bearerProperties.user());
+    if (!bearerProperties.password().isEmpty())
+        map.insert("password", bearerProperties.password());
+    map.insert("allow-roaming", bearerProperties.allowRoaming());
+    if (bearerProperties.rmProtocol() != MM_MODEM_CDMA_RM_PROTOCOL_UNKNOWN)
+        map.insert("rm-protocol", (uint)bearerProperties.rmProtocol());
+    if (!bearerProperties.number().isEmpty())
+        map.insert("number", bearerProperties.number());
     return d->modemIface.CreateBearer(map);
 }
 

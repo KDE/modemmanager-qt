@@ -45,6 +45,117 @@ namespace ModemManager
 class ModemPrivate;
 
 /**
+ * This class represents bearer properties used for creating of new bearers
+ */
+class MODEMMANAGERQT_EXPORT BearerProperties
+{
+public:
+    /**
+     * Constructs an empty BearerProperties object
+     */
+    BearerProperties();
+
+    /**
+     * Destroys this BearerProperties object.
+     */
+    ~BearerProperties();
+
+    /**
+     * Constructs a BearerProperties object that is a copy of the object @p other.
+     */
+    BearerProperties(const BearerProperties &other);
+
+    /**
+     * Returns Access Point Name
+     */
+    QString apn() const;
+
+    /**
+     * Sets Access Point Name
+     */
+    void setApn(const QString &apn);
+
+    /**
+     * Returns addressing type
+     */
+    MMBearerIpFamily ipType() const;
+
+    /**
+     * Sets addressing type
+     */
+    void setIpType(MMBearerIpFamily ipType);
+
+    /**
+     * Returns used authentication method
+     */
+    MMBearerAllowedAuth allowedAuthentication() const;
+
+    /**
+     * Sets the authentication method to use
+     */
+    void setAllowedAuthentication(MMBearerAllowedAuth allowedAuth);
+
+    /**
+     * Returns user name
+     */
+    QString user() const;
+
+    /**
+     * Sets user name
+     */
+    void setUser(const QString &user);
+
+    /**
+     * Returns password
+     */
+    QString password() const;
+
+    /**
+     * Sets password
+     */
+    void setPassword(const QString &password);
+
+    /**
+     * Returns whether connection is allowed during roaming
+     */
+    bool allowRoaming() const;
+
+    /**
+     * Sets whether connection is allowed during roaming
+     */
+    void setAllowRoaming(bool allow);
+
+    /**
+     * Returns protocol of the Rm interface
+     */
+    MMModemCdmaRmProtocol rmProtocol() const;
+
+    /**
+     * Sets protocol of the Rm interface
+     */
+    void setRmProtocol(MMModemCdmaRmProtocol rmProtocol);
+
+    /**
+     * Returns telephone number to dial
+     */
+    QString number() const;
+
+    /**
+     * Sets telephone number to dial
+     */
+    void setNumber(const QString &number);
+
+    /**
+     * Makes a copy of the IpConfig object @p other.
+     */
+    BearerProperties &operator=(const BearerProperties &other);
+
+private:
+    class Private;
+    Private *const d;
+};
+
+/**
  * @brief The Modem class
  *
  * The Modem interface controls the status and actions in a given modem object.
@@ -67,17 +178,6 @@ public:
 
     typedef QSharedPointer<Modem> Ptr;
     typedef QList<Ptr> List;
-
-    struct BearerStruct {
-        QString apn; ///< Access Point Name, given as a string value. Required in 3GPP.
-        MMBearerIpFamily ipType; ///< Addressing type, given as a MMBearerIpFamily value. Optional in 3GPP and CDMA.
-        MMBearerAllowedAuth allowedAuth; ///< The authentication method to use, given as a MMBearerAllowedAuth value. Optional in 3GPP.
-        QString user; ///< User name (if any) required by the network, given as a string value. Optional in 3GPP.
-        QString password; ///< Password (if any) required by the network, given as a string value. Optional in 3GPP.
-        bool allowRoaming; ///< Flag to tell whether connection is allowed during roaming, given as a boolean value. Optional in 3GPP.
-        MMModemCdmaRmProtocol rmProtocol; ///< Protocol of the Rm interface, given as a MMModemCdmaRmProtocol value. Optional in CDMA.
-        QString number; ///< Telephone number to dial, given as a string value. Required in POTS.
-    };
 
     explicit Modem(const QString &path, QObject *parent = 0 );
     ~Modem();
@@ -105,7 +205,7 @@ public:
      * This request may fail if the modem does not support additional bearers, if too many bearers are already defined, or if properties are invalid.
      *
      */
-    QDBusPendingReply<QDBusObjectPath> createBearer(const BearerStruct &bearer);
+    QDBusPendingReply<QDBusObjectPath> createBearer(const ModemManager::BearerProperties &bearerProperties);
 
     /**
      * Delete an existing packet data bearer.
