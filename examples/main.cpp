@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     Q_UNUSED(argc);
     Q_UNUSED(argv);
     qDebug() << "List of Modem Devices:";
-    foreach (ModemManager::ModemDevice::Ptr modemdevice, ModemManager::modemDevices()) {
+    Q_FOREACH (ModemManager::ModemDevice::Ptr modemdevice, ModemManager::modemDevices()) {
         ModemManager::Modem::Ptr modemInterface = modemdevice->modemInterface();
         if (modemInterface) {
             qDebug() << "Modem: " << modemInterface->manufacturer() << modemInterface->model();
@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
         ModemManager::ModemMessaging::Ptr messaging = modemdevice->messagingInterface();
         if (messaging && !messaging->messages().isEmpty()) {
             ModemManager::Sms::List messages = messaging->messages();
-            foreach (ModemManager::Sms::Ptr sms, messages) {
+            Q_FOREACH (ModemManager::Sms::Ptr sms, messages) {
                 qDebug() << "   " << sms->number() << sms->text();
             }
         } else {
