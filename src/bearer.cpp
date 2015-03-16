@@ -29,6 +29,120 @@
 
 Q_LOGGING_CATEGORY(MMQT, "modemmanager-qt")
 
+namespace ModemManager {
+
+class ModemManager::IpConfig::Private
+{
+public:
+    Private()
+    { }
+    MMBearerIpMethod method;
+    QString address;
+    uint prefix;
+    QString dns1;
+    QString dns2;
+    QString dns3;
+    QString gateway;
+};
+
+}
+
+ModemManager::IpConfig::IpConfig()
+    : d(new Private())
+{
+}
+
+ModemManager::IpConfig::IpConfig(const ModemManager::IpConfig& other)
+    : d(new Private)
+{
+    *this = other;
+}
+
+ModemManager::IpConfig::~IpConfig()
+{
+    delete d;
+}
+
+MMBearerIpMethod ModemManager::IpConfig::method() const
+{
+    return d->method;
+}
+
+void ModemManager::IpConfig::setMethod(MMBearerIpMethod method)
+{
+    d->method = method;
+}
+
+QString ModemManager::IpConfig::address() const
+{
+    return d->address;
+}
+
+void ModemManager::IpConfig::setAddress(const QString& address)
+{
+    d->address = address;
+}
+
+uint ModemManager::IpConfig::prefix() const
+{
+    return d->prefix;
+}
+
+void ModemManager::IpConfig::setPrefix(uint prefix)
+{
+    d->prefix = prefix;
+}
+
+QString ModemManager::IpConfig::dns1() const
+{
+    return d->dns1;
+}
+
+void ModemManager::IpConfig::setDns1(const QString& dns1)
+{
+    d->dns1 = dns1;
+}
+
+QString ModemManager::IpConfig::dns2() const
+{
+    return d->dns2;
+}
+
+void ModemManager::IpConfig::setDns2(const QString& dns2)
+{
+    d->dns2 = dns2;
+}
+
+QString ModemManager::IpConfig::dns3() const
+{
+    return d->dns3;
+}
+
+void ModemManager::IpConfig::setDns3(const QString& dns3)
+{
+    d->dns3 = dns3;
+}
+
+QString ModemManager::IpConfig::gateway() const
+{
+    return d->gateway;
+}
+
+void ModemManager::IpConfig::setGateway(const QString& gateway)
+{
+    d->gateway = gateway;
+}
+
+ModemManager::IpConfig& ModemManager::IpConfig::operator=(const ModemManager::IpConfig& other)
+{
+    if (this == &other) {
+        return *this;
+    }
+
+    *d = *other.d;
+    return *this;
+}
+
 ModemManager::BearerPrivate::BearerPrivate(const QString &path, Bearer *q)
 #ifdef MMQT_STATIC
     : bearerIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
@@ -86,13 +200,13 @@ bool ModemManager::Bearer::isSuspended() const
     return d->isSuspended;
 }
 
-ModemManager::Bearer::IpConfig ModemManager::Bearer::ip4Config() const
+ModemManager::IpConfig ModemManager::Bearer::ip4Config() const
 {
     Q_D(const Bearer);
     return d->ipv4Config;
 }
 
-ModemManager::Bearer::IpConfig ModemManager::Bearer::ip6Config() const
+ModemManager::IpConfig ModemManager::Bearer::ip6Config() const
 {
     Q_D(const Bearer);
     return d->ipv6Config;
@@ -122,18 +236,18 @@ QDBusPendingReply<void> ModemManager::Bearer::disconnectBearer()
     return d->bearerIface.Disconnect();
 }
 
-ModemManager::Bearer::IpConfig ModemManager::BearerPrivate::ipConfigFromMap(const QVariantMap &map)
+ModemManager::IpConfig ModemManager::BearerPrivate::ipConfigFromMap(const QVariantMap &map)
 {
-    Bearer::IpConfig result;
-    result.method = (MMBearerIpMethod)map.value("method").toUInt();
+    ModemManager::IpConfig result;
+    result.setMethod((MMBearerIpMethod)map.value("method").toUInt());
 
-    if (result.method == MM_BEARER_IP_METHOD_STATIC) {
-        result.address = map.value("address").toString();
-        result.prefix = map.value("prefix").toUInt();
-        result.dns1 = map.value("dns1").toString();
-        result.dns2 = map.value("dns2").toString();
-        result.dns3 = map.value("dns3").toString();
-        result.gateway = map.value("gateway").toString();
+    if (result.method() == MM_BEARER_IP_METHOD_STATIC) {
+        result.setAddress(map.value("address").toString());
+        result.setPrefix(map.value("prefix").toUInt());
+        result.setDns1(map.value("dns1").toString());
+        result.setDns2(map.value("dns2").toString());
+        result.setDns3(map.value("dns3").toString());
+        result.setGateway(map.value("gateway").toString());
     }
 
     return result;

@@ -39,12 +39,12 @@ public:
     QString bearerInterface;
     bool isConnected;
     bool isSuspended;
-    mutable Bearer::IpConfig ipv4Config;
-    mutable Bearer::IpConfig ipv6Config;
+    mutable ModemManager::IpConfig ipv4Config;
+    mutable ModemManager::IpConfig ipv6Config;
     uint ipTimeout;
     QVariantMap bearerProperties;
 
-    Bearer::IpConfig ipConfigFromMap(const QVariantMap &map);
+    ModemManager::IpConfig ipConfigFromMap(const QVariantMap &map);
 
     Q_DECLARE_PUBLIC(Bearer)
     Bearer *q_ptr;
