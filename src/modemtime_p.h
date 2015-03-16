@@ -34,9 +34,9 @@ class ModemTimePrivate: public InterfacePrivate
 public:
     explicit ModemTimePrivate(const QString &path, ModemTime *q);
     OrgFreedesktopModemManager1ModemTimeInterface modemTimeIface;
-    ModemTime::NetworkTimeZone networkTimeZone;
+    ModemManager::NetworkTimeZone networkTimeZone;
 
-    ModemTime::NetworkTimeZone variantMapToTimeZone(const QVariantMap &map);
+    ModemManager::NetworkTimeZone variantMapToTimeZone(const QVariantMap &map);
 
     Q_DECLARE_PUBLIC(ModemTime)
     ModemTime *q_ptr;

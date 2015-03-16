@@ -28,6 +28,77 @@
 #include "dbus/dbus.h"
 #endif
 
+namespace ModemManager
+{
+
+class ModemManager::NetworkTimeZone::Private
+{
+public:
+    Private()
+    { }
+    int offset;
+    int dstOffset;
+    int leapSecond;
+};
+
+}
+
+ModemManager::NetworkTimeZone::NetworkTimeZone()
+    : d(new Private())
+{
+}
+
+ModemManager::NetworkTimeZone::NetworkTimeZone(const ModemManager::NetworkTimeZone& other)
+    : d(new Private)
+{
+    *this = other;
+}
+
+ModemManager::NetworkTimeZone::~NetworkTimeZone()
+{
+    delete d;
+}
+
+int ModemManager::NetworkTimeZone::offset() const
+{
+    return d->offset;
+}
+
+void ModemManager::NetworkTimeZone::setOffset(int offset)
+{
+    d->offset = offset;
+}
+
+int ModemManager::NetworkTimeZone::dstOffset() const
+{
+    return d->dstOffset;
+}
+
+void ModemManager::NetworkTimeZone::setDstOffset(int dstOffset)
+{
+    d->dstOffset = dstOffset;
+}
+
+int ModemManager::NetworkTimeZone::leapSecond() const
+{
+    return d->leapSecond;
+}
+
+void ModemManager::NetworkTimeZone::setLeapSecond(int leapSecond)
+{
+    d->leapSecond = leapSecond;
+}
+
+ModemManager::NetworkTimeZone& ModemManager::NetworkTimeZone::operator=(const ModemManager::NetworkTimeZone& other)
+{
+    if (this == &other) {
+        return *this;
+    }
+
+    *d = *other.d;
+    return *this;
+}
+
 ModemManager::ModemTimePrivate::ModemTimePrivate(const QString &path, ModemTime *q)
     : InterfacePrivate(path, q)
 #ifdef MMQT_STATIC
@@ -68,22 +139,22 @@ QDBusPendingReply<QString> ModemManager::ModemTime::networkTime()
     return d->modemTimeIface.GetNetworkTime();
 }
 
-ModemManager::ModemTime::NetworkTimeZone ModemManager::ModemTime::networkTimeZone() const
+ModemManager::NetworkTimeZone ModemManager::ModemTime::networkTimeZone() const
 {
     Q_D(const ModemTime);
 
     return d->networkTimeZone;
 }
 
-ModemManager::ModemTime::NetworkTimeZone ModemManager::ModemTimePrivate::variantMapToTimeZone(const QVariantMap &map)
+ModemManager::NetworkTimeZone ModemManager::ModemTimePrivate::variantMapToTimeZone(const QVariantMap &map)
 {
-    ModemManager::ModemTime::NetworkTimeZone result;
+    ModemManager::NetworkTimeZone result;
     if (map.contains("offset")) {
-        result.offset = map.value("offset").toInt();
+        result.setOffset(map.value("offset").toInt());
     } if (map.contains("dst-offset")) {
-        result.dst_offset = map.value("dst-offset").toInt();
+        result.setDstOffset(map.value("dst-offset").toInt());
     } if (map.contains("leap-seconds")) {
-        result.leap_seconds = map.value("leap-seconds").toInt();
+        result.setLeapSecond(map.value("leap-seconds").toInt());
     }
 
     return result;

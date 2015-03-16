@@ -35,6 +35,66 @@ namespace ModemManager
 class ModemTimePrivate;
 
 /**
+ * This class represents the timezone data provided by the network
+ */
+class MODEMMANAGERQT_EXPORT NetworkTimeZone
+{
+public:
+    /**
+     * Constructs an empty timezone data object
+     */
+    NetworkTimeZone();
+
+    /**
+     * Destroys this NetworkTimeZone object.
+     */
+    ~NetworkTimeZone();
+
+    /**
+     * Constructs an NetworkTimeZone object that is a copy of the object @p other.
+     */
+    NetworkTimeZone(const NetworkTimeZone &other);
+
+    /**
+     * Returns offset of the timezone from UTC, in minutes (including DST, if applicable)
+     */
+    int offset() const;
+
+    /**
+     * Sets offset of the timezone from UTC
+     */
+    void setOffset(int offset);
+
+    /**
+     * Returns amount of offset that is due to DST (daylight saving time)
+     */
+    int dstOffset() const;
+
+    /**
+     * Sets amount of offset that is due to DST
+     */
+    void setDstOffset(int dstOffset);
+
+    /**
+     * Returns number of leap seconds included in the network time
+     */
+    int leapSecond() const;
+
+    /**
+     * Sets number of leap seconds included in the network timezone
+     */
+    void setLeapSecond(int leapSecond);
+    /**
+     * Makes a copy of the NetworkTimeZone object @p other.
+     */
+    NetworkTimeZone &operator=(const NetworkTimeZone &other);
+
+private:
+    class Private;
+    Private *const d;
+};
+
+/**
  * @brief The ModemTime class
  *
  * This class allows clients to receive network time and timezone updates broadcast by mobile networks.
@@ -70,7 +130,7 @@ public:
      * @return the timezone data provided by the network.
      * @see NetworkTimeZone
      */
-    NetworkTimeZone networkTimeZone() const;
+    ModemManager::NetworkTimeZone networkTimeZone() const;
 
 Q_SIGNALS:
     /**
@@ -78,7 +138,7 @@ Q_SIGNALS:
      * @param dateTime the new date and time
      */
     void networkTimeChanged(const QDateTime &dateTime);
-    void networkTimeZoneChanged(const NetworkTimeZone &timeZone);
+    void networkTimeZoneChanged(const ModemManager::NetworkTimeZone &timeZone);
 };
 
 } // namespace ModemManager
