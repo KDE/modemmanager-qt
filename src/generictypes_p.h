@@ -28,6 +28,5 @@
 Q_DECLARE_METATYPE(ModemManager::MMVariantMapMap)
 Q_DECLARE_METATYPE(ModemManager::UIntList)
 Q_DECLARE_METATYPE(ModemManager::UIntListList)
-Q_DECLARE_METATYPE(ModemManager::MMStringMap)
 
 #endif // MODEMMANAGERQT_GENERIC_TYPES_P_H

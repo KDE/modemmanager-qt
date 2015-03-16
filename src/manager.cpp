@@ -53,9 +53,6 @@ ModemManager::ModemManagerPrivate::ModemManagerPrivate()
     QLoggingCategory::setFilterRules(QStringLiteral("modemmanager-qt.warning = true"));
 
     qDBusRegisterMetaType<QList<QDBusObjectPath> >();
-    qDBusRegisterMetaType<MMVariantMapMap>();
-    qDBusRegisterMetaType<DBUSManagerStruct>();
-    qDBusRegisterMetaType<UIntList>();
     registerModemManagerTypes();
 
     bool serviceFound = manager.isValid();

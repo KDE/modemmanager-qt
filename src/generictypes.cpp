@@ -158,7 +158,10 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, ModemManager::QVa
 
 void registerModemManagerTypes()
 {
+    qDBusRegisterMetaType<ModemManager::MMVariantMapMap>();
     qDBusRegisterMetaType<ModemManager::DBUSManagerStruct>();
+    qDBusRegisterMetaType<ModemManager::UIntList>();
+    qDBusRegisterMetaType<ModemManager::UIntListList>();
     qDBusRegisterMetaType<ModemManager::Port>();
     qDBusRegisterMetaType<ModemManager::PortList>();
     qDBusRegisterMetaType<ModemManager::CurrentModesType>();

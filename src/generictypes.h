@@ -35,7 +35,6 @@ namespace ModemManager
     typedef QMap<QDBusObjectPath, MMVariantMapMap> DBUSManagerStruct;
     typedef QList<uint> UIntList;
     typedef QList<QList<uint> > UIntListList;
-    typedef QMap<QString, QString> MMStringMap;
 
     typedef struct {
         QString name;
