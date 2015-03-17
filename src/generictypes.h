@@ -60,7 +60,7 @@ namespace ModemManager
     } OmaSessionType;
     typedef QList<OmaSessionType> OmaSessionTypes;
 #endif
-    typedef QMap</*MMModemLock*/uint, uint> UnlockRetriesMap;
+    typedef QMap<MMModemLock, uint> UnlockRetriesMap;
     typedef QList<QVariantMap> QVariantMapList;
     typedef QMap<MMModemLocationSource, QVariant> LocationInformationMap;
     typedef struct {
@@ -68,9 +68,6 @@ namespace ModemManager
         uint value;
     } ValidityPair;
 }
-
-// Q_DECLARE_METATYPE(ModemManager::MMModemLock)
-// Q_DECLARE_METATYPE(ModemManager::MMModemMode)
 
 Q_DECLARE_METATYPE(ModemManager::DBUSManagerStruct)
 Q_DECLARE_METATYPE(ModemManager::Port)
@@ -109,9 +106,17 @@ MODEMMANAGERQT_EXPORT QDBusArgument &operator << (QDBusArgument &arg, const Mode
 MODEMMANAGERQT_EXPORT const QDBusArgument &operator >> (const QDBusArgument &arg, ModemManager::OmaSessionType &sessionType);
 #endif
 
+// UnlockRetriesMap
+MODEMMANAGERQT_EXPORT QDBusArgument &operator<<(QDBusArgument &argument, const ModemManager::UnlockRetriesMap &unlockRetriesMap);
+MODEMMANAGERQT_EXPORT const QDBusArgument &operator>>(const QDBusArgument &argument, ModemManager::UnlockRetriesMap &unlockRetriesMap);
+
 // QVariantMapList
 MODEMMANAGERQT_EXPORT QDBusArgument &operator<<(QDBusArgument &argument, const ModemManager::QVariantMapList &variantMapList);
 MODEMMANAGERQT_EXPORT const QDBusArgument &operator>>(const QDBusArgument &argument, ModemManager::QVariantMapList &variantMapList);
+
+// LocationInformationMap
+MODEMMANAGERQT_EXPORT QDBusArgument &operator<<(QDBusArgument &argument, const ModemManager::LocationInformationMap &locationMap);
+MODEMMANAGERQT_EXPORT const QDBusArgument &operator>>(const QDBusArgument &argument, ModemManager::LocationInformationMap &locationMap);
 
 MODEMMANAGERQT_EXPORT void registerModemManagerTypes();
 

@@ -130,6 +130,42 @@ const QDBusArgument &operator >>(const QDBusArgument &arg, ModemManager::Validit
     return arg;
 }
 
+// Marshall the UnlockRetriesMap data into a D-BUS argument
+QDBusArgument &operator<<(QDBusArgument &argument, const ModemManager::UnlockRetriesMap &unlockRetriesMap)
+{
+    argument.beginMap(QVariant::Int, QVariant::UInt);
+
+    QMapIterator<MMModemLock, uint> i(unlockRetriesMap);
+    while (i.hasNext()) {
+        i.next();
+        argument.beginMapEntry();
+        argument << i.key() << i.value();
+        argument.endMapEntry();
+    }
+    argument.endMap();
+    return argument;
+}
+
+// Retrieve the UnlockRetriesMap data from the D-BUS argument
+const QDBusArgument &operator>>(const QDBusArgument &argument, ModemManager::UnlockRetriesMap &unlockRetriesMap)
+{
+    argument.beginMap();
+    unlockRetriesMap.clear();
+
+    while (!argument.atEnd()) {
+        int key;
+        uint value;
+        argument.beginMapEntry();
+        argument >> key;
+        argument >> value;
+        argument.endMapEntry();
+        unlockRetriesMap.insert((MMModemLock)key, value);
+    }
+
+    argument.endMap();
+    return argument;
+}
+
 // Marshal QList<QVariantMap> into a D-BUS argument
 QDBusArgument &operator<<(QDBusArgument &argument, const ModemManager::QVariantMapList &variantMapList)
 {
@@ -156,6 +192,42 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, ModemManager::QVa
     return argument;
 }
 
+// Marshal LocationInformationMap into a D-BUS argument
+QDBusArgument &operator<<(QDBusArgument &argument, const ModemManager::LocationInformationMap &locationMap)
+{
+    argument.beginMap(QVariant::Int, qMetaTypeId<QVariant>());
+
+    QMapIterator<MMModemLocationSource, QVariant> i(locationMap);
+    while (i.hasNext()) {
+        i.next();
+        argument.beginMapEntry();
+        argument << i.key() << QDBusVariant(i.value());
+        argument.endMapEntry();
+    }
+    argument.endMap();
+    return argument;
+}
+
+// Retrieve LocationInformationMap from a D-BUS argument
+const QDBusArgument &operator>>(const QDBusArgument &argument, ModemManager::LocationInformationMap &locationMap)
+{
+    argument.beginMap();
+    locationMap.clear();
+
+    while (!argument.atEnd()) {
+        int key;
+        QVariant value;
+        argument.beginMapEntry();
+        argument >> key;
+        argument >> value;
+        argument.endMapEntry();
+        locationMap.insert((MMModemLocationSource)key, value);
+    }
+
+    argument.endMap();
+    return argument;
+}
+
 void registerModemManagerTypes()
 {
     qDBusRegisterMetaType<ModemManager::MMVariantMapMap>();
@@ -173,10 +245,11 @@ void registerModemManagerTypes()
     qDBusRegisterMetaType<ModemManager::OmaSessionType>();
     qDBusRegisterMetaType<ModemManager::OmaSessionTypes>();
 #endif
-    //qDBusRegisterMetaType<LocationInformationMap>();
+    qDBusRegisterMetaType<ModemManager::LocationInformationMap>();
     qDBusRegisterMetaType<ModemManager::ValidityPair>();
     qDBusRegisterMetaType<ModemManager::PortList>();
     qRegisterMetaType<MMModemMode>("MMModemMode");
     qRegisterMetaType<MMModemLock>("MMModemLock");
     qRegisterMetaType<MMModem3gppUssdSessionState>("MMModem3gppUssdSessionState");
+    qRegisterMetaType<MMModemLocationSource>("MMModemLocationSource");
 }

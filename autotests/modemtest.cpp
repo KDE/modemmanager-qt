@@ -69,7 +69,7 @@ void ModemTest::testModems()
     // TODO
     // modem->setSupportedModes();
     modem->setUnlockRequired(1);
-    modem->setUnlockRetries({{2, 3}, {3, 3}, {4, 10}, {5, 10}});
+    modem->setUnlockRetries({{MM_MODEM_LOCK_SIM_PIN, 3}, {MM_MODEM_LOCK_SIM_PIN2, 3}, {MM_MODEM_LOCK_SIM_PUK, 10}, {MM_MODEM_LOCK_SIM_PUK2, 10}});
 
     QSignalSpy addModemSpy(ModemManager::notifier(), SIGNAL(modemAdded(QString)));
     connect(ModemManager::notifier(), &ModemManager::Notifier::modemAdded, this, &ModemTest::testModemAdded);
@@ -139,7 +139,7 @@ void ModemTest::testModemAdded(const QString &dev)
     QCOMPARE(modem->supportedCapabilities(), supportedCapabilities);
     QCOMPARE(modem->supportedIpFamilies(), 3);
     QCOMPARE(modem->unlockRequired(), MM_MODEM_LOCK_NONE);
-    ModemManager::UnlockRetriesMap unlockRetries = {{2, 3}, {3, 3}, {4, 10}, {5, 10}};
+    ModemManager::UnlockRetriesMap unlockRetries = {{MM_MODEM_LOCK_SIM_PIN, 3}, {MM_MODEM_LOCK_SIM_PIN2, 3}, {MM_MODEM_LOCK_SIM_PUK, 10}, {MM_MODEM_LOCK_SIM_PUK2, 10}};
     QCOMPARE(modem->unlockRetries(), unlockRetries);
 }
 
