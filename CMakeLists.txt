@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.8.12)
 
 project(ModemManagerQt)
-set(PROJECT_VERSION "5.2.1")
+set(PROJECT_VERSION "5.2.2")
 
 find_package(ECM 1.0.0 REQUIRED NO_MODULE)
 
