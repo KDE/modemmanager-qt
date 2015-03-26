@@ -575,7 +575,7 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
 #if MM_CHECK_VERSION(1, 2, 0)
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_BEARERS));
         if (it != changedProps.constEnd()) {
-            QList<QDBusObjectPath> bearerPaths = qdbus_cast< QList<QDBusObjectPath> >(it->data());
+            QList<QDBusObjectPath> bearerPaths = qdbus_cast< QList<QDBusObjectPath> >(*it);
             if (bearerPaths.isEmpty()) {
                 QMap<QString, Bearer::Ptr>::const_iterator it = bearers.constBegin();
                 while (it != bearers.constEnd()) {
@@ -666,7 +666,7 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
         }
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_PORTS));
         if (it != changedProps.constEnd()) {
-            ports = qdbus_cast< QList<Port> >(it->data());
+            ports = qdbus_cast< QList<Port> >(*it);
             Q_EMIT q->portsChanged(ports);
         }
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_EQUIPMENTIDENTIFIER));
@@ -681,7 +681,7 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
         }
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_UNLOCKRETRIES));
         if (it != changedProps.constEnd()) {
-            unlockRetries = qdbus_cast< UnlockRetriesMap >(it->data());
+            unlockRetries = qdbus_cast< UnlockRetriesMap >(*it);
             Q_EMIT q->unlockRetriesChanged(unlockRetries);
         }
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_STATE));
@@ -702,7 +702,7 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
         }
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_SIGNALQUALITY));
         if (it != changedProps.constEnd()) {
-            signalQuality = qdbus_cast< SignalQualityPair >(it->data());
+            signalQuality = qdbus_cast< SignalQualityPair >(*it);
             Q_EMIT q->signalQualityChanged(signalQuality);
         }
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_OWNNUMBERS));
@@ -717,12 +717,12 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
         }
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_SUPPORTEDMODES));
         if (it != changedProps.constEnd()) {
-            supportedModes = qdbus_cast< SupportedModesType >(it->data());
+            supportedModes = qdbus_cast< SupportedModesType >(*it);
             Q_EMIT q->supportedModesChanged(supportedModes);
         }
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_CURRENTMODES));
         if (it != changedProps.constEnd()) {
-            currentModes = qdbus_cast< CurrentModesType >(it->data());
+            currentModes = qdbus_cast< CurrentModesType >(*it);
             Q_EMIT q->currentModesChanged(currentModes);
         }
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_SUPPORTEDBANDS));
