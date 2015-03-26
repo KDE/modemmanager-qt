@@ -38,12 +38,9 @@ void ModemTest::testModems()
 {
     Modem *modem = new Modem();
     modem->setAccessTechnologies(16);
-    // TODO bearers
-    // modem->addBearer();
     modem->SetCurrentBands({0});
     modem->SetCurrentCapabilities(4);
-    // TODO
-    // modem->SetCurrentModes();
+    modem->SetCurrentModes({MM_MODEM_MODE_ANY, MM_MODEM_MODE_NONE});
     modem->setDevice(QLatin1String("/sys/devices/pci0000:00/0000:00:1d.0/usb4/4-1/4-1.2"));
     modem->setDeviceIdentifier(QLatin1String("1c435eb6d74494b5f78d7221e2c5ae9ec526a981"));
     modem->setDrivers({QLatin1String("option1")});
@@ -52,8 +49,7 @@ void ModemTest::testModems()
     modem->setMaxActiveBearers(1);
     modem->setMaxBearers(1);
     modem->setModel(QLatin1String("K2540"));
-    // TODO
-    // modem->setOwnNumbers();
+    //modem->setOwnNumbers();
     modem->setPlugin(QLatin1String("Huawei"));
     modem->setPorts({{QLatin1String("ttyUSB0"), MM_MODEM_PORT_TYPE_AT}, {QLatin1String("ttyUSB1"), MM_MODEM_PORT_TYPE_QCDM}, {QLatin1String("ttyUSB2"), MM_MODEM_PORT_TYPE_AT}});
     modem->SetPowerState(3);
@@ -66,8 +62,12 @@ void ModemTest::testModems()
     modem->setSupportedBands({0});
     modem->setSupportedCapabilities({4});
     modem->setSupportedIpFamilies(3);
-    // TODO
-    // modem->setSupportedModes();
+    ModemManager::SupportedModesType supportedModes;
+    ModemManager::CurrentModesType supportedMode1 = {MM_MODEM_MODE_4G & MM_MODEM_MODE_3G & MM_MODEM_MODE_2G, MM_MODEM_MODE_NONE};
+    ModemManager::CurrentModesType supportedMode2 = {MM_MODEM_MODE_4G & MM_MODEM_MODE_3G & MM_MODEM_MODE_2G, MM_MODEM_MODE_2G};
+    ModemManager::CurrentModesType supportedMode3 = {MM_MODEM_MODE_4G & MM_MODEM_MODE_3G & MM_MODEM_MODE_2G, MM_MODEM_MODE_3G};
+    supportedModes << supportedMode1 << supportedMode2 << supportedMode3;
+    modem->setSupportedModes(supportedModes);
     modem->setUnlockRequired(1);
     modem->setUnlockRetries({{MM_MODEM_LOCK_SIM_PIN, 3}, {MM_MODEM_LOCK_SIM_PIN2, 3}, {MM_MODEM_LOCK_SIM_PUK, 10}, {MM_MODEM_LOCK_SIM_PUK2, 10}});
 
@@ -116,11 +116,13 @@ void ModemTest::testModemAdded(const QString &dev)
     ModemManager::Modem::Ptr modem = modemDevice->modemInterface();
 
     QCOMPARE(modem->accessTechnologies(), 16);
-    // TODO bearers
     QList<MMModemBand> bands = {MM_MODEM_BAND_UNKNOWN};
-//     bands << MM_MODEM_BAND_UNKNOWN;
     QCOMPARE(modem->currentBands(), bands);
     QCOMPARE(modem->currentCapabilities(), 4);
+    ModemManager::CurrentModesType currentModes = {MM_MODEM_MODE_ANY, MM_MODEM_MODE_NONE};
+    ModemManager::CurrentModesType modemCurrentModes = modem->currentModes();
+    QCOMPARE(currentModes.allowed, modemCurrentModes.allowed);
+    QCOMPARE(currentModes.preferred, modemCurrentModes.preferred);
     QCOMPARE(modem->device(), QLatin1String("/sys/devices/pci0000:00/0000:00:1d.0/usb4/4-1/4-1.2"));
     QCOMPARE(modem->deviceIdentifier(), QLatin1String("1c435eb6d74494b5f78d7221e2c5ae9ec526a981"));
     QCOMPARE(modem->drivers(), QStringList(QLatin1String("option1")));
@@ -136,7 +138,7 @@ void ModemTest::testModemAdded(const QString &dev)
     QCOMPARE(ports.count(), modemPorts.count());
     Q_FOREACH (const ModemManager::Port port, ports) {
         bool found = false;
-        Q_FOREACH(const ModemManager::Port modemPort, modemPorts) {
+        Q_FOREACH (const ModemManager::Port modemPort, modemPorts) {
             if (port.name == modemPort.name) {
                 found = true;
                 QCOMPARE(port.type, modemPort.type);
@@ -160,6 +162,22 @@ void ModemTest::testModemAdded(const QString &dev)
     QList<MMModemCapability> supportedCapabilities = {(MMModemCapability)4};
     QCOMPARE(modem->supportedCapabilities(), supportedCapabilities);
     QCOMPARE(modem->supportedIpFamilies(), 3);
+    ModemManager::SupportedModesType supportedModes;
+    ModemManager::CurrentModesType supportedMode1 = {MM_MODEM_MODE_4G & MM_MODEM_MODE_3G & MM_MODEM_MODE_2G, MM_MODEM_MODE_NONE};
+    ModemManager::CurrentModesType supportedMode2 = {MM_MODEM_MODE_4G & MM_MODEM_MODE_3G & MM_MODEM_MODE_2G, MM_MODEM_MODE_2G};
+    ModemManager::CurrentModesType supportedMode3 = {MM_MODEM_MODE_4G & MM_MODEM_MODE_3G & MM_MODEM_MODE_2G, MM_MODEM_MODE_3G};
+    supportedModes << supportedMode1 << supportedMode2 << supportedMode3;
+    ModemManager::SupportedModesType modemSupportedModes = modem->supportedModes();
+    Q_FOREACH (ModemManager::CurrentModesType currentType, supportedModes) {
+        bool found = false;
+        Q_FOREACH (ModemManager::CurrentModesType modemCurrentType, modemSupportedModes) {
+            if (currentType.allowed == modemCurrentType.allowed && currentType.preferred == modemCurrentType.preferred) {
+                found = true;
+            }
+        }
+        QVERIFY(found);
+        found = false;
+    }
     QCOMPARE(modem->unlockRequired(), MM_MODEM_LOCK_NONE);
     ModemManager::UnlockRetriesMap unlockRetries = {{MM_MODEM_LOCK_SIM_PIN, 3}, {MM_MODEM_LOCK_SIM_PIN2, 3}, {MM_MODEM_LOCK_SIM_PUK, 10}, {MM_MODEM_LOCK_SIM_PUK2, 10}};
     QCOMPARE(modem->unlockRetries(), unlockRetries);
