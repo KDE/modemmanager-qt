@@ -79,6 +79,28 @@ void ModemTest::testModems()
     QCOMPARE(ModemManager::modemDevices().first()->uni(), addModemSpy.at(0).at(0).toString());
     const QString addedModemPath = ModemManager::modemDevices().first()->uni();
 
+    Bearer * bearer = new Bearer();
+    // We need to set some default values
+    bearer->setConnected(false);
+    bearer->setInterface(QLatin1String("ttyUSB0"));
+    bearer->setIp4Config({{QLatin1String("method"), MM_BEARER_IP_METHOD_PPP}});
+    bearer->setIp6Config({{QLatin1String("method"), MM_BEARER_IP_METHOD_UNKNOWN}});
+    bearer->setIpTimeout(20);
+    bearer->setProperties({{QLatin1String("apn"),QLatin1String("internet")},{QLatin1Literal("ip-type"), 1}, {QLatin1String("number"), QLatin1String("*99#")}});
+    bearer->setSuspended(false);
+
+    ModemManager::Modem::Ptr modemDevice = ModemManager::modemDevices().first()->modemInterface();
+    QCOMPARE(modemDevice->listBearers().count(), 0);
+    QSignalSpy bearerAddedSpy(modemDevice.data(), SIGNAL(bearerAdded(QString)));
+    fakeModem->addBearer(bearer);
+    QVERIFY(bearerAddedSpy.wait());
+    QCOMPARE(modemDevice->listBearers().count(), 1);
+
+    QSignalSpy bearerRemovedSpy(modemDevice.data(), SIGNAL(bearerRemoved(QString)));
+    fakeModem->removeBearer(bearer);
+    QVERIFY(bearerRemovedSpy.wait());
+    QCOMPARE(modemDevice->listBearers().count(), 0);
+
     QSignalSpy removeModemSpy(ModemManager::notifier(), SIGNAL(modemRemoved(QString)));
     fakeModem->removeModem(modem);
     QVERIFY(removeModemSpy.wait());

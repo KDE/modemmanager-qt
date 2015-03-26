@@ -191,12 +191,12 @@ ModemManager::UnlockRetriesMap Modem::unlockRetries() const
 
 void Modem::addBearer(const QDBusObjectPath& bearer)
 {
-    Q_UNUSED(bearer);
+    m_bearers << bearer;
 }
 
 void Modem::removeBearer(const QDBusObjectPath& bearer)
 {
-    Q_UNUSED(bearer);
+    m_bearers.removeAll(bearer);
 }
 
 void Modem::setDevice(const QString& device)
@@ -379,8 +379,7 @@ void Modem::FactoryReset(const QString& code)
 
 QList< QDBusObjectPath > Modem::ListBearers()
 {
-    // TODO
-    return QList<QDBusObjectPath>();
+    return m_bearers;
 }
 
 void Modem::Reset()

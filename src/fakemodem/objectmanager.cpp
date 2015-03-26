@@ -19,6 +19,7 @@
 */
 
 #include "objectmanager.h"
+#include "dbus/fakedbus.h"
 
 ObjectManager::ObjectManager(QObject* parent)
     : QDBusAbstractAdaptor(parent)

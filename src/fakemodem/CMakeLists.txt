@@ -4,6 +4,7 @@ include_directories(
 )
 
 set(fakeModem_SRCS
+    bearer.cpp
     fakemodem.cpp
     modem.cpp
     modemsimple.cpp

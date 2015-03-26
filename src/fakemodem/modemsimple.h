@@ -21,7 +21,6 @@
 #ifndef MODEMMANAGERQT_FAKE_MODEM_MODEM_SIMPLE_H
 #define MODEMMANAGERQT_FAKE_MODEM_MODEM_SIMPLE_H
 
-#include "dbus/fakedbus.h"
 #include "generictypes.h"
 
 #include <QObject>

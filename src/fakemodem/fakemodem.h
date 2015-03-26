@@ -21,7 +21,7 @@
 #ifndef MODEMMANAGERQT_FAKE_MODEM_H
 #define MODEMMANAGERQT_FAKE_MODEM_H
 
-#include "dbus/fakedbus.h"
+#include "bearer.h"
 #include "modem.h"
 #include "objectmanager.h"
 
@@ -40,13 +40,17 @@ public:
     /* Not part of DBus interface */
     void addModem(Modem *modem);
     void removeModem(Modem *modem);
+    void addBearer(Bearer *bearer);
+    void removeBearer(Bearer *bearer);
 public Q_SLOTS:
     Q_SCRIPTABLE void ScanDevices();
     Q_SCRIPTABLE void SetLogging(const QString &level);
 
 private:
     /* Not part of DBus interface */
+    int m_bearerCounter;
     int m_modemCounter;
+    QMap<QDBusObjectPath, Bearer *> m_bearers;
     QMap<QDBusObjectPath, Modem *> m_modems;
     ObjectManager *m_objectManager;
 };
