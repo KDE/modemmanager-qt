@@ -101,6 +101,7 @@ public:
     void addBearer(const QDBusObjectPath &bearer);
     void removeBearer(const QDBusObjectPath &bearer);
     QString modemPath() const;
+    void setEnableNotifications(bool enable);
     void setAccessTechnologies(uint technologies);
     void setDevice(const QString &device);
     void setDeviceIdentifier(const QString &deviceIdentifier);
@@ -154,6 +155,7 @@ private:
     QString m_device;
     QString m_deviceIdentifier;
     QStringList m_drivers;
+    bool m_enabledNotifications;
     QString m_equipmentIdentifier;
     QString m_manufacturer;
     uint m_maxActiveBearers;

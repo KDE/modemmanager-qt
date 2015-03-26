@@ -52,6 +52,8 @@ void FakeModem::addModem(Modem* modem)
 {
     QString newModemPath = QString("/org/kde/fakemodem/Modem/") + QString::number(m_modemCounter++);
     modem->setModemPath(newModemPath);
+    // Start monitoring property changes
+    modem->setEnableNotifications(true);
     m_modems.insert(QDBusObjectPath(newModemPath), modem);
     QDBusConnection::sessionBus().registerObject(newModemPath, modem, QDBusConnection::ExportScriptableContents | QDBusConnection::ExportAdaptors);
 
