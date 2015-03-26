@@ -234,6 +234,15 @@ ModemManager::Modem::Modem(const QString &path, QObject *parent)
     : Interface(*new ModemPrivate(path, this), parent)
 {
     Q_D(Modem);
+
+    qRegisterMetaType<AccessTechnologies>();
+    qRegisterMetaType<Capabilities>();
+    qRegisterMetaType<ModemModes>();
+    qRegisterMetaType<IpBearerFamilies>();
+    qRegisterMetaType<MMModemLock>();
+    qRegisterMetaType<MMModemPowerState>();
+    qRegisterMetaType<MMModemStateFailedReason>();
+
     if (d->modemIface.isValid()) {
 #ifdef MMQT_STATIC
         QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, "PropertiesChanged", d,
@@ -604,8 +613,8 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_SUPPORTEDCAPABILITIES));
         if (it != changedProps.constEnd()) {
             supportedCapabilities.clear();
-            Q_FOREACH (const QVariant cap, it->toList()) {
-                supportedCapabilities.append((MMModemCapability)cap.toUInt());
+            Q_FOREACH (const uint cap, qdbus_cast<QList<uint> >(*it)) {
+                supportedCapabilities << ((MMModemCapability)cap);
             }
             Q_EMIT q->supportedCapabilitiesChanged(supportedCapabilities);
         }
@@ -728,18 +737,18 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_SUPPORTEDBANDS));
         if (it != changedProps.constEnd()) {
             supportedBands.clear();
-            Q_FOREACH (const QVariant cap, it->toList()) {
-                supportedBands.append((MMModemBand)cap.toUInt());
+            Q_FOREACH (const uint cap, qdbus_cast<QList<uint> >(*it)) {
+                supportedBands << ((MMModemBand)cap);
             }
             Q_EMIT q->supportedBandsChanged(supportedBands);
         }
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_CURRENTBANDS));
         if (it != changedProps.constEnd()) {
             currentBands.clear();
-            Q_FOREACH (const QVariant cap, it->toList()) {
-                currentBands.append((MMModemBand)cap.toUInt());
+            Q_FOREACH (const uint cap, qdbus_cast<QList<uint> >(*it)) {
+                currentBands << ((MMModemBand)cap);
             }
-            Q_EMIT q->currentBandsChanged(supportedBands);
+            Q_EMIT q->currentBandsChanged(currentBands);
         }
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_SUPPORTEDIPFAMILIES));
         if (it != changedProps.constEnd()) {

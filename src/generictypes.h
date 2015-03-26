@@ -48,7 +48,7 @@ namespace ModemManager
     } SignalQualityPair;
 
     typedef struct {
-        MMModemMode allowed; // bitfield
+        uint allowed; // bitfield
         MMModemMode preferred;
     } CurrentModesType;
     typedef QList<CurrentModesType> SupportedModesType;
@@ -68,6 +68,17 @@ namespace ModemManager
         uint value;
     } ValidityPair;
 }
+
+Q_DECLARE_METATYPE(QFlags<MMModemAccessTechnology>)
+Q_DECLARE_METATYPE(QFlags<MMModemCapability>)
+Q_DECLARE_METATYPE(QFlags<MMModemMode>)
+Q_DECLARE_METATYPE(QFlags<MMBearerIpFamily>)
+
+Q_DECLARE_METATYPE(QList<MMModemBand>)
+Q_DECLARE_METATYPE(QList<MMModemCapability>)
+Q_DECLARE_METATYPE(MMModemLock)
+Q_DECLARE_METATYPE(MMModemPowerState)
+Q_DECLARE_METATYPE(MMModemStateFailedReason)
 
 Q_DECLARE_METATYPE(ModemManager::DBUSManagerStruct)
 Q_DECLARE_METATYPE(ModemManager::Port)

@@ -38,7 +38,6 @@
 #include "generictypes.h"
 #include "interface.h"
 
-
 namespace ModemManager
 {
 
@@ -486,20 +485,20 @@ Q_SIGNALS:
     void driversChanged(const QStringList &drivers);
     void pluginChanged(const QString &plugin);
     void primaryPortChanged(const QString &primaryPort);
-    void portsChanged(const QList<Port> &ports);
+    void portsChanged(const ModemManager::PortList &ports);
     void equipmentIdentifierChanged(const QString &equipmentIdentifier);
     void unlockRequiredChanged(MMModemLock unlockRequired);
-    void unlockRetriesChanged(const UnlockRetriesMap &unlockRetries);
+    void unlockRetriesChanged(const ModemManager::UnlockRetriesMap &unlockRetries);
     void stateFailedReasonChanged(MMModemStateFailedReason stateFailedReason);
-    void accessTechnologiesChanged(AccessTechnologies accessTechnologies);
-    void signalQualityChanged(SignalQualityPair signalQuality);
+    void accessTechnologiesChanged(QFlags<MMModemAccessTechnology> accessTechnologies);
+    void signalQualityChanged(ModemManager::SignalQualityPair signalQuality);
     void ownNumbersChanged(const QStringList &ownNumbers);
     void powerStateChanged(MMModemPowerState powerState);
-    void supportedModesChanged(SupportedModesType supportedModes);
-    void currentModesChanged(CurrentModesType currentModes);
+    void supportedModesChanged(ModemManager::SupportedModesType supportedModes);
+    void currentModesChanged(ModemManager::CurrentModesType currentModes);
     void supportedBandsChanged(const QList<MMModemBand> &supportedBands);
     void currentBandsChanged(const QList<MMModemBand> &supportedBands);
-    void supportedIpFamiliesChanged(IpBearerFamilies supportedIpFamilies);
+    void supportedIpFamiliesChanged(QFlags<MMBearerIpFamily> supportedIpFamilies);
     void stateChanged(MMModemState oldState, MMModemState newState, MMModemStateChangeReason reason);
 };
 
