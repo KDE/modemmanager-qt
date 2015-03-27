@@ -168,6 +168,7 @@ ModemManager::Bearer::Bearer(const QString &path, QObject *parent)
     , d_ptr(new BearerPrivate(path, this))
 {
     Q_D(Bearer);
+
 #ifdef MMQT_STATIC
     QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
@@ -277,12 +278,12 @@ void ModemManager::BearerPrivate::onPropertiesChanged(const QString &interface, 
         }
         it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_IP4CONFIG));
         if (it != properties.constEnd()) {
-            ipv4Config = ipConfigFromMap(it->toMap());
+            ipv4Config = ipConfigFromMap(qdbus_cast<QVariantMap>(*it));
             Q_EMIT q->ip4ConfigChanged(ipv4Config);
         }
         it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_IP6CONFIG));
         if (it != properties.constEnd()) {
-            ipv6Config = ipConfigFromMap(it->toMap());
+            ipv6Config = ipConfigFromMap(qdbus_cast<QVariantMap>(*it));
             Q_EMIT q->ip6ConfigChanged(ipv6Config);
         }
         it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_IPTIMEOUT));
@@ -292,7 +293,7 @@ void ModemManager::BearerPrivate::onPropertiesChanged(const QString &interface, 
         }
         it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_PROPERTIES));
         if (it != properties.constEnd()) {
-            bearerProperties = it->toMap();
+            bearerProperties = qdbus_cast<QVariantMap>(*it);
             Q_EMIT q->propertiesChanged(bearerProperties);
         }
     }

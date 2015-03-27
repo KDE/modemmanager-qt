@@ -245,4 +245,6 @@ private:
 
 } // namespace ModemManager
 
+Q_DECLARE_METATYPE(ModemManager::IpConfig)
+
 #endif

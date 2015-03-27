@@ -69,11 +69,13 @@ namespace ModemManager
     } ValidityPair;
 }
 
+// Flags
 Q_DECLARE_METATYPE(QFlags<MMModemAccessTechnology>)
 Q_DECLARE_METATYPE(QFlags<MMModemCapability>)
 Q_DECLARE_METATYPE(QFlags<MMModemMode>)
 Q_DECLARE_METATYPE(QFlags<MMBearerIpFamily>)
 
+// ModemManager enums
 Q_DECLARE_METATYPE(QList<MMModemBand>)
 Q_DECLARE_METATYPE(QList<MMModemCapability>)
 Q_DECLARE_METATYPE(MMModemLock)
@@ -82,6 +84,7 @@ Q_DECLARE_METATYPE(MMModemState)
 Q_DECLARE_METATYPE(MMModemStateChangeReason)
 Q_DECLARE_METATYPE(MMModemStateFailedReason)
 
+// Others
 Q_DECLARE_METATYPE(ModemManager::DBUSManagerStruct)
 Q_DECLARE_METATYPE(ModemManager::Port)
 Q_DECLARE_METATYPE(ModemManager::PortList)
