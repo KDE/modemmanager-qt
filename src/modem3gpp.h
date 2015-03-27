@@ -135,7 +135,7 @@ Q_SIGNALS:
     void registrationStateChanged(MMModem3gppRegistrationState registrationState);
     void operatorCodeChanged(const QString &operatorCode);
     void operatorNameChanged(const QString &operatorName);
-    void enabledFacilityLocksChanged(FacilityLocks locks);
+    void enabledFacilityLocksChanged(QFlags<MMModem3gppFacility> locks);
     void subscriptionStateChanged(MMModem3gppSubscriptionState subscriptionState);
 };
 

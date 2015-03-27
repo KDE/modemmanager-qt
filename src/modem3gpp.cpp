@@ -53,6 +53,11 @@ ModemManager::Modem3gpp::Modem3gpp(const QString &path, QObject *parent)
     : Interface(*new Modem3gppPrivate(path, this), parent)
 {
     Q_D(Modem3gpp);
+
+    qRegisterMetaType<QFlags<MMModem3gppFacility> >();
+    qRegisterMetaType<MMModem3gppRegistrationState>();
+    qRegisterMetaType<MMModem3gppSubscriptionState>();
+
 #ifdef MMQT_STATIC
     QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
