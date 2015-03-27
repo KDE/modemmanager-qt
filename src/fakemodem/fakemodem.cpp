@@ -102,6 +102,17 @@ void FakeModem::removeBearer(Bearer* bearer)
     }
 }
 
+void FakeModem::addInterfaces(const QDBusObjectPath& object_path, const ModemManager::MMVariantMapMap& interfaces_and_properties)
+{
+    m_objectManager->addInterfaces(object_path, interfaces_and_properties);
+}
+
+void FakeModem::removeInterfaces(const QDBusObjectPath& object_path, const QStringList& interfaces)
+{
+    m_objectManager->removeInterfaces(object_path, interfaces);
+}
+
+
 void FakeModem::ScanDevices()
 {
 }

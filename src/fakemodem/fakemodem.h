@@ -42,6 +42,9 @@ public:
     void removeModem(Modem *modem);
     void addBearer(Bearer *bearer);
     void removeBearer(Bearer *bearer);
+    void addInterfaces(const QDBusObjectPath& object_path, const ModemManager::MMVariantMapMap& interfaces_and_properties);
+    void removeInterfaces(const QDBusObjectPath& object_path, const QStringList& interfaces);
+
 public Q_SLOTS:
     Q_SCRIPTABLE void ScanDevices();
     Q_SCRIPTABLE void SetLogging(const QString &level);

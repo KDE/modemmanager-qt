@@ -7,6 +7,7 @@ set(fakeModem_SRCS
     bearer.cpp
     fakemodem.cpp
     modem.cpp
+    modem3gpp.cpp
     modemsimple.cpp
     objectmanager.cpp
 )
