@@ -407,14 +407,11 @@ void Modem::setSim(const QDBusObjectPath& sim)
 
 void Modem::setState(int state)
 {
+    int previousState = m_state;
     m_state = state;
 
     if (m_enabledNotifications) {
-        QVariantMap map;
-        map.insert(QLatin1String("State"), m_state);
-        QDBusMessage message = QDBusMessage::createSignal(m_path, QLatin1String("org.freedesktop.DBus.Properties"), QLatin1String("PropertiesChanged"));
-        message << QLatin1String("org.kde.fakemodem.Modem") << map << QStringList();
-        QDBusConnection::sessionBus().send(message);
+        Q_EMIT StateChanged(previousState, m_state, 0);
     }
 }
 

@@ -192,7 +192,11 @@ void ModemPropertiesTest::testModemProperties()
     QCOMPARE(modemInterface->simPath(), simChangedSpy.at(0).at(1).toString());
 
     modem->setState(5);
-    // TODO
+    QSignalSpy stateChangedSpy(modemInterface.data(), SIGNAL(stateChanged(MMModemState,MMModemState,MMModemStateChangeReason)));
+    QVERIFY(stateChangedSpy.wait());
+    QCOMPARE(MM_MODEM_STATE_REGISTERED, stateChangedSpy.at(0).at(0).value<MMModemState>());
+    QCOMPARE(MM_MODEM_STATE_ENABLING, stateChangedSpy.at(0).at(1).value<MMModemState>());
+    QCOMPARE(MM_MODEM_STATE_CHANGE_REASON_UNKNOWN, stateChangedSpy.at(0).at(2).value<MMModemStateChangeReason>());
 
     modem->setStateFailedReason(1);
     QSignalSpy stateFailedReasonChangedSpy(modemInterface.data(), SIGNAL(stateFailedReasonChanged(MMModemStateFailedReason)));

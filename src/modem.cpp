@@ -241,6 +241,8 @@ ModemManager::Modem::Modem(const QString &path, QObject *parent)
     qRegisterMetaType<IpBearerFamilies>();
     qRegisterMetaType<MMModemLock>();
     qRegisterMetaType<MMModemPowerState>();
+    qRegisterMetaType<MMModemState>();
+    qRegisterMetaType<MMModemStateChangeReason>();
     qRegisterMetaType<MMModemStateFailedReason>();
 
     if (d->modemIface.isValid()) {
@@ -761,5 +763,6 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
 void ModemManager::ModemPrivate::onStateChanged(int oldState, int newState, uint reason)
 {
     Q_Q(Modem);
+    state = (MMModemState)newState;
     Q_EMIT q->stateChanged((MMModemState) oldState, (MMModemState) newState, (MMModemStateChangeReason) reason);
 }
