@@ -12,3 +12,4 @@ ecm_add_test(modemtest.cpp LINK_LIBRARIES Qt5::Test KF5ModemManagerQt_static fak
 ecm_add_test(modempropertiestest.cpp LINK_LIBRARIES Qt5::Test KF5ModemManagerQt_static fakeModem)
 ecm_add_test(modem3gpppropertiestest.cpp LINK_LIBRARIES Qt5::Test KF5ModemManagerQt_static fakeModem)
 ecm_add_test(modem3gppussdpropertiestest.cpp LINK_LIBRARIES Qt5::Test KF5ModemManagerQt_static fakeModem)
+ecm_add_test(modemcdmapropertiestest.cpp LINK_LIBRARIES Qt5::Test KF5ModemManagerQt_static fakeModem)
