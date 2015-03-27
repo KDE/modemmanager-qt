@@ -54,6 +54,10 @@ ModemManager::ModemCdma::ModemCdma(const QString &path, QObject *parent)
 {
     Q_D(ModemCdma);
 
+    qRegisterMetaType<MMModemCdmaActivationState>();
+    qRegisterMetaType<MMCdmaActivationError>();
+    qRegisterMetaType<MMModemCdmaRegistrationState>();
+
     connect(&d->modemCdmaIface, &OrgFreedesktopModemManager1ModemModemCdmaInterface::ActivationStateChanged, d, &ModemCdmaPrivate::onActivationStateChanged);
 #ifdef MMQT_STATIC
     QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
@@ -125,6 +129,7 @@ MMModemCdmaRegistrationState ModemManager::ModemCdma::evdoRegistrationState() co
 void ModemManager::ModemCdmaPrivate::onActivationStateChanged(uint activation_state, uint activation_error, const QVariantMap &status_changes)
 {
     Q_Q(ModemCdma);
+    activationState = (MMModemCdmaActivationState)activation_state;
     Q_EMIT q->activationStateChanged((MMModemCdmaActivationState)activation_state, (MMCdmaActivationError)activation_error, status_changes);
 }
 
