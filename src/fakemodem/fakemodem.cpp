@@ -75,6 +75,7 @@ void FakeModem::addBearer(Bearer* bearer)
 {
     QString newBearerPath = QString("/org/kde/fakemodem/Bearer/") + QString::number(m_bearerCounter++);
     bearer->setBearerPath(newBearerPath);
+    bearer->setEnableNotifications(true);
     m_bearers.insert(QDBusObjectPath(newBearerPath), bearer);
     QDBusConnection::sessionBus().registerObject(newBearerPath, bearer, QDBusConnection::ExportScriptableContents);
     Q_FOREACH (Modem * modem, m_modems.values()) {

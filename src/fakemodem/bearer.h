@@ -53,6 +53,7 @@ public:
 
     /* Not part of dbus interface */
     QString bearerPath() const;
+    void setEnableNotifications(bool enable);
     void setBearerPath(const QString &path);
     void setConnected(bool connected);
     void setInterface(const QString &interface);
@@ -69,6 +70,7 @@ public Q_SLOTS:
 private:
     QString m_bearerPath;
     bool m_connected;
+    bool m_enabledNotifications;
     QString m_interface;
     QVariantMap m_ip4Config;
     QVariantMap m_ip6Config;

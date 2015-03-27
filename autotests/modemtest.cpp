@@ -86,20 +86,35 @@ void ModemTest::testModems()
     bearer->setIp4Config({{QLatin1String("method"), MM_BEARER_IP_METHOD_PPP}});
     bearer->setIp6Config({{QLatin1String("method"), MM_BEARER_IP_METHOD_UNKNOWN}});
     bearer->setIpTimeout(20);
-    bearer->setProperties({{QLatin1String("apn"),QLatin1String("internet")},{QLatin1Literal("ip-type"), 1}, {QLatin1String("number"), QLatin1String("*99#")}});
+    bearer->setProperties({{QLatin1String("apn"),QLatin1String("internet")},{QLatin1String("ip-type"), 1}, {QLatin1String("number"), QLatin1String("*99#")}});
     bearer->setSuspended(false);
 
-    ModemManager::Modem::Ptr modemDevice = ModemManager::modemDevices().first()->modemInterface();
-    QCOMPARE(modemDevice->listBearers().count(), 0);
-    QSignalSpy bearerAddedSpy(modemDevice.data(), SIGNAL(bearerAdded(QString)));
+    ModemManager::Modem::Ptr modemInterface = ModemManager::modemDevices().first()->modemInterface();
+    QCOMPARE(modemInterface->listBearers().count(), 0);
+    QSignalSpy bearerAddedSpy(modemInterface.data(), SIGNAL(bearerAdded(QString)));
     fakeModem->addBearer(bearer);
     QVERIFY(bearerAddedSpy.wait());
-    QCOMPARE(modemDevice->listBearers().count(), 1);
+    QCOMPARE(modemInterface->listBearers().count(), 1);
 
-    QSignalSpy bearerRemovedSpy(modemDevice.data(), SIGNAL(bearerRemoved(QString)));
+    ModemManager::Bearer::Ptr modemBearer = modemInterface->listBearers().first();
+    QVERIFY(modemBearer);
+    QCOMPARE(modemBearer->isConnected(), false);
+    QCOMPARE(modemBearer->interface(), QLatin1String("ttyUSB0"));
+    QCOMPARE(modemBearer->ip4Config().method(), MM_BEARER_IP_METHOD_PPP);
+    QCOMPARE(modemBearer->ip6Config().method(), MM_BEARER_IP_METHOD_UNKNOWN);
+    QCOMPARE(modemBearer->ipTimeout(), (uint)20);
+    QVERIFY(modemBearer->properties().contains(QLatin1String("apn")));
+    QVERIFY(modemBearer->properties().contains(QLatin1String("number")));
+    QVERIFY(modemBearer->properties().contains(QLatin1String("ip-type")));
+    QCOMPARE(modemBearer->properties().value(QLatin1String("apn")).toString(), QLatin1String("internet"));
+    QCOMPARE(modemBearer->properties().value(QLatin1String("ip-type")).toUInt(), (uint)1);
+    QCOMPARE(modemBearer->properties().value(QLatin1String("number")).toString(), QLatin1String("*99#"));
+    QCOMPARE(modemBearer->isSuspended(), false);
+
+    QSignalSpy bearerRemovedSpy(modemInterface.data(), SIGNAL(bearerRemoved(QString)));
     fakeModem->removeBearer(bearer);
     QVERIFY(bearerRemovedSpy.wait());
-    QCOMPARE(modemDevice->listBearers().count(), 0);
+    QCOMPARE(modemInterface->listBearers().count(), 0);
 
     QSignalSpy removeModemSpy(ModemManager::notifier(), SIGNAL(modemRemoved(QString)));
     fakeModem->removeModem(modem);
