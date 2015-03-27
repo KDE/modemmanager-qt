@@ -86,6 +86,7 @@ Q_DECLARE_METATYPE(MMModemStateChangeReason)
 Q_DECLARE_METATYPE(MMModemStateFailedReason)
 Q_DECLARE_METATYPE(MMModem3gppRegistrationState)
 Q_DECLARE_METATYPE(MMModem3gppSubscriptionState)
+Q_DECLARE_METATYPE(MMModem3gppUssdSessionState)
 
 // Others
 Q_DECLARE_METATYPE(ModemManager::DBUSManagerStruct)
