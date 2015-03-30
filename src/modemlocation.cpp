@@ -51,6 +51,9 @@ ModemManager::ModemLocation::ModemLocation(const QString &path, QObject *parent)
     : Interface(*new ModemLocationPrivate(path, this), parent)
 {
     Q_D(ModemLocation);
+
+    qRegisterMetaType<LocationSources>();
+
 #ifdef MMQT_STATIC
     QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
@@ -130,14 +133,8 @@ void ModemManager::ModemLocationPrivate::onPropertiesChanged(const QString &inte
         }
         it = properties.constFind(QLatin1String(MM_MODEM_LOCATION_PROPERTY_LOCATION));
         if ( it != properties.constEnd()) {
-            QVariant v = it.value();  // FIXME demarshall properly
-            LocationInformationMap map;
-            if (v.canConvert<LocationInformationMap>()) {
-                map = v.value<LocationInformationMap>();
-            } else {
-                qCDebug(MMQT) << "Error converting LocationInformationMap property";
-            }
-            Q_EMIT q->locationChanged(map);
+            location = qdbus_cast<ModemManager::LocationInformationMap>(*it);
+            Q_EMIT q->locationChanged(location);
         }
     }
 }

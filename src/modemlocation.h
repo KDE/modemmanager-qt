@@ -113,13 +113,13 @@ public:
     LocationInformationMap location() const;
 
 Q_SIGNALS:
-    void capabilitiesChanged(LocationSources capabilities);
-    void enabledCapabilitiesChanged(LocationSources capabilities);
+    void capabilitiesChanged(QFlags<MMModemLocationSource> capabilities);
+    void enabledCapabilitiesChanged(QFlags<MMModemLocationSource> capabilities);
     void signalsLocationChanged(bool signalsLocation);
     /**
      * Emitted when the location has changed
      */
-    void locationChanged(const LocationInformationMap &location);
+    void locationChanged(const ModemManager::LocationInformationMap &location);
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(ModemLocation::LocationSources)

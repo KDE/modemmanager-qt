@@ -195,13 +195,13 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, ModemManager::QVa
 // Marshal LocationInformationMap into a D-BUS argument
 QDBusArgument &operator<<(QDBusArgument &argument, const ModemManager::LocationInformationMap &locationMap)
 {
-    argument.beginMap(QVariant::Int, qMetaTypeId<QVariant>());
+    argument.beginMap(qMetaTypeId<uint>(), qMetaTypeId<QDBusVariant>());
 
     QMapIterator<MMModemLocationSource, QVariant> i(locationMap);
     while (i.hasNext()) {
         i.next();
         argument.beginMapEntry();
-        argument << i.key() << QDBusVariant(i.value());
+        argument << (uint)i.key() << QDBusVariant(i.value());
         argument.endMapEntry();
     }
     argument.endMap();
@@ -215,13 +215,13 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, ModemManager::Loc
     locationMap.clear();
 
     while (!argument.atEnd()) {
-        int key;
-        QVariant value;
+        uint key;
+        QDBusVariant value;
         argument.beginMapEntry();
         argument >> key;
         argument >> value;
         argument.endMapEntry();
-        locationMap.insert((MMModemLocationSource)key, value);
+        locationMap.insert((MMModemLocationSource)key, value.variant());
     }
 
     argument.endMap();
