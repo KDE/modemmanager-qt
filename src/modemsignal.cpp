@@ -120,27 +120,27 @@ void ModemManager::ModemSignalPrivate::onPropertiesChanged(const QString &interf
         }
         it = properties.constFind(QLatin1String(MM_MODEM_SIGNAL_PROPERTY_CDMA));
         if (it != properties.constEnd()) {
-            cdma = it->toMap();
+            cdma = qdbus_cast<QVariantMap>(*it);
             Q_EMIT q->cdmaChanged(cdma);
         }
         it = properties.constFind(QLatin1String(MM_MODEM_SIGNAL_PROPERTY_EVDO));
         if (it != properties.constEnd()) {
-            evdo = it->toMap();
+            evdo = qdbus_cast<QVariantMap>(*it);
             Q_EMIT q->cdmaChanged(evdo);
         }
         it = properties.constFind(QLatin1String(MM_MODEM_SIGNAL_PROPERTY_GSM));
         if (it != properties.constEnd()) {
-            gsm = it->toMap();
+            gsm = qdbus_cast<QVariantMap>(*it);
             Q_EMIT q->cdmaChanged(gsm);
         }
         it = properties.constFind(QLatin1String(MM_MODEM_SIGNAL_PROPERTY_UMTS));
         if (it != properties.constEnd()) {
-            umts = it->toMap();
+            umts = qdbus_cast<QVariantMap>(*it);
             Q_EMIT q->cdmaChanged(umts);
         }
         it = properties.constFind(QLatin1String(MM_MODEM_SIGNAL_PROPERTY_LTE));
         if (it != properties.constEnd()) {
-            lte = it->toMap();
+            lte = qdbus_cast<QVariantMap>(*it);
             Q_EMIT q->cdmaChanged(lte);
         }
     }
