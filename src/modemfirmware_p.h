@@ -24,11 +24,19 @@
 #include "interface_p.h"
 #include "dbus/firmwareinterface.h"
 
+namespace ModemManager
+{
+
 class ModemFirmwarePrivate: public InterfacePrivate
 {
 public:
-    explicit ModemFirmwarePrivate(const QString &path);
+    explicit ModemFirmwarePrivate(const QString &path, ModemFirmware *q);
     OrgFreedesktopModemManager1ModemFirmwareInterface modemFirmwareIface;
+
+    Q_DECLARE_PUBLIC(ModemFirmware)
+    ModemFirmware *q_ptr;
 };
+
+} // namespace ModemManager
 
 #endif

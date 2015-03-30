@@ -1,5 +1,6 @@
 /*
     Copyright 2014 Lukas Tinkl <ltinkl@redhat.com>
+    Copyright 2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -29,10 +30,11 @@
 #include "generictypes.h"
 #include "interface.h"
 
-class ModemOmaPrivate;
-
 namespace ModemManager
 {
+
+class ModemOmaPrivate;
+
 /**
  * @brief The ModemManager Open Mobile Alliance interface.
  *
@@ -88,14 +90,14 @@ public:
      * @param features MMModemOmaFeature flags, specifying which device management features should get enabled or disabled.
      * MM_OMA_FEATURE_NONE will disable all features.
      */
-    void setup(Features features);
+    QDBusPendingReply<void> setup(Features features);
 
     /**
      * Starts a client-initiated device management session.
      *
      * @param sessionType type of client-initiated device management session,given as a MMOmaSessionType
      */
-    void startClientInitiatedSession(MMOmaSessionType sessionType);
+    QDBusPendingReply<void> startClientInitiatedSession(MMOmaSessionType sessionType);
 
     /**
      * Accepts or rejects a network-initiated device management session.
@@ -103,14 +105,17 @@ public:
      * @param sessionId unique ID of the network-initiated device management session
      * @param accept boolean specifying whether the session is accepted or rejected
      */
-    void acceptNetworkInitiatedSession(uint sessionId, bool accept);
+    QDBusPendingReply<void> acceptNetworkInitiatedSession(uint sessionId, bool accept);
 
     /**
      * Cancels the current on-going device management session.
      */
-    void cancelSession();
+    QDBusPendingReply<void> cancelSession();
 
 Q_SIGNALS:
+    void featuresChanged(QFlags<MMOmaFeature> features);
+    void pendingNetworkInitiatedSessionsChanged(const ModemManager::OmaSessionTypes &sessions);
+    void sessionTypeChanged(MMOmaSessionType sessionType);
     /**
      * Emitted when the session state changed.
      *

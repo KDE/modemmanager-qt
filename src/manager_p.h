@@ -35,7 +35,6 @@
 
 namespace ModemManager
 {
-
 class Modem;
 class ModemManagerPrivate : public Notifier
 {
@@ -56,7 +55,7 @@ protected Q_SLOTS:
     void init();
     void daemonRegistered();
     void daemonUnregistered();
-    void onInterfacesAdded(const QDBusObjectPath &object_path, const NMVariantMapMap &interfaces_and_properties);
+    void onInterfacesAdded(const QDBusObjectPath &object_path, const MMVariantMapMap &interfaces_and_properties);
     void onInterfacesRemoved(const QDBusObjectPath &object_path, const QStringList &interfaces);
 };
 } // namespace ModemManager

@@ -1,6 +1,6 @@
 /*
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -22,14 +22,29 @@
 #ifndef MODEMMANAGER_MODEMTIME_P_H
 #define MODEMMANAGER_MODEMTIME_P_H
 
-#include "interface_p.h"
 #include "dbus/timeinterface.h"
+#include "interface_p.h"
+#include "modemtime.h"
+
+namespace ModemManager
+{
 
 class ModemTimePrivate: public InterfacePrivate
 {
 public:
-    explicit ModemTimePrivate(const QString &path);
+    explicit ModemTimePrivate(const QString &path, ModemTime *q);
     OrgFreedesktopModemManager1ModemTimeInterface modemTimeIface;
+    ModemManager::NetworkTimezone networkTimezone;
+
+    ModemManager::NetworkTimezone variantMapToTimezone(const QVariantMap &map);
+
+    Q_DECLARE_PUBLIC(ModemTime)
+    ModemTime *q_ptr;
+private Q_SLOTS:
+    void onNetworkTimeChanged(const QString &isoDateTime);
+    virtual void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) Q_DECL_OVERRIDE;
 };
+
+} // namespace ModemManager
 
 #endif

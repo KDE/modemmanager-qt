@@ -2,7 +2,7 @@
     Copyright 2008,2011 Will Stephenson <wstephenson@kde.org>
     Copyright 2010 Lamarque Souza <lamarque@kde.org>
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -21,83 +21,158 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "modemcdma.h"
 #include "modemcdma_p.h"
-#include "mmdebug.h"
+#include "mmdebug_p.h"
+#ifdef MMQT_STATIC
+#include "dbus/fakedbus.h"
+#else
+#include "dbus/dbus.h"
+#endif
 
-ModemCdmaPrivate::ModemCdmaPrivate(const QString &path)
-    : InterfacePrivate(path)
-    , modemCdmaIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+ModemManager::ModemCdmaPrivate::ModemCdmaPrivate(const QString &path, ModemCdma *q)
+    : InterfacePrivate(path, q)
+#ifdef MMQT_STATIC
+    , modemCdmaIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
+#else
+    , modemCdmaIface(MMQT_DBUS_SERVICE, path, QDBusConnection::systemBus())
+#endif
+    , q_ptr(q)
 {
+    if (modemCdmaIface.isValid()) {
+        activationState = (MMModemCdmaActivationState)modemCdmaIface.activationState();
+        meid = modemCdmaIface.meid();
+        esn = modemCdmaIface.esn();
+        sid = modemCdmaIface.sid();
+        nid = modemCdmaIface.nid();
+        cdma1xRegistrationState = (MMModemCdmaRegistrationState)modemCdmaIface.cdma1xRegistrationState();
+        evdoRegistrationState = (MMModemCdmaRegistrationState)modemCdmaIface.evdoRegistrationState();
+    }
 }
 
 ModemManager::ModemCdma::ModemCdma(const QString &path, QObject *parent)
-    : Interface(*new ModemCdmaPrivate(path), parent)
+    : Interface(*new ModemCdmaPrivate(path, this), parent)
 {
     Q_D(ModemCdma);
 
-    connect(&d->modemCdmaIface, &OrgFreedesktopModemManager1ModemModemCdmaInterface::ActivationStateChanged, this, &ModemCdma::onActivationStateChanged);
+    qRegisterMetaType<MMModemCdmaActivationState>();
+    qRegisterMetaType<MMCdmaActivationError>();
+    qRegisterMetaType<MMModemCdmaRegistrationState>();
+
+    connect(&d->modemCdmaIface, &OrgFreedesktopModemManager1ModemModemCdmaInterface::ActivationStateChanged, d, &ModemCdmaPrivate::onActivationStateChanged);
+#ifdef MMQT_STATIC
+    QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#else
+    QDBusConnection::systemBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#endif
 }
 
 ModemManager::ModemCdma::~ModemCdma()
 {
 }
 
-void ModemManager::ModemCdma::activate(const QString &carrierCode)
+QDBusPendingReply<void> ModemManager::ModemCdma::activate(const QString &carrierCode)
 {
     Q_D(ModemCdma);
-    d->modemCdmaIface.Activate(carrierCode);
+    return d->modemCdmaIface.Activate(carrierCode);
 }
 
-void ModemManager::ModemCdma::activateManual(const QVariantMap &properties)
+QDBusPendingReply<void> ModemManager::ModemCdma::activateManual(const QVariantMap &properties)
 {
     Q_D(ModemCdma);
-    d->modemCdmaIface.ActivateManual(properties);
+    return d->modemCdmaIface.ActivateManual(properties);
 }
 
 MMModemCdmaActivationState ModemManager::ModemCdma::activationState() const
 {
     Q_D(const ModemCdma);
-    return (MMModemCdmaActivationState)d->modemCdmaIface.activationState();
+    return d->activationState;
 }
 
 QString ModemManager::ModemCdma::meid() const
 {
     Q_D(const ModemCdma);
-    return d->modemCdmaIface.meid();
+    return d->meid;
 }
 
 QString ModemManager::ModemCdma::esn() const
 {
     Q_D(const ModemCdma);
-    return d->modemCdmaIface.esn();
+    return d->esn;
 }
 
 uint ModemManager::ModemCdma::sid() const
 {
     Q_D(const ModemCdma);
-    return d->modemCdmaIface.sid();
+    return d->sid;
 }
 
 uint ModemManager::ModemCdma::nid() const
 {
     Q_D(const ModemCdma);
-    return d->modemCdmaIface.nid();
+    return d->nid;
 }
 
 MMModemCdmaRegistrationState ModemManager::ModemCdma::cdma1xRegistrationState() const
 {
     Q_D(const ModemCdma);
-    return (MMModemCdmaRegistrationState)d->modemCdmaIface.cdma1xRegistrationState();
+    return d->cdma1xRegistrationState;
 }
 
 MMModemCdmaRegistrationState ModemManager::ModemCdma::evdoRegistrationState() const
 {
     Q_D(const ModemCdma);
-    return (MMModemCdmaRegistrationState)d->modemCdmaIface.evdoRegistrationState();
+    return d->evdoRegistrationState;
 }
 
-void ModemManager::ModemCdma::onActivationStateChanged(uint activation_state, uint activation_error, const QVariantMap &status_changes)
+void ModemManager::ModemCdmaPrivate::onActivationStateChanged(uint activation_state, uint activation_error, const QVariantMap &status_changes)
 {
-    emit activationStateChanged((MMModemCdmaActivationState)activation_state, (MMCdmaActivationError)activation_error, status_changes);
+    Q_Q(ModemCdma);
+    activationState = (MMModemCdmaActivationState)activation_state;
+    Q_EMIT q->activationStateChanged((MMModemCdmaActivationState)activation_state, (MMCdmaActivationError)activation_error, status_changes);
+}
+
+void ModemManager::ModemCdmaPrivate::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
+{
+    Q_Q(ModemCdma);
+    Q_UNUSED(invalidatedProps);
+    qCDebug(MMQT) << interface << properties.keys();
+
+    if (interface == QString(MMQT_DBUS_INTERFACE_MODEM_MODEMCDMA)) {
+        QVariantMap::const_iterator it = properties.constFind(QLatin1String(MM_MODEM_MODEMCDMA_PROPERTY_ACTIVATIONSTATE));
+        if (it != properties.constEnd()) {
+            // Should be handled by activationStateChanged signal
+        }
+        it = properties.constFind(QLatin1String(MM_MODEM_MODEMCDMA_PROPERTY_MEID));
+        if (it != properties.constEnd()) {
+            meid = it->toString();
+            Q_EMIT q->meidChanged(meid);
+        }
+        it = properties.constFind(QLatin1String(MM_MODEM_MODEMCDMA_PROPERTY_ESN));
+        if (it != properties.constEnd()) {
+            esn = it->toString();
+            Q_EMIT q->esnChanged(esn);
+        }
+        it = properties.constFind(QLatin1String(MM_MODEM_MODEMCDMA_PROPERTY_SID));
+        if (it != properties.constEnd()) {
+            sid = it->toUInt();
+            Q_EMIT q->sidChanged(sid);
+        }
+        it = properties.constFind(QLatin1String(MM_MODEM_MODEMCDMA_PROPERTY_NID));
+        if (it != properties.constEnd()) {
+            nid = it->toUInt();
+            Q_EMIT q->nidChanged(nid);
+        }
+        it = properties.constFind(QLatin1String(MM_MODEM_MODEMCDMA_PROPERTY_CDMA1XREGISTRATIONSTATE));
+        if (it != properties.constEnd()) {
+            cdma1xRegistrationState = (MMModemCdmaRegistrationState)it->toUInt();
+            Q_EMIT q->cdma1xRegistrationStateChanged(cdma1xRegistrationState);
+        }
+        it = properties.constFind(QLatin1String(MM_MODEM_MODEMCDMA_PROPERTY_EVDOREGISTRATIONSTATE));
+        if (it != properties.constEnd()) {
+            evdoRegistrationState = (MMModemCdmaRegistrationState)it->toUInt();
+            Q_EMIT q->evdoRegistrationStateChanged(evdoRegistrationState);
+        }
+    }
 }

@@ -1,5 +1,5 @@
 /*
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -21,14 +21,25 @@
 #ifndef MODEMMANAGERQT_INTERFACE_P_H
 #define MODEMMANAGERQT_INTERFACE_P_H
 
-#include <QString>
+#include "interface.h"
 
-class InterfacePrivate
+namespace ModemManager
 {
+
+class InterfacePrivate : public QObject
+{
+    Q_OBJECT
 public:
-    explicit InterfacePrivate(const QString &path);
+    explicit InterfacePrivate(const QString &path, Interface *q);
     virtual ~InterfacePrivate();
     QString uni;
+
+    Q_DECLARE_PUBLIC(Interface)
+    Interface *q_ptr;
+public Q_SLOTS:
+    virtual void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps);
 };
+
+} // namespace ModemManager
 
 #endif

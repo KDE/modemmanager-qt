@@ -20,7 +20,6 @@
 #include <QtCore/QVariant>
 #include <QtDBus/QtDBus>
 #include "generictypes.h"
-#include "generictypes_p.h"
 
 /*
  * Proxy class for interface org.freedesktop.ModemManager1.Modem.Location
@@ -30,8 +29,11 @@ class OrgFreedesktopModemManager1ModemLocationInterface: public QDBusAbstractInt
     Q_OBJECT
 public:
     static inline const char *staticInterfaceName()
+#ifdef MMQT_STATIC
+    { return "org.kde.fakemodem.Modem.Location"; }
+#else
     { return "org.freedesktop.ModemManager1.Modem.Location"; }
-
+#endif
 public:
     OrgFreedesktopModemManager1ModemLocationInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = 0);
 
@@ -45,16 +47,16 @@ public:
     inline uint enabled() const
     { return qvariant_cast< uint >(property("Enabled")); }
 
-    Q_PROPERTY(LocationInformationMap Location READ location)
-    inline LocationInformationMap location() const
-    { return qvariant_cast< LocationInformationMap >(property("Location")); }
+    Q_PROPERTY(ModemManager::LocationInformationMap Location READ location)
+    inline ModemManager::LocationInformationMap location() const
+    { return qvariant_cast< ModemManager::LocationInformationMap >(property("Location")); }
 
     Q_PROPERTY(bool SignalsLocation READ signalsLocation)
     inline bool signalsLocation() const
     { return qvariant_cast< bool >(property("SignalsLocation")); }
 
 public Q_SLOTS: // METHODS
-    inline QDBusPendingReply<LocationInformationMap> GetLocation()
+    inline QDBusPendingReply<ModemManager::LocationInformationMap> GetLocation()
     {
         QList<QVariant> argumentList;
         return asyncCallWithArgumentList(QLatin1String("GetLocation"), argumentList);

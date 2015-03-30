@@ -20,7 +20,6 @@
 #include <QtCore/QVariant>
 #include <QtDBus/QtDBus>
 #include "generictypes.h"
-#include "generictypes_p.h"
 
 /*
  * Proxy class for interface org.freedesktop.ModemManager1.Modem.Oma
@@ -30,8 +29,11 @@ class OrgFreedesktopModemManager1ModemOmaInterface: public QDBusAbstractInterfac
     Q_OBJECT
 public:
     static inline const char *staticInterfaceName()
+#ifdef MMQT_STATIC
+    { return "org.kde.fakemodem.Modem.Oma"; }
+#else
     { return "org.freedesktop.ModemManager1.Modem.Oma"; }
-
+#endif
 public:
     OrgFreedesktopModemManager1ModemOmaInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = 0);
 
@@ -41,9 +43,9 @@ public:
     inline uint features() const
     { return qvariant_cast< uint >(property("Features")); }
 
-    Q_PROPERTY(OmaSessionTypes PendingNetworkInitiatedSessions READ pendingNetworkInitiatedSessions)
-    inline OmaSessionTypes pendingNetworkInitiatedSessions() const
-    { return qvariant_cast< OmaSessionTypes >(property("PendingNetworkInitiatedSessions")); }
+    Q_PROPERTY(ModemManager::OmaSessionTypes PendingNetworkInitiatedSessions READ pendingNetworkInitiatedSessions)
+    inline ModemManager::OmaSessionTypes pendingNetworkInitiatedSessions() const
+    { return qvariant_cast< ModemManager::OmaSessionTypes >(property("PendingNetworkInitiatedSessions")); }
 
     Q_PROPERTY(int SessionState READ sessionState)
     inline int sessionState() const

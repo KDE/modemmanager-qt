@@ -1,5 +1,5 @@
 /*
-    Copyright 2011-2013 Lamarque Souza <lamarque@kde.org>
+    Copyright 2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -18,11 +18,28 @@
     License along with this library.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef MODEMMANAGERQT_MMEBUG_H
-#define MODEMMANAGERQT_MMDEBUG_H
+#ifndef MODEMMANAGERQT_MODEM_SIMPLE_P_H
+#define MODEMMANAGERQT_MODEM_SIMPLE_P_H
 
-#include <QLoggingCategory>
+#include "dbus/simpleinterface.h"
 
-Q_DECLARE_LOGGING_CATEGORY(MMQT)
+#include "interface_p.h"
+#include "modemsimple.h"
+
+namespace ModemManager
+{
+
+class ModemSimplePrivate: public InterfacePrivate
+{
+    Q_OBJECT
+public:
+    explicit ModemSimplePrivate(const QString &path, ModemSimple *q);
+    OrgFreedesktopModemManager1ModemSimpleInterface modemSimpleIface;
+
+    Q_DECLARE_PUBLIC(ModemSimple)
+    ModemSimple *q_ptr;
+};
+
+} // namespace ModemManager
 
 #endif

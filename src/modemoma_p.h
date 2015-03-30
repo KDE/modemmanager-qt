@@ -1,5 +1,6 @@
 /*
     Copyright 2014 Lukas Tinkl <ltinkl@redhat.com>
+    Copyright 2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -23,12 +24,29 @@
 
 #include "dbus/omainterface.h"
 #include "interface_p.h"
+#include "modemoma.h"
+
+namespace ModemManager
+{
 
 class ModemOmaPrivate: public InterfacePrivate
 {
 public:
-    explicit ModemOmaPrivate(const QString &path);
+    explicit ModemOmaPrivate(const QString &path, ModemOma *q);
     OrgFreedesktopModemManager1ModemOmaInterface omaIface;
+
+    QFlags<MMOmaFeature> features;
+    OmaSessionTypes pendingNetworkInitiatedSessions;
+    MMOmaSessionType sessionType;
+    MMOmaSessionState sessionState;
+
+    Q_DECLARE_PUBLIC(ModemOma)
+    ModemOma *q_ptr;
+private Q_SLOTS:
+    void onSessionStateChanged(int oldState, int newState, uint failedReason);
+    virtual void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) Q_DECL_OVERRIDE;
 };
+
+} // namespace ModemManager
 
 #endif

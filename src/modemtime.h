@@ -1,6 +1,6 @@
 /*
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -29,10 +29,71 @@
 #include <QDateTime>
 #include <QSharedPointer>
 
-class ModemTimePrivate;
-
 namespace ModemManager
 {
+
+class ModemTimePrivate;
+
+/**
+ * This class represents the timezone data provided by the network
+ */
+class MODEMMANAGERQT_EXPORT NetworkTimezone
+{
+public:
+    /**
+     * Constructs an empty timezone data object
+     */
+    NetworkTimezone();
+
+    /**
+     * Destroys this NetworkTimezone object.
+     */
+    ~NetworkTimezone();
+
+    /**
+     * Constructs an NetworkTimezone object that is a copy of the object @p other.
+     */
+    NetworkTimezone(const NetworkTimezone &other);
+
+    /**
+     * Returns offset of the timezone from UTC, in minutes (including DST, if applicable)
+     */
+    int offset() const;
+
+    /**
+     * Sets offset of the timezone from UTC
+     */
+    void setOffset(int offset);
+
+    /**
+     * Returns amount of offset that is due to DST (daylight saving time)
+     */
+    int dstOffset() const;
+
+    /**
+     * Sets amount of offset that is due to DST
+     */
+    void setDstOffset(int dstOffset);
+
+    /**
+     * Returns number of leap seconds included in the network time
+     */
+    int leapSecond() const;
+
+    /**
+     * Sets number of leap seconds included in the network timezone
+     */
+    void setLeapSecond(int leapSecond);
+    /**
+     * Makes a copy of the NetworkTimezone object @p other.
+     */
+    NetworkTimezone &operator=(const NetworkTimezone &other);
+
+private:
+    class Private;
+    Private *const d;
+};
+
 /**
  * @brief The ModemTime class
  *
@@ -47,12 +108,6 @@ public:
     typedef QSharedPointer<ModemTime> Ptr;
     typedef QList<Ptr> List;
 
-    struct NetworkTimeZone {
-        int offset; ///< Offset of the timezone from UTC, in minutes (including DST, if applicable)
-        int dst_offset; ///< Amount of offset that is due to DST (daylight saving time)
-        int leap_seconds; ///< Number of leap seconds included in the network time
-    };
-
     explicit ModemTime(const QString &path, QObject *parent = 0);
     ~ModemTime();
 
@@ -63,13 +118,13 @@ public:
      * current network time; it will not attempt to use previously-received
      * network time updates on the host to guess the current network time.
      */
-    QDateTime networkTime();
+    QDBusPendingReply<QString> networkTime();
 
     /**
      * @return the timezone data provided by the network.
-     * @see NetworkTimeZone
+     * @see NetworkTimezone
      */
-    NetworkTimeZone networkTimeZone() const;
+    ModemManager::NetworkTimezone networkTimezone() const;
 
 Q_SIGNALS:
     /**
@@ -77,11 +132,11 @@ Q_SIGNALS:
      * @param dateTime the new date and time
      */
     void networkTimeChanged(const QDateTime &dateTime);
-
-private Q_SLOTS:
-    void onNetworkTimeChanged(const QString &isoDateTime);
+    void networkTimezoneChanged(const ModemManager::NetworkTimezone &timeZone);
 };
 
 } // namespace ModemManager
+
+Q_DECLARE_METATYPE(ModemManager::NetworkTimezone)
 
 #endif

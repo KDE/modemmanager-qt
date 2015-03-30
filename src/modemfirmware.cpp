@@ -20,15 +20,25 @@
 
 #include "modemfirmware.h"
 #include "modemfirmware_p.h"
+#ifdef MMQT_STATIC
+#include "dbus/fakedbus.h"
+#else
+#include "dbus/dbus.h"
+#endif
 
-ModemFirmwarePrivate::ModemFirmwarePrivate(const QString &path)
-    : InterfacePrivate(path)
-    , modemFirmwareIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+ModemManager::ModemFirmwarePrivate::ModemFirmwarePrivate(const QString &path, ModemFirmware *q)
+    : InterfacePrivate(path, q)
+#ifdef MMQT_STATIC
+    , modemFirmwareIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
+#else
+    , modemFirmwareIface(MMQT_DBUS_SERVICE, path, QDBusConnection::systemBus())
+#endif
+    , q_ptr(q)
 {
 }
 
 ModemManager::ModemFirmware::ModemFirmware(const QString &path, QObject *parent)
-    : Interface(*new ModemFirmwarePrivate(path), parent)
+    : Interface(*new ModemFirmwarePrivate(path, this), parent)
 {
 }
 
@@ -36,7 +46,7 @@ ModemManager::ModemFirmware::~ModemFirmware()
 {
 }
 
-QDBusPendingReply<QString, QVariantMapList> ModemManager::ModemFirmware::listImages()
+QDBusPendingReply<QString, ModemManager::QVariantMapList> ModemManager::ModemFirmware::listImages()
 {
     Q_D(ModemFirmware);
     return d->modemFirmwareIface.List();

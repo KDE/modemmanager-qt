@@ -1,6 +1,6 @@
 /*
     Copyright 2013, 2014 Lukas Tinkl <ltinkl@redhat.com>
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -38,10 +38,11 @@
 #include "modemmessaging.h"
 #include "sim.h"
 
-class ModemDevicePrivate;
-
 namespace ModemManager
 {
+
+class ModemDevicePrivate;
+
 class MODEMMANAGERQT_EXPORT ModemDevice : public QObject
 {
     Q_OBJECT
@@ -54,6 +55,7 @@ public:
 
     enum InterfaceType {
         ModemInterface,
+        SimpleInterface,
         GsmInterface,
         GsmUssdInterface,
         CdmaInterface,
@@ -61,10 +63,8 @@ public:
         LocationInterface,
         TimeInterface,
         FirmwareInterface,
-#if MM_CHECK_VERSION(1, 2, 0)
         OmaInterface,
         SignalInterface
-#endif
     };
 
     explicit ModemDevice(const QString &path, QObject *parent = 0);
@@ -86,11 +86,6 @@ public:
 
     bool isGsmModem() const;
     bool isCdmaModem() const;
-
-private Q_SLOTS:
-    void onInterfacesAdded(const QDBusObjectPath &object_path, const NMVariantMapMap &interfaces_and_properties);
-    void onInterfacesRemoved(const QDBusObjectPath &object_path, const QStringList &interfaces);
-    void onSimPathChanged(const QString &oldPath, const QString &newPath);
 
 Q_SIGNALS:
     void simAdded(const QString &udi);

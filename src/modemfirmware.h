@@ -27,10 +27,11 @@
 #include <QObject>
 #include <QSharedPointer>
 
-class ModemFirmwarePrivate;
-
 namespace ModemManager
 {
+
+class ModemFirmwarePrivate;
+
 /**
  * @brief The ModemFirmware class
  *

@@ -2,7 +2,7 @@
     Copyright 2008,2011 Will Stephenson <wstephenson@kde.org>
     Copyright 2010-2011 Lamarque Souza <lamarque@kde.org>
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -23,18 +23,42 @@
 
 #include "sim.h"
 #include "sim_p.h"
-#include "mmdebug.h"
+#include "mmdebug_p.h"
+#ifdef MMQT_STATIC
+#include "dbus/fakedbus.h"
+#else
+#include "dbus/dbus.h"
+#endif
 
-SimPrivate::SimPrivate(const QString &path)
-    : simIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+ModemManager::SimPrivate::SimPrivate(const QString &path, Sim *q)
+#ifdef MMQT_STATIC
+    : simIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
+#else
+    : simIface(MMQT_DBUS_SERVICE, path, QDBusConnection::systemBus())
+#endif
     , uni(path)
+    , q_ptr(q)
 {
+    if (simIface.isValid()) {
+        simIdentifier = simIface.simIdentifier();
+        imsi = simIface.imsi();
+        operatorIdentifier = simIface.operatorIdentifier();
+        operatorName = simIface.operatorName();
+    }
 }
 
 ModemManager::Sim::Sim(const QString &path, QObject *parent)
     : QObject(parent)
-    , d_ptr(new SimPrivate(path))
+    , d_ptr(new SimPrivate(path, this))
 {
+    Q_D(Sim);
+#ifdef MMQT_STATIC
+    QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#else
+    QDBusConnection::systemBus().connect(MMQT_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#endif
 }
 
 ModemManager::Sim::~Sim()
@@ -45,25 +69,25 @@ ModemManager::Sim::~Sim()
 QString ModemManager::Sim::simIdentifier() const
 {
     Q_D(const Sim);
-    return d->simIface.simIdentifier();
+    return d->simIdentifier;
 }
 
 QString ModemManager::Sim::imsi() const
 {
     Q_D(const Sim);
-    return d->simIface.imsi();
+    return d->imsi;
 }
 
 QString ModemManager::Sim::operatorIdentifier() const
 {
     Q_D(const Sim);
-    return d->simIface.operatorIdentifier();
+    return d->operatorIdentifier;
 }
 
 QString ModemManager::Sim::operatorName() const
 {
     Q_D(const Sim);
-    return d->simIface.operatorName();
+    return d->operatorName;
 }
 
 QDBusPendingReply<> ModemManager::Sim::sendPuk(const QString &puk, const QString &pin)
@@ -94,4 +118,34 @@ QString ModemManager::Sim::uni() const
 {
     Q_D(const Sim);
     return d->uni;
+}
+
+void ModemManager::SimPrivate::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
+{
+    Q_Q(Sim);
+    Q_UNUSED(invalidatedProps);
+    qCDebug(MMQT) << interface << properties.keys();
+
+    if (interface == QString(MMQT_DBUS_INTERFACE_SIM)) {
+        QVariantMap::const_iterator it = properties.constFind(QLatin1String(MM_SIM_PROPERTY_SIMIDENTIFIER));
+        if (it != properties.constEnd()) {
+            simIdentifier = it->toString();
+            Q_EMIT q->simIdentifierChanged(simIdentifier);
+        }
+        it = properties.constFind(QLatin1String(MM_SIM_PROPERTY_IMSI));
+        if (it != properties.constEnd()) {
+            imsi = it->toString();
+            Q_EMIT q->imsiChanged(imsi);
+        }
+        it = properties.constFind(QLatin1String(MM_SIM_PROPERTY_OPERATORIDENTIFIER));
+        if (it != properties.constEnd()) {
+            operatorIdentifier = it->toString();
+            Q_EMIT q->operatorIdentifierChanged(operatorIdentifier);
+        }
+        it = properties.constFind(QLatin1String(MM_SIM_PROPERTY_OPERATORNAME));
+        if (it != properties.constEnd()) {
+            operatorName = it->toString();
+            Q_EMIT q->operatorNameChanged(operatorName);
+        }
+    }
 }

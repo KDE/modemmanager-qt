@@ -32,10 +32,11 @@
 #include "generictypes.h"
 #include "interface.h"
 
-class ModemLocationPrivate;
-
 namespace ModemManager
 {
+
+class ModemLocationPrivate;
+
 /**
  * @brief The ModemLocation class
  *
@@ -70,7 +71,7 @@ public:
      * via the locationChanged() signal and require applications to call authenticated APIs
      * (like GetLocation() ) to get location information.
      */
-    void setup(ModemManager::ModemLocation::LocationSources sources, bool signalLocation);
+    QDBusPendingReply<void> setup(ModemManager::ModemLocation::LocationSources sources, bool signalLocation);
 
     /**
      * @return current location information, if any. If the modem supports
@@ -79,7 +80,7 @@ public:
      *
      * This method may require the client to authenticate itself.
      */
-    LocationInformationMap location(); // TODO process this better
+    QDBusPendingReply<LocationInformationMap> getLocation();
 
     /**
      * @return QFlags of MMModemLocationSource values, specifying the supported location sources.
@@ -103,17 +104,22 @@ public:
      */
     bool signalsLocation() const;
 
+    /**
+     * @return Dictionary of available location information when location information gathering is enabled. If the modem supports multiple
+     *         location types it may return more than one here.
+     * Note that if the device was told not to emit updated location information when location information gathering was initially enabled,
+     * this property may not return any location information for security reasons.
+     */
+    LocationInformationMap location() const;
+
 Q_SIGNALS:
-    void capabilitiesChanged(LocationSources sources);
-    void isEnabledChanged(bool enabled);
+    void capabilitiesChanged(QFlags<MMModemLocationSource> capabilities);
+    void enabledCapabilitiesChanged(QFlags<MMModemLocationSource> capabilities);
     void signalsLocationChanged(bool signalsLocation);
     /**
      * Emitted when the location has changed
      */
-    void locationChanged(const LocationInformationMap &location);
-
-private Q_SLOTS:
-   void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps);
+    void locationChanged(const ModemManager::LocationInformationMap &location);
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(ModemLocation::LocationSources)

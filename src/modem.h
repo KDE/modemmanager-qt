@@ -3,7 +3,7 @@
     Copyright 2010 Lamarque Souza <lamarque@kde.org>
     Copyright 2013 Daniel Nicoletti <dantti12@gmail.com>
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -34,13 +34,126 @@
 #include <QSharedPointer>
 #include <QDBusObjectPath>
 
+#include "bearer.h"
 #include "generictypes.h"
 #include "interface.h"
 
-class ModemPrivate;
-
 namespace ModemManager
 {
+
+class ModemPrivate;
+
+/**
+ * This class represents bearer properties used for creating of new bearers
+ */
+class MODEMMANAGERQT_EXPORT BearerProperties
+{
+public:
+    /**
+     * Constructs an empty BearerProperties object
+     */
+    BearerProperties();
+
+    /**
+     * Destroys this BearerProperties object.
+     */
+    ~BearerProperties();
+
+    /**
+     * Constructs a BearerProperties object that is a copy of the object @p other.
+     */
+    BearerProperties(const BearerProperties &other);
+
+    /**
+     * Returns Access Point Name
+     */
+    QString apn() const;
+
+    /**
+     * Sets Access Point Name
+     */
+    void setApn(const QString &apn);
+
+    /**
+     * Returns addressing type
+     */
+    MMBearerIpFamily ipType() const;
+
+    /**
+     * Sets addressing type
+     */
+    void setIpType(MMBearerIpFamily ipType);
+
+    /**
+     * Returns used authentication method
+     */
+    MMBearerAllowedAuth allowedAuthentication() const;
+
+    /**
+     * Sets the authentication method to use
+     */
+    void setAllowedAuthentication(MMBearerAllowedAuth allowedAuth);
+
+    /**
+     * Returns user name
+     */
+    QString user() const;
+
+    /**
+     * Sets user name
+     */
+    void setUser(const QString &user);
+
+    /**
+     * Returns password
+     */
+    QString password() const;
+
+    /**
+     * Sets password
+     */
+    void setPassword(const QString &password);
+
+    /**
+     * Returns whether connection is allowed during roaming
+     */
+    bool allowRoaming() const;
+
+    /**
+     * Sets whether connection is allowed during roaming
+     */
+    void setAllowRoaming(bool allow);
+
+    /**
+     * Returns protocol of the Rm interface
+     */
+    MMModemCdmaRmProtocol rmProtocol() const;
+
+    /**
+     * Sets protocol of the Rm interface
+     */
+    void setRmProtocol(MMModemCdmaRmProtocol rmProtocol);
+
+    /**
+     * Returns telephone number to dial
+     */
+    QString number() const;
+
+    /**
+     * Sets telephone number to dial
+     */
+    void setNumber(const QString &number);
+
+    /**
+     * Makes a copy of the IpConfig object @p other.
+     */
+    BearerProperties &operator=(const BearerProperties &other);
+
+private:
+    class Private;
+    Private *const d;
+};
+
 /**
  * @brief The Modem class
  *
@@ -65,17 +178,6 @@ public:
     typedef QSharedPointer<Modem> Ptr;
     typedef QList<Ptr> List;
 
-    struct BearerStruct {
-        QString apn; ///< Access Point Name, given as a string value. Required in 3GPP.
-        MMBearerIpFamily ipType; ///< Addressing type, given as a MMBearerIpFamily value. Optional in 3GPP and CDMA.
-        MMBearerAllowedAuth allowedAuth; ///< The authentication method to use, given as a MMBearerAllowedAuth value. Optional in 3GPP.
-        QString user; ///< User name (if any) required by the network, given as a string value. Optional in 3GPP.
-        QString password; ///< Password (if any) required by the network, given as a string value. Optional in 3GPP.
-        bool allowRoaming; ///< Flag to tell whether connection is allowed during roaming, given as a boolean value. Optional in 3GPP.
-        MMModemCdmaRmProtocol rmProtocol; ///< Protocol of the Rm interface, given as a MMModemCdmaRmProtocol value. Optional in CDMA.
-        QString number; ///< Telephone number to dial, given as a string value. Required in POTS.
-    };
-
     explicit Modem(const QString &path, QObject *parent = 0 );
     ~Modem();
 
@@ -94,16 +196,15 @@ public:
      *
      * When disabled, the modem enters low-power state and no network-related operations are available.
      */
-    void setEnabled(bool enable);
+    QDBusPendingReply<void> setEnabled(bool enable);
 
     /**
      * Create a new packet data bearer using the given characteristics.
      *
      * This request may fail if the modem does not support additional bearers, if too many bearers are already defined, or if properties are invalid.
      *
-     * @return the path to the new bearer
      */
-    QString createBearer(const BearerStruct &bearer);
+    QDBusPendingReply<QDBusObjectPath> createBearer(const ModemManager::BearerProperties &bearerProperties);
 
     /**
      * Delete an existing packet data bearer.
@@ -111,19 +212,24 @@ public:
      * If the bearer is currently active and providing packet data server, it will be disconnected and that packet data service will terminate.
      * @param bearer path to the bearer to delete
      */
-    void deleteBearer(const QString &bearer);
+    QDBusPendingReply<void> deleteBearer(const QString &bearer);
 
     /**
      * @return the configured packet data bearers (EPS Bearers, PDP Contexts, or CDMA2000 Packet Data Sessions).
      */
-    QStringList listBearers();
+    ModemManager::Bearer::List listBearers() const;
+
+    /**
+     * @return the configured packet data bearer on given path
+     */
+    ModemManager::Bearer::Ptr findBearer(const QString &bearer) const;
 
     /**
      * Clear non-persistent configuration and state, and return the device to a newly-powered-on state.
      *
      * This command may power-cycle the device.
      */
-    void reset();
+    QDBusPendingReply<void> reset();
 
     /**
      * Clear the modem's configuration (including persistent configuration and state), and return the device to a factory-default state.
@@ -133,18 +239,18 @@ public:
      * This command may or may not power-cycle the device.
      * @param code Carrier-supplied code required to reset the modem.
      */
-    void factoryReset(const QString &code);
+    QDBusPendingReply<void> factoryReset(const QString &code);
 
     /**
      * Set the power @p state of the modem. This action can only be run when the modem is in MM_MODEM_STATE_DISABLED state.
      */
-    void setPowerState(MMModemPowerState state);
+    QDBusPendingReply<void> setPowerState(MMModemPowerState state);
 
     /**
      * Set the capabilities of the device. A restart of the modem may be required.
      * @param caps QFlags of MMModemCapability values, to specify the capabilities to use.
      */
-    void setCurrentCapabilities(Capabilities caps);
+    QDBusPendingReply<void> setCurrentCapabilities(Capabilities caps);
 
     /**
      * Set the access technologies (e.g. 2G/3G/4G preference) the device is currently allowed to use when connecting to a network.
@@ -152,13 +258,13 @@ public:
      * The given combination should be supported by the modem, as specified in supportedModes()
      * @param mode
      */
-    void setCurrentModes(const CurrentModesType &mode);
+    QDBusPendingReply<void> setCurrentModes(const CurrentModesType &mode);
 
     /**
      * Set the radio frequency and technology bands the device is currently allowed to use when connecting to a network.
      * @param bands List of MMModemBand values, to specify the bands to be used.
      */
-    void setCurrentBands(const QList<MMModemBand> &bands);
+    QDBusPendingReply<void> setCurrentBands(const QList<MMModemBand> &bands);
 
     QDBusPendingReply<QString> command(const QString &cmd, uint timeout);
 
@@ -361,84 +467,39 @@ public:
      */
     IpBearerFamilies supportedIpFamilies() const;
 
-
-    // From org.freedesktop.ModemManager.Modem.Simple
-
-    /**
-     * Dictionary of properties needed to get the modem connected.
-     * Each implementation is free to add its own specific key-value pairs. The predefined
-     * common ones are:
-     *
-     * @param pin SIM-PIN unlock code, given as a string value (signature "s").
-     * @param operator-id ETSI MCC-MNC of a network to force registration with, given as a string value (signature "s").
-     * @param apn For GSM/UMTS and LTE devices the APN to use, given as a string value (signature "s").
-     * @param ip-type For GSM/UMTS and LTE devices the IP addressing type to use, given as a MMBearerIpFamily value (signature "u").
-     * @param allowed-auth The authentication method to use, given as a MMBearerAllowedAuth value (signature "u"). Optional in 3GPP.
-     * @param user User name (if any) required by the network, given as a string value (signature "s"). Optional in 3GPP.
-     * @param password Password (if any) required by the network, given as a string value (signature "s"). Optional in 3GPP.
-     * @param number For POTS devices the number to dial,, given as a string value (signature "s").
-     * @param allow-roaming FALSE to allow only connections to home networks, given as a boolean value (signature "b").
-     * @param rm-protocol For CDMA devices, the protocol of the Rm interface, given as a MMModemCdmaRmProtocol value (signature "u").
-     *
-     * @return On successful connect, returns the object path of the connected packet data bearer used for the connection attempt.
-    */
-    QDBusObjectPath connectModem(const QVariantMap &properties);
-
-    /**
-     *  Dictionary of properties.
-     *  Each implementation is free to add it's own specific key-value pairs. The predefined
-     *  common ones are:
-     *
-     * @param state A MMModemState value specifying the overall state of the modem, given as an unsigned integer value (signature "u").
-     * @param signal-quality Signal quality value, given only when registered, as an unsigned integer value (signature "u").
-     * @param current-bands List of MMModemBand values, given only when registered, as a list of unsigned integer values (signature "au").
-     * @param access-technology A MMModemAccessTechnology value, given only when registered, as an unsigned integer value (signature "u").
-     * @param m3gpp-registration-state A MMModem3gppRegistrationState value specifying the state of the registration,
-     *   given only when registered in a 3GPP network, as an unsigned integer value (signature "u").
-     * @param m3gpp-operator-code Operator MCC-MNC, given only when registered in a 3GPP network, as a string value (signature "s").
-     * @param m3gpp-operator-name Operator name, given only when registered in a 3GPP network, as a string value (signature "s").
-     * @param cdma-cdma1x-registration-state A MMModemCdmaRegistrationState value specifying the state of the registration,
-     *   given only when registered in a CDMA1x network, as an unsigned integer value (signature "u").
-     * @param cdma-evdo-registration-state A MMModemCdmaRegistrationState value specifying the state of the registration,
-     *   given only when registered in a EV-DO network, as an unsigned integer value (signature "u").
-     * @param cdma-sid The System Identifier of the serving network, if registered in a CDMA1x network and if known.
-     *   Given as an unsigned integer value (signature "u").
-     * @param cdma-nid The Network Identifier of the serving network, if registered in a CDMA1x network and if known.
-     *   Given as an unsigned integer value (signature "u").
-    */
-    QVariantMap status();
-
-    void disconnectModem(const QString &bearer);
-    void disconnectAllModems();
-
 Q_SIGNALS:
-    void deviceChanged(const QString &device);
-    void driversChanged(const QStringList &drivers);
-    void enabledChanged(bool enabled);
-    void unlockRequiredChanged(MMModemLock lock);
-    /**
-     * The modem's state (see state()) changed.
-     */
-    void stateChanged(MMModemState oldState, MMModemState newState, MMModemStateChangeReason reason);
-    void signalQualityChanged(uint percentStrength);
-    void accessTechnologyChanged(ModemManager::Modem::AccessTechnologies tech);
-    void currentModesChanged();
-    void simPathChanged(const QString &oldPath, const QString &newPath);
-    /**
-     * Emitted when the modem's power state changes
-     * @param state the new state
-     * @see powerState()
-     */
-    void powerStateChanged(MMModemPowerState state);
-    /**
-     * Emitted when the list of bearers changed
-     * @since 1.1.90
-     */
+    void bearerAdded(const QString &bearer);
+    void bearerRemoved(const QString &bearer);
     void bearersChanged();
 
-private Q_SLOTS:
-    void onPropertiesChanged(const QString &ifaceName, const QVariantMap &changedProps, const QStringList &invalidatedProps);
-    void onStateChanged(int oldState, int newState, uint reason);
+    void simPathChanged(const QString &oldPath, const QString &newPath);
+    void supportedCapabilitiesChanged(const QList<MMModemCapability> &supportedCapabilities);
+    void currentCapabilitiesChanged(const QFlags<MMModemCapability> &currentCapabilities);
+    void maxBearersChanged(uint maxBearers);
+    void maxActiveBearersChanged(uint maxActiveBearers);
+    void manufacturerChanged(const QString &manufacturer);
+    void modelChanged(const QString &model);
+    void revisionChanged(const QString &revision);
+    void deviceIdentifierChanged(const QString &deviceIdentifier);
+    void deviceChanged(const QString &device);
+    void driversChanged(const QStringList &drivers);
+    void pluginChanged(const QString &plugin);
+    void primaryPortChanged(const QString &primaryPort);
+    void portsChanged(const ModemManager::PortList &ports);
+    void equipmentIdentifierChanged(const QString &equipmentIdentifier);
+    void unlockRequiredChanged(MMModemLock unlockRequired);
+    void unlockRetriesChanged(const ModemManager::UnlockRetriesMap &unlockRetries);
+    void stateFailedReasonChanged(MMModemStateFailedReason stateFailedReason);
+    void accessTechnologiesChanged(QFlags<MMModemAccessTechnology> accessTechnologies);
+    void signalQualityChanged(ModemManager::SignalQualityPair signalQuality);
+    void ownNumbersChanged(const QStringList &ownNumbers);
+    void powerStateChanged(MMModemPowerState powerState);
+    void supportedModesChanged(ModemManager::SupportedModesType supportedModes);
+    void currentModesChanged(ModemManager::CurrentModesType currentModes);
+    void supportedBandsChanged(const QList<MMModemBand> &supportedBands);
+    void currentBandsChanged(const QList<MMModemBand> &supportedBands);
+    void supportedIpFamiliesChanged(QFlags<MMBearerIpFamily> supportedIpFamilies);
+    void stateChanged(MMModemState oldState, MMModemState newState, MMModemStateChangeReason reason);
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Modem::Capabilities)

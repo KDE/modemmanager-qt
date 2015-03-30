@@ -1,6 +1,6 @@
 /*
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -31,8 +31,12 @@
 #include "bearer.h"
 #include "sim.h"
 
-class ModemDevicePrivate
+namespace ModemManager
 {
+
+class ModemDevicePrivate : public QObject
+{
+    Q_OBJECT
 public:
     ModemDevicePrivate(const QString &path, ModemManager::ModemDevice *q);
     virtual ~ModemDevicePrivate();
@@ -52,6 +56,13 @@ public:
 
     Q_DECLARE_PUBLIC(ModemManager::ModemDevice)
     ModemManager::ModemDevice *q_ptr;
+
+private Q_SLOTS:
+    void onInterfacesAdded(const QDBusObjectPath &object_path, const ModemManager::MMVariantMapMap &interfaces_and_properties);
+    void onInterfacesRemoved(const QDBusObjectPath &object_path, const QStringList &interfaces);
+    void onSimPathChanged(const QString &oldPath, const QString &newPath);
 };
+
+} // namespace ModemManager
 
 #endif

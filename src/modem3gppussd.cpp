@@ -2,7 +2,7 @@
     Copyright 2008,2011 Will Stephenson <wstephenson@kde.org>
     Copyright 2010 Lamarque Souza <lamarque@kde.org>
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -23,73 +23,84 @@
 
 #include "modem3gppussd.h"
 #include "modem3gppussd_p.h"
-#include "mmdebug.h"
+#include "mmdebug_p.h"
+#ifdef MMQT_STATIC
+#include "dbus/fakedbus.h"
+#else
 #include "dbus/dbus.h"
+#endif
 
-Modem3gppUssdPrivate::Modem3gppUssdPrivate(const QString &path)
-    : InterfacePrivate(path)
-    , ussdIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+ModemManager::Modem3gppUssdPrivate::Modem3gppUssdPrivate(const QString &path, Modem3gppUssd *q)
+    : InterfacePrivate(path, q)
+#ifdef MMQT_STATIC
+    , ussdIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
+#else
+    , ussdIface(MMQT_DBUS_SERVICE, path, QDBusConnection::systemBus())
+#endif
+    , q_ptr(q)
 {
+    if (ussdIface.isValid()) {
+        state = (MMModem3gppUssdSessionState)ussdIface.state();
+        networkNotification = ussdIface.networkNotification();
+        networkRequest = ussdIface.networkRequest();
+    }
 }
 
 ModemManager::Modem3gppUssd::Modem3gppUssd(const QString &path, QObject *parent)
-    : Interface(*new Modem3gppUssdPrivate(path), parent)
+    : Interface(*new Modem3gppUssdPrivate(path, this), parent)
 {
     Q_D(Modem3gppUssd);
 
-    QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), this,
+    qRegisterMetaType<MMModem3gppUssdSessionState>();
+
+#ifdef MMQT_STATIC
+    QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#else
+    QDBusConnection::systemBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#endif
 }
 
 ModemManager::Modem3gppUssd::~Modem3gppUssd()
 {
 }
 
-void ModemManager::Modem3gppUssd::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
+void ModemManager::Modem3gppUssdPrivate::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
 {
+    Q_Q(Modem3gppUssd);
     Q_UNUSED(invalidatedProps);
     qCDebug(MMQT) << interface << properties.keys();
 
-    if (interface == QString(MM_DBUS_INTERFACE_MODEM_MODEM3GPP_USSD)) {
-        QLatin1String state(MM_MODEM_MODEM3GPP_USSD_PROPERTY_STATE);
-        QLatin1String networkNotification(MM_MODEM_MODEM3GPP_USSD_PROPERTY_NETWORKNOTIFICATION);
-        QLatin1String networkRequest(MM_MODEM_MODEM3GPP_USSD_PROPERTY_NETWORKREQUEST);
-
-        QVariantMap::const_iterator it = properties.constFind(state);
+    if (interface == QString(MMQT_DBUS_INTERFACE_MODEM_MODEM3GPP_USSD)) {
+        QVariantMap::const_iterator it = properties.constFind(QLatin1String(MM_MODEM_MODEM3GPP_USSD_PROPERTY_STATE));
         if ( it != properties.constEnd()) {
-            emit stateChanged((MMModem3gppUssdSessionState)it->toUInt());
+            state = (MMModem3gppUssdSessionState)it->toUInt();
+            Q_EMIT q->stateChanged(state);
         }
-        it = properties.constFind(networkNotification);
+        it = properties.constFind(QLatin1String(MM_MODEM_MODEM3GPP_USSD_PROPERTY_NETWORKNOTIFICATION));
         if ( it != properties.constEnd()) {
-            emit networkNotificationChanged(it->toString());
+            networkNotification = it->toString();
+            Q_EMIT q->networkNotificationChanged(networkNotification);
         }
-        it = properties.constFind(networkRequest);
+        it = properties.constFind(QLatin1String(MM_MODEM_MODEM3GPP_USSD_PROPERTY_NETWORKREQUEST));
         if ( it != properties.constEnd()) {
-            emit networkRequestChanged(it->toString());
+            networkRequest = it->toString();
+            Q_EMIT q->networkRequestChanged(networkRequest);
         }
     }
 }
 
-QString ModemManager::Modem3gppUssd::initiate(const QString &command)
+QDBusPendingReply<QString> ModemManager::Modem3gppUssd::initiate(const QString &command)
 {
     Q_D(Modem3gppUssd);
-    QDBusReply<QString> reply = d->ussdIface.Initiate(command);
-
-    if (reply.isValid()) {
-        return reply.value();
-    }
-    return QString();
+    return d->ussdIface.Initiate(command);
 }
 
-QString ModemManager::Modem3gppUssd::respond(const QString &response)
+QDBusPendingReply<QString> ModemManager::Modem3gppUssd::respond(const QString &response)
 {
     Q_D(Modem3gppUssd);
-    QDBusReply<QString> reply = d->ussdIface.Respond(response);
-
-    if (reply.isValid()) {
-        return reply.value();
-    }
-    return QString();
+    return d->ussdIface.Respond(response);
 }
 
 void ModemManager::Modem3gppUssd::cancel()
@@ -101,17 +112,17 @@ void ModemManager::Modem3gppUssd::cancel()
 MMModem3gppUssdSessionState ModemManager::Modem3gppUssd::state() const
 {
     Q_D(const Modem3gppUssd);
-    return (MMModem3gppUssdSessionState)d->ussdIface.state();
+    return d->state;
 }
 
 QString ModemManager::Modem3gppUssd::networkNotification() const
 {
     Q_D(const Modem3gppUssd);
-    return d->ussdIface.networkNotification();
+    return d->networkNotification;
 }
 
 QString ModemManager::Modem3gppUssd::networkRequest() const
 {
     Q_D(const Modem3gppUssd);
-    return d->ussdIface.networkRequest();
+    return d->networkRequest;
 }

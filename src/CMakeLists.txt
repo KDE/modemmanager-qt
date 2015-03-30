@@ -10,6 +10,7 @@ set(ModemManagerQt_SRCS
     interface.cpp
     manager.cpp
     modem.cpp
+    modemsimple.cpp
     modem3gpp.cpp
     modem3gppussd.cpp
     modemcdma.cpp
@@ -66,6 +67,15 @@ set_target_properties(KF5ModemManagerQt PROPERTIES VERSION ${MODEMMANAGERQT_VERS
                                                    EXPORT_NAME ModemManagerQt
 )
 
+target_include_directories(KF5ModemManagerQt PUBLIC ${MODEMMANAGER_INCLUDE_DIRS})
+
+########### static lib for tests  ###############
+add_library(KF5ModemManagerQt_static STATIC ${ModemManagerQt_SRCS} ${DBUS_INTERFACES_FILES})
+set_target_properties(KF5ModemManagerQt_static PROPERTIES COMPILE_FLAGS -DMMQT_STATIC=1)
+
+target_link_libraries(KF5ModemManagerQt_static PUBLIC Qt5::Core Qt5::DBus Qt5::Xml)
+target_include_directories(KF5ModemManagerQt_static PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..;${CMAKE_CURRENT_BINARY_DIR}/..>")
+
 ecm_generate_headers(ModemManagerQt_HEADERS
   HEADER_NAMES
   Bearer
@@ -81,6 +91,7 @@ ecm_generate_headers(ModemManagerQt_HEADERS
   ModemLocation
   ModemMessaging
   ModemSignal
+  ModemSimple
   ModemTime
   ModemOma
   Sim

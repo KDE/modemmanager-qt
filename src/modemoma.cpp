@@ -1,5 +1,6 @@
 /*
     Copyright 2014 Lukas Tinkl <ltinkl@redhat.com>
+    Copyright 2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -20,18 +21,48 @@
 
 #include "modemoma.h"
 #include "modemoma_p.h"
-#include "mmdebug.h"
+#include "mmdebug_p.h"
+#ifdef MMQT_STATIC
+#include "dbus/fakedbus.h"
+#else
 #include "dbus/dbus.h"
+#endif
 
-ModemOmaPrivate::ModemOmaPrivate(const QString &path)
-    : InterfacePrivate(path)
-    , omaIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+ModemManager::ModemOmaPrivate::ModemOmaPrivate(const QString &path, ModemOma *q)
+    : InterfacePrivate(path, q)
+#ifdef MMQT_STATIC
+    , omaIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
+#else
+    , omaIface(MMQT_DBUS_SERVICE, path, QDBusConnection::systemBus())
+#endif
+    , q_ptr(q)
 {
+    if (omaIface.isValid()) {
+        features = (ModemOma::Features)omaIface.features();
+        pendingNetworkInitiatedSessions = omaIface.pendingNetworkInitiatedSessions();
+        sessionType = (MMOmaSessionType)omaIface.sessionType();
+        sessionState = (MMOmaSessionState)omaIface.sessionState();
+    }
 }
 
 ModemManager::ModemOma::ModemOma(const QString &path, QObject *parent)
-    : Interface(*new ModemOmaPrivate(path), parent)
+    : Interface(*new ModemOmaPrivate(path, this), parent)
 {
+    Q_D(ModemOma);
+
+    qRegisterMetaType<QFlags<MMOmaFeature> >();
+    qRegisterMetaType<MMOmaSessionType>();
+    qRegisterMetaType<MMOmaSessionState>();
+    qRegisterMetaType<MMOmaSessionStateFailedReason>();
+
+    connect(&d->omaIface, &OrgFreedesktopModemManager1ModemOmaInterface::SessionStateChanged, d, &ModemOmaPrivate::onSessionStateChanged);
+#ifdef MMQT_STATIC
+    QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+                                        SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#else
+    QDBusConnection::systemBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+                                        SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#endif
 }
 
 ModemManager::ModemOma::~ModemOma()
@@ -42,47 +73,82 @@ ModemManager::ModemOma::Features ModemManager::ModemOma::features() const
 {
     Q_D(const ModemOma);
 
-    return (Features)d->omaIface.features();
+    return d->features;
 }
 
-OmaSessionTypes ModemManager::ModemOma::pendingNetworkInitiatedSessions() const
+ModemManager::OmaSessionTypes ModemManager::ModemOma::pendingNetworkInitiatedSessions() const
 {
-    OmaSessionTypes result;
-    return result;  // TODO
+    Q_D(const ModemOma);
+    return d->pendingNetworkInitiatedSessions;
 }
 
 MMOmaSessionType ModemManager::ModemOma::sessionType() const
 {
     Q_D(const ModemOma);
-    return (MMOmaSessionType)d->omaIface.sessionType();
+    return d->sessionType;
 }
 
 MMOmaSessionState ModemManager::ModemOma::sessionState() const
 {
     Q_D(const ModemOma);
-    return (MMOmaSessionState)d->omaIface.sessionState();
+    return d->sessionState;
 }
 
-void ModemManager::ModemOma::setup(Features features)
+QDBusPendingReply<void> ModemManager::ModemOma::setup(Features features)
 {
     Q_D(ModemOma);
-    d->omaIface.Setup((uint)features);
+    return d->omaIface.Setup((uint)features);
 }
 
-void ModemManager::ModemOma::startClientInitiatedSession(MMOmaSessionType sessionType)
+QDBusPendingReply<void> ModemManager::ModemOma::startClientInitiatedSession(MMOmaSessionType sessionType)
 {
     Q_D(ModemOma);
-    d->omaIface.StartClientInitiatedSession((uint)sessionType);
+    return d->omaIface.StartClientInitiatedSession((uint)sessionType);
 }
 
-void ModemManager::ModemOma::acceptNetworkInitiatedSession(uint sessionId, bool accept)
+QDBusPendingReply<void> ModemManager::ModemOma::acceptNetworkInitiatedSession(uint sessionId, bool accept)
 {
     Q_D(ModemOma);
-    d->omaIface.AcceptNetworkInitiatedSession(sessionId, accept);
+    return d->omaIface.AcceptNetworkInitiatedSession(sessionId, accept);
 }
 
-void ModemManager::ModemOma::cancelSession()
+QDBusPendingReply<void> ModemManager::ModemOma::cancelSession()
 {
     Q_D(ModemOma);
-    d->omaIface.CancelSession();
+    return d->omaIface.CancelSession();
+}
+
+void ModemManager::ModemOmaPrivate::onSessionStateChanged(int oldState, int newState, uint failedReason)
+{
+    Q_Q(ModemOma);
+    sessionState = (MMOmaSessionState)newState;
+    Q_EMIT q->sessionStateChanged((MMOmaSessionState)oldState, (MMOmaSessionState)newState, (MMOmaSessionStateFailedReason)failedReason);
+}
+void ModemManager::ModemOmaPrivate::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
+{
+    Q_Q(ModemOma);
+    Q_UNUSED(invalidatedProps);
+    qCDebug(MMQT) << interface << properties.keys();
+
+    if (interface == QString(MMQT_DBUS_INTERFACE_MODEM_OMA)) {
+        QVariantMap::const_iterator it = properties.constFind(QLatin1String(MM_MODEM_OMA_PROPERTY_FEATURES));
+        if (it != properties.constEnd()) {
+            features = (ModemOma::Features)it->toUInt();
+            Q_EMIT q->featuresChanged(features);
+        }
+        it = properties.constFind(QLatin1String(MM_MODEM_OMA_PROPERTY_PENDINGNETWORKINITIATEDSESSIONS));
+        if (it != properties.constEnd()) {
+            pendingNetworkInitiatedSessions = qdbus_cast<OmaSessionTypes>(*it);
+            Q_EMIT q->pendingNetworkInitiatedSessionsChanged(pendingNetworkInitiatedSessions);
+        }
+        it = properties.constFind(QLatin1String(MM_MODEM_OMA_PROPERTY_SESSIONTYPE));
+        if (it != properties.constEnd()) {
+            sessionType = (MMOmaSessionType)it->toUInt();
+            Q_EMIT q->sessionTypeChanged(sessionType);
+        }
+        it = properties.constFind(QLatin1String(MM_MODEM_OMA_PROPERTY_SESSIONSTATE));
+        if (it != properties.constEnd()) {
+            // Should be handled by sessionStateChanged() signal
+        }
+    }
 }

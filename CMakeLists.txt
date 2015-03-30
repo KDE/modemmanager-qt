@@ -36,6 +36,12 @@ ecm_setup_version(${KF5_VERSION} VARIABLE_PREFIX MODEMMANAGERQT
                         PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF5ModemManagerQtConfigVersion.cmake"
                         SOVERSION 5)
 
+# Enable unit testing
+if (BUILD_TESTING)
+    add_subdirectory(src/fakemodem)
+    add_subdirectory(autotests)
+endif ()
+
 ##################  examples  ################################
 option(BUILD_EXAMPLES "Build example applications" FALSE)
 if (BUILD_EXAMPLES)

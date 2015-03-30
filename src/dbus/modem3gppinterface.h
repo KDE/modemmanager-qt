@@ -20,7 +20,6 @@
 #include <QtCore/QVariant>
 #include <QtDBus/QtDBus>
 #include "generictypes.h"
-#include "generictypes_p.h"
 
 /*
  * Proxy class for interface org.freedesktop.ModemManager1.Modem.Modem3gpp
@@ -30,8 +29,11 @@ class OrgFreedesktopModemManager1ModemModem3gppInterface: public QDBusAbstractIn
     Q_OBJECT
 public:
     static inline const char *staticInterfaceName()
+#ifdef MMQT_STATIC
+    { return "org.kde.fakemodem.Modem.Modem3gpp"; }
+#else
     { return "org.freedesktop.ModemManager1.Modem.Modem3gpp"; }
-
+#endif
 public:
     OrgFreedesktopModemManager1ModemModem3gppInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = 0);
 
@@ -69,7 +71,7 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QLatin1String("Register"), argumentList);
     }
 
-    inline QDBusPendingReply<QVariantMapList> Scan()
+    inline QDBusPendingReply<ModemManager::QVariantMapList> Scan()
     {
         QList<QVariant> argumentList;
         return asyncCallWithArgumentList(QLatin1String("Scan"), argumentList);

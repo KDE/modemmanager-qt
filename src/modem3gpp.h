@@ -2,7 +2,7 @@
     Copyright 2008,2011 Will Stephenson <wstephenson@kde.org>
     Copyright 2010 Lamarque Souza <lamarque@kde.org>
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -32,10 +32,11 @@
 #include "generictypes.h"
 #include "interface.h"
 
-class Modem3gppPrivate;
-
 namespace ModemManager
 {
+
+class Modem3gppPrivate;
+
 /**
  * @brief The Modem3gpp class
  *
@@ -92,6 +93,11 @@ public:
     FacilityLocks enabledFacilityLocks() const;
 
     /**
+     * @return Value representing the subscription status of the account and whether there is any data remaining.
+     */
+    MMModem3gppSubscriptionState subscriptionState() const;
+
+    /**
       * Register the device to network.
       *
       * @param networkId The operator ID (ie, "MCCMNC", like "310260") to register. An empty string can be used to register to the home network.
@@ -125,11 +131,12 @@ public:
     QDBusPendingReply<QVariantMapList> scan();
 
 Q_SIGNALS:
+    void imeiChanged(const QString &imei);
     void registrationStateChanged(MMModem3gppRegistrationState registrationState);
-    void enabledFacilityLocksChanged(FacilityLocks locks);
-
-private Q_SLOTS:
-    void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps);
+    void operatorCodeChanged(const QString &operatorCode);
+    void operatorNameChanged(const QString &operatorName);
+    void enabledFacilityLocksChanged(QFlags<MMModem3gppFacility> locks);
+    void subscriptionStateChanged(MMModem3gppSubscriptionState subscriptionState);
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Modem3gpp::FacilityLocks)

@@ -1,7 +1,7 @@
 /*
     Copyright 2013 Anant Kamath <kamathanant@gmail.com>
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -32,10 +32,11 @@
 #include "generictypes.h"
 #include "interface.h"
 
-class ModemMessagingPrivate;
-
 namespace ModemManager
 {
+
+class ModemMessagingPrivate;
+
 /**
  * @brief The ModemMessaging class
  *
@@ -77,37 +78,32 @@ public:
      * either by listening for the messageAdded() signal, or by
      * querying the specific SMS object of interest using findMessage()
      */
-    ModemManager::Sms::List messages();
+    ModemManager::Sms::List messages() const;
 
     /**
      * Creates a new message object.
      * @param message Message structure with the 'number' and either 'text' or 'data' properties
      */
-    QString createMessage(const Message &message);
+    QDBusPendingReply<QDBusObjectPath> createMessage(const Message &message);
     /**
      * Creates a new message object.
      * @param message QVariantMap containing message properties
      * The 'number' and either 'text' or 'data' properties are mandatory, others are optional.
      */
-    QString createMessage(const QVariantMap &message);
+    QDBusPendingReply<QDBusObjectPath> createMessage(const QVariantMap &message);
 
     /**
      * Delete an SMS message.
      *
      * @param uni path to the Sms object
      */
-    void deleteMessage(const QString &uni);
+    QDBusPendingReply<void> deleteMessage(const QString &uni);
 
     /**
      * @param uni path to the Sms object
      * @return pointer to the found Sms (may be null if not found)
      */
     ModemManager::Sms::Ptr findMessage(const QString &uni);
-
-private Q_SLOTS:
-    void onPropertiesChanged(const QString &interface, const QVariantMap &changedProperties, const QStringList &invalidatedProps);
-    void onMessageAdded(const QDBusObjectPath &path, bool received);
-    void onMessageDeleted(const QDBusObjectPath &path);
 
 Q_SIGNALS:
     /**

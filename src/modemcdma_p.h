@@ -1,7 +1,7 @@
 /*
     Copyright 2008 Will Stephenson <wstephenson@kde.org>
     Copyright 2010 Lamarque Souza <lamarque@kde.org>
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -23,14 +23,34 @@
 #ifndef MODEMMANAGERQT_MODEMCDMA_P_H
 #define MODEMMANAGERQT_MODEMCDMA_P_H
 
-#include "interface_p.h"
 #include "dbus/modemcdmainterface.h"
+#include "interface_p.h"
+#include "modemcdma.h"
+
+namespace ModemManager
+{
 
 class ModemCdmaPrivate: public InterfacePrivate
 {
 public:
-    explicit ModemCdmaPrivate(const QString &path);
+    explicit ModemCdmaPrivate(const QString &path, ModemCdma *q);
     OrgFreedesktopModemManager1ModemModemCdmaInterface modemCdmaIface;
+
+    MMModemCdmaActivationState activationState;
+    QString meid;
+    QString esn;
+    uint sid;
+    uint nid;
+    MMModemCdmaRegistrationState cdma1xRegistrationState;
+    MMModemCdmaRegistrationState evdoRegistrationState;
+
+    Q_DECLARE_PUBLIC(ModemCdma)
+    ModemCdma *q_ptr;
+private Q_SLOTS:
+    void onActivationStateChanged(uint activation_state, uint activation_error, const QVariantMap &status_changes);
+    virtual void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) Q_DECL_OVERRIDE;
 };
+
+} // namespace ModemManager
 
 #endif

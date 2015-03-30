@@ -2,7 +2,7 @@
     Copyright 2008,2011 Will Stephenson <wstephenson@kde.org>
     Copyright 2010 Lamarque Souza <lamarque@kde.org>
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -33,9 +33,10 @@
 #include "generictypes.h"
 #include "interface.h"
 
+namespace ModemManager {
+
 class ModemCdmaPrivate;
 
-namespace ModemManager {
 /**
  * @brief The ModemCdma class
  *
@@ -60,7 +61,7 @@ public:
      *
      * @param carrierCode name of carrier, or carrier-specific code
      */
-    void activate(const QString &carrierCode);
+    QDBusPendingReply<void> activate(const QString &carrierCode);
 
     /**
      * Sets the modem provisioning data directly, without contacting the carrier over the air.
@@ -77,7 +78,7 @@ public:
      * "mn-aaa-key": The MN-AAA key, given as a string of maximum 16 characters.
      * "prl": The Preferred Roaming List, given as an array of maximum 16384 bytes.
      */
-    void activateManual(const QVariantMap &properties);
+    QDBusPendingReply<void> activateManual(const QVariantMap &properties);
 
     /**
      * @return a MMModemCdmaActivationState value specifying the state of the activation in the 3GPP2 network.
@@ -115,9 +116,6 @@ public:
      */
     MMModemCdmaRegistrationState evdoRegistrationState() const;
 
-private Q_SLOTS:
-    void onActivationStateChanged(uint activation_state, uint activation_error, const QVariantMap &status_changes);
-
 Q_SIGNALS:
     /**
      * This signal is emitted when the activation info this network changes
@@ -128,6 +126,12 @@ Q_SIGNALS:
      *                       The map may be empty if the changed properties are unknown.
      */
     void activationStateChanged(MMModemCdmaActivationState state, MMCdmaActivationError error, const QVariantMap &status_changes);
+    void meidChanged(const QString &meid);
+    void esnChanged(const QString &esn);
+    void sidChanged(uint sid);
+    void nidChanged(uint nid);
+    void cdma1xRegistrationStateChanged(MMModemCdmaRegistrationState cdma1xRegistrationState);
+    void evdoRegistrationStateChanged(MMModemCdmaRegistrationState evdoRegistrationState);
 };
 } // namespace ModemManager
 

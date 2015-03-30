@@ -19,9 +19,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QVariant>
 #include <QtDBus/QtDBus>
-
 #include "generictypes.h"
-#include "generictypes_p.h"
 
 /*
  * Proxy class for interface org.freedesktop.ModemManager1.Modem.Firmware
@@ -31,15 +29,18 @@ class OrgFreedesktopModemManager1ModemFirmwareInterface: public QDBusAbstractInt
     Q_OBJECT
 public:
     static inline const char *staticInterfaceName()
+#ifdef MMQT_STATIC
+    { return "org.kde.fakemodem.Modem.Firmware"; }
+#else
     { return "org.freedesktop.ModemManager1.Modem.Firmware"; }
-
+#endif
 public:
     OrgFreedesktopModemManager1ModemFirmwareInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = 0);
 
     ~OrgFreedesktopModemManager1ModemFirmwareInterface();
 
 public Q_SLOTS: // METHODS
-    inline QDBusPendingReply<QString, QVariantMapList> List()
+    inline QDBusPendingReply<QString, ModemManager::QVariantMapList> List()
     {
         QList<QVariant> argumentList;
         return asyncCallWithArgumentList(QLatin1String("List"), argumentList);

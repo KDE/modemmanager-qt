@@ -1,6 +1,6 @@
 /*
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -29,10 +29,112 @@
 
 #include "generictypes.h"
 
-class BearerPrivate;
-
 namespace ModemManager
 {
+
+class BearerPrivate;
+
+/**
+ * This class represents IP configuration
+ */
+class MODEMMANAGERQT_EXPORT IpConfig
+{
+public:
+    /**
+     * Constructs an empty IP config object
+     */
+    IpConfig();
+
+    /**
+     * Destroys this IpConfig object.
+     */
+    ~IpConfig();
+
+    /**
+     * Constructs an IpConfig object that is a copy of the object @p other.
+     */
+    IpConfig(const IpConfig &other);
+
+    /**
+     * Returns the MMBearerIpMethod
+     */
+    MMBearerIpMethod method() const;
+
+    /**
+     * Sets the MMBearerIpMethod
+     */
+    void setMethod(MMBearerIpMethod method);
+
+    /**
+     * Returns the IP address
+     */
+    QString address() const;
+
+    /**
+     * Sets the IP address
+     */
+    void setAddress(const QString &address);
+
+    /**
+     * Returns the numeric CIDR network prefix (ie, 24, 32, etc)
+     */
+    uint prefix() const;
+
+    /**
+     * Sets the numeric CIDR network prefix
+     */
+    void setPrefix(uint prefix);
+
+    /**
+     * Returns the IP address of the first DNS server
+     */
+    QString dns1() const;
+
+    /**
+     * Sets the IP address of the first DNS server
+     */
+    void setDns1(const QString &dns1);
+
+    /**
+     * Returns the IP address of the second DNS server
+     */
+    QString dns2() const;
+
+    /**
+     * Sets the IP address of the second DNS server
+     */
+    void setDns2(const QString &dns2);
+
+    /**
+     * Returns the IP address of the third DNS server
+     */
+    QString dns3() const;
+
+    /**
+     * Sets the IP address of the third DNS server
+     */
+    void setDns3(const QString &dns3);
+
+    /**
+     * Returns the IP address of the default gateway
+     */
+    QString gateway() const;
+
+    /**
+     * Sets the IP address of the default gateway
+     */
+    void setGateway(const QString &gateway);
+
+    /**
+     * Makes a copy of the IpConfig object @p other.
+     */
+    IpConfig &operator=(const IpConfig &other);
+
+private:
+    class Private;
+    Private *const d;
+};
+
 /**
  * @brief The Bearer class
  *
@@ -41,21 +143,9 @@ namespace ModemManager
 class MODEMMANAGERQT_EXPORT Bearer: public QObject
 {
     Q_OBJECT
-    Q_DECLARE_PRIVATE(Bearer)
-
 public:
     typedef QSharedPointer<Bearer> Ptr;
     typedef QList<Ptr> List;
-
-    struct IpConfig {
-        MMBearerIpMethod method;
-        QString address;
-        uint prefix;
-        QString dns1;
-        QString dns2;
-        QString dns3;
-        QString gateway;
-    };
 
     explicit Bearer(const QString &path, QObject *parent = 0);
     ~Bearer();
@@ -125,14 +215,14 @@ public:
      * valid and may contain IP configuration information for the data interface
      * associated with this bearer.
      */
-    void connectBearer();
+    QDBusPendingReply<void> connectBearer();
 
     /**
      * Disconnect and deactivate this packet data connection.
      *
      * Any ongoing data session will be terminated and IP addresses become invalid when this method is called.
      */
-    void disconnectBearer();
+    QDBusPendingReply<void> disconnectBearer();
 
     /**
      * @return the DBUS path (uni) to the object
@@ -143,16 +233,18 @@ Q_SIGNALS:
     void interfaceChanged(const QString &iface);
     void connectedChanged(bool connected);
     void suspendedChanged(bool suspended);
-    void ip4ConfigChanged();
-    void ip6ConfigChanged();
-
-private Q_SLOTS:
-   void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps);
+    void ip4ConfigChanged(const ModemManager::IpConfig &ipv4Config);
+    void ip6ConfigChanged(const ModemManager::IpConfig &ipv6Config);
+    void ipTimeoutChanged(uint ipTimeout);
+    void propertiesChanged(const QVariantMap &properties);
 
 private:
+    Q_DECLARE_PRIVATE(Bearer)
     BearerPrivate *const d_ptr;
 };
 
 } // namespace ModemManager
+
+Q_DECLARE_METATYPE(ModemManager::IpConfig)
 
 #endif

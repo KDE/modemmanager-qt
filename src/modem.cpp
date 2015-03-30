@@ -3,7 +3,7 @@
     Copyright 2010 Lamarque Souza <lamarque@kde.org>
     Copyright 2013 Daniel Nicoletti <dantti12@gmail.com>
     Copyright 2013 Lukas Tinkl <ltinkl@redhat.com>
-    Copyright 2013 Jan Grulich <jgrulich@redhat.com>
+    Copyright 2013-2015 Jan Grulich <jgrulich@redhat.com>
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -25,33 +25,237 @@
 #include "modem.h"
 #include "modem_p.h"
 
+#ifdef MMQT_STATIC
+#include "dbus/fakedbus.h"
+#else
 #include "dbus/dbus.h"
+#endif
 #include "generictypes.h"
-#include "mmdebug.h"
+#include "generictypes_p.h"
+#include "mmdebug_p.h"
 
 #include <QDomDocument>
 
-
-ModemPrivate::ModemPrivate(const QString &path)
-    : InterfacePrivate(path)
-    , modemIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
-    , modemSimpleIface(MM_DBUS_SERVICE, path, QDBusConnection::systemBus())
+namespace ModemManager
 {
-    device = modemIface.device();
-    drivers = modemIface.drivers();
-    simPath = modemIface.sim().path();
+
+class ModemManager::BearerProperties::Private
+{
+public:
+    Private()
+    { }
+    QString apn;
+    MMBearerIpFamily ipType;
+    MMBearerAllowedAuth allowedAuth;
+    QString user;
+    QString password;
+    bool allowRoaming;
+    MMModemCdmaRmProtocol rmProtocol;
+    QString number;
+};
+
+}
+
+ModemManager::BearerProperties::BearerProperties()
+    : d(new Private())
+{
+}
+
+ModemManager::BearerProperties::BearerProperties(const ModemManager::BearerProperties& other)
+    : d(new Private)
+{
+    *this = other;
+}
+
+ModemManager::BearerProperties::~BearerProperties()
+{
+    delete d;
+}
+
+QString ModemManager::BearerProperties::apn() const
+{
+    return d->apn;
+}
+
+void ModemManager::BearerProperties::setApn(const QString& apn)
+{
+    d->apn = apn;
+}
+
+MMBearerIpFamily ModemManager::BearerProperties::ipType() const
+{
+    return d->ipType;
+}
+
+void ModemManager::BearerProperties::setIpType(MMBearerIpFamily ipType)
+{
+    d->ipType = ipType;
+}
+
+MMBearerAllowedAuth ModemManager::BearerProperties::allowedAuthentication() const
+{
+    return d->allowedAuth;
+}
+
+void ModemManager::BearerProperties::setAllowedAuthentication(MMBearerAllowedAuth allowedAuth)
+{
+    d->allowedAuth = allowedAuth;
+}
+
+QString ModemManager::BearerProperties::user() const
+{
+    return d->user;
+}
+
+void ModemManager::BearerProperties::setUser(const QString& user)
+{
+    d->user = user;
+}
+
+QString ModemManager::BearerProperties::password() const
+{
+    return d->password;
+}
+
+void ModemManager::BearerProperties::setPassword(const QString& password)
+{
+    d->password = password;
+}
+
+bool ModemManager::BearerProperties::allowRoaming() const
+{
+    return d->allowRoaming;
+}
+
+void ModemManager::BearerProperties::setAllowRoaming(bool allow)
+{
+    d->allowRoaming = allow;
+}
+
+MMModemCdmaRmProtocol ModemManager::BearerProperties::rmProtocol() const
+{
+    return d->rmProtocol;
+}
+
+void ModemManager::BearerProperties::setRmProtocol(MMModemCdmaRmProtocol rmProtocol)
+{
+    d->rmProtocol = rmProtocol;
+}
+
+QString ModemManager::BearerProperties::number() const
+{
+    return d->number;
+}
+
+void ModemManager::BearerProperties::setNumber(const QString& number)
+{
+    d->number = number;
+}
+
+ModemManager::BearerProperties& ModemManager::BearerProperties::operator=(const ModemManager::BearerProperties& other)
+{
+    if (this == &other) {
+        return *this;
+    }
+
+    *d = *other.d;
+    return *this;
+}
+
+ModemManager::ModemPrivate::ModemPrivate(const QString &path, Modem *q)
+    : InterfacePrivate(path, q)
+#ifdef MMQT_STATIC
+    , modemIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
+#else
+    , modemIface(MMQT_DBUS_SERVICE, path, QDBusConnection::systemBus())
+#endif
+    , q_ptr(q)
+{
+    if (modemIface.isValid()) {
+#if MM_CHECK_VERSION(1, 2, 0)
+        QList<QDBusObjectPath> bearersList = modemIface.bearers();
+        Q_FOREACH (const QDBusObjectPath & bearer, bearersList) {
+            if (!bearers.contains(bearer.path())) {
+                bearers.insert(bearer.path(), Bearer::Ptr());
+                Q_EMIT q->bearerAdded(bearer.path());
+            }
+        }
+#else
+        QDBusPendingReply<QList<QDBusObjectPath> > reply = modemIface.ListBearers();
+        reply.waitForFinished();
+        if (reply.isValid()) {
+            Q_FOREACH (const QDBusObjectPath & bearer, bearersList) {
+                if (!bearers.contains(bearer.path())) {
+                    bearers.insert(bearer.path(), Bearer::Ptr());
+                    Q_EMIT q->bearerAdded(bearer.path());
+                }
+            }
+        }
+#endif
+
+        simPath = modemIface.sim().path();
+        Q_FOREACH (uint cap, modemIface.supportedCapabilities()) {
+            supportedCapabilities.append((MMModemCapability)cap);
+        }
+        currentCapabilities = (QFlags<MMModemCapability>)modemIface.currentCapabilities();
+        maxBearers = modemIface.maxBearers();
+        maxActiveBearers = modemIface.maxActiveBearers();
+        manufacturer = modemIface.manufacturer();
+        model = modemIface.model();
+        revision = modemIface.revision();
+        deviceIdentifier = modemIface.deviceIdentifier();
+        device = modemIface.device();
+        drivers = modemIface.drivers();
+        plugin = modemIface.plugin();
+        primaryPort = modemIface.primaryPort();
+        ports = modemIface.ports();
+        equipmentIdentifier = modemIface.equipmentIdentifier();
+        unlockRequired = (MMModemLock)modemIface.unlockRequired();
+        unlockRetries = modemIface.unlockRetries();
+        state = (MMModemState)modemIface.state();
+        stateFailedReason = (MMModemStateFailedReason)modemIface.stateFailedReason();
+        accessTechnologies = (ModemManager::Modem::AccessTechnologies)modemIface.accessTechnologies();
+        signalQuality = modemIface.signalQuality();
+        ownNumbers = modemIface.ownNumbers();
+        powerState = (MMModemPowerState)modemIface.powerState();
+        supportedModes = modemIface.supportedModes();
+        currentModes = modemIface.currentModes();
+        Q_FOREACH (uint band, modemIface.supportedBands()) {
+            supportedBands.append((MMModemBand)band);
+        }
+        Q_FOREACH (uint band, modemIface.currentBands()) {
+            currentBands.append((MMModemBand)band);
+        }
+        supportedIpFamilies = (ModemManager::Modem::IpBearerFamilies)modemIface.supportedIpFamilies();
+    }
 }
 
 ModemManager::Modem::Modem(const QString &path, QObject *parent)
-    : Interface(*new ModemPrivate(path), parent)
+    : Interface(*new ModemPrivate(path, this), parent)
 {
     Q_D(Modem);
+
+    qRegisterMetaType<AccessTechnologies>();
+    qRegisterMetaType<Capabilities>();
+    qRegisterMetaType<ModemModes>();
+    qRegisterMetaType<IpBearerFamilies>();
+    qRegisterMetaType<MMModemLock>();
+    qRegisterMetaType<MMModemPowerState>();
+    qRegisterMetaType<MMModemState>();
+    qRegisterMetaType<MMModemStateChangeReason>();
+    qRegisterMetaType<MMModemStateFailedReason>();
+
     if (d->modemIface.isValid()) {
-        QDBusConnection::systemBus().connect(MM_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, "PropertiesChanged", this,
+#ifdef MMQT_STATIC
+        QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, "PropertiesChanged", d,
                                              SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#else
+        QDBusConnection::systemBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, "PropertiesChanged", d,
+                                             SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+#endif
     }
 
-    connect(&d->modemIface, &OrgFreedesktopModemManager1ModemInterface::StateChanged, this, &Modem::onStateChanged);
+    connect(&d->modemIface, &OrgFreedesktopModemManager1ModemInterface::StateChanged, d, &ModemPrivate::onStateChanged);
 }
 
 ModemManager::Modem::~Modem()
@@ -67,7 +271,7 @@ QString ModemManager::Modem::uni() const
 bool ModemManager::Modem::isEnabled() const
 {
     Q_D(const Modem);
-    return (MMModemPowerState)d->modemIface.powerState() == MM_MODEM_POWER_STATE_ON;
+    return (MMModemPowerState)d->powerState == MM_MODEM_POWER_STATE_ON;
 }
 
 bool ModemManager::Modem::isValid() const
@@ -76,96 +280,99 @@ bool ModemManager::Modem::isValid() const
     return d->modemIface.isValid();
 }
 
-void ModemManager::Modem::setEnabled(bool enable)
+QDBusPendingReply<void> ModemManager::Modem::setEnabled(bool enable)
 {
     Q_D(Modem);
-    d->modemIface.Enable(enable);
+    return d->modemIface.Enable(enable);
 }
 
-QString ModemManager::Modem::createBearer(const BearerStruct &bearer)
+QDBusPendingReply<QDBusObjectPath> ModemManager::Modem::createBearer(const ModemManager::BearerProperties &bearerProperties)
 {
     Q_D(Modem);
     QVariantMap map;
-    map.insert("apn", bearer.apn);
-    if (bearer.ipType != MM_BEARER_IP_FAMILY_NONE)
-        map.insert("ip-type", (uint)bearer.ipType);
-    if (bearer.allowedAuth != MM_BEARER_ALLOWED_AUTH_UNKNOWN)
-        map.insert("allowed-auth", (uint)bearer.allowedAuth);
-    if (!bearer.user.isEmpty())
-        map.insert("user", bearer.user);
-    if (!bearer.password.isEmpty())
-        map.insert("password", bearer.password);
-    map.insert("allow-roaming", bearer.allowRoaming);
-    if (bearer.rmProtocol != MM_MODEM_CDMA_RM_PROTOCOL_UNKNOWN)
-        map.insert("rm-protocol", (uint)bearer.rmProtocol);
-    if (!bearer.number.isEmpty())
-        map.insert("number", bearer.number);
-    QDBusObjectPath obj = d->modemIface.CreateBearer(map);
-    return obj.path();
+    map.insert("apn", bearerProperties.apn());
+    if (bearerProperties.ipType() != MM_BEARER_IP_FAMILY_NONE)
+        map.insert("ip-type", (uint)bearerProperties.ipType());
+    if (bearerProperties.allowedAuthentication() != MM_BEARER_ALLOWED_AUTH_UNKNOWN)
+        map.insert("allowed-auth", (uint)bearerProperties.allowedAuthentication());
+    if (!bearerProperties.user().isEmpty())
+        map.insert("user", bearerProperties.user());
+    if (!bearerProperties.password().isEmpty())
+        map.insert("password", bearerProperties.password());
+    map.insert("allow-roaming", bearerProperties.allowRoaming());
+    if (bearerProperties.rmProtocol() != MM_MODEM_CDMA_RM_PROTOCOL_UNKNOWN)
+        map.insert("rm-protocol", (uint)bearerProperties.rmProtocol());
+    if (!bearerProperties.number().isEmpty())
+        map.insert("number", bearerProperties.number());
+    return d->modemIface.CreateBearer(map);
 }
 
-void ModemManager::Modem::deleteBearer(const QString &bearer)
+QDBusPendingReply<void> ModemManager::Modem::deleteBearer(const QString &bearer)
 {
     Q_D(Modem);
-    d->modemIface.DeleteBearer(QDBusObjectPath(bearer));
+    return d->modemIface.DeleteBearer(QDBusObjectPath(bearer));
 }
 
-QStringList ModemManager::Modem::listBearers()
+ModemManager::Bearer::List ModemManager::Modem::listBearers() const
 {
     Q_D(const Modem);
-    QStringList result;
 
-#if MM_CHECK_VERSION(1, 2, 0)
-    QList<QDBusObjectPath> bearers = d->modemIface.bearers();
-#else
-    QList<QDBusObjectPath> bearers = const_cast<ModemPrivate *>(d)->modemIface.ListBearers();
-#endif
-
-    foreach(const QDBusObjectPath &path, bearers) {
-        result.append(path.path());
+    ModemManager::Bearer::List list;
+    QMap<QString, Bearer::Ptr>::const_iterator i = d->bearers.constBegin();
+    while (i != d->bearers.constEnd()) {
+        ModemManager::Bearer::Ptr bearer = const_cast<ModemPrivate*>(d)->findRegisteredBearer(i.key());
+        if (bearer) {
+            list << bearer;
+        }
+        ++i;
     }
-
-    return result;
+    return list;
 }
 
-void ModemManager::Modem::reset()
+ModemManager::Bearer::Ptr ModemManager::Modem::findBearer(const QString& bearer) const
+{
+    Q_D(const Modem);
+    return const_cast<ModemPrivate*>(d)->findRegisteredBearer(bearer);
+}
+
+QDBusPendingReply<void> ModemManager::Modem::reset()
 {
     Q_D(Modem);
-    d->modemIface.Reset();
+    return d->modemIface.Reset();
 }
 
-void ModemManager::Modem::factoryReset(const QString &code)
+QDBusPendingReply<void> ModemManager::Modem::factoryReset(const QString &code)
 {
     Q_D(Modem);
-    d->modemIface.FactoryReset(code);
+    return d->modemIface.FactoryReset(code);
 }
 
-void ModemManager::Modem::setPowerState(MMModemPowerState state)
+QDBusPendingReply<void> ModemManager::Modem::setPowerState(MMModemPowerState state)
 {
     Q_D(Modem);
-    d->modemIface.SetPowerState(state);
+    return d->modemIface.SetPowerState(state);
 }
 
-void ModemManager::Modem::setCurrentCapabilities(Capabilities caps)
+QDBusPendingReply<void> ModemManager::Modem::setCurrentCapabilities(Capabilities caps)
 {
     Q_D(Modem);
-    d->modemIface.SetCurrentCapabilities((uint) caps);
+    return d->modemIface.SetCurrentCapabilities((uint) caps);
 }
 
-void ModemManager::Modem::setCurrentModes(const CurrentModesType &mode)
+QDBusPendingReply<void> ModemManager::Modem::setCurrentModes(const CurrentModesType &mode)
 {
     Q_D(Modem);
-    d->modemIface.SetCurrentModes(mode);
+    return d->modemIface.SetCurrentModes(mode);
 }
 
-void ModemManager::Modem::setCurrentBands(const QList<MMModemBand> &bands)
+QDBusPendingReply<void> ModemManager::Modem::setCurrentBands(const QList<MMModemBand> &bands)
 {
     Q_D(Modem);
     QList<uint> tmp;
-    foreach (const MMModemBand band, bands) {
+    Q_FOREACH (const MMModemBand band, bands) {
         tmp.append(band);
     }
-    d->modemIface.SetCurrentBands(tmp);
+    return d->modemIface.SetCurrentBands(tmp);
 }
 
 QDBusPendingReply<QString> ModemManager::Modem::command(const QString &cmd, uint timeout)
@@ -183,279 +390,379 @@ QString ModemManager::Modem::simPath() const
 QList<MMModemCapability> ModemManager::Modem::supportedCapabilities() const
 {
     Q_D(const Modem);
-
-    QList<MMModemCapability> result;
-    foreach (uint cap, d->modemIface.supportedCapabilities()) {
-        result.append((MMModemCapability)cap);
-    }
-
-    return result;
+    return d->supportedCapabilities;
 }
 
 ModemManager::Modem::Capabilities ModemManager::Modem::currentCapabilities() const
 {
     Q_D(const Modem);
-    return (Capabilities)d->modemIface.currentCapabilities();
+    return d->currentCapabilities;
 }
 
 uint ModemManager::Modem::maxBearers() const
 {
     Q_D(const Modem);
-    return d->modemIface.maxBearers();
+    return d->maxBearers;
 }
 
 uint ModemManager::Modem::maxActiveBearers() const
 {
     Q_D(const Modem);
-    return d->modemIface.maxActiveBearers();
+    return d->maxActiveBearers;
 }
 
 QString ModemManager::Modem::manufacturer() const
 {
     Q_D(const Modem);
-    return d->modemIface.manufacturer();
+    return d->manufacturer;
 }
 
 QString ModemManager::Modem::model() const
 {
     Q_D(const Modem);
-    return d->modemIface.model();
+    return d->model;
 }
 
 QString ModemManager::Modem::revision() const
 {
     Q_D(const Modem);
-    return d->modemIface.revision();
+    return d->revision;
 }
 
 QString ModemManager::Modem::deviceIdentifier() const
 {
     Q_D(const Modem);
-    return d->modemIface.deviceIdentifier();
+    return d->deviceIdentifier;
 }
 
 QString ModemManager::Modem::device() const
 {
     Q_D(const Modem);
-    return d->modemIface.device();
+    return d->device;
 }
 
 QStringList ModemManager::Modem::drivers() const
 {
     Q_D(const Modem);
-    return d->modemIface.drivers();
+    return d->drivers;
 }
 
 QString ModemManager::Modem::plugin() const
 {
     Q_D(const Modem);
-    return d->modemIface.plugin();
+    return d->plugin;
 }
 
 QString ModemManager::Modem::primaryPort() const
 {
     Q_D(const Modem);
-    return d->modemIface.primaryPort();
+    return d->primaryPort;
 }
 
-PortList ModemManager::Modem::ports() const
+ModemManager::PortList ModemManager::Modem::ports() const
 {
     Q_D(const Modem);
-    return d->modemIface.ports();
+    return d->ports;
 }
 
 QString ModemManager::Modem::equipmentIdentifier() const
 {
     Q_D(const Modem);
-    return d->modemIface.equipmentIdentifier();
+    return d->equipmentIdentifier;
 }
 
 MMModemLock ModemManager::Modem::unlockRequired() const
 {
     Q_D(const Modem);
-    return (MMModemLock)d->modemIface.unlockRequired();
+    return d->unlockRequired;
 }
 
-UnlockRetriesMap ModemManager::Modem::unlockRetries() const
+ModemManager::UnlockRetriesMap ModemManager::Modem::unlockRetries() const
 {
     Q_D(const Modem);
-    return d->modemIface.unlockRetries();
+    return d->unlockRetries;
 }
 
 MMModemState ModemManager::Modem::state() const
 {
     Q_D(const Modem);
-    return (MMModemState)d->modemIface.state();
+    return d->state;
 }
 
 MMModemStateFailedReason ModemManager::Modem::stateFailedReason() const
 {
     Q_D(const Modem);
-    return (MMModemStateFailedReason)d->modemIface.stateFailedReason();
+    return d->stateFailedReason;
 }
 
 ModemManager::Modem::AccessTechnologies ModemManager::Modem::accessTechnologies() const
 {
     Q_D(const Modem);
-    return (AccessTechnologies)d->modemIface.accessTechnologies();
+    return d->accessTechnologies;
 }
 
-SignalQualityPair ModemManager::Modem::signalQuality() const
+ModemManager::SignalQualityPair ModemManager::Modem::signalQuality() const
 {
     Q_D(const Modem);
-    return d->modemIface.signalQuality();
+    return d->signalQuality;
 }
 
 QStringList ModemManager::Modem::ownNumbers() const
 {
     Q_D(const Modem);
-    return d->modemIface.ownNumbers();
+    return d->ownNumbers;
 }
 
 MMModemPowerState ModemManager::Modem::powerState() const
 {
     Q_D(const Modem);
-    return (MMModemPowerState)d->modemIface.powerState();
+    return d->powerState;
 }
 
-SupportedModesType ModemManager::Modem::supportedModes() const
+ModemManager::SupportedModesType ModemManager::Modem::supportedModes() const
 {
     Q_D(const Modem);
-    return d->modemIface.supportedModes();
+    return d->supportedModes;
 }
 
-CurrentModesType ModemManager::Modem::currentModes() const
+ModemManager::CurrentModesType ModemManager::Modem::currentModes() const
 {
     Q_D(const Modem);
-    return d->modemIface.currentModes();
+    return d->currentModes;
 }
 
 QList<MMModemBand> ModemManager::Modem::supportedBands() const
 {
     Q_D(const Modem);
-    QList<MMModemBand> result;
-    foreach (uint band, d->modemIface.supportedBands()) {
-        result.append((MMModemBand)band);
-    }
-
-    return result;
+    return d->supportedBands;
 }
 
 QList<MMModemBand> ModemManager::Modem::currentBands() const
 {
     Q_D(const Modem);
-    QList<MMModemBand> result;
-    foreach (uint band, d->modemIface.currentBands()) {
-        result.append((MMModemBand)band);
-    }
-
-    return result;
+    return d->currentBands;
 }
 
 ModemManager::Modem::IpBearerFamilies ModemManager::Modem::supportedIpFamilies() const
 {
     Q_D(const Modem);
-    return (IpBearerFamilies)d->modemIface.supportedIpFamilies();
+    return d->supportedIpFamilies;
 }
 
-void ModemManager::Modem::onPropertiesChanged(const QString &ifaceName, const QVariantMap &changedProps, const QStringList &invalidatedProps)
+ModemManager::Bearer::Ptr ModemManager::ModemPrivate::findRegisteredBearer(const QString &path)
 {
-    Q_UNUSED(invalidatedProps);
-    Q_D(Modem);
-    qCDebug(MMQT) << ifaceName << changedProps.keys();
-
-    if (ifaceName == QString(MM_DBUS_INTERFACE_MODEM)) {
-        QLatin1String device(MM_MODEM_PROPERTY_DEVICE);
-        QLatin1String drivers(MM_MODEM_PROPERTY_DRIVERS);
-        QLatin1String enabled(MM_MODEM_PROPERTY_POWERSTATE);
-        QLatin1String unlockRequired(MM_MODEM_PROPERTY_UNLOCKREQUIRED);
-        QLatin1String signalQuality(MM_MODEM_PROPERTY_SIGNALQUALITY);
-        QLatin1String tech(MM_MODEM_PROPERTY_ACCESSTECHNOLOGIES);
-        QLatin1String currentModes(MM_MODEM_PROPERTY_CURRENTMODES);
-        QLatin1String simPath(MM_MODEM_PROPERTY_SIM);
-        QLatin1String powerState(MM_MODEM_PROPERTY_POWERSTATE);
-#if MM_CHECK_VERSION(1,1,900)
-        QLatin1String bearers(MM_MODEM_PROPERTY_BEARERS);
-#endif
-
-        QVariantMap::const_iterator it = changedProps.constFind(device);
-        if (it != changedProps.constEnd()) {
-            d->device = it->toString();
-            emit deviceChanged(d->device);
-        }
-        it = changedProps.constFind(drivers);
-        if (it != changedProps.constEnd()) {
-            d->drivers = it->toStringList();
-            emit driversChanged(d->drivers);
-        }
-        it = changedProps.constFind(enabled);
-        if (it != changedProps.constEnd()) {
-            emit enabledChanged(it->toBool());
-        }
-        it = changedProps.constFind(unlockRequired);
-        if (it != changedProps.constEnd()) {
-            emit unlockRequiredChanged((MMModemLock)it->toUInt());
-        }
-        it = changedProps.constFind(tech);
-        if (it != changedProps.constEnd()) {
-            emit accessTechnologyChanged(static_cast<AccessTechnologies>(it->toUInt()));
-        }
-        it = changedProps.constFind(currentModes);
-        if (it != changedProps.constEnd()) {
-            emit currentModesChanged();
-        }
-        it = changedProps.constFind(signalQuality);
-        if (it != changedProps.constEnd()) {
-            SignalQualityPair pair = qdbus_cast<SignalQualityPair>(*it);
-            if (pair.recent) {
-                emit signalQualityChanged(pair.signal);
+    Q_Q(Modem);
+    ModemManager::Bearer::Ptr ret;
+    if (!path.isEmpty()) {
+        bool contains = bearers.contains(path);
+        if (contains && bearers.value(path)) {
+            ret = bearers.value(path);
+        } else {
+            ret = ModemManager::Bearer::Ptr(new ModemManager::Bearer(path), &QObject::deleteLater);
+            bearers[path] = ret;
+            if (!contains) {
+                Q_EMIT q->bearerAdded(path);
             }
         }
-        it = changedProps.constFind(simPath);
+    }
+    return ret;
+}
+
+void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, const QVariantMap &changedProps, const QStringList &invalidatedProps)
+{
+    Q_UNUSED(invalidatedProps);
+    Q_Q(Modem);
+    qCDebug(MMQT) << ifaceName << changedProps.keys();
+
+    if (ifaceName == QString(MMQT_DBUS_INTERFACE_MODEM)) {
+
+        QVariantMap::const_iterator it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_SIM));
+
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_SIM));
         if (it != changedProps.constEnd()) {
-            const QString path = qdbus_cast<QDBusObjectPath>(*it).path();
-            emit simPathChanged(d->simPath, path);
-            d->simPath = path;
+            Q_EMIT q->simPathChanged(simPath, it->toString());
+            simPath = it->toString();
         }
-        it = changedProps.constFind(powerState);
+#if MM_CHECK_VERSION(1, 2, 0)
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_BEARERS));
         if (it != changedProps.constEnd()) {
-            emit powerStateChanged((MMModemPowerState)it->toUInt());
-        }
-#if MM_CHECK_VERSION(1, 1, 900)
-        it = changedProps.constFind(bearers);
-        if (it != changedProps.constEnd()) {
-            emit bearersChanged();
+            QList<QDBusObjectPath> bearerPaths = qdbus_cast< QList<QDBusObjectPath> >(*it);
+            if (bearerPaths.isEmpty()) {
+                QMap<QString, Bearer::Ptr>::const_iterator it = bearers.constBegin();
+                while (it != bearers.constEnd()) {
+                    Q_EMIT q->bearerRemoved(it.key());
+                    ++it;
+                }
+                bearers.clear();
+            } else {
+                QStringList knownBearers = bearers.keys();
+                Q_FOREACH (const QDBusObjectPath & bearer, bearerPaths) {
+                    if (!bearers.contains(bearer.path())) {
+                        bearers.insert(bearer.path(), ModemManager::Bearer::Ptr());
+                        Q_EMIT q->bearerAdded(bearer.path());
+                    } else {
+                        knownBearers.removeOne(bearer.path());
+                    }
+                }
+                Q_FOREACH (const QString & path, knownBearers) {
+                    bearers.remove(path);
+                    Q_EMIT q->bearerRemoved(path);
+                }
+            }
+            Q_EMIT q->bearersChanged();
         }
 #endif
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_SUPPORTEDCAPABILITIES));
+        if (it != changedProps.constEnd()) {
+            supportedCapabilities.clear();
+            Q_FOREACH (const uint cap, qdbus_cast<QList<uint> >(*it)) {
+                supportedCapabilities << ((MMModemCapability)cap);
+            }
+            Q_EMIT q->supportedCapabilitiesChanged(supportedCapabilities);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_CURRENTCAPABILITIES));
+        if (it != changedProps.constEnd()) {
+            currentCapabilities = (QFlags<MMModemCapability>)it->toUInt();
+            Q_EMIT q->currentCapabilitiesChanged(currentCapabilities);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_MAXBEARERS));
+        if (it != changedProps.constEnd()) {
+            maxBearers = it->toUInt();
+            Q_EMIT q->maxBearersChanged(maxBearers);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_MAXACTIVEBEARERS));
+        if (it != changedProps.constEnd()) {
+            maxActiveBearers = it->toUInt();
+            Q_EMIT q->maxActiveBearersChanged(maxActiveBearers);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_MANUFACTURER));
+        if (it != changedProps.constEnd()) {
+            manufacturer = it->toString();
+            Q_EMIT q->manufacturerChanged(manufacturer);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_MODEL));
+        if (it != changedProps.constEnd()) {
+            model = it->toString();
+            Q_EMIT q->modelChanged(model);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_REVISION));
+        if (it != changedProps.constEnd()) {
+            revision = it->toString();
+            Q_EMIT q->revisionChanged(revision);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_DEVICEIDENTIFIER));
+        if (it != changedProps.constEnd()) {
+            deviceIdentifier = it->toString();
+            Q_EMIT q->deviceIdentifierChanged(deviceIdentifier);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_DEVICE));
+        if (it != changedProps.constEnd()) {
+            device = it->toString();
+            Q_EMIT q->deviceChanged(device);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_DRIVERS));
+        if (it != changedProps.constEnd()) {
+            drivers = it->toStringList();
+            Q_EMIT q->driversChanged(drivers);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_PLUGIN));
+        if (it != changedProps.constEnd()) {
+            plugin = it->toString();
+            Q_EMIT q->pluginChanged(plugin);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_PRIMARYPORT));
+        if (it != changedProps.constEnd()) {
+            primaryPort = it->toString();
+            Q_EMIT q->primaryPortChanged(primaryPort);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_PORTS));
+        if (it != changedProps.constEnd()) {
+            ports = qdbus_cast< QList<Port> >(*it);
+            Q_EMIT q->portsChanged(ports);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_EQUIPMENTIDENTIFIER));
+        if (it != changedProps.constEnd()) {
+            equipmentIdentifier = it->toString();
+            Q_EMIT q->equipmentIdentifierChanged(equipmentIdentifier);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_UNLOCKREQUIRED));
+        if (it != changedProps.constEnd()) {
+            unlockRequired = (MMModemLock)it->toUInt();
+            Q_EMIT q->unlockRequiredChanged(unlockRequired);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_UNLOCKRETRIES));
+        if (it != changedProps.constEnd()) {
+            unlockRetries = qdbus_cast< UnlockRetriesMap >(*it);
+            Q_EMIT q->unlockRetriesChanged(unlockRetries);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_STATE));
+        if (it != changedProps.constEnd()) {
+            // Should be handled by StateChanged signal
+//             Q_EMIT q->stateChanged(state, (MMModemState)it->toInt());
+//             state = (MMModemState)it->toInt();
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_STATEFAILEDREASON));
+        if (it != changedProps.constEnd()) {
+            stateFailedReason = (MMModemStateFailedReason)it->toUInt();
+            Q_EMIT q->stateFailedReasonChanged(stateFailedReason);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_ACCESSTECHNOLOGIES));
+        if (it != changedProps.constEnd()) {
+            accessTechnologies = (ModemManager::Modem::AccessTechnologies)it->toUInt();
+            Q_EMIT q->accessTechnologiesChanged(accessTechnologies);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_SIGNALQUALITY));
+        if (it != changedProps.constEnd()) {
+            signalQuality = qdbus_cast< SignalQualityPair >(*it);
+            Q_EMIT q->signalQualityChanged(signalQuality);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_OWNNUMBERS));
+        if (it != changedProps.constEnd()) {
+            ownNumbers = it->toStringList();
+            Q_EMIT q->ownNumbersChanged(ownNumbers);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_POWERSTATE));
+        if (it != changedProps.constEnd()) {
+            powerState = (MMModemPowerState)it->toUInt();
+            Q_EMIT q->powerStateChanged(powerState);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_SUPPORTEDMODES));
+        if (it != changedProps.constEnd()) {
+            supportedModes = qdbus_cast< SupportedModesType >(*it);
+            Q_EMIT q->supportedModesChanged(supportedModes);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_CURRENTMODES));
+        if (it != changedProps.constEnd()) {
+            currentModes = qdbus_cast< CurrentModesType >(*it);
+            Q_EMIT q->currentModesChanged(currentModes);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_SUPPORTEDBANDS));
+        if (it != changedProps.constEnd()) {
+            supportedBands.clear();
+            Q_FOREACH (const uint cap, qdbus_cast<QList<uint> >(*it)) {
+                supportedBands << ((MMModemBand)cap);
+            }
+            Q_EMIT q->supportedBandsChanged(supportedBands);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_CURRENTBANDS));
+        if (it != changedProps.constEnd()) {
+            currentBands.clear();
+            Q_FOREACH (const uint cap, qdbus_cast<QList<uint> >(*it)) {
+                currentBands << ((MMModemBand)cap);
+            }
+            Q_EMIT q->currentBandsChanged(currentBands);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_SUPPORTEDIPFAMILIES));
+        if (it != changedProps.constEnd()) {
+            supportedIpFamilies = (ModemManager::Modem::IpBearerFamilies)it->toUInt();
+            Q_EMIT q->supportedIpFamiliesChanged(supportedIpFamilies);
+        }
     }
 }
 
-void ModemManager::Modem::onStateChanged(int oldState, int newState, uint reason)
+void ModemManager::ModemPrivate::onStateChanged(int oldState, int newState, uint reason)
 {
-    emit stateChanged((MMModemState) oldState, (MMModemState) newState, (MMModemStateChangeReason) reason);
-}
-
-/*** From org.freedesktop.ModemManager.Modem.Simple ***/
-
-QDBusObjectPath ModemManager::Modem::connectModem(const QVariantMap &properties)
-{
-    Q_D(Modem);
-    return d->modemSimpleIface.Connect(properties);
-}
-
-QVariantMap ModemManager::Modem::status()
-{
-    Q_D(Modem);
-    return d->modemSimpleIface.GetStatus();
-}
-
-void ModemManager::Modem::disconnectModem(const QString &bearer)
-{
-    Q_D(Modem);
-    d->modemSimpleIface.Disconnect(QDBusObjectPath(bearer));
-}
-
-void ModemManager::Modem::disconnectAllModems()
-{
-    disconnectModem(QStringLiteral("/"));
+    Q_Q(Modem);
+    state = (MMModemState)newState;
+    Q_EMIT q->stateChanged((MMModemState) oldState, (MMModemState) newState, (MMModemStateChangeReason) reason);
 }
