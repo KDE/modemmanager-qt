@@ -13,6 +13,7 @@ set(fakeModem_SRCS
     modemlocation.cpp
     modemoma.cpp
     modemsimple.cpp
+    modemtime.cpp
     objectmanager.cpp
 )
 
