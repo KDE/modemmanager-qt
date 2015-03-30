@@ -10,6 +10,7 @@ set(fakeModem_SRCS
     modem3gpp.cpp
     modem3gppussd.cpp
     modemcdma.cpp
+    modemlocation.cpp
     modemsimple.cpp
     objectmanager.cpp
 )

@@ -37,6 +37,7 @@ FakeModem::FakeModem(QObject* parent)
     qDBusRegisterMetaType<ModemManager::PortList> ();
     qDBusRegisterMetaType<ModemManager::UnlockRetriesMap> ();
     qDBusRegisterMetaType<ModemManager::Port> ();
+    qDBusRegisterMetaType<ModemManager::LocationInformationMap>();
 
     QDBusConnection::sessionBus().registerService(QLatin1Literal(MMQT_DBUS_SERVICE));
     QDBusConnection::sessionBus().registerObject(QLatin1Literal(MMQT_DBUS_PATH), this, QDBusConnection::ExportScriptableContents | QDBusConnection::ExportAdaptors);
