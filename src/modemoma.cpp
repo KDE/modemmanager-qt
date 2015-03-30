@@ -49,6 +49,12 @@ ModemManager::ModemOma::ModemOma(const QString &path, QObject *parent)
     : Interface(*new ModemOmaPrivate(path, this), parent)
 {
     Q_D(ModemOma);
+
+    qRegisterMetaType<QFlags<MMOmaFeature> >();
+    qRegisterMetaType<MMOmaSessionType>();
+    qRegisterMetaType<MMOmaSessionState>();
+    qRegisterMetaType<MMOmaSessionStateFailedReason>();
+
     connect(&d->omaIface, &OrgFreedesktopModemManager1ModemOmaInterface::SessionStateChanged, d, &ModemOmaPrivate::onSessionStateChanged);
 #ifdef MMQT_STATIC
     QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
@@ -115,6 +121,7 @@ QDBusPendingReply<void> ModemManager::ModemOma::cancelSession()
 void ModemManager::ModemOmaPrivate::onSessionStateChanged(int oldState, int newState, uint failedReason)
 {
     Q_Q(ModemOma);
+    sessionState = (MMOmaSessionState)newState;
     Q_EMIT q->sessionStateChanged((MMOmaSessionState)oldState, (MMOmaSessionState)newState, (MMOmaSessionStateFailedReason)failedReason);
 }
 void ModemManager::ModemOmaPrivate::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
@@ -131,7 +138,7 @@ void ModemManager::ModemOmaPrivate::onPropertiesChanged(const QString &interface
         }
         it = properties.constFind(QLatin1String(MM_MODEM_OMA_PROPERTY_PENDINGNETWORKINITIATEDSESSIONS));
         if (it != properties.constEnd()) {
-            pendingNetworkInitiatedSessions = qdbus_cast<OmaSessionTypes>(it.value());
+            pendingNetworkInitiatedSessions = qdbus_cast<OmaSessionTypes>(*it);
             Q_EMIT q->pendingNetworkInitiatedSessionsChanged(pendingNetworkInitiatedSessions);
         }
         it = properties.constFind(QLatin1String(MM_MODEM_OMA_PROPERTY_SESSIONTYPE));

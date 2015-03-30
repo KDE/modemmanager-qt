@@ -113,8 +113,8 @@ public:
     QDBusPendingReply<void> cancelSession();
 
 Q_SIGNALS:
-    void featuresChanged(Features features);
-    void pendingNetworkInitiatedSessionsChanged(OmaSessionTypes sessions);
+    void featuresChanged(QFlags<MMOmaFeature> features);
+    void pendingNetworkInitiatedSessionsChanged(const ModemManager::OmaSessionTypes &sessions);
     void sessionTypeChanged(MMOmaSessionType sessionType);
     /**
      * Emitted when the session state changed.

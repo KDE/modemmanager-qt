@@ -39,6 +39,7 @@
 #include "modemoma.h"
 #include "modemsignal.h"
 #endif
+#include "modemsimple.h"
 #include "modemtime.h"
 #include "modemfirmware.h"
 
@@ -106,6 +107,8 @@ void ModemManager::ModemDevicePrivate::initInterfaces()
                                          this, SLOT(onSimPathChanged(QString,QString)));
                     }
                 }
+            } else if (name == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_SIMPLE)) {
+                interfaceList.insert(ModemManager::ModemDevice::SimpleInterface, ModemManager::ModemSimple::Ptr());
             } else if (name == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_MODEM3GPP)) {
                 interfaceList.insert(ModemManager::ModemDevice::GsmInterface, ModemManager::Modem3gpp::Ptr());
             } else if (name == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_MODEM3GPP_USSD)) {
@@ -207,6 +210,9 @@ ModemManager::Interface::Ptr ModemManager::ModemDevicePrivate::createInterface(M
     switch (type) {
         case ModemManager::ModemDevice::ModemInterface:
             createdInterface = ModemManager::Interface::Ptr(new ModemManager::Modem(uni), &QObject::deleteLater);
+            break;
+        case ModemManager::ModemDevice::SimpleInterface:
+            createdInterface = ModemManager::Interface::Ptr(new ModemManager::ModemSimple(uni), &QObject::deleteLater);
             break;
         case ModemManager::ModemDevice::GsmInterface:
             createdInterface = ModemManager::Interface::Ptr(new ModemManager::Modem3gpp(uni), &QObject::deleteLater);
@@ -343,12 +349,13 @@ void ModemManager::ModemDevicePrivate::onInterfacesAdded(const QDBusObjectPath &
         return;
     }
 
-    // TODO Add ModemSimple
     Q_FOREACH (const QString & iface, interfaces_and_properties.keys()) {
         /* Don't store generic DBus interfaces */
         if (iface.startsWith(MMQT_DBUS_SERVICE)) {
             if (iface == QLatin1String(MMQT_DBUS_INTERFACE_MODEM)) {
                 interfaceList.insert(ModemManager::ModemDevice::ModemInterface, ModemManager::Modem::Ptr());
+            } else if (iface == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_SIMPLE)) {
+                interfaceList.insert(ModemManager::ModemDevice::SimpleInterface, ModemManager::ModemSimple::Ptr());
             } else if (iface == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_MODEM3GPP)) {
                 interfaceList.insert(ModemManager::ModemDevice::GsmInterface, ModemManager::Modem3gpp::Ptr());
             } else if (iface == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_MODEM3GPP_USSD)) {
@@ -390,10 +397,11 @@ void ModemManager::ModemDevicePrivate::onInterfacesRemoved(const QDBusObjectPath
         }
     }
 
-    // TODO Remove ModemSimple
     Q_FOREACH (const QString & iface, interfaces) {
         if (iface == QLatin1String(MMQT_DBUS_INTERFACE_MODEM)) {
             interfaceList.remove(ModemManager::ModemDevice::ModemInterface);
+        } else if (iface == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_SIMPLE)) {
+            interfaceList.remove(ModemManager::ModemDevice::SimpleInterface);
         } else if (iface == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_MODEM3GPP)) {
             interfaceList.remove(ModemManager::ModemDevice::GsmInterface);
         } else if (iface == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_MODEM3GPP_USSD)) {

@@ -55,6 +55,7 @@ public:
 
     enum InterfaceType {
         ModemInterface,
+        SimpleInterface,
         GsmInterface,
         GsmUssdInterface,
         CdmaInterface,

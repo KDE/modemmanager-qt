@@ -76,6 +76,7 @@ Q_DECLARE_METATYPE(QFlags<MMModemMode>)
 Q_DECLARE_METATYPE(QFlags<MMBearerIpFamily>)
 Q_DECLARE_METATYPE(QFlags<MMModem3gppFacility>)
 Q_DECLARE_METATYPE(QFlags<MMModemLocationSource>)
+Q_DECLARE_METATYPE(QFlags<MMOmaFeature>)
 
 // ModemManager enums
 Q_DECLARE_METATYPE(QList<MMModemBand>)
@@ -92,6 +93,9 @@ Q_DECLARE_METATYPE(MMModemCdmaActivationState)
 Q_DECLARE_METATYPE(MMCdmaActivationError)
 Q_DECLARE_METATYPE(MMModemCdmaRegistrationState)
 Q_DECLARE_METATYPE(MMModemLocationSource)
+Q_DECLARE_METATYPE(MMOmaSessionType)
+Q_DECLARE_METATYPE(MMOmaSessionState)
+Q_DECLARE_METATYPE(MMOmaSessionStateFailedReason)
 
 // Others
 Q_DECLARE_METATYPE(ModemManager::DBUSManagerStruct)
