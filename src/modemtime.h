@@ -37,23 +37,23 @@ class ModemTimePrivate;
 /**
  * This class represents the timezone data provided by the network
  */
-class MODEMMANAGERQT_EXPORT NetworkTimeZone
+class MODEMMANAGERQT_EXPORT NetworkTimezone
 {
 public:
     /**
      * Constructs an empty timezone data object
      */
-    NetworkTimeZone();
+    NetworkTimezone();
 
     /**
-     * Destroys this NetworkTimeZone object.
+     * Destroys this NetworkTimezone object.
      */
-    ~NetworkTimeZone();
+    ~NetworkTimezone();
 
     /**
-     * Constructs an NetworkTimeZone object that is a copy of the object @p other.
+     * Constructs an NetworkTimezone object that is a copy of the object @p other.
      */
-    NetworkTimeZone(const NetworkTimeZone &other);
+    NetworkTimezone(const NetworkTimezone &other);
 
     /**
      * Returns offset of the timezone from UTC, in minutes (including DST, if applicable)
@@ -85,9 +85,9 @@ public:
      */
     void setLeapSecond(int leapSecond);
     /**
-     * Makes a copy of the NetworkTimeZone object @p other.
+     * Makes a copy of the NetworkTimezone object @p other.
      */
-    NetworkTimeZone &operator=(const NetworkTimeZone &other);
+    NetworkTimezone &operator=(const NetworkTimezone &other);
 
 private:
     class Private;
@@ -108,12 +108,6 @@ public:
     typedef QSharedPointer<ModemTime> Ptr;
     typedef QList<Ptr> List;
 
-    struct NetworkTimeZone {
-        int offset; ///< Offset of the timezone from UTC, in minutes (including DST, if applicable)
-        int dst_offset; ///< Amount of offset that is due to DST (daylight saving time)
-        int leap_seconds; ///< Number of leap seconds included in the network time
-    };
-
     explicit ModemTime(const QString &path, QObject *parent = 0);
     ~ModemTime();
 
@@ -128,9 +122,9 @@ public:
 
     /**
      * @return the timezone data provided by the network.
-     * @see NetworkTimeZone
+     * @see NetworkTimezone
      */
-    ModemManager::NetworkTimeZone networkTimeZone() const;
+    ModemManager::NetworkTimezone networkTimezone() const;
 
 Q_SIGNALS:
     /**
@@ -138,9 +132,11 @@ Q_SIGNALS:
      * @param dateTime the new date and time
      */
     void networkTimeChanged(const QDateTime &dateTime);
-    void networkTimeZoneChanged(const ModemManager::NetworkTimeZone &timeZone);
+    void networkTimezoneChanged(const ModemManager::NetworkTimezone &timeZone);
 };
 
 } // namespace ModemManager
+
+Q_DECLARE_METATYPE(ModemManager::NetworkTimezone)
 
 #endif

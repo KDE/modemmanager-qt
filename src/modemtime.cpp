@@ -31,7 +31,7 @@
 namespace ModemManager
 {
 
-class ModemManager::NetworkTimeZone::Private
+class ModemManager::NetworkTimezone::Private
 {
 public:
     Private()
@@ -43,53 +43,53 @@ public:
 
 }
 
-ModemManager::NetworkTimeZone::NetworkTimeZone()
+ModemManager::NetworkTimezone::NetworkTimezone()
     : d(new Private())
 {
 }
 
-ModemManager::NetworkTimeZone::NetworkTimeZone(const ModemManager::NetworkTimeZone& other)
+ModemManager::NetworkTimezone::NetworkTimezone(const ModemManager::NetworkTimezone& other)
     : d(new Private)
 {
     *this = other;
 }
 
-ModemManager::NetworkTimeZone::~NetworkTimeZone()
+ModemManager::NetworkTimezone::~NetworkTimezone()
 {
     delete d;
 }
 
-int ModemManager::NetworkTimeZone::offset() const
+int ModemManager::NetworkTimezone::offset() const
 {
     return d->offset;
 }
 
-void ModemManager::NetworkTimeZone::setOffset(int offset)
+void ModemManager::NetworkTimezone::setOffset(int offset)
 {
     d->offset = offset;
 }
 
-int ModemManager::NetworkTimeZone::dstOffset() const
+int ModemManager::NetworkTimezone::dstOffset() const
 {
     return d->dstOffset;
 }
 
-void ModemManager::NetworkTimeZone::setDstOffset(int dstOffset)
+void ModemManager::NetworkTimezone::setDstOffset(int dstOffset)
 {
     d->dstOffset = dstOffset;
 }
 
-int ModemManager::NetworkTimeZone::leapSecond() const
+int ModemManager::NetworkTimezone::leapSecond() const
 {
     return d->leapSecond;
 }
 
-void ModemManager::NetworkTimeZone::setLeapSecond(int leapSecond)
+void ModemManager::NetworkTimezone::setLeapSecond(int leapSecond)
 {
     d->leapSecond = leapSecond;
 }
 
-ModemManager::NetworkTimeZone& ModemManager::NetworkTimeZone::operator=(const ModemManager::NetworkTimeZone& other)
+ModemManager::NetworkTimezone& ModemManager::NetworkTimezone::operator=(const ModemManager::NetworkTimezone& other)
 {
     if (this == &other) {
         return *this;
@@ -109,7 +109,7 @@ ModemManager::ModemTimePrivate::ModemTimePrivate(const QString &path, ModemTime 
     , q_ptr(q)
 {
     if (modemTimeIface.isValid()) {
-        networkTimeZone = variantMapToTimeZone(modemTimeIface.networkTimezone());
+        networkTimezone = variantMapToTimezone(modemTimeIface.networkTimezone());
     }
 }
 
@@ -139,16 +139,16 @@ QDBusPendingReply<QString> ModemManager::ModemTime::networkTime()
     return d->modemTimeIface.GetNetworkTime();
 }
 
-ModemManager::NetworkTimeZone ModemManager::ModemTime::networkTimeZone() const
+ModemManager::NetworkTimezone ModemManager::ModemTime::networkTimezone() const
 {
     Q_D(const ModemTime);
 
-    return d->networkTimeZone;
+    return d->networkTimezone;
 }
 
-ModemManager::NetworkTimeZone ModemManager::ModemTimePrivate::variantMapToTimeZone(const QVariantMap &map)
+ModemManager::NetworkTimezone ModemManager::ModemTimePrivate::variantMapToTimezone(const QVariantMap &map)
 {
-    ModemManager::NetworkTimeZone result;
+    ModemManager::NetworkTimezone result;
     if (map.contains("offset")) {
         result.setOffset(map.value("offset").toInt());
     } if (map.contains("dst-offset")) {
@@ -165,8 +165,9 @@ void ModemManager::ModemTimePrivate::onNetworkTimeChanged(const QString &isoDate
     Q_Q(ModemTime);
 
     const QDateTime result = QDateTime::fromString(isoDateTime, Qt::ISODate);
-    if (result.isValid())
+    if (result.isValid()) {
         Q_EMIT q->networkTimeChanged(result);
+    }
 }
 
 void ModemManager::ModemTimePrivate::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
@@ -178,8 +179,8 @@ void ModemManager::ModemTimePrivate::onPropertiesChanged(const QString &interfac
     if (interface == QString(MMQT_DBUS_INTERFACE_MODEM_TIME)) {
         QVariantMap::const_iterator it = properties.constFind(QLatin1String(MM_MODEM_TIME_PROPERTY_NETWORKTIMEZONE));
         if (it != properties.constEnd()) {
-            networkTimeZone = variantMapToTimeZone(it->toMap());
-            Q_EMIT q->networkTimeZoneChanged(networkTimeZone);
+            networkTimezone = variantMapToTimezone(qdbus_cast<QVariantMap>(*it));
+            Q_EMIT q->networkTimezoneChanged(networkTimezone);
         }
     }
 }
