@@ -180,10 +180,8 @@ Q_SIGNALS:
     */
     void deliveryStateChanged(MMSmsDeliveryState newDeliveryState);
     void storageChanged(MMSmsStorage storage);
-// #if MM_CHECK_VERSION(1, 2, 0)
     void serviceCategoryChanged(MMSmsCdmaServiceCategory serviceCategory);
     void teleserviceIdChanged(MMSmsCdmaTeleserviceId teleserviceId);
-// #endif
 
 private:
     SmsPrivate *const d_ptr;

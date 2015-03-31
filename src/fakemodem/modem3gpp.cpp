@@ -169,6 +169,8 @@ QVariantMap Modem3gpp::toMap() const
     map.insert(QLatin1String(MM_MODEM_MODEM3GPP_PROPERTY_OPERATORCODE), m_operatorCode);
     map.insert(QLatin1String(MM_MODEM_MODEM3GPP_PROPERTY_OPERATORNAME), m_operatorName);
     map.insert(QLatin1String(MM_MODEM_MODEM3GPP_PROPERTY_ENABLEDFACILITYLOCKS ), m_enabledFacilityLocks);
+#if MM_CHECK_VERSION(1, 2, 0)
     map.insert(QLatin1String(MM_MODEM_MODEM3GPP_PROPERTY_SUBSCRIPTIONSTATE), m_subscriptionState);
+#endif
     return map;
 }

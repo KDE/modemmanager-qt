@@ -82,14 +82,16 @@ void BearerPropertiesTest::initTestCase()
     bearer->setIpTimeout(20);
     bearer->setProperties({{QLatin1String("apn"),QLatin1String("internet")},{QLatin1Literal("ip-type"), 1}, {QLatin1String("number"), QLatin1String("*99#")}});
     bearer->setSuspended(false);
-
+#if MM_CHECK_VERSION(1, 2, 0)
     ModemManager::Modem::Ptr modemInterface = ModemManager::modemDevices().first()->modemInterface();
     QCOMPARE(modemInterface->listBearers().count(), 0);
     QSignalSpy bearerAddedSpy(modemInterface.data(), SIGNAL(bearerAdded(QString)));
     fakeModem->addBearer(bearer);
     QVERIFY(bearerAddedSpy.wait());
+#endif
 }
 
+#if MM_CHECK_VERSION(1, 2, 0)
 void BearerPropertiesTest::testBearerProperties()
 {
     ModemManager::Modem::Ptr modemInterface = ModemManager::modemDevices().first()->modemInterface();
@@ -135,5 +137,5 @@ void BearerPropertiesTest::testBearerProperties()
     QVERIFY(suspendedChangedSpy.wait());
     QCOMPARE(modemBearer->isSuspended(), suspendedChangedSpy.at(0).at(0).toBool());
 }
-
+#endif
 QTEST_MAIN(BearerPropertiesTest)

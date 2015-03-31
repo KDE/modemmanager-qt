@@ -91,11 +91,12 @@ void ModemTest::testModems()
 
     ModemManager::Modem::Ptr modemInterface = ModemManager::modemDevices().first()->modemInterface();
     QCOMPARE(modemInterface->listBearers().count(), 0);
+
     QSignalSpy bearerAddedSpy(modemInterface.data(), SIGNAL(bearerAdded(QString)));
     fakeModem->addBearer(bearer);
+#if MM_CHECK_VERSION(1, 2, 0)
     QVERIFY(bearerAddedSpy.wait());
     QCOMPARE(modemInterface->listBearers().count(), 1);
-
     ModemManager::Bearer::Ptr modemBearer = modemInterface->listBearers().first();
     QVERIFY(modemBearer);
     QCOMPARE(modemBearer->isConnected(), false);
@@ -115,13 +116,13 @@ void ModemTest::testModems()
     fakeModem->removeBearer(bearer);
     QVERIFY(bearerRemovedSpy.wait());
     QCOMPARE(modemInterface->listBearers().count(), 0);
+#endif
 
     QSignalSpy removeModemSpy(ModemManager::notifier(), SIGNAL(modemRemoved(QString)));
     fakeModem->removeModem(modem);
     QVERIFY(removeModemSpy.wait());
     QVERIFY(ModemManager::modemDevices().isEmpty());
     QCOMPARE(removeModemSpy.at(0).at(0).toString(), addedModemPath);
-
     delete modem;
 }
 

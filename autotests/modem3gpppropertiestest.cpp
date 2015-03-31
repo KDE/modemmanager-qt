@@ -82,7 +82,9 @@ void Modem3gppPropertiesTest::initTestCase()
     modem3gpp->setOperatorCode(QLatin1String("31026"));
     modem3gpp->setOperatorName(QLatin1String("op-name"));
     modem3gpp->setRegistrationState(MM_MODEM_3GPP_REGISTRATION_STATE_HOME);
+#if MM_CHECK_VERSION(1, 2, 0)
     modem3gpp->setSubscriptionState(MM_MODEM_3GPP_SUBSCRIPTION_STATE_UNKNOWN);
+#endif
 
     ModemManager::MMVariantMapMap interfaces;
     interfaces.insert(QLatin1String(MMQT_DBUS_INTERFACE_MODEM_MODEM3GPP), modem3gpp->toMap());
@@ -123,10 +125,12 @@ void Modem3gppPropertiesTest::testModem3gppProperties()
     QVERIFY(registrationStateChangedSpy.wait());
     QCOMPARE(modem3gppInterface->registrationState(), registrationStateChangedSpy.at(0).at(0).value<MMModem3gppRegistrationState>());
 
+#if MM_CHECK_VERSION(1, 2, 0)
     modem3gpp->setSubscriptionState(MM_MODEM_3GPP_SUBSCRIPTION_STATE_PROVISIONED);
     QSignalSpy subscriptionStateChangedSpy(modem3gppInterface.data(), SIGNAL(subscriptionStateChanged(MMModem3gppSubscriptionState)));
     QVERIFY(subscriptionStateChangedSpy.wait());
     QCOMPARE(modem3gppInterface->subscriptionState(), subscriptionStateChangedSpy.at(0).at(0).value<MMModem3gppSubscriptionState>());
+#endif
 }
 
 QTEST_MAIN(Modem3gppPropertiesTest)

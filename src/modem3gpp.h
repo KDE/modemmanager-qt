@@ -92,11 +92,12 @@ public:
      */
     FacilityLocks enabledFacilityLocks() const;
 
+#if MM_CHECK_VERSION(1, 2, 0)
     /**
      * @return Value representing the subscription status of the account and whether there is any data remaining.
      */
     MMModem3gppSubscriptionState subscriptionState() const;
-
+#endif
     /**
       * Register the device to network.
       *

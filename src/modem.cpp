@@ -184,7 +184,7 @@ ModemManager::ModemPrivate::ModemPrivate(const QString &path, Modem *q)
         QDBusPendingReply<QList<QDBusObjectPath> > reply = modemIface.ListBearers();
         reply.waitForFinished();
         if (reply.isValid()) {
-            Q_FOREACH (const QDBusObjectPath & bearer, bearersList) {
+            Q_FOREACH (const QDBusObjectPath & bearer, reply.value()) {
                 if (!bearers.contains(bearer.path())) {
                     bearers.insert(bearer.path(), Bearer::Ptr());
                     Q_EMIT q->bearerAdded(bearer.path());

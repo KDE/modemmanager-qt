@@ -11,11 +11,17 @@ set(fakeModem_SRCS
     modem3gppussd.cpp
     modemcdma.cpp
     modemlocation.cpp
-    modemoma.cpp
     modemsimple.cpp
     modemtime.cpp
     objectmanager.cpp
 )
+
+if (${MODEMMANAGER_VERSION} VERSION_EQUAL 1.2.0 OR ${MODEMMANAGER_VERSION} VERSION_GREATER 1.2.0)
+    set(fakeModem_SRCS
+        ${fakeModem_SRCS}
+        modemoma.cpp
+        )
+endif()
 
 add_library(fakeModem STATIC ${fakeModem_SRCS})
 

@@ -618,7 +618,9 @@ QVariantMap Modem::toMap() const
 {
     QVariantMap map;
     map.insert(QLatin1String(MM_MODEM_PROPERTY_SIM), QVariant::fromValue<QDBusObjectPath>(m_sim));
+#if MM_CHECK_VERSION(1, 2, 0)
     map.insert(QLatin1String(MM_MODEM_PROPERTY_BEARERS), QVariant::fromValue<QList<QDBusObjectPath> >(m_bearers));
+#endif
     map.insert(QLatin1String(MM_MODEM_PROPERTY_SUPPORTEDCAPABILITIES), QVariant::fromValue<ModemManager::UIntList>(m_supportedCapabilities));
     map.insert(QLatin1String(MM_MODEM_PROPERTY_CURRENTCAPABILITIES), m_currentCapabilities);
     map.insert(QLatin1String(MM_MODEM_PROPERTY_MAXBEARERS), m_maxBearers);

@@ -41,7 +41,9 @@ public:
     QString operatorCode;
     QString operatorName;
     QFlags<MMModem3gppFacility> enabledFacilityLocks;
+#if MM_CHECK_VERSION(1, 2, 0)
     MMModem3gppSubscriptionState subscriptionState;
+#endif
 
     Q_DECLARE_PUBLIC(Modem3gpp)
     Modem3gpp *q_ptr;

@@ -31,8 +31,10 @@ class BearerPropertiesTest : public QObject
 
 private Q_SLOTS:
     void initTestCase();
+#if MM_CHECK_VERSION(1, 2, 0)
     void testBearerProperties();
-
+#endif
+    
 private:
     Bearer *bearer;
     FakeModem *fakeModem;

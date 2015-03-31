@@ -45,7 +45,9 @@ ModemManager::Modem3gppPrivate::Modem3gppPrivate(const QString &path, Modem3gpp 
         operatorCode = modem3gppIface.operatorCode();
         operatorName = modem3gppIface.operatorName();
         enabledFacilityLocks = (QFlags<MMModem3gppFacility>)modem3gppIface.enabledFacilityLocks();
+#if MM_CHECK_VERSION(1, 2, 0)
         subscriptionState = (MMModem3gppSubscriptionState)modem3gppIface.subscriptionState();
+#endif
     }
 }
 
@@ -56,8 +58,9 @@ ModemManager::Modem3gpp::Modem3gpp(const QString &path, QObject *parent)
 
     qRegisterMetaType<QFlags<MMModem3gppFacility> >();
     qRegisterMetaType<MMModem3gppRegistrationState>();
+#if MM_CHECK_VERSION(1, 2, 0)
     qRegisterMetaType<MMModem3gppSubscriptionState>();
-
+#endif
 #ifdef MMQT_STATIC
     QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
@@ -101,11 +104,13 @@ ModemManager::Modem3gpp::FacilityLocks ModemManager::Modem3gpp::enabledFacilityL
     return d->enabledFacilityLocks;
 }
 
+#if MM_CHECK_VERSION(1, 2, 0)
 MMModem3gppSubscriptionState ModemManager::Modem3gpp::subscriptionState() const
 {
     Q_D(const Modem3gpp);
     return d->subscriptionState;
 }
+#endif
 
 void ModemManager::Modem3gpp::registerToNetwork(const QString &networkId)
 {
@@ -151,10 +156,12 @@ void ModemManager::Modem3gppPrivate::onPropertiesChanged(const QString &interfac
             enabledFacilityLocks = (QFlags<MMModem3gppFacility>)it->toUInt();
             Q_EMIT q->enabledFacilityLocksChanged(enabledFacilityLocks);
         }
+#if MM_CHECK_VERSION(1, 2, 0)
         it = properties.constFind(QLatin1String(MM_MODEM_MODEM3GPP_PROPERTY_SUBSCRIPTIONSTATE));
         if (it != properties.constEnd()) {
             subscriptionState = (MMModem3gppSubscriptionState)it->toUInt();
             Q_EMIT q->subscriptionStateChanged(subscriptionState);
         }
+#endif
     }
 }
