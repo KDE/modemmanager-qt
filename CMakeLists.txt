@@ -1,9 +1,8 @@
 cmake_minimum_required(VERSION 2.8.12)
 
 project(ModemManagerQt)
-set(PROJECT_VERSION "5.2.90")
 
-find_package(ECM 1.6.0 REQUIRED NO_MODULE)
+find_package(ECM 1.8.0 REQUIRED NO_MODULE)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
@@ -29,7 +28,7 @@ include(GenerateExportHeader)
 include(ECMSetupVersion)
 include(ECMGenerateHeaders)
 
-set(KF5_VERSION ${PROJECT_VERSION})
+set(KF5_VERSION "5.8.0") # handled by release scripts
 
 ecm_setup_version(${KF5_VERSION} VARIABLE_PREFIX MODEMMANAGERQT
                         VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/modemmanagerqt_version.h"
