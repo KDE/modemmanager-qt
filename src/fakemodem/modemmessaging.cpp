@@ -115,7 +115,9 @@ void ModemMessaging::setSupportedStorages(const ModemManager::UIntList& supporte
 QVariantMap ModemMessaging::toMap() const
 {
     QVariantMap map;
+#if MM_CHECK_VERSION(1, 2, 0)
     map.insert(QLatin1String(MM_MODEM_MESSAGING_PROPERTY_MESSAGES), QVariant::fromValue<QList<QDBusObjectPath> >(m_messages.keys()));
+#endif
     map.insert(QLatin1String(MM_MODEM_MESSAGING_PROPERTY_SUPPORTEDSTORAGES), QVariant::fromValue<ModemManager::UIntList>(m_supportedStorages));
     map.insert(QLatin1String(MM_MODEM_MESSAGING_PROPERTY_DEFAULTSTORAGE), m_defaultStorage);
     return map;

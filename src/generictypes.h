@@ -165,6 +165,14 @@ Q_DECLARE_METATYPE(MMOmaSessionType)
 Q_DECLARE_METATYPE(MMOmaSessionState)
 Q_DECLARE_METATYPE(MMOmaSessionStateFailedReason)
 #endif
+Q_DECLARE_METATYPE(MMSmsDeliveryState)
+Q_DECLARE_METATYPE(MMSmsPduType)
+Q_DECLARE_METATYPE(MMSmsState)
+Q_DECLARE_METATYPE(MMSmsStorage)
+#if MM_CHECK_VERSION(1, 2, 0)
+Q_DECLARE_METATYPE(MMSmsCdmaServiceCategory)
+Q_DECLARE_METATYPE(MMSmsCdmaTeleserviceId)
+#endif
 
 // Others
 Q_DECLARE_METATYPE(ModemManager::DBUSManagerStruct)

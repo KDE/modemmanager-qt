@@ -71,8 +71,8 @@ public:
     inline uint pduType() const
     { return qvariant_cast< uint >(property("PduType")); }
 
-    Q_PROPERTY(QString SMSC READ sMSC)
-    inline QString sMSC() const
+    Q_PROPERTY(QString SMSC READ SMSC)
+    inline QString SMSC() const
     { return qvariant_cast< QString >(property("SMSC")); }
 
     Q_PROPERTY(uint ServiceCategory READ serviceCategory)

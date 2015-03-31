@@ -91,7 +91,7 @@ public:
     /**
     * This method returns the SMS service center number
     */
-    QString smsc() const;
+    QString SMSC() const;
 
     /**
     * This method returns the SMS message data. text() and data() are not valid at the same time
@@ -164,10 +164,10 @@ Q_SIGNALS:
     void stateChanged(MMSmsState newState);
     void pduTypeChanged(MMSmsPduType pduType);
     void numberChanged(const QString &number);
-    void smscChanged(const QString &smsc);
+    void SMSCChanged(const QString &smsc);
     void dataChanged(const QByteArray &data);
     void textChanged(const QString &text);
-    void validityChanged(ValidityPair validity);
+    void validityChanged(const ModemManager::ValidityPair &validity);
     void smsClassChanged(int smsClass);
     void deliveryReportRequestChanged(bool deliveryReportRequest);
     void messageReferenceChanged(uint messageReference);

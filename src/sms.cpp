@@ -45,7 +45,7 @@ ModemManager::SmsPrivate::SmsPrivate(const QString &path, Sms *q)
         pduType = (MMSmsPduType) smsIface.pduType();
         number = smsIface.number();
         text = smsIface.text();
-        smsc = smsIface.sMSC();
+        smsc = smsIface.SMSC();
         data = smsIface.data();
         validity = smsIface.validity();
         smsClass = smsIface.smsClass();
@@ -67,6 +67,16 @@ ModemManager::Sms::Sms(const QString &path, QObject *parent)
     , d_ptr(new SmsPrivate(path, this))
 {
     Q_D(Sms);
+
+    qRegisterMetaType<MMSmsDeliveryState>();
+    qRegisterMetaType<MMSmsPduType>();
+    qRegisterMetaType<MMSmsState>();
+    qRegisterMetaType<MMSmsStorage>();
+#if MM_CHECK_VERSION(1, 2, 0)
+    qRegisterMetaType<MMSmsCdmaServiceCategory>();
+    qRegisterMetaType<MMSmsCdmaTeleserviceId>();
+#endif
+
 #ifdef MMQT_STATIC
     QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
@@ -123,7 +133,7 @@ QString ModemManager::Sms::text() const
     return d->text;
 }
 
-QString ModemManager::Sms::smsc() const
+QString ModemManager::Sms::SMSC() const
 {
     Q_D(const Sms);
     return d->smsc;
@@ -205,6 +215,7 @@ void ModemManager::SmsPrivate::onPropertiesChanged(const QString &interfaceName,
     if (interfaceName == QString(MMQT_DBUS_INTERFACE_SMS)) {
         QVariantMap::const_iterator it = changedProperties.constFind(QLatin1String(MM_SMS_PROPERTY_STATE));
         if (it != changedProperties.constEnd()) {
+            qDebug() << it->toUInt();
             state = (MMSmsState) it->toUInt();
             Q_EMIT q->stateChanged(state);
         }
@@ -221,7 +232,7 @@ void ModemManager::SmsPrivate::onPropertiesChanged(const QString &interfaceName,
         it = changedProperties.constFind(QLatin1String(MM_SMS_PROPERTY_SMSC));
         if (it != changedProperties.constEnd()) {
             smsc = it->toString();
-            Q_EMIT q->smscChanged(smsc);
+            Q_EMIT q->SMSCChanged(smsc);
         }
         it = changedProperties.constFind(QLatin1String(MM_SMS_PROPERTY_DATA));
         if (it != changedProperties.constEnd()) {
