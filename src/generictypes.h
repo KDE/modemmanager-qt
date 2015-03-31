@@ -78,6 +78,18 @@ typedef enum { /*< underscore_name=mm_sms_cdma_service_category >*/
     MM_SMS_CDMA_SERVICE_CATEGORY_CMAS_CHILD_ABDUCTION_EMERGENCY   = 0x1003,
     MM_SMS_CDMA_SERVICE_CATEGORY_CMAS_TEST                        = 0x1004,
 } MMSmsCdmaServiceCategory;
+
+typedef enum { /*< underscore_name=mm_sms_cdma_teleservice_id >*/
+    MM_SMS_CDMA_TELESERVICE_ID_UNKNOWN = 0x0000,
+    MM_SMS_CDMA_TELESERVICE_ID_CMT91   = 0x1000,
+    MM_SMS_CDMA_TELESERVICE_ID_WPT     = 0x1001,
+    MM_SMS_CDMA_TELESERVICE_ID_WMT     = 0x1002,
+    MM_SMS_CDMA_TELESERVICE_ID_VMN     = 0x1003,
+    MM_SMS_CDMA_TELESERVICE_ID_WAP     = 0x1004,
+    MM_SMS_CDMA_TELESERVICE_ID_WEMT    = 0x1005,
+    MM_SMS_CDMA_TELESERVICE_ID_SCPT    = 0x1006,
+    MM_SMS_CDMA_TELESERVICE_ID_CATPT   = 0x1007,
+} MMSmsCdmaTeleserviceId;
 #endif
 
 namespace ModemManager
