@@ -10,10 +10,12 @@ set(fakeModem_SRCS
     modem3gpp.cpp
     modem3gppussd.cpp
     modemcdma.cpp
+    modemmessaging.cpp
     modemlocation.cpp
     modemsimple.cpp
     modemtime.cpp
     objectmanager.cpp
+    sms.cpp
 )
 
 if (${MODEMMANAGER_VERSION} VERSION_EQUAL 1.2.0 OR ${MODEMMANAGER_VERSION} VERSION_GREATER 1.2.0)
