@@ -33,7 +33,7 @@ set(KF5_VERSION "5.8.0") # handled by release scripts
 ecm_setup_version(${KF5_VERSION} VARIABLE_PREFIX MODEMMANAGERQT
                         VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/modemmanagerqt_version.h"
                         PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF5ModemManagerQtConfigVersion.cmake"
-                        SOVERSION 5)
+                        SOVERSION 6)
 
 # Enable unit testing
 if (BUILD_TESTING)
