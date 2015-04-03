@@ -1,7 +1,4 @@
 include_directories(${MODEMMANAGER_INCLUDE_DIRS})
-include_directories(
-   ${CMAKE_SOURCE_DIR}/src/settings
-)
 
 set(fakeModem_SRCS
     bearer.cpp
