@@ -7,5 +7,5 @@ platforms:
       note: Functional only with running ModemManager
 portingAid: false
 deprecated: false
-release: false
+release: true
 cmakename: KF5ModemManagerQt
