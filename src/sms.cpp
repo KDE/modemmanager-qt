@@ -22,6 +22,7 @@
 
 #include "sms.h"
 #include "sms_p.h"
+#include "mmdebug_p.h"
 
 #ifdef MMQT_STATIC
 #include "dbus/fakedbus.h"
@@ -215,8 +216,8 @@ void ModemManager::SmsPrivate::onPropertiesChanged(const QString &interfaceName,
     if (interfaceName == QString(MMQT_DBUS_INTERFACE_SMS)) {
         QVariantMap::const_iterator it = changedProperties.constFind(QLatin1String(MM_SMS_PROPERTY_STATE));
         if (it != changedProperties.constEnd()) {
-            qDebug() << it->toUInt();
             state = (MMSmsState) it->toUInt();
+            qCDebug(MMQT) << state;
             Q_EMIT q->stateChanged(state);
         }
         it = changedProperties.constFind(QLatin1String(MM_SMS_PROPERTY_PDUTYPE));
