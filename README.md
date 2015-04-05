@@ -10,8 +10,7 @@ to information available for your modem devices, like signal, location
 and messages.
 
 ## Links
-  <!-- TODO - move to frameworks -->
-- Home page: <https://projects.kde.org/projects/kde/workspace/libmm-qt>
+- Home page: <https://projects.kde.org/projects/frameworks/modemmanager-qt>
 - Mailing list: <https://mail.kde.org/mailman/listinfo/kde-frameworks-devel>
 - IRC channel: #kde-devel and #solid on Freenode
-- Git repository: <https://projects.kde.org/projects/kde/workspace/libmm-qt/repository>
+- Git repository: <https://projects.kde.org/projects/frameworks/modemmanager-qt/repository>
