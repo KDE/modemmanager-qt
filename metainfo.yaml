@@ -8,4 +8,7 @@ platforms:
 portingAid: false
 deprecated: false
 release: true
+libraries:
+ - qmake: ModemManagerQt
+   cmake: "KF5ModemManagerQt"
 cmakename: KF5ModemManagerQt
