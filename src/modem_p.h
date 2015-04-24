@@ -74,6 +74,7 @@ public:
     Q_DECLARE_PUBLIC(Modem)
     Modem *q_ptr;
 private Q_SLOTS:
+    void initializeBearers();
     virtual void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) Q_DECL_OVERRIDE;
     void onStateChanged(int oldState, int newState, uint reason);
 };
