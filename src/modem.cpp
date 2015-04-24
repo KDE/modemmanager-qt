@@ -172,27 +172,6 @@ ModemManager::ModemPrivate::ModemPrivate(const QString &path, Modem *q)
     , q_ptr(q)
 {
     if (modemIface.isValid()) {
-#if MM_CHECK_VERSION(1, 2, 0)
-        QList<QDBusObjectPath> bearersList = modemIface.bearers();
-        Q_FOREACH (const QDBusObjectPath & bearer, bearersList) {
-            if (!bearers.contains(bearer.path())) {
-                bearers.insert(bearer.path(), Bearer::Ptr());
-                Q_EMIT q->bearerAdded(bearer.path());
-            }
-        }
-#else
-        QDBusPendingReply<QList<QDBusObjectPath> > reply = modemIface.ListBearers();
-        reply.waitForFinished();
-        if (reply.isValid()) {
-            Q_FOREACH (const QDBusObjectPath & bearer, reply.value()) {
-                if (!bearers.contains(bearer.path())) {
-                    bearers.insert(bearer.path(), Bearer::Ptr());
-                    Q_EMIT q->bearerAdded(bearer.path());
-                }
-            }
-        }
-#endif
-
         simPath = modemIface.sim().path();
         Q_FOREACH (uint cap, modemIface.supportedCapabilities()) {
             supportedCapabilities.append((MMModemCapability)cap);
@@ -246,6 +225,27 @@ ModemManager::Modem::Modem(const QString &path, QObject *parent)
     qRegisterMetaType<MMModemStateFailedReason>();
 
     if (d->modemIface.isValid()) {
+#if MM_CHECK_VERSION(1, 2, 0)
+        QList<QDBusObjectPath> bearersList = d->modemIface.bearers();
+        Q_FOREACH (const QDBusObjectPath & bearer, bearersList) {
+            if (!d->bearers.contains(bearer.path())) {
+                d->bearers.insert(bearer.path(), Bearer::Ptr());
+                Q_EMIT bearerAdded(bearer.path());
+            }
+        }
+#else
+        QDBusPendingReply<QList<QDBusObjectPath> > reply = d->modemIface.ListBearers();
+        reply.waitForFinished();
+        if (reply.isValid()) {
+            Q_FOREACH (const QDBusObjectPath & bearer, reply.value()) {
+                if (!d->bearers.contains(bearer.path())) {
+                    d->bearers.insert(bearer.path(), Bearer::Ptr());
+                    Q_EMIT bearerAdded(bearer.path());
+                }
+            }
+        }
+#endif
+
 #ifdef MMQT_STATIC
         QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, "PropertiesChanged", d,
                                              SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
