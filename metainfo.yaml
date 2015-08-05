@@ -1,4 +1,7 @@
-maintainer: grulich
+maintainer:
+    - grulich
+    - lvsouza
+    - lukas
 description: Qt wrapper for ModemManager API
 tier: 1
 type: integration
