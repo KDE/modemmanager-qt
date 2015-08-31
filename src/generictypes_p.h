@@ -26,6 +26,7 @@
 #include <QMetaType>
 
 Q_DECLARE_METATYPE(ModemManager::MMVariantMapMap)
+Q_DECLARE_METATYPE(ModemManager::QVariantMapList)
 Q_DECLARE_METATYPE(ModemManager::UIntList)
 Q_DECLARE_METATYPE(ModemManager::UIntListList)
 

@@ -186,7 +186,6 @@ Q_DECLARE_METATYPE(ModemManager::OmaSessionType)
 Q_DECLARE_METATYPE(ModemManager::OmaSessionTypes)
 #endif
 Q_DECLARE_METATYPE(ModemManager::UnlockRetriesMap)
-Q_DECLARE_METATYPE(ModemManager::QVariantMapList)
 Q_DECLARE_METATYPE(ModemManager::LocationInformationMap)
 Q_DECLARE_METATYPE(ModemManager::ValidityPair)
 
