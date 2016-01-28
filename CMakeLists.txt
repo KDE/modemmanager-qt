@@ -13,7 +13,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake ${E
 find_package(ModemManager 1.0 REQUIRED)
 
 include(KDEInstallDirs)
-include(KDEFrameworkCompilerSettings)
+include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
 include(KDECMakeSettings)
 
 set(REQUIRED_QT_VERSION 5.4.0)
