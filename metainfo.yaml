@@ -15,3 +15,7 @@ libraries:
  - qmake: ModemManagerQt
    cmake: "KF5ModemManagerQt"
 cmakename: KF5ModemManagerQt
+
+public_lib: true
+group: Frameworks
+subgroup: Tier 1
