@@ -178,7 +178,7 @@ public:
     typedef QSharedPointer<Modem> Ptr;
     typedef QList<Ptr> List;
 
-    explicit Modem(const QString &path, QObject *parent = 0 );
+    explicit Modem(const QString &path, QObject *parent = nullptr );
     ~Modem();
 
     QString uni() const;

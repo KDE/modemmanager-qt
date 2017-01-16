@@ -51,7 +51,7 @@ public:
     typedef QSharedPointer<Sms> Ptr;
     typedef QList<Ptr> List;
 
-    explicit Sms(const QString &path, QObject *parent = 0);
+    explicit Sms(const QString &path, QObject *parent = nullptr);
     ~Sms();
 
     QString uni() const;

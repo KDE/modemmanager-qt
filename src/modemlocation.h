@@ -56,7 +56,7 @@ public:
 
     Q_DECLARE_FLAGS(LocationSources, MMModemLocationSource)
 
-    explicit ModemLocation(const QString &path, QObject *parent = 0);
+    explicit ModemLocation(const QString &path, QObject *parent = nullptr);
     ~ModemLocation();
 
     /**

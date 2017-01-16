@@ -57,7 +57,7 @@ public:
 
     Q_DECLARE_FLAGS(Features, MMOmaFeature)
 
-    explicit ModemOma(const QString &path, QObject *parent = 0);
+    explicit ModemOma(const QString &path, QObject *parent = nullptr);
     ~ModemOma();
 
     // properties

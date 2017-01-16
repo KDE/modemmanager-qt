@@ -51,7 +51,7 @@ public:
     typedef QSharedPointer<Modem3gppUssd> Ptr;
     typedef QList<Ptr> List;
 
-    explicit Modem3gppUssd(const QString &path, QObject *parent = 0);
+    explicit Modem3gppUssd(const QString &path, QObject *parent = nullptr);
     ~Modem3gppUssd();
 
     /**

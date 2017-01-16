@@ -32,7 +32,7 @@ class ModemOma : public QDBusAbstractAdaptor
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.fakemodem.Modem.Oma")
 public:
-    explicit ModemOma(QObject * parent = 0);
+    explicit ModemOma(QObject * parent = nullptr);
     virtual ~ModemOma();
 
     Q_PROPERTY(uint Features READ features)

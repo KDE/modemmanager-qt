@@ -35,7 +35,7 @@ public:
     { return "org.freedesktop.ModemManager1.Modem.Modem3gpp"; }
 #endif
 public:
-    OrgFreedesktopModemManager1ModemModem3gppInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = 0);
+    OrgFreedesktopModemManager1ModemModem3gppInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
 
     ~OrgFreedesktopModemManager1ModemModem3gppInterface();
 

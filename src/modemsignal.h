@@ -49,7 +49,7 @@ public:
     typedef QSharedPointer<ModemSignal> Ptr;
     typedef QList<Ptr> List;
 
-    explicit ModemSignal(const QString &path, QObject *parent = 0);
+    explicit ModemSignal(const QString &path, QObject *parent = nullptr);
     ~ModemSignal();
 
     /**

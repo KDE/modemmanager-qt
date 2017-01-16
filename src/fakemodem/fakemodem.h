@@ -34,7 +34,7 @@ class FakeModem : public QObject
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.fakemodem")
 public:
-    explicit FakeModem(QObject* parent = 0);
+    explicit FakeModem(QObject* parent = nullptr);
     virtual ~FakeModem();
 
     /* Not part of DBus interface */

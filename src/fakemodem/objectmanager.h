@@ -33,7 +33,7 @@ class ObjectManager : public QDBusAbstractAdaptor
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.freedesktop.DBus.ObjectManager")
 public:
-    explicit ObjectManager(QObject * parent = 0);
+    explicit ObjectManager(QObject * parent = nullptr);
     virtual ~ObjectManager();
 
     void addInterfaces(const QDBusObjectPath &object_path, const ModemManager::MMVariantMapMap &interfaces_and_properties);

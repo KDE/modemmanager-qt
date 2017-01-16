@@ -32,7 +32,7 @@ class Modem3gpp : public QDBusAbstractAdaptor
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.fakemodem.Modem.Modem3gpp")
 public:
-    explicit Modem3gpp(QObject * parent = 0);
+    explicit Modem3gpp(QObject * parent = nullptr);
     virtual ~Modem3gpp();
 
     Q_PROPERTY(uint EnabledFacilityLocks READ enabledFacilityLocks)

@@ -108,7 +108,7 @@ public:
     typedef QSharedPointer<ModemTime> Ptr;
     typedef QList<Ptr> List;
 
-    explicit ModemTime(const QString &path, QObject *parent = 0);
+    explicit ModemTime(const QString &path, QObject *parent = nullptr);
     ~ModemTime();
 
     /**

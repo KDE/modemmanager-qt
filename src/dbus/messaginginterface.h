@@ -36,7 +36,7 @@ public:
     { return "org.freedesktop.ModemManager1.Modem.Messaging"; }
 #endif
 public:
-    OrgFreedesktopModemManager1ModemMessagingInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = 0);
+    OrgFreedesktopModemManager1ModemMessagingInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
 
     ~OrgFreedesktopModemManager1ModemMessagingInterface();
 

@@ -50,7 +50,7 @@ public:
     typedef QSharedPointer<ModemCdma> Ptr;
     typedef QList<Ptr> List;
 
-    explicit ModemCdma(const QString &path, QObject *parent = 0);
+    explicit ModemCdma(const QString &path, QObject *parent = nullptr);
     ~ModemCdma();
 
     /**

@@ -67,8 +67,8 @@ public:
         SignalInterface
     };
 
-    explicit ModemDevice(const QString &path, QObject *parent = 0);
-    explicit ModemDevice(ModemDevicePrivate &dd, QObject *parent = 0);
+    explicit ModemDevice(const QString &path, QObject *parent = nullptr);
+    explicit ModemDevice(ModemDevicePrivate &dd, QObject *parent = nullptr);
     virtual ~ModemDevice();
 
     QString uni() const;

@@ -147,7 +147,7 @@ public:
     typedef QSharedPointer<Bearer> Ptr;
     typedef QList<Ptr> List;
 
-    explicit Bearer(const QString &path, QObject *parent = 0);
+    explicit Bearer(const QString &path, QObject *parent = nullptr);
     ~Bearer();
 
     /**

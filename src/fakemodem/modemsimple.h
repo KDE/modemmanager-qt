@@ -32,7 +32,7 @@ class ModemSimple : public QDBusAbstractAdaptor
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.fakemodem.Modem.Simple")
 public:
-    explicit ModemSimple(QObject * parent = 0);
+    explicit ModemSimple(QObject * parent = nullptr);
     virtual ~ModemSimple();
 
 public Q_SLOTS:

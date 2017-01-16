@@ -54,7 +54,7 @@ public:
 
     Q_DECLARE_FLAGS(FacilityLocks, MMModem3gppFacility)
 
-    explicit Modem3gpp(const QString &path, QObject *parent = 0);
+    explicit Modem3gpp(const QString &path, QObject *parent = nullptr);
     ~Modem3gpp();
 
     /**

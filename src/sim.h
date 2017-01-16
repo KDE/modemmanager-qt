@@ -49,7 +49,7 @@ public:
     typedef QSharedPointer<Sim> Ptr;
     typedef QList<Ptr> List;
 
-    explicit Sim(const QString &path, QObject *parent = 0);
+    explicit Sim(const QString &path, QObject *parent = nullptr);
     ~Sim();
 
     /**

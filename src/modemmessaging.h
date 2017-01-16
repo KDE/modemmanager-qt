@@ -57,7 +57,7 @@ public:
     typedef QSharedPointer<ModemMessaging> Ptr;
     typedef QList<Ptr> List;
 
-    explicit ModemMessaging(const QString &path, QObject *parent = 0);
+    explicit ModemMessaging(const QString &path, QObject *parent = nullptr);
     ~ModemMessaging();
 
     /**

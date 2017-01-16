@@ -33,7 +33,7 @@ class ModemMessaging : public QDBusAbstractAdaptor
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.fakemodem.Modem.Messaging")
 public:
-    explicit ModemMessaging(QObject * parent = 0);
+    explicit ModemMessaging(QObject * parent = nullptr);
     virtual ~ModemMessaging();
 
     Q_PROPERTY(uint DefaultStorage READ defaultStorage)
