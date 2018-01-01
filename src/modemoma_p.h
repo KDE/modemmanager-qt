@@ -44,7 +44,7 @@ public:
     ModemOma *q_ptr;
 private Q_SLOTS:
     void onSessionStateChanged(int oldState, int newState, uint failedReason);
-    virtual void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) Q_DECL_OVERRIDE;
+    void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) Q_DECL_OVERRIDE;
 };
 
 } // namespace ModemManager

@@ -44,7 +44,7 @@ public:
     Q_DECLARE_PUBLIC(Modem3gppUssd)
     Modem3gppUssd *q_ptr;
 private Q_SLOTS:
-    virtual void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) Q_DECL_OVERRIDE;
+    void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) Q_DECL_OVERRIDE;
 };
 
 } // namespace ModemManager
