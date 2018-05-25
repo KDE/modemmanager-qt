@@ -46,7 +46,7 @@ public:
     Q_DECLARE_PUBLIC(ModemMessaging)
     ModemMessaging *q_ptr;
 private Q_SLOTS:
-    void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) Q_DECL_OVERRIDE;
+    void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) override;
     void onMessageAdded(const QDBusObjectPath &path, bool received);
     void onMessageDeleted(const QDBusObjectPath &path);
 };

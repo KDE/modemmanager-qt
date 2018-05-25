@@ -48,7 +48,7 @@ public:
     ModemCdma *q_ptr;
 private Q_SLOTS:
     void onActivationStateChanged(uint activation_state, uint activation_error, const QVariantMap &status_changes);
-    void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) Q_DECL_OVERRIDE;
+    void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) override;
 };
 
 } // namespace ModemManager

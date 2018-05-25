@@ -42,7 +42,7 @@ public:
     ModemTime *q_ptr;
 private Q_SLOTS:
     void onNetworkTimeChanged(const QString &isoDateTime);
-    void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) Q_DECL_OVERRIDE;
+    void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) override;
 };
 
 } // namespace ModemManager
