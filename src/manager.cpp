@@ -49,9 +49,6 @@ ModemManager::ModemManagerPrivate::ModemManagerPrivate()
     , manager(MMQT_DBUS_SERVICE, MMQT_DBUS_PATH, QDBusConnection::systemBus(), this)
 #endif
 {
-    QLoggingCategory::setFilterRules(QStringLiteral("modemmaanger-qt.debug = true"));
-    QLoggingCategory::setFilterRules(QStringLiteral("modemmanager-qt.warning = true"));
-
     qDBusRegisterMetaType<QList<QDBusObjectPath> >();
     registerModemManagerTypes();
 
