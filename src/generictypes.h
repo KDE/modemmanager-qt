@@ -173,6 +173,11 @@ Q_DECLARE_METATYPE(MMSmsStorage)
 Q_DECLARE_METATYPE(MMSmsCdmaServiceCategory)
 Q_DECLARE_METATYPE(MMSmsCdmaTeleserviceId)
 #endif
+#if MM_CHECK_VERSION(1, 6, 0)
+Q_DECLARE_METATYPE(MMCallState)
+Q_DECLARE_METATYPE(MMCallStateReason)
+Q_DECLARE_METATYPE(MMCallDirection)
+#endif
 
 // Others
 Q_DECLARE_METATYPE(ModemManager::DBUSManagerStruct)

@@ -54,6 +54,20 @@ if (${MODEMMANAGER_VERSION} VERSION_EQUAL 1.2.0 OR ${MODEMMANAGER_VERSION} VERSI
         )
 endif()
 
+if (${MODEMMANAGER_VERSION} VERSION_EQUAL 1.6.0 OR ${MODEMMANAGER_VERSION} VERSION_GREATER 1.6.0)
+    set(ModemManagerQt_SRCS
+        ${ModemManagerQt_SRCS}
+        modemvoice.cpp
+        call.cpp
+        )
+
+    set(DBUS_INTERFACES_FILES
+        ${DBUS_INTERFACES_FILES}
+        dbus/callinterface.cpp
+        dbus/voiceinterface.cpp
+        )
+endif()
+
 add_library(KF5ModemManagerQt SHARED ${ModemManagerQt_SRCS} ${DBUS_INTERFACES_FILES})
 generate_export_header(KF5ModemManagerQt BASE_NAME ModemManagerQt)
 add_library(KF5::ModemManagerQt ALIAS KF5ModemManagerQt)
@@ -78,6 +92,7 @@ target_include_directories(KF5ModemManagerQt_static PUBLIC "$<BUILD_INTERFACE:${
 
 ecm_generate_headers(ModemManagerQt_HEADERS
   HEADER_NAMES
+  Call
   Bearer
   GenericTypes
   Interface
@@ -94,6 +109,7 @@ ecm_generate_headers(ModemManagerQt_HEADERS
   ModemSimple
   ModemTime
   ModemOma
+  ModemVoice
   Sim
   Sms
 

@@ -36,11 +36,13 @@
 #define MMQT_DBUS_BEARER_PREFIX MMQT_DBUS_PATH "/Bearer"
 #define MMQT_DBUS_SIM_PREFIX    MMQT_DBUS_PATH "/SIM"
 #define MMQT_DBUS_SMS_PREFIX    MMQT_DBUS_PATH "/SMS"
+#define MMQT_DBUS_CALL_PREFIX   MMQT_DBUS_PATH "/Call"
 /* Interfaces */
 #define MMQT_DBUS_INTERFACE                         "org.kde.fakemodem"
 #define MMQT_DBUS_INTERFACE_SIM                     "org.kde.fakemodem.Sim"
 #define MMQT_DBUS_INTERFACE_BEARER                  "org.kde.fakemodem.Bearer"
 #define MMQT_DBUS_INTERFACE_SMS                     "org.kde.fakemodem.Sms"
+#define MMQT_DBUS_INTERFACE_CALL                    "org.kde.fakemodem.Call"
 #define MMQT_DBUS_INTERFACE_MODEM                   "org.kde.fakemodem.Modem"
 #define MMQT_DBUS_INTERFACE_MODEM_SIMPLE            "org.kde.fakemodem.Modem.Simple"
 #define MMQT_DBUS_INTERFACE_MODEM_MODEM3GPP         "org.kde.fakemodem.Modem.Modem3gpp"
@@ -52,5 +54,6 @@
 #define MMQT_DBUS_INTERFACE_MODEM_FIRMWARE          "org.kde.fakemodem.Modem.Firmware"
 #define MMQT_DBUS_INTERFACE_MODEM_SIGNAL            "org.kde.fakemodem.Modem.Signal"
 #define MMQT_DBUS_INTERFACE_MODEM_OMA               "org.kde.fakemodem.Modem.Oma"
+#define MMQT_DBUS_INTERFACE_MODEM_VOICE             "org.kde.fakemodem.Modem.Voice"
 
 #endif
