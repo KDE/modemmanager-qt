@@ -165,9 +165,9 @@ ModemManager::BearerProperties& ModemManager::BearerProperties::operator=(const 
 ModemManager::ModemPrivate::ModemPrivate(const QString &path, Modem *q)
     : InterfacePrivate(path, q)
 #ifdef MMQT_STATIC
-    , modemIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
+    , modemIface(QLatin1String(MMQT_DBUS_SERVICE), path, QDBusConnection::sessionBus())
 #else
-    , modemIface(MMQT_DBUS_SERVICE, path, QDBusConnection::systemBus())
+    , modemIface(QLatin1String(MMQT_DBUS_SERVICE), path, QDBusConnection::systemBus())
 #endif
     , q_ptr(q)
 {
@@ -254,10 +254,10 @@ ModemManager::Modem::Modem(const QString &path, QObject *parent)
 
     if (d->modemIface.isValid()) {
 #ifdef MMQT_STATIC
-        QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, "PropertiesChanged", d,
+        QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE), d->uni, QLatin1String(DBUS_INTERFACE_PROPS), QLatin1String("PropertiesChanged"), d,
                                              SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 #else
-        QDBusConnection::systemBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, "PropertiesChanged", d,
+        QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE), d->uni, QLatin1String(DBUS_INTERFACE_PROPS), QLatin1String("PropertiesChanged"), d,
                                              SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 #endif
     }
@@ -297,20 +297,20 @@ QDBusPendingReply<QDBusObjectPath> ModemManager::Modem::createBearer(const Modem
 {
     Q_D(Modem);
     QVariantMap map;
-    map.insert("apn", bearerProperties.apn());
+    map.insert(QStringLiteral("apn"), bearerProperties.apn());
     if (bearerProperties.ipType() != MM_BEARER_IP_FAMILY_NONE)
-        map.insert("ip-type", (uint)bearerProperties.ipType());
+        map.insert(QStringLiteral("ip-type"), (uint)bearerProperties.ipType());
     if (bearerProperties.allowedAuthentication() != MM_BEARER_ALLOWED_AUTH_UNKNOWN)
-        map.insert("allowed-auth", (uint)bearerProperties.allowedAuthentication());
+        map.insert(QStringLiteral("allowed-auth"), (uint)bearerProperties.allowedAuthentication());
     if (!bearerProperties.user().isEmpty())
-        map.insert("user", bearerProperties.user());
+        map.insert(QStringLiteral("user"), bearerProperties.user());
     if (!bearerProperties.password().isEmpty())
-        map.insert("password", bearerProperties.password());
-    map.insert("allow-roaming", bearerProperties.allowRoaming());
+        map.insert(QStringLiteral("password"), bearerProperties.password());
+    map.insert(QStringLiteral("allow-roaming"), bearerProperties.allowRoaming());
     if (bearerProperties.rmProtocol() != MM_MODEM_CDMA_RM_PROTOCOL_UNKNOWN)
-        map.insert("rm-protocol", (uint)bearerProperties.rmProtocol());
+        map.insert(QStringLiteral("rm-protocol"), (uint)bearerProperties.rmProtocol());
     if (!bearerProperties.number().isEmpty())
-        map.insert("number", bearerProperties.number());
+        map.insert(QStringLiteral("number"), bearerProperties.number());
     return d->modemIface.CreateBearer(map);
 }
 
@@ -581,7 +581,7 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
     Q_Q(Modem);
     qCDebug(MMQT) << ifaceName << changedProps.keys();
 
-    if (ifaceName == QString(MMQT_DBUS_INTERFACE_MODEM)) {
+    if (ifaceName == QLatin1String(MMQT_DBUS_INTERFACE_MODEM)) {
 
         QVariantMap::const_iterator it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_SIM));
 

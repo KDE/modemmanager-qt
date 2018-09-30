@@ -32,9 +32,9 @@
 
 ModemManager::SimPrivate::SimPrivate(const QString &path, Sim *q)
 #ifdef MMQT_STATIC
-    : simIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
+    : simIface(QLatin1String(MMQT_DBUS_SERVICE), path, QDBusConnection::sessionBus())
 #else
-    : simIface(MMQT_DBUS_SERVICE, path, QDBusConnection::systemBus())
+    : simIface(QLatin1String(MMQT_DBUS_SERVICE), path, QDBusConnection::systemBus())
 #endif
     , uni(path)
     , q_ptr(q)
@@ -53,10 +53,10 @@ ModemManager::Sim::Sim(const QString &path, QObject *parent)
 {
     Q_D(Sim);
 #ifdef MMQT_STATIC
-    QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE), path, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), d,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 #else
-    QDBusConnection::systemBus().connect(MMQT_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE), path, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), d,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 #endif
 }
@@ -126,7 +126,7 @@ void ModemManager::SimPrivate::onPropertiesChanged(const QString &interface, con
     Q_UNUSED(invalidatedProps);
     qCDebug(MMQT) << interface << properties.keys();
 
-    if (interface == QString(MMQT_DBUS_INTERFACE_SIM)) {
+    if (interface == QLatin1String(MMQT_DBUS_INTERFACE_SIM)) {
         QVariantMap::const_iterator it = properties.constFind(QLatin1String(MM_SIM_PROPERTY_SIMIDENTIFIER));
         if (it != properties.constEnd()) {
             simIdentifier = it->toString();

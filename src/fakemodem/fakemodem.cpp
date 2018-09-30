@@ -51,7 +51,7 @@ FakeModem::~FakeModem()
 
 void FakeModem::addModem(Modem* modem)
 {
-    QString newModemPath = QString("/org/kde/fakemodem/Modem/") + QString::number(m_modemCounter++);
+    QString newModemPath = QStringLiteral("/org/kde/fakemodem/Modem/") + QString::number(m_modemCounter++);
     modem->setModemPath(newModemPath);
     // Start monitoring property changes
     modem->setEnableNotifications(true);
@@ -74,7 +74,7 @@ void FakeModem::removeModem(Modem* modem)
 
 void FakeModem::addBearer(Bearer* bearer)
 {
-    QString newBearerPath = QString("/org/kde/fakemodem/Bearer/") + QString::number(m_bearerCounter++);
+    QString newBearerPath = QStringLiteral("/org/kde/fakemodem/Bearer/") + QString::number(m_bearerCounter++);
     bearer->setBearerPath(newBearerPath);
     bearer->setEnableNotifications(true);
     m_bearers.insert(QDBusObjectPath(newBearerPath), bearer);

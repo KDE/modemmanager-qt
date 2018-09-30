@@ -31,9 +31,9 @@
 ModemManager::ModemSignalPrivate::ModemSignalPrivate(const QString &path, ModemSignal *q)
     : InterfacePrivate(path, q)
 #ifdef MMQT_STATIC
-    , modemSignalIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
+    , modemSignalIface(QLatin1String(MMQT_DBUS_SERVICE), path, QDBusConnection::sessionBus())
 #else
-    , modemSignalIface(MMQT_DBUS_SERVICE, path, QDBusConnection::systemBus())
+    , modemSignalIface(QLatin1String(MMQT_DBUS_SERVICE), path, QDBusConnection::systemBus())
 #endif
     , q_ptr(q)
 {
@@ -52,10 +52,10 @@ ModemManager::ModemSignal::ModemSignal(const QString &path, QObject *parent)
 {
     Q_D(ModemSignal);
 #ifdef MMQT_STATIC
-    QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE), d->uni, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), d,
                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 #else
-    QDBusConnection::systemBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE), d->uni, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), d,
                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 #endif
 }
@@ -112,7 +112,7 @@ void ModemManager::ModemSignalPrivate::onPropertiesChanged(const QString &interf
     Q_UNUSED(invalidatedProps);
     qCDebug(MMQT) << interface << properties.keys();
 
-    if (interface == QString(MMQT_DBUS_INTERFACE_MODEM_SIGNAL)) {
+    if (interface == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_SIGNAL)) {
         QVariantMap::const_iterator it = properties.constFind(QLatin1String(MM_MODEM_SIGNAL_PROPERTY_RATE));
         if (it != properties.constEnd()) {
             rate = it->toUInt();

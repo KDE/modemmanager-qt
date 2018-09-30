@@ -34,9 +34,9 @@
 ModemManager::ModemVoicePrivate::ModemVoicePrivate(const QString &path, ModemVoice *q)
     : InterfacePrivate(path, q)
 #ifdef MMQT_STATIC
-    , modemVoiceIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
+    , modemVoiceIface(QLatin1String(MMQT_DBUS_SERVICE), path, QDBusConnection::sessionBus())
 #else
-    , modemVoiceIface(MMQT_DBUS_SERVICE, path, QDBusConnection::systemBus())
+    , modemVoiceIface(QLatin1String(MMQT_DBUS_SERVICE), path, QDBusConnection::systemBus())
 #endif
     , q_ptr(q)
 {
@@ -120,7 +120,7 @@ ModemManager::Call::List ModemManager::ModemVoice::calls() const
 QDBusPendingReply<QDBusObjectPath> ModemManager::ModemVoice::createCall(const QString &number)
 {
     QVariantMap map;
-    map.insert("number", number);
+    map.insert(QStringLiteral("number"), number);
     return createCall(map);
 }
 
@@ -128,7 +128,7 @@ QDBusPendingReply<QDBusObjectPath> ModemManager::ModemVoice::createCall(const QV
 {
     Q_D(ModemVoice);
 
-    if (!call.contains("number")) {
+    if (!call.contains(QLatin1String("number"))) {
         qCDebug(MMQT) << "Unable to create call, missing some property";
         return QDBusPendingReply<QDBusObjectPath>();
     }

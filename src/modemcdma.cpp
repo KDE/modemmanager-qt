@@ -32,9 +32,9 @@
 ModemManager::ModemCdmaPrivate::ModemCdmaPrivate(const QString &path, ModemCdma *q)
     : InterfacePrivate(path, q)
 #ifdef MMQT_STATIC
-    , modemCdmaIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
+    , modemCdmaIface(QLatin1String(MMQT_DBUS_SERVICE), path, QDBusConnection::sessionBus())
 #else
-    , modemCdmaIface(MMQT_DBUS_SERVICE, path, QDBusConnection::systemBus())
+    , modemCdmaIface(QLatin1String(MMQT_DBUS_SERVICE), path, QDBusConnection::systemBus())
 #endif
     , q_ptr(q)
 {
@@ -60,10 +60,10 @@ ModemManager::ModemCdma::ModemCdma(const QString &path, QObject *parent)
 
     connect(&d->modemCdmaIface, &OrgFreedesktopModemManager1ModemModemCdmaInterface::ActivationStateChanged, d, &ModemCdmaPrivate::onActivationStateChanged);
 #ifdef MMQT_STATIC
-    QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE), d->uni, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), d,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 #else
-    QDBusConnection::systemBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE), d->uni, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), d,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 #endif
 }
@@ -139,7 +139,7 @@ void ModemManager::ModemCdmaPrivate::onPropertiesChanged(const QString &interfac
     Q_UNUSED(invalidatedProps);
     qCDebug(MMQT) << interface << properties.keys();
 
-    if (interface == QString(MMQT_DBUS_INTERFACE_MODEM_MODEMCDMA)) {
+    if (interface == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_MODEMCDMA)) {
         QVariantMap::const_iterator it = properties.constFind(QLatin1String(MM_MODEM_MODEMCDMA_PROPERTY_ACTIVATIONSTATE));
         if (it != properties.constEnd()) {
             // Should be handled by activationStateChanged signal

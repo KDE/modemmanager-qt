@@ -34,9 +34,9 @@
 
 ModemManager::SmsPrivate::SmsPrivate(const QString &path, Sms *q)
 #ifdef MMQT_STATIC
-    : smsIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
+    : smsIface(QLatin1String(MMQT_DBUS_SERVICE), path, QDBusConnection::sessionBus())
 #else
-    : smsIface(MMQT_DBUS_SERVICE, path, QDBusConnection::systemBus())
+    : smsIface(QLatin1String(MMQT_DBUS_SERVICE), path, QDBusConnection::systemBus())
 #endif
     , q_ptr(q)
 {
@@ -79,10 +79,10 @@ ModemManager::Sms::Sms(const QString &path, QObject *parent)
 #endif
 
 #ifdef MMQT_STATIC
-    QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE), path, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), d,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 #else
-    QDBusConnection::systemBus().connect(MMQT_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE), path, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), d,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 #endif
 }
@@ -213,7 +213,7 @@ void ModemManager::SmsPrivate::onPropertiesChanged(const QString &interfaceName,
     Q_UNUSED(invalidatedProperties);
     Q_Q(Sms);
 
-    if (interfaceName == QString(MMQT_DBUS_INTERFACE_SMS)) {
+    if (interfaceName == QLatin1String(MMQT_DBUS_INTERFACE_SMS)) {
         QVariantMap::const_iterator it = changedProperties.constFind(QLatin1String(MM_SMS_PROPERTY_STATE));
         if (it != changedProperties.constEnd()) {
             state = (MMSmsState) it->toUInt();

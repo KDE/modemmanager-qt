@@ -31,9 +31,9 @@
 ModemManager::ModemSimplePrivate::ModemSimplePrivate(const QString &path, ModemSimple *q)
     : InterfacePrivate(path, q)
 #ifdef MMQT_STATIC
-    , modemSimpleIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
+    , modemSimpleIface(QLatin1String(MMQT_DBUS_SERVICE), path, QDBusConnection::sessionBus())
 #else
-    , modemSimpleIface(MMQT_DBUS_SERVICE, path, QDBusConnection::systemBus())
+    , modemSimpleIface(QLatin1String(MMQT_DBUS_SERVICE), path, QDBusConnection::systemBus())
 #endif
     , q_ptr(q)
 {

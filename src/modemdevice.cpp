@@ -61,14 +61,14 @@ void ModemManager::ModemDevicePrivate::init()
 {
     Q_Q(ModemManager::ModemDevice);
 #ifdef MMQT_STATIC
-    QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, MMQT_DBUS_PATH, DBUS_INTERFACE_MANAGER, QStringLiteral("InterfacesAdded"),
+    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE), QLatin1String(MMQT_DBUS_PATH), QLatin1String(DBUS_INTERFACE_MANAGER), QStringLiteral("InterfacesAdded"),
                                          q, SLOT(onInterfacesAdded(QDBusObjectPath,MMVariantMapMap)));
-    QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, MMQT_DBUS_PATH, DBUS_INTERFACE_MANAGER, QStringLiteral("InterfacesRemoved"),
+    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE), QLatin1String(MMQT_DBUS_PATH), QLatin1String(DBUS_INTERFACE_MANAGER), QStringLiteral("InterfacesRemoved"),
                                          q, SLOT(onInterfacesRemoved(QDBusObjectPath,QStringList)));
 #else
-    QDBusConnection::systemBus().connect(MMQT_DBUS_SERVICE, MMQT_DBUS_PATH, DBUS_INTERFACE_MANAGER, QStringLiteral("InterfacesAdded"),
+    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE), QLatin1String(MMQT_DBUS_PATH), QLatin1String(DBUS_INTERFACE_MANAGER), QStringLiteral("InterfacesAdded"),
                                          q, SLOT(onInterfacesAdded(QDBusObjectPath,MMVariantMapMap)));
-    QDBusConnection::systemBus().connect(MMQT_DBUS_SERVICE, MMQT_DBUS_PATH, DBUS_INTERFACE_MANAGER, QStringLiteral("InterfacesRemoved"),
+    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE), QLatin1String(MMQT_DBUS_PATH), QLatin1String(DBUS_INTERFACE_MANAGER), QStringLiteral("InterfacesRemoved"),
                                          q, SLOT(onInterfacesRemoved(QDBusObjectPath,QStringList)));
 #endif
 
@@ -88,13 +88,13 @@ void ModemManager::ModemDevicePrivate::initInterfaces()
     QDomDocument dom;
     dom.setContent(xmlData);
 
-    QDomNodeList ifaceNodeList = dom.elementsByTagName("interface");
+    QDomNodeList ifaceNodeList = dom.elementsByTagName(QStringLiteral("interface"));
     for (int i = 0; i < ifaceNodeList.count(); i++) {
         QDomElement ifaceElem = ifaceNodeList.item(i).toElement();
         /* Accept only MM interfaces so that when the device is unplugged,
          * interfaceList goes empty and we can easily verify that the device is gone. */
-        if (!ifaceElem.isNull() && ifaceElem.attribute("name").startsWith(MMQT_DBUS_SERVICE)) {
-            const QString name = ifaceElem.attribute("name");
+        if (!ifaceElem.isNull() && ifaceElem.attribute(QStringLiteral("name")).startsWith(QLatin1String(MMQT_DBUS_SERVICE))) {
+            const QString name = ifaceElem.attribute(QStringLiteral("name"));
             if (name == QLatin1String(MMQT_DBUS_INTERFACE_MODEM)) {
                 interfaceList.insert(ModemManager::ModemDevice::ModemInterface, ModemManager::Modem::Ptr());
                 if (interfaceList.contains(ModemManager::ModemDevice::ModemInterface)) {
@@ -140,7 +140,7 @@ void ModemManager::ModemDevicePrivate::initInterfaces()
 
 QString ModemManager::ModemDevicePrivate::introspect() const
 {
-    QDBusMessage call = QDBusMessage::createMethodCall(MMQT_DBUS_SERVICE, uni, DBUS_INTERFACE_INTROSPECT, "Introspect");
+    QDBusMessage call = QDBusMessage::createMethodCall(QLatin1String(MMQT_DBUS_SERVICE), uni, QLatin1String(DBUS_INTERFACE_INTROSPECT), QLatin1String("Introspect"));
 #ifdef MMQT_STATIC
     QDBusPendingReply<QString> reply = QDBusConnection::sessionBus().call(call);
 #else
@@ -351,7 +351,7 @@ void ModemManager::ModemDevicePrivate::onInterfacesAdded(const QDBusObjectPath &
 
     Q_FOREACH (const QString & iface, interfaces_and_properties.keys()) {
         /* Don't store generic DBus interfaces */
-        if (iface.startsWith(MMQT_DBUS_SERVICE)) {
+        if (iface.startsWith(QLatin1String(MMQT_DBUS_SERVICE))) {
             if (iface == QLatin1String(MMQT_DBUS_INTERFACE_MODEM)) {
                 interfaceList.insert(ModemManager::ModemDevice::ModemInterface, ModemManager::Modem::Ptr());
             } else if (iface == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_SIMPLE)) {
@@ -390,7 +390,7 @@ void ModemManager::ModemDevicePrivate::onInterfacesRemoved(const QDBusObjectPath
         return;
     }
 
-    if (interfaces.contains(MMQT_DBUS_INTERFACE_MODEM) || interfaces.isEmpty()) {
+    if (interfaces.contains(QLatin1String(MMQT_DBUS_INTERFACE_MODEM)) || interfaces.isEmpty()) {
         if (simCard) {
             Q_EMIT q->simRemoved(simCard->uni());
             simCard = ModemManager::Sim::Ptr();

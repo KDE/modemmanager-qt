@@ -146,9 +146,9 @@ ModemManager::IpConfig& ModemManager::IpConfig::operator=(const ModemManager::Ip
 
 ModemManager::BearerPrivate::BearerPrivate(const QString &path, Bearer *q)
 #ifdef MMQT_STATIC
-    : bearerIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
+    : bearerIface(QLatin1String(MMQT_DBUS_SERVICE), path, QDBusConnection::sessionBus())
 #else
-    : bearerIface(MMQT_DBUS_SERVICE, path, QDBusConnection::systemBus())
+    : bearerIface(QLatin1String(MMQT_DBUS_SERVICE), path, QDBusConnection::systemBus())
 #endif
     , uni(path)
     , q_ptr(q)
@@ -171,10 +171,10 @@ ModemManager::Bearer::Bearer(const QString &path, QObject *parent)
     Q_D(Bearer);
 
 #ifdef MMQT_STATIC
-    QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE), path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 #else
-    QDBusConnection::systemBus().connect(MMQT_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE), path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 #endif
 }
@@ -241,15 +241,15 @@ QDBusPendingReply<void> ModemManager::Bearer::disconnectBearer()
 ModemManager::IpConfig ModemManager::BearerPrivate::ipConfigFromMap(const QVariantMap &map)
 {
     ModemManager::IpConfig result;
-    result.setMethod((MMBearerIpMethod)map.value("method").toUInt());
+    result.setMethod((MMBearerIpMethod)map.value(QStringLiteral("method")).toUInt());
 
     if (result.method() == MM_BEARER_IP_METHOD_STATIC) {
-        result.setAddress(map.value("address").toString());
-        result.setPrefix(map.value("prefix").toUInt());
-        result.setDns1(map.value("dns1").toString());
-        result.setDns2(map.value("dns2").toString());
-        result.setDns3(map.value("dns3").toString());
-        result.setGateway(map.value("gateway").toString());
+        result.setAddress(map.value(QStringLiteral("address")).toString());
+        result.setPrefix(map.value(QStringLiteral("prefix")).toUInt());
+        result.setDns1(map.value(QStringLiteral("dns1")).toString());
+        result.setDns2(map.value(QStringLiteral("dns2")).toString());
+        result.setDns3(map.value(QStringLiteral("dns3")).toString());
+        result.setGateway(map.value(QStringLiteral("gateway")).toString());
     }
 
     return result;
@@ -261,7 +261,7 @@ void ModemManager::BearerPrivate::onPropertiesChanged(const QString &interface, 
     Q_UNUSED(invalidatedProps);
     qCDebug(MMQT) << interface << properties.keys();
 
-    if (interface == QString(MMQT_DBUS_INTERFACE_BEARER)) {
+    if (interface == QLatin1String(MMQT_DBUS_INTERFACE_BEARER)) {
         QVariantMap::const_iterator it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_INTERFACE));
         if (it != properties.constEnd()) {
             bearerInterface = it->toString();

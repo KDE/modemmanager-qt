@@ -31,9 +31,9 @@
 ModemManager::ModemOmaPrivate::ModemOmaPrivate(const QString &path, ModemOma *q)
     : InterfacePrivate(path, q)
 #ifdef MMQT_STATIC
-    , omaIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
+    , omaIface(QLatin1String(MMQT_DBUS_SERVICE), path, QDBusConnection::sessionBus())
 #else
-    , omaIface(MMQT_DBUS_SERVICE, path, QDBusConnection::systemBus())
+    , omaIface(QLatin1String(MMQT_DBUS_SERVICE), path, QDBusConnection::systemBus())
 #endif
     , q_ptr(q)
 {
@@ -57,10 +57,10 @@ ModemManager::ModemOma::ModemOma(const QString &path, QObject *parent)
 
     connect(&d->omaIface, &OrgFreedesktopModemManager1ModemOmaInterface::SessionStateChanged, d, &ModemOmaPrivate::onSessionStateChanged);
 #ifdef MMQT_STATIC
-    QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE), d->uni, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), d,
                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 #else
-    QDBusConnection::systemBus().connect(MMQT_DBUS_SERVICE, d->uni, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
+    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE), d->uni, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), d,
                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 #endif
 }
@@ -130,7 +130,7 @@ void ModemManager::ModemOmaPrivate::onPropertiesChanged(const QString &interface
     Q_UNUSED(invalidatedProps);
     qCDebug(MMQT) << interface << properties.keys();
 
-    if (interface == QString(MMQT_DBUS_INTERFACE_MODEM_OMA)) {
+    if (interface == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_OMA)) {
         QVariantMap::const_iterator it = properties.constFind(QLatin1String(MM_MODEM_OMA_PROPERTY_FEATURES));
         if (it != properties.constEnd()) {
             features = (ModemOma::Features)it->toUInt();

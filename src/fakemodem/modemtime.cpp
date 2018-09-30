@@ -37,7 +37,7 @@ QVariantMap ModemTime::networkTimezone() const
 
 QString ModemTime::GetNetworkTime()
 {
-    return "2010-08-06T18:34:14.3+02:00";
+    return QStringLiteral("2010-08-06T18:34:14.3+02:00");
 }
 
 void ModemTime::setModemPath(const QString& path)

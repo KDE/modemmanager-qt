@@ -36,9 +36,9 @@
 ModemManager::ModemMessagingPrivate::ModemMessagingPrivate(const QString &path, ModemMessaging *q)
     : InterfacePrivate(path, q)
 #ifdef MMQT_STATIC
-    , modemMessagingIface(MMQT_DBUS_SERVICE, path, QDBusConnection::sessionBus())
+    , modemMessagingIface(QLatin1String(MMQT_DBUS_SERVICE), path, QDBusConnection::sessionBus())
 #else
-    , modemMessagingIface(MMQT_DBUS_SERVICE, path, QDBusConnection::systemBus())
+    , modemMessagingIface(QLatin1String(MMQT_DBUS_SERVICE), path, QDBusConnection::systemBus())
 #endif
     , q_ptr(q)
 {
@@ -60,10 +60,10 @@ ModemManager::ModemMessaging::ModemMessaging(const QString &path, QObject *paren
 {
     Q_D(ModemMessaging);
 #ifdef MMQT_STATIC
-    QDBusConnection::sessionBus().connect(MMQT_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), this,
+    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE), path, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), this,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 #else
-    QDBusConnection::systemBus().connect(MMQT_DBUS_SERVICE, path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), this,
+    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE), path, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), this,
                                          SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
 #endif
     QList <QDBusObjectPath> messages = d->modemMessagingIface.messages();
@@ -165,9 +165,9 @@ ModemManager::Sms::List ModemManager::ModemMessaging::messages() const
 QDBusPendingReply<QDBusObjectPath> ModemManager::ModemMessaging::createMessage(const Message &message)
 {
     QVariantMap map;
-    map.insert("number", message.number);
-    map.insert("text", message.text);
-    map.insert("data", message.data);
+    map.insert(QStringLiteral("number"), message.number);
+    map.insert(QStringLiteral("text"), message.text);
+    map.insert(QStringLiteral("data"), message.data);
 
     return createMessage(map);
 }
@@ -176,7 +176,7 @@ QDBusPendingReply<QDBusObjectPath> ModemManager::ModemMessaging::createMessage(c
 {
     Q_D(ModemMessaging);
 
-    if (!message.contains("number") || (!message.contains("text") && !message.contains("data"))) {
+    if (!message.contains(QLatin1String("number")) || (!message.contains(QLatin1String("text")) && !message.contains(QLatin1String("data")))) {
         qCDebug(MMQT) << "Unable to create message, missing some property";
         return QDBusPendingReply<QDBusObjectPath>();
     }

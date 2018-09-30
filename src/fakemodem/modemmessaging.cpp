@@ -78,7 +78,7 @@ void ModemMessaging::setEnableNotifications(bool enable)
 
 void ModemMessaging::addMessage(Sms* sms)
 {
-    QString newSmsPath = QString("/org/kde/fakemodem/Sms/") + QString::number(m_messageCounter++);
+    QString newSmsPath = QStringLiteral("/org/kde/fakemodem/Sms/") + QString::number(m_messageCounter++);
     sms->setSmsPath(newSmsPath);
     sms->setEnableNotifications(true);
     m_messages.insert(QDBusObjectPath(newSmsPath), sms);
