@@ -28,7 +28,7 @@
 
 #include <QTest>
 #include <QSignalSpy>
-#include <QtTest/qsignalspy.h>
+#include <qsignalspy.h>
 
 void ModemPropertiesTest::initTestCase()
 {
