@@ -183,7 +183,7 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, ModemManager::QVa
     variantMapList.clear();
 
     while (!argument.atEnd()) {
-        QList<QVariantMap> element;
+        QVariantMap element;
         argument >> element;
         variantMapList.append( element );
     }
