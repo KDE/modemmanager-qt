@@ -86,6 +86,6 @@ install(FILES
    ${CMAKE_CURRENT_BINARY_DIR}/modemmanagerqt_version.h
   DESTINATION ${KF5_INCLUDE_INSTALL_DIR} COMPONENT Devel
 )
-install(FILES modemmanager-qt.categories DESTINATION ${KDE_INSTALL_CONFDIR})
+install(FILES modemmanager-qt.categories  DESTINATION  ${KDE_INSTALL_LOGGINGCATEGORIESDIR})
 
 feature_summary(WHAT ALL   FATAL_ON_MISSING_REQUIRED_PACKAGES)
