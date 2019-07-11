@@ -109,6 +109,18 @@ ModemManager::LocationInformationMap ModemManager::ModemLocation::location() con
     return d->location;
 }
 
+void ModemManager::ModemLocation::setTimeout(int timeout)
+{
+    Q_D(ModemLocation);
+    d->modemLocationIface.setTimeout(timeout);
+}
+
+int ModemManager::ModemLocation::timeout() const
+{
+    Q_D(const ModemLocation);
+    return d->modemLocationIface.timeout();
+}
+
 void ModemManager::ModemLocationPrivate::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
 {
     Q_Q(ModemLocation);

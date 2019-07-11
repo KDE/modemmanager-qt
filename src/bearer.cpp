@@ -238,6 +238,18 @@ QDBusPendingReply<void> ModemManager::Bearer::disconnectBearer()
     return d->bearerIface.Disconnect();
 }
 
+void ModemManager::Bearer::setTimeout(int timeout)
+{
+    Q_D(Bearer);
+    d->bearerIface.setTimeout(timeout);
+}
+
+int ModemManager::Bearer::timeout() const
+{
+    Q_D(const Bearer);
+    return d->bearerIface.timeout();
+}
+
 ModemManager::IpConfig ModemManager::BearerPrivate::ipConfigFromMap(const QVariantMap &map)
 {
     ModemManager::IpConfig result;

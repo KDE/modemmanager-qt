@@ -207,6 +207,17 @@ MMSmsCdmaTeleserviceId ModemManager::Sms::teleserviceId() const
 }
 #endif
 
+void ModemManager::Sms::setTimeout(int timeout)
+{
+    Q_D(Sms);
+    d->smsIface.setTimeout(timeout);
+}
+
+int ModemManager::Sms::timeout() const
+{
+    Q_D(const Sms);
+    return d->smsIface.timeout();
+}
 
 void ModemManager::SmsPrivate::onPropertiesChanged(const QString &interfaceName, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
 {

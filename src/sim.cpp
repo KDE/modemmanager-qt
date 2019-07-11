@@ -120,6 +120,18 @@ QString ModemManager::Sim::uni() const
     return d->uni;
 }
 
+void ModemManager::Sim::setTimeout(int timeout)
+{
+    Q_D(Sim);
+    d->simIface.setTimeout(timeout);
+}
+
+int ModemManager::Sim::timeout() const
+{
+    Q_D(const Sim);
+    return d->simIface.timeout();
+}
+
 void ModemManager::SimPrivate::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
 {
     Q_Q(Sim);

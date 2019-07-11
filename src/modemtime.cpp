@@ -160,6 +160,18 @@ ModemManager::NetworkTimezone ModemManager::ModemTimePrivate::variantMapToTimezo
     return result;
 }
 
+void ModemManager::ModemTime::setTimeout(int timeout)
+{
+    Q_D(ModemTime);
+    d->modemTimeIface.setTimeout(timeout);
+}
+
+int ModemManager::ModemTime::timeout() const
+{
+    Q_D(const ModemTime);
+    return d->modemTimeIface.timeout();
+}
+
 void ModemManager::ModemTimePrivate::onNetworkTimeChanged(const QString &isoDateTime)
 {
     Q_Q(ModemTime);

@@ -126,6 +126,18 @@ MMModemCdmaRegistrationState ModemManager::ModemCdma::evdoRegistrationState() co
     return d->evdoRegistrationState;
 }
 
+void ModemManager::ModemCdma::setTimeout(int timeout)
+{
+    Q_D(ModemCdma);
+    d->modemCdmaIface.setTimeout(timeout);
+}
+
+int ModemManager::ModemCdma::timeout() const
+{
+    Q_D(const ModemCdma);
+    return d->modemCdmaIface.timeout();
+}
+
 void ModemManager::ModemCdmaPrivate::onActivationStateChanged(uint activation_state, uint activation_error, const QVariantMap &status_changes)
 {
     Q_Q(ModemCdma);

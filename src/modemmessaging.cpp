@@ -195,3 +195,15 @@ ModemManager::Sms::Ptr ModemManager::ModemMessaging::findMessage(const QString& 
     Q_D(ModemMessaging);
     return d->findMessage(uni);
 }
+
+void ModemManager::ModemMessaging::setTimeout(int timeout)
+{
+    Q_D(ModemMessaging);
+    d->modemMessagingIface.setTimeout(timeout);
+}
+
+int ModemManager::ModemMessaging::timeout() const
+{
+    Q_D(const ModemMessaging);
+    return d->modemMessagingIface.timeout();
+}

@@ -126,3 +126,15 @@ QString ModemManager::Modem3gppUssd::networkRequest() const
     Q_D(const Modem3gppUssd);
     return d->networkRequest;
 }
+
+void ModemManager::Modem3gppUssd::setTimeout(int timeout)
+{
+    Q_D(Modem3gppUssd);
+    d->ussdIface.setTimeout(timeout);
+}
+
+int ModemManager::Modem3gppUssd::timeout() const
+{
+    Q_D(const Modem3gppUssd);
+    return d->ussdIface.timeout();
+}

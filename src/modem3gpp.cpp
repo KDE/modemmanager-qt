@@ -124,6 +124,18 @@ QDBusPendingReply<ModemManager::QVariantMapList> ModemManager::Modem3gpp::scan()
     return d->modem3gppIface.Scan();
 }
 
+void ModemManager::Modem3gpp::setTimeout(int timeout)
+{
+    Q_D(Modem3gpp);
+    d->modem3gppIface.setTimeout(timeout);
+}
+
+int ModemManager::Modem3gpp::timeout() const
+{
+    Q_D(const Modem3gpp);
+    return d->modem3gppIface.timeout();
+}
+
 void ModemManager::Modem3gppPrivate::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
 {
     Q_Q(Modem3gpp);

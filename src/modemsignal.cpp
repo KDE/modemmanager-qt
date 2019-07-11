@@ -106,6 +106,18 @@ QDBusPendingReply<void> ModemManager::ModemSignal::setup(uint rate)
     return d->modemSignalIface.Setup(rate);
 }
 
+void ModemManager::ModemSignal::setTimeout(int timeout)
+{
+    Q_D(ModemSignal);
+    d->modemSignalIface.setTimeout(timeout);
+}
+
+int ModemManager::ModemSignal::timeout() const
+{
+    Q_D(const ModemSignal);
+    return d->modemSignalIface.timeout();
+}
+
 void ModemManager::ModemSignalPrivate::onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps)
 {
     Q_Q(ModemSignal);

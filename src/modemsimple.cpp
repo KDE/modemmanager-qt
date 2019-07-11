@@ -77,3 +77,15 @@ QDBusPendingReply<void> ModemManager::ModemSimple::disconnectAllModems()
 {
     return disconnectModem(QStringLiteral("/"));
 }
+
+void ModemManager::ModemSimple::setTimeout(int timeout)
+{
+    Q_D(ModemSimple);
+    d->modemSimpleIface.setTimeout(timeout);
+}
+
+int ModemManager::ModemSimple::timeout() const
+{
+    Q_D(const ModemSimple);
+    return d->modemSimpleIface.timeout();
+}

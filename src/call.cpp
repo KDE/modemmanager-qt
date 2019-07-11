@@ -128,6 +128,18 @@ QString ModemManager::Call::number() const
     return d->number;
 }
 
+void ModemManager::Call::setTimeout(int timeout)
+{
+    Q_D(Call);
+    d->callIface.setTimeout(timeout);
+}
+
+int ModemManager::Call::timeout() const
+{
+    Q_D(const Call);
+    return d->callIface.timeout();
+}
+
 void ModemManager::CallPrivate::onStateChanged(int oldState, int newState, uint reason)
 {
     Q_Q(Call);

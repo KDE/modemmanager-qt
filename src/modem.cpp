@@ -575,6 +575,18 @@ ModemManager::Bearer::Ptr ModemManager::ModemPrivate::findRegisteredBearer(const
     return ret;
 }
 
+void ModemManager::Modem::setTimeout(int timeout)
+{
+    Q_D(Modem);
+    d->modemIface.setTimeout(timeout);
+}
+
+int ModemManager::Modem::timeout() const
+{
+    Q_D(const Modem);
+    return d->modemIface.timeout();
+}
+
 void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, const QVariantMap &changedProps, const QStringList &invalidatedProps)
 {
     Q_UNUSED(invalidatedProps);

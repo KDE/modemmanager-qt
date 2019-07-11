@@ -87,6 +87,18 @@ public:
      */
     ModemManager::Call::Ptr findCall(const QString &uni);
 
+    /**
+     * Sets the timeout in milliseconds for all async method DBus calls.
+     * -1 means the default DBus timeout (usually 25 seconds).
+     */
+    void setTimeout(int timeout);
+
+    /**
+     * Returns the current value of the DBus timeout in milliseconds.
+     * -1 means the default DBus timeout (usually 25 seconds).
+     */
+    int timeout() const;
+
 Q_SIGNALS:
     /**
      * Emitted when an new Call is detected.

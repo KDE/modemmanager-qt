@@ -147,3 +147,15 @@ ModemManager::Call::Ptr ModemManager::ModemVoice::findCall(const QString& uni)
     Q_D(ModemVoice);
     return d->findCall(uni);
 }
+
+void ModemManager::ModemVoice::setTimeout(int timeout)
+{
+    Q_D(ModemVoice);
+    d->modemVoiceIface.setTimeout(timeout);
+}
+
+int ModemManager::ModemVoice::timeout() const
+{
+    Q_D(const ModemVoice);
+    return d->modemVoiceIface.timeout();
+}

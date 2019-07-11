@@ -118,6 +118,18 @@ QDBusPendingReply<void> ModemManager::ModemOma::cancelSession()
     return d->omaIface.CancelSession();
 }
 
+void ModemManager::ModemOma::setTimeout(int timeout)
+{
+    Q_D(ModemOma);
+    d->omaIface.setTimeout(timeout);
+}
+
+int ModemManager::ModemOma::timeout() const
+{
+    Q_D(const ModemOma);
+    return d->omaIface.timeout();
+}
+
 void ModemManager::ModemOmaPrivate::onSessionStateChanged(int oldState, int newState, uint failedReason)
 {
     Q_Q(ModemOma);
