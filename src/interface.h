@@ -24,7 +24,6 @@
 #include <modemmanagerqt_export.h>
 
 #include <QObject>
-#include <QVariant>
 #include <QSharedPointer>
 #include <QDBusObjectPath>
 

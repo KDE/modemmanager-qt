@@ -12,13 +12,9 @@
 #define MODEMMANAGERQT_FIRMWAREINTERFACE_H
 
 #include <QObject>
-#include <QByteArray>
 #include <QList>
-#include <QMap>
 #include <QString>
-#include <QStringList>
 #include <QVariant>
-#include <QtDBus>
 #include "generictypes.h"
 
 /*

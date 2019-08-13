@@ -27,7 +27,6 @@
 
 #include <QObject>
 #include <QDBusObjectPath>
-#include <QDBusPendingReply>
 
 class FakeModem : public QObject
 {

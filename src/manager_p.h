@@ -23,7 +23,6 @@
 #ifndef MODEMMANAGERQT_MANAGER_P_H
 #define MODEMMANAGERQT_MANAGER_P_H
 
-#include <QObject>
 #include <QDBusServiceWatcher>
 
 #include "dbus/modem3gppinterface.h"

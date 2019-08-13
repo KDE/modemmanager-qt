@@ -25,9 +25,7 @@
 
 #include <QObject>
 
-#include <QCoreApplication>
 #include <QDBusObjectPath>
-#include <QDBusPendingReply>
 
 class Modem : public QObject
 {

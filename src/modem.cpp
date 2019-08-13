@@ -34,7 +34,6 @@
 #include "generictypes_p.h"
 #include "mmdebug_p.h"
 
-#include <QDomDocument>
 
 namespace ModemManager
 {
