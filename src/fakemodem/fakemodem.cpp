@@ -39,14 +39,14 @@ FakeModem::FakeModem(QObject* parent)
     qDBusRegisterMetaType<ModemManager::Port> ();
     qDBusRegisterMetaType<ModemManager::LocationInformationMap>();
 
-    QDBusConnection::sessionBus().registerService(QLatin1Literal(MMQT_DBUS_SERVICE));
-    QDBusConnection::sessionBus().registerObject(QLatin1Literal(MMQT_DBUS_PATH), this, QDBusConnection::ExportScriptableContents | QDBusConnection::ExportAdaptors);
+    QDBusConnection::sessionBus().registerService(QLatin1String(MMQT_DBUS_SERVICE));
+    QDBusConnection::sessionBus().registerObject(QLatin1String(MMQT_DBUS_PATH), this, QDBusConnection::ExportScriptableContents | QDBusConnection::ExportAdaptors);
 }
 
 FakeModem::~FakeModem()
 {
-    QDBusConnection::sessionBus().unregisterObject(QLatin1Literal(MMQT_DBUS_SERVICE));
-    QDBusConnection::sessionBus().unregisterService(QLatin1Literal(MMQT_DBUS_SERVICE));
+    QDBusConnection::sessionBus().unregisterObject(QLatin1String(MMQT_DBUS_SERVICE));
+    QDBusConnection::sessionBus().unregisterService(QLatin1String(MMQT_DBUS_SERVICE));
 }
 
 void FakeModem::addModem(Modem* modem)
