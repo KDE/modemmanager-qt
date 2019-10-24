@@ -38,6 +38,7 @@ ecm_setup_version(PROJECT VARIABLE_PREFIX MODEMMANAGERQT
                         PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF5ModemManagerQtConfigVersion.cmake"
                         SOVERSION 6)
 add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050d00)
+add_definitions(-DQT_DEPRECATED_WARNINGS_SINCE=0x060000)
 # Enable unit testing
 if (BUILD_TESTING)
     add_subdirectory(src/fakemodem)
