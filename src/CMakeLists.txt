@@ -168,7 +168,3 @@ if(BUILD_QCH)
         COMPONENT Devel
     )
 endif()
-
-include(ECMGeneratePriFile)
-ecm_generate_pri_file(BASE_NAME ModemManagerQt LIB_NAME KF5ModemManagerQt DEPS "core" FILENAME_VAR PRI_FILENAME INCLUDE_INSTALL_DIR ${KDE_INSTALL_INCLUDEDIR_KF5}/ModemManagerQt)
-install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
