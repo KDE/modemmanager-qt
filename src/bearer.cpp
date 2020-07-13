@@ -14,7 +14,7 @@
 #endif
 
 // logging category for this framework, default: log stuff >= warning
-Q_LOGGING_CATEGORY(MMQT, "modemmanager-qt", QtWarningMsg)
+Q_LOGGING_CATEGORY(MMQT, "kf.modemmanagerqt", QtWarningMsg)
 
 namespace ModemManager {
 

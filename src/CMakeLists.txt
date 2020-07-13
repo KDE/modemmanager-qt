@@ -70,7 +70,8 @@ endif()
 
 ecm_qt_export_logging_category(
     IDENTIFIER MMQT
-    CATEGORY_NAME modemmanager-qt
+    CATEGORY_NAME kf.modemmanagerqt
+    OLD_CATEGORY_NAMES modemmanager-qt
     DEFAULT_SEVERITY Warning
     DESCRIPTION "ModemManagerQt"
     EXPORT MODEMMANAGERQT
