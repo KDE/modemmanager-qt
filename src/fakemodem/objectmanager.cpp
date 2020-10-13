@@ -22,7 +22,9 @@ void ObjectManager::addInterfaces(const QDBusObjectPath& object_path, const Mode
 {
     if (m_managedObjects.contains(object_path)) {
         ModemManager::MMVariantMapMap map = m_managedObjects.value(object_path);
-        map.unite(interfaces_and_properties);
+        for (auto it = interfaces_and_properties.constBegin(), end = interfaces_and_properties.constEnd(); it != end; ++it) {
+            map.insert(it.key(), it.value());
+        }
         m_managedObjects.insert(object_path, map);
     } else {
         m_managedObjects.insert(object_path, interfaces_and_properties);
