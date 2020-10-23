@@ -16,7 +16,6 @@
 #else
 #include "dbus/dbus.h"
 #endif
-#include "generictypes.h"
 #include "generictypes_p.h"
 #include "mmdebug_p.h"
 

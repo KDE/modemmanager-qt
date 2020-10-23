@@ -13,10 +13,8 @@
 #else
 #include "dbus/dbus.h"
 #endif
-#include "generictypes.h"
 #include "manager.h"
 #include "mmdebug_p.h"
-#include "modem.h"
 #include "modemcdma.h"
 #include "modem3gpp.h"
 #include "modem3gppussd.h"

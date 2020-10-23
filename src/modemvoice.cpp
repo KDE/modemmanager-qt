@@ -14,7 +14,6 @@
 #endif
 #include "mmdebug_p.h"
 
-#include "call.h"
 #include <ModemManager/ModemManager.h>
 
 ModemManager::ModemVoicePrivate::ModemVoicePrivate(const QString &path, ModemVoice *q)

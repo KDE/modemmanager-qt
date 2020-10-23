@@ -16,7 +16,6 @@
 #endif
 #include "mmdebug_p.h"
 
-#include "sms.h"
 #include <ModemManager/ModemManager.h>
 
 ModemManager::ModemMessagingPrivate::ModemMessagingPrivate(const QString &path, ModemMessaging *q)

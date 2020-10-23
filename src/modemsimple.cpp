@@ -6,7 +6,6 @@
 
 #include "modemsimple_p.h"
 
-#include "generictypes.h"
 #include "mmdebug_p.h"
 #ifdef MMQT_STATIC
 #include "dbus/fakedbus.h"
