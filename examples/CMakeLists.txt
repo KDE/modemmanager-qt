@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8.12)
 include(FindPkgConfig)
 pkg_check_modules(MODEMMANAGER REQUIRED ModemManager>=1.0)
 
-find_package(KF5ModemManagerQt ${KF5_VERSION} REQUIRED)
+find_package(KF5ModemManagerQt ${KF_VERSION} REQUIRED)
 
 find_package(Qt5 ${QT_MIN_VERSION} CONFIG REQUIRED COMPONENTS
     Core

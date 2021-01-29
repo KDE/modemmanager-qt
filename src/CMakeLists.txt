@@ -151,7 +151,7 @@ if(BUILD_QCH)
         KF5ModemManagerQt_QCH
         NAME ModemManagerQt
         BASE_NAME KF5ModemManagerQt
-        VERSION ${KF5_VERSION}
+        VERSION ${KF_VERSION}
         ORG_DOMAIN org.kde
         SOURCES # using only public headers, to cover only public API
             ${ModemManagerQt_HEADERS}
