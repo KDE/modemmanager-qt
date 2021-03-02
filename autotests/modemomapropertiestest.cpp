@@ -14,9 +14,8 @@
 
 #include "fakemodem/modem.h"
 
+#include <QSignalSpy>
 #include <QTest>
-#include <QSignalSpy>
-#include <QSignalSpy>
 
 void ModemOmaPropertiesTest::initTestCase()
 {
@@ -35,9 +34,11 @@ void ModemOmaPropertiesTest::initTestCase()
     modem->setMaxActiveBearers(1);
     modem->setMaxBearers(1);
     modem->setModel(QLatin1String("K2540"));
-    //modem->setOwnNumbers();
+    // modem->setOwnNumbers();
     modem->setPlugin(QLatin1String("Huawei"));
-    modem->setPorts({{QLatin1String("ttyUSB0"), MM_MODEM_PORT_TYPE_AT}, {QLatin1String("ttyUSB1"), MM_MODEM_PORT_TYPE_QCDM}, {QLatin1String("ttyUSB2"), MM_MODEM_PORT_TYPE_AT}});
+    modem->setPorts({{QLatin1String("ttyUSB0"), MM_MODEM_PORT_TYPE_AT},
+                     {QLatin1String("ttyUSB1"), MM_MODEM_PORT_TYPE_QCDM},
+                     {QLatin1String("ttyUSB2"), MM_MODEM_PORT_TYPE_AT}});
     modem->SetPowerState(3);
     modem->setPrimaryPort(QLatin1String("ttyUSB2"));
     modem->setRevision(QLatin1String("11.001.05.00.11"));
@@ -90,7 +91,7 @@ void ModemOmaPropertiesTest::testModemOmaProperties()
     modemOma->setFeatures(MM_OMA_FEATURE_DEVICE_PROVISIONING);
     QSignalSpy featuresChangedSpy(modemOmaInterface.data(), SIGNAL(featuresChanged(QFlags<MMOmaFeature>)));
     QVERIFY(featuresChangedSpy.wait());
-    QCOMPARE(modemOmaInterface->features(), featuresChangedSpy.at(0).at(0).value<QFlags<MMOmaFeature> >());
+    QCOMPARE(modemOmaInterface->features(), featuresChangedSpy.at(0).at(0).value<QFlags<MMOmaFeature>>());
 
     ModemManager::OmaSessionType sessionType;
     sessionType.id = 2;
@@ -101,10 +102,12 @@ void ModemOmaPropertiesTest::testModemOmaProperties()
     QSignalSpy sessionsChangedSpy(modemOmaInterface.data(), SIGNAL(pendingNetworkInitiatedSessionsChanged(ModemManager::OmaSessionTypes)));
     QVERIFY(sessionsChangedSpy.wait());
     QCOMPARE(modemOmaInterface->pendingNetworkInitiatedSessions().first().id, sessionsChangedSpy.at(0).at(0).value<ModemManager::OmaSessionTypes>().first().id);
-    QCOMPARE(modemOmaInterface->pendingNetworkInitiatedSessions().first().type, sessionsChangedSpy.at(0).at(0).value<ModemManager::OmaSessionTypes>().first().type);
+    QCOMPARE(modemOmaInterface->pendingNetworkInitiatedSessions().first().type,
+             sessionsChangedSpy.at(0).at(0).value<ModemManager::OmaSessionTypes>().first().type);
 
     modemOma->setSessionState(MM_OMA_SESSION_STATE_CONNECTING);
-    QSignalSpy sessionStateChangedSpy(modemOmaInterface.data(), SIGNAL(sessionStateChanged(MMOmaSessionState,MMOmaSessionState,MMOmaSessionStateFailedReason)));
+    QSignalSpy sessionStateChangedSpy(modemOmaInterface.data(),
+                                      SIGNAL(sessionStateChanged(MMOmaSessionState, MMOmaSessionState, MMOmaSessionStateFailedReason)));
     QVERIFY(sessionStateChangedSpy.wait());
     QCOMPARE(modemOmaInterface->sessionState(), sessionStateChangedSpy.at(0).at(1).value<MMOmaSessionState>());
 

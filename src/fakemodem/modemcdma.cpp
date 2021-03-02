@@ -6,7 +6,7 @@
 
 #include "modemcdma.h"
 
-ModemCdma::ModemCdma(QObject* parent)
+ModemCdma::ModemCdma(QObject *parent)
     : QDBusAbstractAdaptor(parent)
     , m_enabledNotifications(false)
     , m_activationState(0)
@@ -56,17 +56,17 @@ uint ModemCdma::sid() const
     return m_sid;
 }
 
-void ModemCdma::Activate(const QString& carrier_code)
+void ModemCdma::Activate(const QString &carrier_code)
 {
     Q_UNUSED(carrier_code);
 }
 
-void ModemCdma::ActivateManual(const QVariantMap& properties)
+void ModemCdma::ActivateManual(const QVariantMap &properties)
 {
     Q_UNUSED(properties);
 }
 
-void ModemCdma::setModemPath(const QString& path)
+void ModemCdma::setModemPath(const QString &path)
 {
     m_modemPath = path;
 }
@@ -98,7 +98,7 @@ void ModemCdma::setCdma1xRegistrationState(uint state)
     }
 }
 
-void ModemCdma::setEsn(const QString& esn)
+void ModemCdma::setEsn(const QString &esn)
 {
     m_esn = esn;
 
@@ -124,7 +124,7 @@ void ModemCdma::setEvdoRegistrationState(uint state)
     }
 }
 
-void ModemCdma::setMeid(const QString& meid)
+void ModemCdma::setMeid(const QString &meid)
 {
     m_meid = meid;
 

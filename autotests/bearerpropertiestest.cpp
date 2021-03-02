@@ -12,9 +12,8 @@
 
 #include "fakemodem/modem.h"
 
+#include <QSignalSpy>
 #include <QTest>
-#include <QSignalSpy>
-#include <QSignalSpy>
 
 void BearerPropertiesTest::initTestCase()
 {
@@ -33,9 +32,11 @@ void BearerPropertiesTest::initTestCase()
     modem->setMaxActiveBearers(1);
     modem->setMaxBearers(1);
     modem->setModel(QLatin1String("K2540"));
-    //modem->setOwnNumbers();
+    // modem->setOwnNumbers();
     modem->setPlugin(QLatin1String("Huawei"));
-    modem->setPorts({{QLatin1String("ttyUSB0"), MM_MODEM_PORT_TYPE_AT}, {QLatin1String("ttyUSB1"), MM_MODEM_PORT_TYPE_QCDM}, {QLatin1String("ttyUSB2"), MM_MODEM_PORT_TYPE_AT}});
+    modem->setPorts({{QLatin1String("ttyUSB0"), MM_MODEM_PORT_TYPE_AT},
+                     {QLatin1String("ttyUSB1"), MM_MODEM_PORT_TYPE_QCDM},
+                     {QLatin1String("ttyUSB2"), MM_MODEM_PORT_TYPE_AT}});
     modem->SetPowerState(3);
     modem->setPrimaryPort(QLatin1String("ttyUSB2"));
     modem->setRevision(QLatin1String("11.001.05.00.11"));
@@ -66,7 +67,7 @@ void BearerPropertiesTest::initTestCase()
     bearer->setIp4Config({{QLatin1String("method"), MM_BEARER_IP_METHOD_PPP}});
     bearer->setIp6Config({{QLatin1String("method"), MM_BEARER_IP_METHOD_UNKNOWN}});
     bearer->setIpTimeout(20);
-    bearer->setProperties({{QLatin1String("apn"),QLatin1String("internet")},{QLatin1String("ip-type"), 1}, {QLatin1String("number"), QLatin1String("*99#")}});
+    bearer->setProperties({{QLatin1String("apn"), QLatin1String("internet")}, {QLatin1String("ip-type"), 1}, {QLatin1String("number"), QLatin1String("*99#")}});
     bearer->setSuspended(false);
 #if MM_CHECK_VERSION(1, 2, 0)
     ModemManager::Modem::Ptr modemInterface = ModemManager::modemDevices().first()->modemInterface();
@@ -108,7 +109,8 @@ void BearerPropertiesTest::testBearerProperties()
     QVERIFY(ipTimeoutChangedSpy.wait());
     QCOMPARE(modemBearer->ipTimeout(), ipTimeoutChangedSpy.at(0).at(0).toUInt());
 
-    bearer->setProperties({{QLatin1String("apn"),QLatin1String("internet2")},{QLatin1String("ip-type"), 2}, {QLatin1String("number"), QLatin1String("*98#")}});
+    bearer->setProperties(
+        {{QLatin1String("apn"), QLatin1String("internet2")}, {QLatin1String("ip-type"), 2}, {QLatin1String("number"), QLatin1String("*98#")}});
     QSignalSpy propertiesChangedSpy(modemBearer.data(), SIGNAL(propertiesChanged(QVariantMap)));
     QVERIFY(propertiesChangedSpy.wait());
     QVERIFY(modemBearer->properties().contains(QLatin1String("apn")));

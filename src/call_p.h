@@ -7,12 +7,11 @@
 #ifndef MODEMMANAGER_CALL_P_H
 #define MODEMMANAGER_CALL_P_H
 
-#include "dbus/callinterface.h"
 #include "call.h"
+#include "dbus/callinterface.h"
 
 namespace ModemManager
 {
-
 class CallPrivate : public QObject
 {
     Q_OBJECT

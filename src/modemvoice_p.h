@@ -7,14 +7,13 @@
 #ifndef MODEMMANAGER_MODEMVOICE_P_H
 #define MODEMMANAGER_MODEMVOICE_P_H
 
+#include "call.h"
 #include "dbus/voiceinterface.h"
 #include "interface_p.h"
 #include "modemvoice.h"
-#include "call.h"
 
 namespace ModemManager
 {
-
 class ModemVoicePrivate : public InterfacePrivate
 {
 public:

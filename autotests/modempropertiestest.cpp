@@ -12,9 +12,8 @@
 
 #include "fakemodem/modem.h"
 
+#include <QSignalSpy>
 #include <QTest>
-#include <QSignalSpy>
-#include <QSignalSpy>
 
 void ModemPropertiesTest::initTestCase()
 {
@@ -33,9 +32,11 @@ void ModemPropertiesTest::initTestCase()
     modem->setMaxActiveBearers(1);
     modem->setMaxBearers(1);
     modem->setModel(QLatin1String("K2540"));
-    //modem->setOwnNumbers();
+    // modem->setOwnNumbers();
     modem->setPlugin(QLatin1String("Huawei"));
-    modem->setPorts({{QLatin1String("ttyUSB0"), MM_MODEM_PORT_TYPE_AT}, {QLatin1String("ttyUSB1"), MM_MODEM_PORT_TYPE_QCDM}, {QLatin1String("ttyUSB2"), MM_MODEM_PORT_TYPE_AT}});
+    modem->setPorts({{QLatin1String("ttyUSB0"), MM_MODEM_PORT_TYPE_AT},
+                     {QLatin1String("ttyUSB1"), MM_MODEM_PORT_TYPE_QCDM},
+                     {QLatin1String("ttyUSB2"), MM_MODEM_PORT_TYPE_AT}});
     modem->SetPowerState(3);
     modem->setPrimaryPort(QLatin1String("ttyUSB2"));
     modem->setRevision(QLatin1String("11.001.05.00.11"));
@@ -68,17 +69,17 @@ void ModemPropertiesTest::testModemProperties()
     modem->setAccessTechnologies(5);
     QSignalSpy accessTechnologiesChangedSpy(modemInterface.data(), SIGNAL(accessTechnologiesChanged(QFlags<MMModemAccessTechnology>)));
     QVERIFY(accessTechnologiesChangedSpy.wait());
-    QCOMPARE(modemInterface->accessTechnologies(), accessTechnologiesChangedSpy.at(0).at(0).value<QFlags<MMModemAccessTechnology> >());
+    QCOMPARE(modemInterface->accessTechnologies(), accessTechnologiesChangedSpy.at(0).at(0).value<QFlags<MMModemAccessTechnology>>());
 
     modem->SetCurrentBands({1});
     QSignalSpy currentBandsChangedSpy(modemInterface.data(), SIGNAL(currentBandsChanged(QList<MMModemBand>)));
     QVERIFY(currentBandsChangedSpy.wait());
-    QCOMPARE(modemInterface->currentBands().first(), currentBandsChangedSpy.at(0).at(0).value<QList<MMModemBand> >().first());
+    QCOMPARE(modemInterface->currentBands().first(), currentBandsChangedSpy.at(0).at(0).value<QList<MMModemBand>>().first());
 
     modem->SetCurrentCapabilities(5);
     QSignalSpy currentCapabilitiesChangedSpy(modemInterface.data(), SIGNAL(currentCapabilitiesChanged(QFlags<MMModemCapability>)));
     QVERIFY(currentCapabilitiesChangedSpy.wait());
-    QCOMPARE(modemInterface->currentCapabilities(), currentCapabilitiesChangedSpy.at(0).at(0).value<QFlags<MMModemCapability> >());
+    QCOMPARE(modemInterface->currentCapabilities(), currentCapabilitiesChangedSpy.at(0).at(0).value<QFlags<MMModemCapability>>());
 
     modem->SetCurrentModes({MM_MODEM_MODE_2G, MM_MODEM_MODE_NONE});
     QSignalSpy currentModesChangedSpy(modemInterface.data(), SIGNAL(currentModesChanged(ModemManager::CurrentModesType)));
@@ -131,7 +132,9 @@ void ModemPropertiesTest::testModemProperties()
     QVERIFY(pluginChangedSpy.wait());
     QCOMPARE(modemInterface->plugin(), pluginChangedSpy.at(0).at(0).toString());
 
-    modem->setPorts({{QLatin1String("ttyUSB5"), MM_MODEM_PORT_TYPE_QCDM}, {QLatin1String("ttyUSB6"), MM_MODEM_PORT_TYPE_AT}, {QLatin1String("ttyUSB7"), MM_MODEM_PORT_TYPE_AT}});
+    modem->setPorts({{QLatin1String("ttyUSB5"), MM_MODEM_PORT_TYPE_QCDM},
+                     {QLatin1String("ttyUSB6"), MM_MODEM_PORT_TYPE_AT},
+                     {QLatin1String("ttyUSB7"), MM_MODEM_PORT_TYPE_AT}});
     QSignalSpy portsChangedSpy(modemInterface.data(), SIGNAL(portsChanged(ModemManager::PortList)));
     QVERIFY(portsChangedSpy.wait());
     ModemManager::PortList ports = modemInterface->ports();
@@ -172,12 +175,12 @@ void ModemPropertiesTest::testModemProperties()
     QCOMPARE(modemInterface->signalQuality().signal, signalQualityChangedSpy.at(0).at(0).value<ModemManager::SignalQualityPair>().signal);
 
     modem->setSim(QDBusObjectPath("/org/kde/fakemodem/SIM/2"));
-    QSignalSpy simChangedSpy(modemInterface.data(), SIGNAL(simPathChanged(QString,QString)));
+    QSignalSpy simChangedSpy(modemInterface.data(), SIGNAL(simPathChanged(QString, QString)));
     QVERIFY(simChangedSpy.wait());
     QCOMPARE(modemInterface->simPath(), simChangedSpy.at(0).at(1).toString());
 
     modem->setState(5);
-    QSignalSpy stateChangedSpy(modemInterface.data(), SIGNAL(stateChanged(MMModemState,MMModemState,MMModemStateChangeReason)));
+    QSignalSpy stateChangedSpy(modemInterface.data(), SIGNAL(stateChanged(MMModemState, MMModemState, MMModemStateChangeReason)));
     QVERIFY(stateChangedSpy.wait());
     QCOMPARE(MM_MODEM_STATE_REGISTERED, stateChangedSpy.at(0).at(0).value<MMModemState>());
     QCOMPARE(MM_MODEM_STATE_ENABLING, stateChangedSpy.at(0).at(1).value<MMModemState>());
@@ -191,17 +194,17 @@ void ModemPropertiesTest::testModemProperties()
     modem->setSupportedBands({1});
     QSignalSpy supportedBandsChangedSpy(modemInterface.data(), SIGNAL(supportedBandsChanged(QList<MMModemBand>)));
     QVERIFY(supportedBandsChangedSpy.wait());
-    QCOMPARE(modemInterface->supportedBands().first(), supportedBandsChangedSpy.at(0).at(0).value<QList<MMModemBand> >().first());
+    QCOMPARE(modemInterface->supportedBands().first(), supportedBandsChangedSpy.at(0).at(0).value<QList<MMModemBand>>().first());
 
     modem->setSupportedCapabilities({3});
     QSignalSpy supportedCapabilitiesChangedSpy(modemInterface.data(), SIGNAL(supportedCapabilitiesChanged(QList<MMModemCapability>)));
     QVERIFY(supportedCapabilitiesChangedSpy.wait());
-    QCOMPARE(modemInterface->supportedCapabilities().first(), supportedCapabilitiesChangedSpy.at(0).at(0).value<QList<MMModemCapability> >().first());
+    QCOMPARE(modemInterface->supportedCapabilities().first(), supportedCapabilitiesChangedSpy.at(0).at(0).value<QList<MMModemCapability>>().first());
 
     modem->setSupportedIpFamilies(2);
     QSignalSpy supportedIpFamiliesChangedSpy(modemInterface.data(), SIGNAL(supportedIpFamiliesChanged(QFlags<MMBearerIpFamily>)));
     QVERIFY(supportedIpFamiliesChangedSpy.wait());
-    QCOMPARE(modemInterface->supportedIpFamilies(), supportedIpFamiliesChangedSpy.at(0).at(0).value<QFlags<MMBearerIpFamily> >());
+    QCOMPARE(modemInterface->supportedIpFamilies(), supportedIpFamiliesChangedSpy.at(0).at(0).value<QFlags<MMBearerIpFamily>>());
 
     ModemManager::SupportedModesType supportedModes;
     ModemManager::CurrentModesType supportedMode1 = {MM_MODEM_MODE_2G, MM_MODEM_MODE_NONE};
@@ -210,7 +213,8 @@ void ModemPropertiesTest::testModemProperties()
     QSignalSpy supportedModesChangedSpy(modemInterface.data(), SIGNAL(supportedModesChanged(ModemManager::SupportedModesType)));
     QVERIFY(supportedModesChangedSpy.wait());
     QCOMPARE(modemInterface->supportedModes().first().allowed, supportedModesChangedSpy.at(0).at(0).value<ModemManager::SupportedModesType>().first().allowed);
-    QCOMPARE(modemInterface->supportedModes().first().preferred, supportedModesChangedSpy.at(0).at(0).value<ModemManager::SupportedModesType>().first().preferred);
+    QCOMPARE(modemInterface->supportedModes().first().preferred,
+             supportedModesChangedSpy.at(0).at(0).value<ModemManager::SupportedModesType>().first().preferred);
 
     modem->setUnlockRequired(2);
     QSignalSpy unlockRequiredChangedSpy(modemInterface.data(), SIGNAL(unlockRequiredChanged(MMModemLock)));
@@ -222,7 +226,8 @@ void ModemPropertiesTest::testModemProperties()
     QVERIFY(unlockRetriesChangedSpy.wait());
     QCOMPARE(modemInterface->unlockRetries().count(), 1);
     QVERIFY(modemInterface->unlockRetries().contains(MM_MODEM_LOCK_SIM_PIN));
-    QCOMPARE(modemInterface->unlockRetries().value(MM_MODEM_LOCK_SIM_PIN), unlockRetriesChangedSpy.at(0).at(0).value<ModemManager::UnlockRetriesMap>().value(MM_MODEM_LOCK_SIM_PIN));
+    QCOMPARE(modemInterface->unlockRetries().value(MM_MODEM_LOCK_SIM_PIN),
+             unlockRetriesChangedSpy.at(0).at(0).value<ModemManager::UnlockRetriesMap>().value(MM_MODEM_LOCK_SIM_PIN));
 }
 
 QTEST_MAIN(ModemPropertiesTest)

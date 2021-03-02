@@ -11,21 +11,23 @@
 #ifndef VOICEINTERFACE_H
 #define VOICEINTERFACE_H
 
-#include <QObject>
+#include "generictypes.h"
 #include <QList>
+#include <QObject>
 #include <QString>
 #include <QVariant>
-#include "generictypes.h"
 
 /*
  * Proxy class for interface org.freedesktop.ModemManager1.Modem.Voice
  */
-class OrgFreedesktopModemManager1ModemVoiceInterface: public QDBusAbstractInterface
+class OrgFreedesktopModemManager1ModemVoiceInterface : public QDBusAbstractInterface
 {
     Q_OBJECT
 public:
     static inline const char *staticInterfaceName()
-    { return "org.freedesktop.ModemManager1.Modem.Voice"; }
+    {
+        return "org.freedesktop.ModemManager1.Modem.Voice";
+    }
 
 public:
     OrgFreedesktopModemManager1ModemVoiceInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
@@ -34,7 +36,9 @@ public:
 
     Q_PROPERTY(QList<QDBusObjectPath> Calls READ calls)
     inline QList<QDBusObjectPath> calls() const
-    { return qvariant_cast< QList<QDBusObjectPath> >(property("Calls")); }
+    {
+        return qvariant_cast<QList<QDBusObjectPath>>(property("Calls"));
+    }
 
 public Q_SLOTS: // METHODS
     inline QDBusPendingReply<QDBusObjectPath> CreateCall(const QVariantMap &properties)
@@ -51,7 +55,7 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QStringLiteral("DeleteCall"), argumentList);
     }
 
-    inline QDBusPendingReply<QList<QDBusObjectPath> > ListCalls()
+    inline QDBusPendingReply<QList<QDBusObjectPath>> ListCalls()
     {
         QList<QVariant> argumentList;
         return asyncCallWithArgumentList(QStringLiteral("ListCalls"), argumentList);

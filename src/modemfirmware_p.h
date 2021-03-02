@@ -7,13 +7,12 @@
 #ifndef MODEMMANAGERQT_MODEMFIRMWARE_P_H
 #define MODEMMANAGERQT_MODEMFIRMWARE_P_H
 
-#include "interface_p.h"
 #include "dbus/firmwareinterface.h"
+#include "interface_p.h"
 
 namespace ModemManager
 {
-
-class ModemFirmwarePrivate: public InterfacePrivate
+class ModemFirmwarePrivate : public InterfacePrivate
 {
 public:
     explicit ModemFirmwarePrivate(const QString &path, ModemFirmware *q);

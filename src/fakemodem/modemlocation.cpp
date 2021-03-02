@@ -6,7 +6,7 @@
 
 #include "modemlocation.h"
 
-ModemLocation::ModemLocation(QObject* parent)
+ModemLocation::ModemLocation(QObject *parent)
     : QDBusAbstractAdaptor(parent)
     , m_enabledNotifications(false)
     , m_capabilities(0)
@@ -50,7 +50,7 @@ void ModemLocation::Setup(uint sources, bool signal_location)
     Q_UNUSED(signal_location)
 }
 
-void ModemLocation::setModemPath(const QString& path)
+void ModemLocation::setModemPath(const QString &path)
 {
     m_modemPath = path;
 }
@@ -86,7 +86,7 @@ void ModemLocation::setEnabled(uint enabled)
     }
 }
 
-void ModemLocation::setLocation(const ModemManager::LocationInformationMap& location)
+void ModemLocation::setLocation(const ModemManager::LocationInformationMap &location)
 {
     m_location = location;
 

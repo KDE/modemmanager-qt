@@ -15,7 +15,6 @@
 
 namespace ModemManager
 {
-
 class SimPrivate : public QObject
 {
     Q_OBJECT

@@ -11,14 +11,13 @@
 
 #include "dbus/modeminterface.h"
 
-#include "interface_p.h"
 #include "bearer.h"
+#include "interface_p.h"
 #include "modem.h"
 
 namespace ModemManager
 {
-
-class ModemPrivate: public InterfacePrivate
+class ModemPrivate : public InterfacePrivate
 {
     Q_OBJECT
 public:

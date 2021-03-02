@@ -11,7 +11,6 @@
 
 namespace ModemManager
 {
-
 class InterfacePrivate : public QObject
 {
     Q_OBJECT

@@ -11,27 +11,34 @@
 #ifndef MODEMMANAGERQT_FIRMWAREINTERFACE_H
 #define MODEMMANAGERQT_FIRMWAREINTERFACE_H
 
-#include <QObject>
+#include "generictypes.h"
 #include <QList>
+#include <QObject>
 #include <QString>
 #include <QVariant>
-#include "generictypes.h"
 
 /*
  * Proxy class for interface org.freedesktop.ModemManager1.Modem.Firmware
  */
-class OrgFreedesktopModemManager1ModemFirmwareInterface: public QDBusAbstractInterface
+class OrgFreedesktopModemManager1ModemFirmwareInterface : public QDBusAbstractInterface
 {
     Q_OBJECT
 public:
     static inline const char *staticInterfaceName()
 #ifdef MMQT_STATIC
-    { return "org.kde.fakemodem.Modem.Firmware"; }
+    {
+        return "org.kde.fakemodem.Modem.Firmware";
+    }
 #else
-    { return "org.freedesktop.ModemManager1.Modem.Firmware"; }
+    {
+        return "org.freedesktop.ModemManager1.Modem.Firmware";
+    }
 #endif
 public:
-    OrgFreedesktopModemManager1ModemFirmwareInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
+    OrgFreedesktopModemManager1ModemFirmwareInterface(const QString &service,
+                                                      const QString &path,
+                                                      const QDBusConnection &connection,
+                                                      QObject *parent = nullptr);
 
     ~OrgFreedesktopModemManager1ModemFirmwareInterface();
 

@@ -14,9 +14,8 @@
 
 #include "fakemodem/modem.h"
 
+#include <QSignalSpy>
 #include <QTest>
-#include <QSignalSpy>
-#include <QSignalSpy>
 
 void ModemLocationPropertiesTest::initTestCase()
 {
@@ -35,9 +34,11 @@ void ModemLocationPropertiesTest::initTestCase()
     modem->setMaxActiveBearers(1);
     modem->setMaxBearers(1);
     modem->setModel(QLatin1String("K2540"));
-    //modem->setOwnNumbers();
+    // modem->setOwnNumbers();
     modem->setPlugin(QLatin1String("Huawei"));
-    modem->setPorts({{QLatin1String("ttyUSB0"), MM_MODEM_PORT_TYPE_AT}, {QLatin1String("ttyUSB1"), MM_MODEM_PORT_TYPE_QCDM}, {QLatin1String("ttyUSB2"), MM_MODEM_PORT_TYPE_AT}});
+    modem->setPorts({{QLatin1String("ttyUSB0"), MM_MODEM_PORT_TYPE_AT},
+                     {QLatin1String("ttyUSB1"), MM_MODEM_PORT_TYPE_QCDM},
+                     {QLatin1String("ttyUSB2"), MM_MODEM_PORT_TYPE_AT}});
     modem->SetPowerState(3);
     modem->setPrimaryPort(QLatin1String("ttyUSB2"));
     modem->setRevision(QLatin1String("11.001.05.00.11"));
@@ -81,18 +82,19 @@ void ModemLocationPropertiesTest::testModemLocationProperties()
     ModemManager::ModemDevice::Ptr modemDevice = ModemManager::modemDevices().first();
     QVERIFY(modemDevice);
     QVERIFY(modemDevice->hasInterface(ModemManager::ModemDevice::LocationInterface));
-    ModemManager::ModemLocation::Ptr modemLocationInterface = modemDevice->interface(ModemManager::ModemDevice::LocationInterface).objectCast<ModemManager::ModemLocation>();
+    ModemManager::ModemLocation::Ptr modemLocationInterface =
+        modemDevice->interface(ModemManager::ModemDevice::LocationInterface).objectCast<ModemManager::ModemLocation>();
     QVERIFY(modemLocationInterface);
 
     modemLocation->setCapabilities(MM_MODEM_LOCATION_SOURCE_GPS_RAW);
     QSignalSpy capabilitiesChangedSpy(modemLocationInterface.data(), SIGNAL(capabilitiesChanged(QFlags<MMModemLocationSource>)));
     QVERIFY(capabilitiesChangedSpy.wait());
-    QCOMPARE(modemLocationInterface->capabilities(), capabilitiesChangedSpy.at(0).at(0).value<QFlags<MMModemLocationSource> >());
+    QCOMPARE(modemLocationInterface->capabilities(), capabilitiesChangedSpy.at(0).at(0).value<QFlags<MMModemLocationSource>>());
 
     modemLocation->setEnabled(MM_MODEM_LOCATION_SOURCE_GPS_RAW);
     QSignalSpy enabledChangedSpy(modemLocationInterface.data(), SIGNAL(enabledCapabilitiesChanged(QFlags<MMModemLocationSource>)));
     QVERIFY(enabledChangedSpy.wait());
-    QCOMPARE(modemLocationInterface->enabledCapabilities(), enabledChangedSpy.at(0).at(0).value<QFlags<MMModemLocationSource> >());
+    QCOMPARE(modemLocationInterface->enabledCapabilities(), enabledChangedSpy.at(0).at(0).value<QFlags<MMModemLocationSource>>());
 
     QMap<MMModemLocationSource, QVariant> location;
     location.insert(MM_MODEM_LOCATION_SOURCE_3GPP_LAC_CI, QLatin1String("312,27,85CD,D30156"));

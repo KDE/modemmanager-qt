@@ -14,8 +14,7 @@
 
 namespace ModemManager
 {
-
-class ModemSimplePrivate: public InterfacePrivate
+class ModemSimplePrivate : public InterfacePrivate
 {
     Q_OBJECT
 public:

@@ -16,7 +16,6 @@
 
 namespace ModemManager
 {
-
 class ModemMessagingPrivate : public InterfacePrivate
 {
 public:

@@ -12,13 +12,12 @@
 
 #include <modemmanagerqt_export.h>
 
+#include <QDBusPendingReply>
 #include <QObject>
 #include <QSharedPointer>
-#include <QDBusPendingReply>
 
 namespace ModemManager
 {
-
 class SimPrivate;
 
 /**

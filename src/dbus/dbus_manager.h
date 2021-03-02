@@ -11,23 +11,25 @@
 #ifndef MODEMMANAGERQT_DBUS_MANAGER_H
 #define MODEMMANAGERQT_DBUS_MANAGER_H
 
-#include <QObject>
+#include "generictypes.h"
+#include "generictypes_p.h"
 #include <QList>
+#include <QObject>
 #include <QString>
 #include <QStringList>
 #include <QVariant>
-#include "generictypes.h"
-#include "generictypes_p.h"
 
 /*
  * Proxy class for interface org.freedesktop.DBus.ObjectManager
  */
-class OrgFreedesktopDBusObjectManagerInterface: public QDBusAbstractInterface
+class OrgFreedesktopDBusObjectManagerInterface : public QDBusAbstractInterface
 {
     Q_OBJECT
 public:
     static inline const char *staticInterfaceName()
-    { return "org.freedesktop.DBus.ObjectManager"; }
+    {
+        return "org.freedesktop.DBus.ObjectManager";
+    }
 
 public:
     OrgFreedesktopDBusObjectManagerInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);

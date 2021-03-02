@@ -6,7 +6,7 @@
 
 #include "sms.h"
 
-Sms::Sms(QObject* parent)
+Sms::Sms(QObject *parent)
     : QObject(parent)
     , m_enabledNotifications(false)
     , m_smsClass(0)
@@ -120,7 +120,7 @@ QString Sms::smsPath() const
     return m_smsPath;
 }
 
-void Sms::setSmsPath(const QString& path)
+void Sms::setSmsPath(const QString &path)
 {
     m_smsPath = path;
 }

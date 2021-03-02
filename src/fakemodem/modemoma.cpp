@@ -6,7 +6,7 @@
 
 #include "modemoma.h"
 
-ModemOma::ModemOma(QObject* parent)
+ModemOma::ModemOma(QObject *parent)
     : QDBusAbstractAdaptor(parent)
     , m_enabledNotifications(false)
     , m_features(0)
@@ -59,7 +59,7 @@ void ModemOma::StartClientInitiatedSession(uint session_type)
     Q_UNUSED(session_type);
 }
 
-void ModemOma::setModemPath(const QString& path)
+void ModemOma::setModemPath(const QString &path)
 {
     m_modemPath = path;
 }
@@ -82,7 +82,7 @@ void ModemOma::setFeatures(uint features)
     }
 }
 
-void ModemOma::setPendingNetworkInitiatedSessions(const ModemManager::OmaSessionTypes& sessions)
+void ModemOma::setPendingNetworkInitiatedSessions(const ModemManager::OmaSessionTypes &sessions)
 {
     m_sessions = sessions;
 

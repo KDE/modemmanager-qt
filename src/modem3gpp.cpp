@@ -8,8 +8,8 @@
 */
 
 #include "modem3gpp.h"
-#include "modem3gpp_p.h"
 #include "mmdebug_p.h"
+#include "modem3gpp_p.h"
 #ifdef MMQT_STATIC
 #include "dbus/fakedbus.h"
 #else
@@ -42,17 +42,25 @@ ModemManager::Modem3gpp::Modem3gpp(const QString &path, QObject *parent)
 {
     Q_D(Modem3gpp);
 
-    qRegisterMetaType<QFlags<MMModem3gppFacility> >();
+    qRegisterMetaType<QFlags<MMModem3gppFacility>>();
     qRegisterMetaType<MMModem3gppRegistrationState>();
 #if MM_CHECK_VERSION(1, 2, 0)
     qRegisterMetaType<MMModem3gppSubscriptionState>();
 #endif
 #ifdef MMQT_STATIC
-    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE), d->uni, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), d,
-                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
+                                          d->uni,
+                                          QLatin1String(DBUS_INTERFACE_PROPS),
+                                          QStringLiteral("PropertiesChanged"),
+                                          d,
+                                          SLOT(onPropertiesChanged(QString, QVariantMap, QStringList)));
 #else
-    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE), d->uni, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), d,
-                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
+                                         d->uni,
+                                         QLatin1String(DBUS_INTERFACE_PROPS),
+                                         QStringLiteral("PropertiesChanged"),
+                                         d,
+                                         SLOT(onPropertiesChanged(QString, QVariantMap, QStringList)));
 #endif
 }
 

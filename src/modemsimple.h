@@ -16,7 +16,6 @@
 
 namespace ModemManager
 {
-
 class ModemSimplePrivate;
 
 /**
@@ -33,7 +32,7 @@ public:
     typedef QSharedPointer<ModemSimple> Ptr;
     typedef QList<Ptr> List;
 
-    explicit ModemSimple(const QString &path, QObject *parent = nullptr );
+    explicit ModemSimple(const QString &path, QObject *parent = nullptr);
     ~ModemSimple();
 
     QString uni() const;
@@ -67,7 +66,7 @@ public:
      * @param rm-protocol For CDMA devices, the protocol of the Rm interface, given as a MMModemCdmaRmProtocol value (signature "u").
      *
      * @return On successful connect, returns the object path of the connected packet data bearer used for the connection attempt.
-    */
+     */
     QDBusPendingReply<QDBusObjectPath> connectModem(const QVariantMap &properties);
 
     /**
@@ -91,7 +90,7 @@ public:
      *   Given as an unsigned integer value (signature "u").
      * @param cdma-nid The Network Identifier of the serving network, if registered in a CDMA1x network and if known.
      *   Given as an unsigned integer value (signature "u").
-    */
+     */
     QDBusPendingReply<QVariantMap> getStatus();
 
     /**

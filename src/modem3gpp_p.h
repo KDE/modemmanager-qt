@@ -15,8 +15,7 @@
 
 namespace ModemManager
 {
-
-class Modem3gppPrivate: public InterfacePrivate
+class Modem3gppPrivate : public InterfacePrivate
 {
 public:
     explicit Modem3gppPrivate(const QString &path, Modem3gpp *q);

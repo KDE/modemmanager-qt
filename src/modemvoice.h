@@ -18,7 +18,6 @@
 
 namespace ModemManager
 {
-
 class ModemVoicePrivate;
 
 /**

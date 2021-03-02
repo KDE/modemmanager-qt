@@ -18,7 +18,7 @@ class Modem3gppUssd : public QDBusAbstractAdaptor
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.fakemodem.Modem.Modem3gpp.Ussd")
 public:
-    explicit Modem3gppUssd(QObject * parent = nullptr);
+    explicit Modem3gppUssd(QObject *parent = nullptr);
     virtual ~Modem3gppUssd();
 
     Q_PROPERTY(QString NetworkNotification READ networkNotification)

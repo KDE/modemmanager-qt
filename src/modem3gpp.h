@@ -20,7 +20,6 @@
 
 namespace ModemManager
 {
-
 class Modem3gppPrivate;
 
 /**
@@ -85,10 +84,10 @@ public:
     MMModem3gppSubscriptionState subscriptionState() const;
 #endif
     /**
-      * Register the device to network.
-      *
-      * @param networkId The operator ID (ie, "MCCMNC", like "310260") to register. An empty string can be used to register to the home network.
-    */
+     * Register the device to network.
+     *
+     * @param networkId The operator ID (ie, "MCCMNC", like "310260") to register. An empty string can be used to register to the home network.
+     */
     void registerToNetwork(const QString &networkId = QString());
 
     /**

@@ -7,8 +7,8 @@
     SPDX-License-Identifier: LGPL-2.1-only OR LGPL-3.0-only OR LicenseRef-KDE-Accepted-LGPL
 */
 
-#include "modemcdma_p.h"
 #include "mmdebug_p.h"
+#include "modemcdma_p.h"
 #ifdef MMQT_STATIC
 #include "dbus/fakedbus.h"
 #else
@@ -46,11 +46,19 @@ ModemManager::ModemCdma::ModemCdma(const QString &path, QObject *parent)
 
     connect(&d->modemCdmaIface, &OrgFreedesktopModemManager1ModemModemCdmaInterface::ActivationStateChanged, d, &ModemCdmaPrivate::onActivationStateChanged);
 #ifdef MMQT_STATIC
-    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE), d->uni, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), d,
-                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
+                                          d->uni,
+                                          QLatin1String(DBUS_INTERFACE_PROPS),
+                                          QStringLiteral("PropertiesChanged"),
+                                          d,
+                                          SLOT(onPropertiesChanged(QString, QVariantMap, QStringList)));
 #else
-    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE), d->uni, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), d,
-                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
+                                         d->uni,
+                                         QLatin1String(DBUS_INTERFACE_PROPS),
+                                         QStringLiteral("PropertiesChanged"),
+                                         d,
+                                         SLOT(onPropertiesChanged(QString, QVariantMap, QStringList)));
 #endif
 }
 

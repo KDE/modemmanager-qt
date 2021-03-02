@@ -9,27 +9,26 @@
 
 #include <modemmanagerqt_export.h>
 
+#include <QDBusPendingReply>
 #include <QObject>
 #include <QSharedPointer>
-#include <QDBusPendingReply>
 
 #include "generictypes.h"
 
 namespace ModemManager
 {
-
 class CallPrivate;
 
 /**
-* Provides an interface to manipulate and control a call
-*
-* Note: MMCallState, MMCallStateReason and MMCallDirection enums are defined in <ModemManager/ModemManager-enums.h>
-* See http://www.freedesktop.org/software/ModemManager/api/latest/ModemManager-Flags-and-Enumerations.html
-*/
+ * Provides an interface to manipulate and control a call
+ *
+ * Note: MMCallState, MMCallStateReason and MMCallDirection enums are defined in <ModemManager/ModemManager-enums.h>
+ * See http://www.freedesktop.org/software/ModemManager/api/latest/ModemManager-Flags-and-Enumerations.html
+ */
 class MODEMMANAGERQT_EXPORT Call : public QObject
 {
-Q_OBJECT
-Q_DECLARE_PRIVATE(Call)
+    Q_OBJECT
+    Q_DECLARE_PRIVATE(Call)
 
 public:
     typedef QSharedPointer<Call> Ptr;
@@ -41,43 +40,43 @@ public:
     QString uni() const;
 
     /**
-    * Start a call
-    */
+     * Start a call
+     */
     QDBusPendingReply<> start();
 
     /**
-    * Accept a call
-    */
+     * Accept a call
+     */
     QDBusPendingReply<> accept();
 
     /**
-    * Hangup a call
-    */
+     * Hangup a call
+     */
     QDBusPendingReply<> hangup();
 
     /**
-    * Send DTMF
-    */
+     * Send DTMF
+     */
     QDBusPendingReply<> sendDtmf(const QString &dtmf);
 
     /**
-    * This method returns the state of the call
-    */
+     * This method returns the state of the call
+     */
     MMCallState state() const;
 
     /**
-    * This method returns the reason for the call state change
-    */
+     * This method returns the reason for the call state change
+     */
     MMCallStateReason stateReason() const;
 
     /**
-    * This method returns the direction of the call
-    */
+     * This method returns the direction of the call
+     */
     MMCallDirection direction() const;
 
     /**
-    * This method returns the remote phone number
-    */
+     * This method returns the remote phone number
+     */
     QString number() const;
 
     /**

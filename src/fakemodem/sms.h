@@ -18,7 +18,7 @@ class Sms : public QObject
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.fakemodem.Sms")
 public:
-    explicit Sms(QObject * parent = nullptr);
+    explicit Sms(QObject *parent = nullptr);
     virtual ~Sms();
 
     Q_PROPERTY(int SmsClass READ smsClass)

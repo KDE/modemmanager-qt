@@ -6,8 +6,8 @@
 */
 
 #include "modemsignal.h"
-#include "modemsignal_p.h"
 #include "mmdebug_p.h"
+#include "modemsignal_p.h"
 #ifdef MMQT_STATIC
 #include "dbus/fakedbus.h"
 #else
@@ -38,11 +38,19 @@ ModemManager::ModemSignal::ModemSignal(const QString &path, QObject *parent)
 {
     Q_D(ModemSignal);
 #ifdef MMQT_STATIC
-    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE), d->uni, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), d,
-                                        SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
+                                          d->uni,
+                                          QLatin1String(DBUS_INTERFACE_PROPS),
+                                          QStringLiteral("PropertiesChanged"),
+                                          d,
+                                          SLOT(onPropertiesChanged(QString, QVariantMap, QStringList)));
 #else
-    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE), d->uni, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), d,
-                                        SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
+                                         d->uni,
+                                         QLatin1String(DBUS_INTERFACE_PROPS),
+                                         QStringLiteral("PropertiesChanged"),
+                                         d,
+                                         SLOT(onPropertiesChanged(QString, QVariantMap, QStringList)));
 #endif
 }
 

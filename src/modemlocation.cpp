@@ -8,8 +8,8 @@
 */
 
 #include "modemlocation.h"
-#include "modemlocation_p.h"
 #include "mmdebug_p.h"
+#include "modemlocation_p.h"
 #ifdef MMQT_STATIC
 #include "dbus/fakedbus.h"
 #else
@@ -41,11 +41,19 @@ ModemManager::ModemLocation::ModemLocation(const QString &path, QObject *parent)
     qRegisterMetaType<LocationSources>();
 
 #ifdef MMQT_STATIC
-    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE), d->uni, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), d,
-                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
+                                          d->uni,
+                                          QLatin1String(DBUS_INTERFACE_PROPS),
+                                          QStringLiteral("PropertiesChanged"),
+                                          d,
+                                          SLOT(onPropertiesChanged(QString, QVariantMap, QStringList)));
 #else
-    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE), d->uni, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), d,
-                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
+                                         d->uni,
+                                         QLatin1String(DBUS_INTERFACE_PROPS),
+                                         QStringLiteral("PropertiesChanged"),
+                                         d,
+                                         SLOT(onPropertiesChanged(QString, QVariantMap, QStringList)));
 #endif
 }
 
@@ -115,22 +123,22 @@ void ModemManager::ModemLocationPrivate::onPropertiesChanged(const QString &inte
 
     if (interface == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_LOCATION)) {
         QVariantMap::const_iterator it = properties.constFind(QLatin1String(MM_MODEM_LOCATION_PROPERTY_CAPABILITIES));
-        if ( it != properties.constEnd()) {
+        if (it != properties.constEnd()) {
             capabilities = (ModemManager::ModemLocation::LocationSources)it->toUInt();
             Q_EMIT q->capabilitiesChanged(capabilities);
         }
         it = properties.constFind(QLatin1String(MM_MODEM_LOCATION_PROPERTY_ENABLED));
-        if ( it != properties.constEnd()) {
+        if (it != properties.constEnd()) {
             enabledCapabilities = (ModemManager::ModemLocation::LocationSources)it->toUInt();
             Q_EMIT q->enabledCapabilitiesChanged(enabledCapabilities);
         }
         it = properties.constFind(QLatin1String(MM_MODEM_LOCATION_PROPERTY_SIGNALSLOCATION));
-        if ( it != properties.constEnd()) {
+        if (it != properties.constEnd()) {
             signalsLocation = it->toBool();
             Q_EMIT q->signalsLocationChanged(signalsLocation);
         }
         it = properties.constFind(QLatin1String(MM_MODEM_LOCATION_PROPERTY_LOCATION));
-        if ( it != properties.constEnd()) {
+        if (it != properties.constEnd()) {
             location = qdbus_cast<ModemManager::LocationInformationMap>(*it);
             Q_EMIT q->locationChanged(location);
         }

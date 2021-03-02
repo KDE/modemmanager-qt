@@ -6,7 +6,7 @@
 
 #include "modemmessaging.h"
 
-ModemMessaging::ModemMessaging(QObject* parent)
+ModemMessaging::ModemMessaging(QObject *parent)
     : QDBusAbstractAdaptor(parent)
     , m_enabledNotifications(false)
     , m_messageCounter(0)
@@ -23,7 +23,7 @@ uint ModemMessaging::defaultStorage() const
     return m_defaultStorage;
 }
 
-QList< QDBusObjectPath > ModemMessaging::messages() const
+QList<QDBusObjectPath> ModemMessaging::messages() const
 {
     return m_messages.keys();
 }
@@ -33,13 +33,13 @@ ModemManager::UIntList ModemMessaging::supportedStorages() const
     return m_supportedStorages;
 }
 
-QDBusObjectPath ModemMessaging::Create(const QVariantMap& properties)
+QDBusObjectPath ModemMessaging::Create(const QVariantMap &properties)
 {
     Q_UNUSED(properties);
     return QDBusObjectPath();
 }
 
-void ModemMessaging::Delete(const QDBusObjectPath& path)
+void ModemMessaging::Delete(const QDBusObjectPath &path)
 {
     m_messages.remove(path);
     QDBusConnection::sessionBus().unregisterObject(path.path());
@@ -47,12 +47,12 @@ void ModemMessaging::Delete(const QDBusObjectPath& path)
     Q_EMIT Deleted(path);
 }
 
-QList< QDBusObjectPath > ModemMessaging::List()
+QList<QDBusObjectPath> ModemMessaging::List()
 {
     return m_messages.keys();
 }
 
-void ModemMessaging::setModemPath(const QString& path)
+void ModemMessaging::setModemPath(const QString &path)
 {
     m_modemPath = path;
 }
@@ -62,7 +62,7 @@ void ModemMessaging::setEnableNotifications(bool enable)
     m_enabledNotifications = enable;
 }
 
-void ModemMessaging::addMessage(Sms* sms)
+void ModemMessaging::addMessage(Sms *sms)
 {
     QString newSmsPath = QStringLiteral("/org/kde/fakemodem/Sms/") + QString::number(m_messageCounter++);
     sms->setSmsPath(newSmsPath);
@@ -85,7 +85,7 @@ void ModemMessaging::setDefaultStorage(uint defaultStorage)
     }
 }
 
-void ModemMessaging::setSupportedStorages(const ModemManager::UIntList& supportedStorages)
+void ModemMessaging::setSupportedStorages(const ModemManager::UIntList &supportedStorages)
 {
     m_supportedStorages = supportedStorages;
 
@@ -102,7 +102,7 @@ QVariantMap ModemMessaging::toMap() const
 {
     QVariantMap map;
 #if MM_CHECK_VERSION(1, 2, 0)
-    map.insert(QLatin1String(MM_MODEM_MESSAGING_PROPERTY_MESSAGES), QVariant::fromValue<QList<QDBusObjectPath> >(m_messages.keys()));
+    map.insert(QLatin1String(MM_MODEM_MESSAGING_PROPERTY_MESSAGES), QVariant::fromValue<QList<QDBusObjectPath>>(m_messages.keys()));
 #endif
     map.insert(QLatin1String(MM_MODEM_MESSAGING_PROPERTY_SUPPORTEDSTORAGES), QVariant::fromValue<ModemManager::UIntList>(m_supportedStorages));
     map.insert(QLatin1String(MM_MODEM_MESSAGING_PROPERTY_DEFAULTSTORAGE), m_defaultStorage);

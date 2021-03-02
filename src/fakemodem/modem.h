@@ -18,7 +18,7 @@ class Modem : public QObject
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.fakemodem.Modem")
 public:
-    explicit Modem(QObject* parent = nullptr);
+    explicit Modem(QObject *parent = nullptr);
     virtual ~Modem();
 
     Q_PROPERTY(uint AccessTechnologies READ accessTechnologies)
@@ -165,4 +165,3 @@ private:
 };
 
 #endif
-

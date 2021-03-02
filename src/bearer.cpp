@@ -16,14 +16,16 @@
 // logging category for this framework, default: log stuff >= warning
 Q_LOGGING_CATEGORY(MMQT, "kf.modemmanagerqt", QtWarningMsg)
 
-namespace ModemManager {
-
+namespace ModemManager
+{
 class ModemManager::IpConfig::Private
 {
 public:
     Private()
-    { }
+    {
+    }
     MMBearerIpMethod method{MM_BEARER_IP_METHOD_UNKNOWN};
+
     QString address;
     uint prefix{0};
     QString dns1;
@@ -39,7 +41,7 @@ ModemManager::IpConfig::IpConfig()
 {
 }
 
-ModemManager::IpConfig::IpConfig(const ModemManager::IpConfig& other)
+ModemManager::IpConfig::IpConfig(const ModemManager::IpConfig &other)
     : d(new Private)
 {
     *this = other;
@@ -65,7 +67,7 @@ QString ModemManager::IpConfig::address() const
     return d->address;
 }
 
-void ModemManager::IpConfig::setAddress(const QString& address)
+void ModemManager::IpConfig::setAddress(const QString &address)
 {
     d->address = address;
 }
@@ -85,7 +87,7 @@ QString ModemManager::IpConfig::dns1() const
     return d->dns1;
 }
 
-void ModemManager::IpConfig::setDns1(const QString& dns1)
+void ModemManager::IpConfig::setDns1(const QString &dns1)
 {
     d->dns1 = dns1;
 }
@@ -95,7 +97,7 @@ QString ModemManager::IpConfig::dns2() const
     return d->dns2;
 }
 
-void ModemManager::IpConfig::setDns2(const QString& dns2)
+void ModemManager::IpConfig::setDns2(const QString &dns2)
 {
     d->dns2 = dns2;
 }
@@ -105,7 +107,7 @@ QString ModemManager::IpConfig::dns3() const
     return d->dns3;
 }
 
-void ModemManager::IpConfig::setDns3(const QString& dns3)
+void ModemManager::IpConfig::setDns3(const QString &dns3)
 {
     d->dns3 = dns3;
 }
@@ -115,12 +117,12 @@ QString ModemManager::IpConfig::gateway() const
     return d->gateway;
 }
 
-void ModemManager::IpConfig::setGateway(const QString& gateway)
+void ModemManager::IpConfig::setGateway(const QString &gateway)
 {
     d->gateway = gateway;
 }
 
-ModemManager::IpConfig& ModemManager::IpConfig::operator=(const ModemManager::IpConfig& other)
+ModemManager::IpConfig &ModemManager::IpConfig::operator=(const ModemManager::IpConfig &other)
 {
     if (this == &other) {
         return *this;
@@ -157,11 +159,19 @@ ModemManager::Bearer::Bearer(const QString &path, QObject *parent)
     Q_D(Bearer);
 
 #ifdef MMQT_STATIC
-    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE), path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
-                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
+                                          path,
+                                          DBUS_INTERFACE_PROPS,
+                                          QStringLiteral("PropertiesChanged"),
+                                          d,
+                                          SLOT(onPropertiesChanged(QString, QVariantMap, QStringList)));
 #else
-    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE), path, DBUS_INTERFACE_PROPS, QStringLiteral("PropertiesChanged"), d,
-                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
+                                         path,
+                                         DBUS_INTERFACE_PROPS,
+                                         QStringLiteral("PropertiesChanged"),
+                                         d,
+                                         SLOT(onPropertiesChanged(QString, QVariantMap, QStringList)));
 #endif
 }
 

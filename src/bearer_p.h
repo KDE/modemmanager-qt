@@ -13,7 +13,6 @@
 
 namespace ModemManager
 {
-
 class BearerPrivate : public QObject
 {
     Q_OBJECT
@@ -35,8 +34,7 @@ public:
     Q_DECLARE_PUBLIC(Bearer)
     Bearer *q_ptr;
 private Q_SLOTS:
-   void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps);
-
+    void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps);
 };
 
 } // namespace ModemManager

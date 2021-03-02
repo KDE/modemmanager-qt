@@ -14,9 +14,8 @@
 
 #include "fakemodem/modem.h"
 
+#include <QSignalSpy>
 #include <QTest>
-#include <QSignalSpy>
-#include <QSignalSpy>
 
 void ModemMessagingPropertiesTest::initTestCase()
 {
@@ -35,9 +34,11 @@ void ModemMessagingPropertiesTest::initTestCase()
     modem->setMaxActiveBearers(1);
     modem->setMaxBearers(1);
     modem->setModel(QLatin1String("K2540"));
-    //modem->setOwnNumbers();
+    // modem->setOwnNumbers();
     modem->setPlugin(QLatin1String("Huawei"));
-    modem->setPorts({{QLatin1String("ttyUSB0"), MM_MODEM_PORT_TYPE_AT}, {QLatin1String("ttyUSB1"), MM_MODEM_PORT_TYPE_QCDM}, {QLatin1String("ttyUSB2"), MM_MODEM_PORT_TYPE_AT}});
+    modem->setPorts({{QLatin1String("ttyUSB0"), MM_MODEM_PORT_TYPE_AT},
+                     {QLatin1String("ttyUSB1"), MM_MODEM_PORT_TYPE_QCDM},
+                     {QLatin1String("ttyUSB2"), MM_MODEM_PORT_TYPE_AT}});
     modem->SetPowerState(3);
     modem->setPrimaryPort(QLatin1String("ttyUSB2"));
     modem->setRevision(QLatin1String("11.001.05.00.11"));
@@ -94,12 +95,13 @@ void ModemMessagingPropertiesTest::initTestCase()
 
 void ModemMessagingPropertiesTest::testModemMessagingProperties()
 {
-ModemManager::ModemDevice::Ptr modemDevice = ModemManager::modemDevices().first();
+    ModemManager::ModemDevice::Ptr modemDevice = ModemManager::modemDevices().first();
     QVERIFY(modemDevice);
     QVERIFY(modemDevice->hasInterface(ModemManager::ModemDevice::MessagingInterface));
-    ModemManager::ModemMessaging::Ptr modemMessagingInterface = modemDevice->interface(ModemManager::ModemDevice::MessagingInterface).objectCast<ModemManager::ModemMessaging>();
+    ModemManager::ModemMessaging::Ptr modemMessagingInterface =
+        modemDevice->interface(ModemManager::ModemDevice::MessagingInterface).objectCast<ModemManager::ModemMessaging>();
     QVERIFY(modemMessagingInterface);
-    QSignalSpy smsAddedSpy(modemMessagingInterface.data(), SIGNAL(messageAdded(QString,bool)));
+    QSignalSpy smsAddedSpy(modemMessagingInterface.data(), SIGNAL(messageAdded(QString, bool)));
     modemMessaging->addMessage(sms);
     QVERIFY(smsAddedSpy.wait());
     QCOMPARE(modemMessagingInterface->messages().count(), 1);

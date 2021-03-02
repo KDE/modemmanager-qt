@@ -14,13 +14,12 @@
 #include <QObject>
 #include <QSharedPointer>
 
-#include "sms.h"
 #include "generictypes.h"
 #include "interface.h"
+#include "sms.h"
 
 namespace ModemManager
 {
-
 class ModemMessagingPrivate;
 
 /**

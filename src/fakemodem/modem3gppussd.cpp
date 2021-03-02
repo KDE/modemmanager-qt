@@ -6,7 +6,7 @@
 
 #include "modem3gppussd.h"
 
-Modem3gppUssd::Modem3gppUssd(QObject* parent)
+Modem3gppUssd::Modem3gppUssd(QObject *parent)
     : QDBusAbstractAdaptor(parent)
     , m_enabledNotifications(false)
     , m_state(0)
@@ -36,19 +36,19 @@ void Modem3gppUssd::Cancel()
 {
 }
 
-QString Modem3gppUssd::Initiate(const QString& command)
+QString Modem3gppUssd::Initiate(const QString &command)
 {
     Q_UNUSED(command);
     return QString();
 }
 
-QString Modem3gppUssd::Respond(const QString& response)
+QString Modem3gppUssd::Respond(const QString &response)
 {
     Q_UNUSED(response);
     return QString();
 }
 
-void Modem3gppUssd::setModemPath(const QString& path)
+void Modem3gppUssd::setModemPath(const QString &path)
 {
     m_modemPath = path;
 }
@@ -58,7 +58,7 @@ void Modem3gppUssd::setEnableNotifications(bool enable)
     m_enabledNotifications = enable;
 }
 
-void Modem3gppUssd::setNetworkNotification(const QString& networkNotification)
+void Modem3gppUssd::setNetworkNotification(const QString &networkNotification)
 {
     m_networkNotification = networkNotification;
 
@@ -71,7 +71,7 @@ void Modem3gppUssd::setNetworkNotification(const QString& networkNotification)
     }
 }
 
-void Modem3gppUssd::setNetworkRequest(const QString& networkRequest)
+void Modem3gppUssd::setNetworkRequest(const QString &networkRequest)
 {
     m_networkRequest = networkRequest;
 

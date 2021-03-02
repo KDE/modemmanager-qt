@@ -11,21 +11,23 @@
 #ifndef CALLINTERFACE_H
 #define CALLINTERFACE_H
 
-#include <QObject>
+#include "generictypes.h"
 #include <QList>
+#include <QObject>
 #include <QString>
 #include <QVariant>
-#include "generictypes.h"
 
 /*
  * Proxy class for interface org.freedesktop.ModemManager1.Call
  */
-class OrgFreedesktopModemManager1CallInterface: public QDBusAbstractInterface
+class OrgFreedesktopModemManager1CallInterface : public QDBusAbstractInterface
 {
     Q_OBJECT
 public:
     static inline const char *staticInterfaceName()
-    { return "org.freedesktop.ModemManager1.Call"; }
+    {
+        return "org.freedesktop.ModemManager1.Call";
+    }
 
 public:
     OrgFreedesktopModemManager1CallInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
@@ -34,19 +36,27 @@ public:
 
     Q_PROPERTY(int Direction READ direction)
     inline int direction() const
-    { return qvariant_cast< int >(property("Direction")); }
+    {
+        return qvariant_cast<int>(property("Direction"));
+    }
 
     Q_PROPERTY(QString Number READ number)
     inline QString number() const
-    { return qvariant_cast< QString >(property("Number")); }
+    {
+        return qvariant_cast<QString>(property("Number"));
+    }
 
     Q_PROPERTY(int State READ state)
     inline int state() const
-    { return qvariant_cast< int >(property("State")); }
+    {
+        return qvariant_cast<int>(property("State"));
+    }
 
     Q_PROPERTY(int StateReason READ stateReason)
     inline int stateReason() const
-    { return qvariant_cast< int >(property("StateReason")); }
+    {
+        return qvariant_cast<int>(property("StateReason"));
+    }
 
 public Q_SLOTS: // METHODS
     inline QDBusPendingReply<> Accept()

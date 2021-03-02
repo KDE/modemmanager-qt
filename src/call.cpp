@@ -26,9 +26,9 @@ ModemManager::CallPrivate::CallPrivate(const QString &path, Call *q)
 {
     if (callIface.isValid()) {
         uni = path;
-        state = (MMCallState) callIface.state();
-        stateReason = (MMCallStateReason) callIface.stateReason();
-        direction = (MMCallDirection) callIface.direction();
+        state = (MMCallState)callIface.state();
+        stateReason = (MMCallStateReason)callIface.stateReason();
+        direction = (MMCallDirection)callIface.direction();
         number = callIface.number();
     }
 }
@@ -44,11 +44,19 @@ ModemManager::Call::Call(const QString &path, QObject *parent)
     qRegisterMetaType<MMCallDirection>();
 
 #ifdef MMQT_STATIC
-    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE), path, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), d,
-                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
+                                          path,
+                                          QLatin1String(DBUS_INTERFACE_PROPS),
+                                          QStringLiteral("PropertiesChanged"),
+                                          d,
+                                          SLOT(onPropertiesChanged(QString, QVariantMap, QStringList)));
 #else
-    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE), path, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), d,
-                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
+                                         path,
+                                         QLatin1String(DBUS_INTERFACE_PROPS),
+                                         QStringLiteral("PropertiesChanged"),
+                                         d,
+                                         SLOT(onPropertiesChanged(QString, QVariantMap, QStringList)));
 #endif
 
     connect(&d->callIface, &OrgFreedesktopModemManager1CallInterface::StateChanged, d, &CallPrivate::onStateChanged);
@@ -131,7 +139,7 @@ void ModemManager::CallPrivate::onStateChanged(int oldState, int newState, uint 
     Q_Q(Call);
     state = (MMCallState)newState;
     stateReason = (MMCallStateReason)reason;
-    Q_EMIT q->stateChanged((MMCallState) oldState, (MMCallState) newState, (MMCallStateReason) reason);
+    Q_EMIT q->stateChanged((MMCallState)oldState, (MMCallState)newState, (MMCallStateReason)reason);
 }
 
 void ModemManager::CallPrivate::onDtmfReceived(const QString &dtmf)
@@ -140,7 +148,9 @@ void ModemManager::CallPrivate::onDtmfReceived(const QString &dtmf)
     Q_EMIT q->dtmfReceived(dtmf);
 }
 
-void ModemManager::CallPrivate::onPropertiesChanged(const QString &interfaceName, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
+void ModemManager::CallPrivate::onPropertiesChanged(const QString &interfaceName,
+                                                    const QVariantMap &changedProperties,
+                                                    const QStringList &invalidatedProperties)
 {
     Q_UNUSED(invalidatedProperties);
     Q_Q(Call);

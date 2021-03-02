@@ -15,7 +15,10 @@
  * Implementation of interface class OrgFreedesktopModemManager1ModemFirmwareInterface
  */
 
-OrgFreedesktopModemManager1ModemFirmwareInterface::OrgFreedesktopModemManager1ModemFirmwareInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent)
+OrgFreedesktopModemManager1ModemFirmwareInterface::OrgFreedesktopModemManager1ModemFirmwareInterface(const QString &service,
+                                                                                                     const QString &path,
+                                                                                                     const QDBusConnection &connection,
+                                                                                                     QObject *parent)
     : QDBusAbstractInterface(service, path, staticInterfaceName(), connection, parent)
 {
 }

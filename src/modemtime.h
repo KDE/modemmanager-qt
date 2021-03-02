@@ -8,16 +8,15 @@
 #ifndef MODEMMANAGERQT_MODEMTIME_H
 #define MODEMMANAGERQT_MODEMTIME_H
 
-#include <modemmanagerqt_export.h>
 #include "interface.h"
+#include <modemmanagerqt_export.h>
 
-#include <QObject>
 #include <QDateTime>
+#include <QObject>
 #include <QSharedPointer>
 
 namespace ModemManager
 {
-
 class ModemTimePrivate;
 
 /**

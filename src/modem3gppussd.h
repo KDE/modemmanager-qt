@@ -20,7 +20,6 @@
 
 namespace ModemManager
 {
-
 class Modem3gppUssdPrivate;
 
 /**

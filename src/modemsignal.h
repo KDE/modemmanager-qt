@@ -8,15 +8,14 @@
 #ifndef MODEMMANAGERQT_MODEMSIGNAL_H
 #define MODEMMANAGERQT_MODEMSIGNAL_H
 
-#include <modemmanagerqt_export.h>
 #include "interface.h"
+#include <modemmanagerqt_export.h>
 
 #include <QObject>
 #include <QSharedPointer>
 
 namespace ModemManager
 {
-
 class ModemSignalPrivate;
 
 /**
@@ -26,7 +25,7 @@ class ModemSignalPrivate;
  *
  * @since 1.1.94
  */
-class MODEMMANAGERQT_EXPORT ModemSignal: public Interface
+class MODEMMANAGERQT_EXPORT ModemSignal : public Interface
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(ModemSignal)

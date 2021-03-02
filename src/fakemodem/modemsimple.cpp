@@ -6,7 +6,7 @@
 
 #include "modemsimple.h"
 
-ModemSimple::ModemSimple(QObject* parent)
+ModemSimple::ModemSimple(QObject *parent)
     : QDBusAbstractAdaptor(parent)
 {
 }
@@ -15,14 +15,14 @@ ModemSimple::~ModemSimple()
 {
 }
 
-QDBusObjectPath ModemSimple::Connect(const QVariantMap& properties)
+QDBusObjectPath ModemSimple::Connect(const QVariantMap &properties)
 {
     Q_UNUSED(properties);
     // TODO
     return QDBusObjectPath();
 }
 
-void ModemSimple::Disconnect(const QDBusObjectPath& bearer)
+void ModemSimple::Disconnect(const QDBusObjectPath &bearer)
 {
     Q_UNUSED(bearer);
     // TODO

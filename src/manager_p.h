@@ -11,9 +11,9 @@
 
 #include <QDBusServiceWatcher>
 
+#include "dbus/dbus_manager.h"
 #include "dbus/modem3gppinterface.h"
 #include "dbus/modemmanager1interface.h"
-#include "dbus/dbus_manager.h"
 
 #include "manager.h"
 #include "modemdevice.h"
@@ -23,7 +23,7 @@ namespace ModemManager
 class Modem;
 class ModemManagerPrivate : public Notifier
 {
-Q_OBJECT
+    Q_OBJECT
 
 public:
     ModemManagerPrivate();
@@ -44,6 +44,5 @@ protected Q_SLOTS:
     void onInterfacesRemoved(const QDBusObjectPath &object_path, const QStringList &interfaces);
 };
 } // namespace ModemManager
-
 
 #endif

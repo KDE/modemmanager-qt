@@ -6,9 +6,9 @@
 
 #include <ModemManagerQt/interface.h>
 #include <ModemManagerQt/manager.h>
+#include <ModemManagerQt/modem.h>
 #include <ModemManagerQt/modemdevice.h>
 #include <ModemManagerQt/modemmessaging.h>
-#include <ModemManagerQt/modem.h>
 #include <ModemManagerQt/sim.h>
 #include <ModemManagerQt/sms.h>
 

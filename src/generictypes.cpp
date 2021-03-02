@@ -9,7 +9,7 @@
 #include "generictypes.h"
 #include "generictypes_p.h"
 
-QDBusArgument &operator << (QDBusArgument &arg, const ModemManager::Port &port)
+QDBusArgument &operator<<(QDBusArgument &arg, const ModemManager::Port &port)
 {
     arg.beginStructure();
     arg << port.name << port.type;
@@ -17,7 +17,7 @@ QDBusArgument &operator << (QDBusArgument &arg, const ModemManager::Port &port)
     return arg;
 }
 
-const QDBusArgument &operator >> (const QDBusArgument &arg, ModemManager::Port &port)
+const QDBusArgument &operator>>(const QDBusArgument &arg, ModemManager::Port &port)
 {
     QString temp1;
     uint temp2;
@@ -31,7 +31,7 @@ const QDBusArgument &operator >> (const QDBusArgument &arg, ModemManager::Port &
 }
 
 // Marshall the CurrentModesType data into a D-BUS argument
-QDBusArgument &operator << (QDBusArgument &arg, const ModemManager::CurrentModesType &mode)
+QDBusArgument &operator<<(QDBusArgument &arg, const ModemManager::CurrentModesType &mode)
 {
     arg.beginStructure();
     arg << mode.allowed << mode.preferred;
@@ -40,7 +40,7 @@ QDBusArgument &operator << (QDBusArgument &arg, const ModemManager::CurrentModes
 }
 
 // Retrieve the CurrentModesType data from the D-BUS argument
-const QDBusArgument &operator >> (const QDBusArgument &arg, ModemManager::CurrentModesType &mode)
+const QDBusArgument &operator>>(const QDBusArgument &arg, ModemManager::CurrentModesType &mode)
 {
     uint temp1, temp2;
     arg.beginStructure();
@@ -54,7 +54,7 @@ const QDBusArgument &operator >> (const QDBusArgument &arg, ModemManager::Curren
 
 #if MM_CHECK_VERSION(1, 2, 0)
 // Marshall the OmaSessionType data into a D-BUS argument
-QDBusArgument &operator << (QDBusArgument &arg, const ModemManager::OmaSessionType &sessionType)
+QDBusArgument &operator<<(QDBusArgument &arg, const ModemManager::OmaSessionType &sessionType)
 {
     arg.beginStructure();
     arg << sessionType.type << sessionType.id;
@@ -63,7 +63,7 @@ QDBusArgument &operator << (QDBusArgument &arg, const ModemManager::OmaSessionTy
 }
 
 // Retrieve the OmaSessionType data from the D-BUS argument
-const QDBusArgument &operator >> (const QDBusArgument &arg, ModemManager::OmaSessionType &sessionType)
+const QDBusArgument &operator>>(const QDBusArgument &arg, ModemManager::OmaSessionType &sessionType)
 {
     uint type, id;
     arg.beginStructure();
@@ -77,7 +77,7 @@ const QDBusArgument &operator >> (const QDBusArgument &arg, ModemManager::OmaSes
 #endif
 
 // Marshall the SignalQualityPair data into a D-BUS argument
-QDBusArgument &operator << (QDBusArgument &arg, const ModemManager::SignalQualityPair &sqp)
+QDBusArgument &operator<<(QDBusArgument &arg, const ModemManager::SignalQualityPair &sqp)
 {
     arg.beginStructure();
     arg << sqp.signal << sqp.recent;
@@ -86,7 +86,7 @@ QDBusArgument &operator << (QDBusArgument &arg, const ModemManager::SignalQualit
 }
 
 // Retrieve the SignalQualityPair data from the D-BUS argument
-const QDBusArgument &operator >> (const QDBusArgument &arg, ModemManager::SignalQualityPair &sqp)
+const QDBusArgument &operator>>(const QDBusArgument &arg, ModemManager::SignalQualityPair &sqp)
 {
     arg.beginStructure();
     arg >> sqp.signal >> sqp.recent;
@@ -95,7 +95,7 @@ const QDBusArgument &operator >> (const QDBusArgument &arg, ModemManager::Signal
 }
 
 // Marshall the ValidityPair data into a D-BUS argument
-QDBusArgument &operator <<(QDBusArgument &arg, const ModemManager::ValidityPair &vp)
+QDBusArgument &operator<<(QDBusArgument &arg, const ModemManager::ValidityPair &vp)
 {
     arg.beginStructure();
     arg << vp.validity << vp.value;
@@ -104,7 +104,7 @@ QDBusArgument &operator <<(QDBusArgument &arg, const ModemManager::ValidityPair 
 }
 
 // Retrieve the ValidityPair data from the D-BUS argument
-const QDBusArgument &operator >>(const QDBusArgument &arg, ModemManager::ValidityPair &vp)
+const QDBusArgument &operator>>(const QDBusArgument &arg, ModemManager::ValidityPair &vp)
 {
     uint temp1, temp2;
     arg.beginStructure();
@@ -171,7 +171,7 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, ModemManager::QVa
     while (!argument.atEnd()) {
         QVariantMap element;
         argument >> element;
-        variantMapList.append( element );
+        variantMapList.append(element);
     }
 
     argument.endArray();

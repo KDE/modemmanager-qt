@@ -14,8 +14,7 @@
 
 namespace ModemManager
 {
-
-class ModemTimePrivate: public InterfacePrivate
+class ModemTimePrivate : public InterfacePrivate
 {
 public:
     explicit ModemTimePrivate(const QString &path, ModemTime *q);

@@ -19,8 +19,8 @@
 #include "generictypes.h"
 #include "interface.h"
 
-namespace ModemManager {
-
+namespace ModemManager
+{
 class ModemCdmaPrivate;
 
 /**

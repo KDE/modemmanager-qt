@@ -9,15 +9,14 @@
 
 #include <modemmanagerqt_export.h>
 
+#include <QDBusObjectPath>
 #include <QObject>
 #include <QSharedPointer>
-#include <QDBusObjectPath>
 
 #include "generictypes.h"
 
 namespace ModemManager
 {
-
 class InterfacePrivate;
 
 class MODEMMANAGERQT_EXPORT Interface : public QObject

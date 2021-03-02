@@ -19,15 +19,14 @@
 #include "generictypes_p.h"
 #include "mmdebug_p.h"
 
-
 namespace ModemManager
 {
-
 class ModemManager::BearerProperties::Private
 {
 public:
     Private()
-    { }
+    {
+    }
     QString apn;
     MMBearerIpFamily ipType;
     MMBearerAllowedAuth allowedAuth;
@@ -45,7 +44,7 @@ ModemManager::BearerProperties::BearerProperties()
 {
 }
 
-ModemManager::BearerProperties::BearerProperties(const ModemManager::BearerProperties& other)
+ModemManager::BearerProperties::BearerProperties(const ModemManager::BearerProperties &other)
     : d(new Private)
 {
     *this = other;
@@ -61,7 +60,7 @@ QString ModemManager::BearerProperties::apn() const
     return d->apn;
 }
 
-void ModemManager::BearerProperties::setApn(const QString& apn)
+void ModemManager::BearerProperties::setApn(const QString &apn)
 {
     d->apn = apn;
 }
@@ -91,7 +90,7 @@ QString ModemManager::BearerProperties::user() const
     return d->user;
 }
 
-void ModemManager::BearerProperties::setUser(const QString& user)
+void ModemManager::BearerProperties::setUser(const QString &user)
 {
     d->user = user;
 }
@@ -101,7 +100,7 @@ QString ModemManager::BearerProperties::password() const
     return d->password;
 }
 
-void ModemManager::BearerProperties::setPassword(const QString& password)
+void ModemManager::BearerProperties::setPassword(const QString &password)
 {
     d->password = password;
 }
@@ -131,12 +130,12 @@ QString ModemManager::BearerProperties::number() const
     return d->number;
 }
 
-void ModemManager::BearerProperties::setNumber(const QString& number)
+void ModemManager::BearerProperties::setNumber(const QString &number)
 {
     d->number = number;
 }
 
-ModemManager::BearerProperties& ModemManager::BearerProperties::operator=(const ModemManager::BearerProperties& other)
+ModemManager::BearerProperties &ModemManager::BearerProperties::operator=(const ModemManager::BearerProperties &other)
 {
     if (this == &other) {
         return *this;
@@ -200,24 +199,24 @@ void ModemManager::ModemPrivate::initializeBearers()
     Q_Q(Modem);
 
 #if MM_CHECK_VERSION(1, 2, 0)
-        QList<QDBusObjectPath> bearersList = modemIface.bearers();
-        Q_FOREACH (const QDBusObjectPath & bearer, bearersList) {
+    QList<QDBusObjectPath> bearersList = modemIface.bearers();
+    Q_FOREACH (const QDBusObjectPath &bearer, bearersList) {
+        if (!bearers.contains(bearer.path())) {
+            bearers.insert(bearer.path(), Bearer::Ptr());
+            Q_EMIT q->bearerAdded(bearer.path());
+        }
+    }
+#else
+    QDBusPendingReply<QList<QDBusObjectPath>> reply = modemIface.ListBearers();
+    reply.waitForFinished();
+    if (reply.isValid()) {
+        Q_FOREACH (const QDBusObjectPath &bearer, reply.value()) {
             if (!bearers.contains(bearer.path())) {
                 bearers.insert(bearer.path(), Bearer::Ptr());
                 Q_EMIT q->bearerAdded(bearer.path());
             }
         }
-#else
-        QDBusPendingReply<QList<QDBusObjectPath> > reply = modemIface.ListBearers();
-        reply.waitForFinished();
-        if (reply.isValid()) {
-            Q_FOREACH (const QDBusObjectPath & bearer, reply.value()) {
-                if (!bearers.contains(bearer.path())) {
-                    bearers.insert(bearer.path(), Bearer::Ptr());
-                    Q_EMIT q->bearerAdded(bearer.path());
-                }
-            }
-        }
+    }
 #endif
 }
 
@@ -238,11 +237,19 @@ ModemManager::Modem::Modem(const QString &path, QObject *parent)
 
     if (d->modemIface.isValid()) {
 #ifdef MMQT_STATIC
-        QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE), d->uni, QLatin1String(DBUS_INTERFACE_PROPS), QLatin1String("PropertiesChanged"), d,
-                                             SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+        QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
+                                              d->uni,
+                                              QLatin1String(DBUS_INTERFACE_PROPS),
+                                              QLatin1String("PropertiesChanged"),
+                                              d,
+                                              SLOT(onPropertiesChanged(QString, QVariantMap, QStringList)));
 #else
-        QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE), d->uni, QLatin1String(DBUS_INTERFACE_PROPS), QLatin1String("PropertiesChanged"), d,
-                                             SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+        QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
+                                             d->uni,
+                                             QLatin1String(DBUS_INTERFACE_PROPS),
+                                             QLatin1String("PropertiesChanged"),
+                                             d,
+                                             SLOT(onPropertiesChanged(QString, QVariantMap, QStringList)));
 #endif
     }
 
@@ -311,7 +318,7 @@ ModemManager::Bearer::List ModemManager::Modem::listBearers() const
     ModemManager::Bearer::List list;
     QMap<QString, Bearer::Ptr>::const_iterator i = d->bearers.constBegin();
     while (i != d->bearers.constEnd()) {
-        ModemManager::Bearer::Ptr bearer = const_cast<ModemPrivate*>(d)->findRegisteredBearer(i.key());
+        ModemManager::Bearer::Ptr bearer = const_cast<ModemPrivate *>(d)->findRegisteredBearer(i.key());
         if (bearer) {
             list << bearer;
         }
@@ -320,10 +327,10 @@ ModemManager::Bearer::List ModemManager::Modem::listBearers() const
     return list;
 }
 
-ModemManager::Bearer::Ptr ModemManager::Modem::findBearer(const QString& bearer) const
+ModemManager::Bearer::Ptr ModemManager::Modem::findBearer(const QString &bearer) const
 {
     Q_D(const Modem);
-    return const_cast<ModemPrivate*>(d)->findRegisteredBearer(bearer);
+    return const_cast<ModemPrivate *>(d)->findRegisteredBearer(bearer);
 }
 
 QDBusPendingReply<void> ModemManager::Modem::reset()
@@ -347,7 +354,7 @@ QDBusPendingReply<void> ModemManager::Modem::setPowerState(MMModemPowerState sta
 QDBusPendingReply<void> ModemManager::Modem::setCurrentCapabilities(Capabilities caps)
 {
     Q_D(Modem);
-    return d->modemIface.SetCurrentCapabilities((uint) caps);
+    return d->modemIface.SetCurrentCapabilities((uint)caps);
 }
 
 QDBusPendingReply<void> ModemManager::Modem::setCurrentModes(const CurrentModesType &mode)
@@ -578,7 +585,6 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
     qCDebug(MMQT) << ifaceName << changedProps.keys();
 
     if (ifaceName == QLatin1String(MMQT_DBUS_INTERFACE_MODEM)) {
-
         QVariantMap::const_iterator it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_SIM));
 
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_SIM));
@@ -589,7 +595,7 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
 #if MM_CHECK_VERSION(1, 2, 0)
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_BEARERS));
         if (it != changedProps.constEnd()) {
-            QList<QDBusObjectPath> bearerPaths = qdbus_cast< QList<QDBusObjectPath> >(*it);
+            QList<QDBusObjectPath> bearerPaths = qdbus_cast<QList<QDBusObjectPath>>(*it);
             if (bearerPaths.isEmpty()) {
                 QMap<QString, Bearer::Ptr>::const_iterator it = bearers.constBegin();
                 while (it != bearers.constEnd()) {
@@ -599,7 +605,7 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
                 bearers.clear();
             } else {
                 QStringList knownBearers = bearers.keys();
-                Q_FOREACH (const QDBusObjectPath & bearer, bearerPaths) {
+                Q_FOREACH (const QDBusObjectPath &bearer, bearerPaths) {
                     if (!bearers.contains(bearer.path())) {
                         bearers.insert(bearer.path(), ModemManager::Bearer::Ptr());
                         Q_EMIT q->bearerAdded(bearer.path());
@@ -607,7 +613,7 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
                         knownBearers.removeOne(bearer.path());
                     }
                 }
-                Q_FOREACH (const QString & path, knownBearers) {
+                Q_FOREACH (const QString &path, knownBearers) {
                     bearers.remove(path);
                     Q_EMIT q->bearerRemoved(path);
                 }
@@ -618,7 +624,7 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_SUPPORTEDCAPABILITIES));
         if (it != changedProps.constEnd()) {
             supportedCapabilities.clear();
-            Q_FOREACH (const uint cap, qdbus_cast<QList<uint> >(*it)) {
+            Q_FOREACH (const uint cap, qdbus_cast<QList<uint>>(*it)) {
                 supportedCapabilities << ((MMModemCapability)cap);
             }
             Q_EMIT q->supportedCapabilitiesChanged(supportedCapabilities);
@@ -680,7 +686,7 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
         }
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_PORTS));
         if (it != changedProps.constEnd()) {
-            ports = qdbus_cast< QList<Port> >(*it);
+            ports = qdbus_cast<QList<Port>>(*it);
             Q_EMIT q->portsChanged(ports);
         }
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_EQUIPMENTIDENTIFIER));
@@ -695,14 +701,14 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
         }
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_UNLOCKRETRIES));
         if (it != changedProps.constEnd()) {
-            unlockRetries = qdbus_cast< UnlockRetriesMap >(*it);
+            unlockRetries = qdbus_cast<UnlockRetriesMap>(*it);
             Q_EMIT q->unlockRetriesChanged(unlockRetries);
         }
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_STATE));
         if (it != changedProps.constEnd()) {
             // Should be handled by StateChanged signal
-//             Q_EMIT q->stateChanged(state, (MMModemState)it->toInt());
-//             state = (MMModemState)it->toInt();
+            //             Q_EMIT q->stateChanged(state, (MMModemState)it->toInt());
+            //             state = (MMModemState)it->toInt();
         }
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_STATEFAILEDREASON));
         if (it != changedProps.constEnd()) {
@@ -716,7 +722,7 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
         }
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_SIGNALQUALITY));
         if (it != changedProps.constEnd()) {
-            signalQuality = qdbus_cast< SignalQualityPair >(*it);
+            signalQuality = qdbus_cast<SignalQualityPair>(*it);
             Q_EMIT q->signalQualityChanged(signalQuality);
         }
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_OWNNUMBERS));
@@ -731,18 +737,18 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
         }
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_SUPPORTEDMODES));
         if (it != changedProps.constEnd()) {
-            supportedModes = qdbus_cast< SupportedModesType >(*it);
+            supportedModes = qdbus_cast<SupportedModesType>(*it);
             Q_EMIT q->supportedModesChanged(supportedModes);
         }
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_CURRENTMODES));
         if (it != changedProps.constEnd()) {
-            currentModes = qdbus_cast< CurrentModesType >(*it);
+            currentModes = qdbus_cast<CurrentModesType>(*it);
             Q_EMIT q->currentModesChanged(currentModes);
         }
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_SUPPORTEDBANDS));
         if (it != changedProps.constEnd()) {
             supportedBands.clear();
-            Q_FOREACH (const uint cap, qdbus_cast<QList<uint> >(*it)) {
+            Q_FOREACH (const uint cap, qdbus_cast<QList<uint>>(*it)) {
                 supportedBands << ((MMModemBand)cap);
             }
             Q_EMIT q->supportedBandsChanged(supportedBands);
@@ -750,7 +756,7 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_CURRENTBANDS));
         if (it != changedProps.constEnd()) {
             currentBands.clear();
-            Q_FOREACH (const uint cap, qdbus_cast<QList<uint> >(*it)) {
+            Q_FOREACH (const uint cap, qdbus_cast<QList<uint>>(*it)) {
                 currentBands << ((MMModemBand)cap);
             }
             Q_EMIT q->currentBandsChanged(currentBands);
@@ -767,5 +773,5 @@ void ModemManager::ModemPrivate::onStateChanged(int oldState, int newState, uint
 {
     Q_Q(Modem);
     state = (MMModemState)newState;
-    Q_EMIT q->stateChanged((MMModemState) oldState, (MMModemState) newState, (MMModemStateChangeReason) reason);
+    Q_EMIT q->stateChanged((MMModemState)oldState, (MMModemState)newState, (MMModemStateChangeReason)reason);
 }

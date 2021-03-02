@@ -7,7 +7,7 @@
 #include "objectmanager.h"
 #include "dbus/fakedbus.h"
 
-ObjectManager::ObjectManager(QObject* parent)
+ObjectManager::ObjectManager(QObject *parent)
     : QDBusAbstractAdaptor(parent)
 {
     qDBusRegisterMetaType<ModemManager::MMVariantMapMap>();
@@ -18,7 +18,7 @@ ObjectManager::~ObjectManager()
 {
 }
 
-void ObjectManager::addInterfaces(const QDBusObjectPath& object_path, const ModemManager::MMVariantMapMap& interfaces_and_properties)
+void ObjectManager::addInterfaces(const QDBusObjectPath &object_path, const ModemManager::MMVariantMapMap &interfaces_and_properties)
 {
     if (m_managedObjects.contains(object_path)) {
         ModemManager::MMVariantMapMap map = m_managedObjects.value(object_path);
@@ -31,7 +31,7 @@ void ObjectManager::addInterfaces(const QDBusObjectPath& object_path, const Mode
     Q_EMIT InterfacesAdded(object_path, interfaces_and_properties);
 }
 
-void ObjectManager::removeInterfaces(const QDBusObjectPath& object_path, const QStringList& interfaces)
+void ObjectManager::removeInterfaces(const QDBusObjectPath &object_path, const QStringList &interfaces)
 {
     if (interfaces.contains(QLatin1String(MMQT_DBUS_INTERFACE_MODEM))) {
         m_managedObjects.remove(object_path);

@@ -6,7 +6,7 @@
 
 #include "modemtime.h"
 
-ModemTime::ModemTime(QObject* parent)
+ModemTime::ModemTime(QObject *parent)
     : QDBusAbstractAdaptor(parent)
     , m_enabledNotifications(false)
 {
@@ -26,7 +26,7 @@ QString ModemTime::GetNetworkTime()
     return QStringLiteral("2010-08-06T18:34:14.3+02:00");
 }
 
-void ModemTime::setModemPath(const QString& path)
+void ModemTime::setModemPath(const QString &path)
 {
     m_modemPath = path;
 }
@@ -36,7 +36,7 @@ void ModemTime::setEnableNotifications(bool enable)
     m_enabledNotifications = enable;
 }
 
-void ModemTime::setNetworkTimezone(const QVariantMap& timezone)
+void ModemTime::setNetworkTimezone(const QVariantMap &timezone)
 {
     m_timezone = timezone;
 

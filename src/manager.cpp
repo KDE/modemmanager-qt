@@ -26,16 +26,22 @@ Q_GLOBAL_STATIC(ModemManager::ModemManagerPrivate, globalModemManager)
 
 ModemManager::ModemManagerPrivate::ModemManagerPrivate()
 #ifdef MMQT_STATIC
-    : watcher(QLatin1String(MMQT_DBUS_SERVICE), QDBusConnection::sessionBus(), QDBusServiceWatcher::WatchForRegistration | QDBusServiceWatcher::WatchForUnregistration, this)
+    : watcher(QLatin1String(MMQT_DBUS_SERVICE),
+              QDBusConnection::sessionBus(),
+              QDBusServiceWatcher::WatchForRegistration | QDBusServiceWatcher::WatchForUnregistration,
+              this)
     , iface(QLatin1String(MMQT_DBUS_SERVICE), QLatin1String(MMQT_DBUS_PATH), QDBusConnection::sessionBus(), this)
     , manager(QLatin1String(MMQT_DBUS_SERVICE), QLatin1String(MMQT_DBUS_PATH), QDBusConnection::sessionBus(), this)
 #else
-    : watcher(QLatin1String(MMQT_DBUS_SERVICE), QDBusConnection::systemBus(), QDBusServiceWatcher::WatchForRegistration | QDBusServiceWatcher::WatchForUnregistration, this)
+    : watcher(QLatin1String(MMQT_DBUS_SERVICE),
+              QDBusConnection::systemBus(),
+              QDBusServiceWatcher::WatchForRegistration | QDBusServiceWatcher::WatchForUnregistration,
+              this)
     , iface(QLatin1String(MMQT_DBUS_SERVICE), QLatin1String(MMQT_DBUS_PATH), QDBusConnection::systemBus(), this)
     , manager(QLatin1String(MMQT_DBUS_SERVICE), QLatin1String(MMQT_DBUS_PATH), QDBusConnection::systemBus(), this)
 #endif
 {
-    qDBusRegisterMetaType<QList<QDBusObjectPath> >();
+    qDBusRegisterMetaType<QList<QDBusObjectPath>>();
     registerModemManagerTypes();
 
     bool serviceFound = manager.isValid();
@@ -82,7 +88,7 @@ void ModemManager::ModemManagerPrivate::init()
 
     QDBusPendingReply<DBUSManagerStruct> reply = manager.GetManagedObjects();
     reply.waitForFinished();
-    if (!reply.isError()) {  // enum devices
+    if (!reply.isError()) { // enum devices
         Q_FOREACH (const QDBusObjectPath &path, reply.value().keys()) {
             const QString uni = path.path();
             qCDebug(MMQT) << "Adding device" << uni;
@@ -148,7 +154,7 @@ void ModemManager::ModemManagerPrivate::daemonUnregistered()
 
 void ModemManager::ModemManagerPrivate::onInterfacesAdded(const QDBusObjectPath &object_path, const MMVariantMapMap &interfaces_and_properties)
 {
-    //TODO control added bearers and sim cards
+    // TODO control added bearers and sim cards
 
     const QString uni = object_path.path();
 
@@ -165,15 +171,16 @@ void ModemManager::ModemManagerPrivate::onInterfacesAdded(const QDBusObjectPath 
         Q_EMIT modemAdded(uni);
     }
     // re-Q_EMIT in case of modem type change (GSM <-> CDMA)
-    else if (modemList.contains(uni) && (interfaces_and_properties.keys().contains(QLatin1String(MMQT_DBUS_INTERFACE_MODEM_MODEM3GPP)) ||
-                                         interfaces_and_properties.keys().contains(QLatin1String(MMQT_DBUS_INTERFACE_MODEM_MODEMCDMA)))) {
+    else if (modemList.contains(uni)
+             && (interfaces_and_properties.keys().contains(QLatin1String(MMQT_DBUS_INTERFACE_MODEM_MODEM3GPP))
+                 || interfaces_and_properties.keys().contains(QLatin1String(MMQT_DBUS_INTERFACE_MODEM_MODEMCDMA)))) {
         Q_EMIT modemAdded(uni);
     }
 }
 
 void ModemManager::ModemManagerPrivate::onInterfacesRemoved(const QDBusObjectPath &object_path, const QStringList &interfaces)
 {
-    //TODO control removed bearers and sim cards
+    // TODO control removed bearers and sim cards
 
     const QString uni = object_path.path();
 
@@ -203,7 +210,7 @@ ModemManager::ModemDevice::List ModemManager::modemDevices()
     return globalModemManager->modemDevices();
 }
 
-ModemManager::Notifier * ModemManager::notifier()
+ModemManager::Notifier *ModemManager::notifier()
 {
     return globalModemManager;
 }

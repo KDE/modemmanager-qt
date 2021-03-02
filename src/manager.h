@@ -13,8 +13,8 @@
 
 #include <modemmanagerqt_export.h>
 
-#include <QObject>
 #include <QDBusObjectPath>
+#include <QObject>
 #include <QSharedPointer>
 
 #include "modemdevice.h"
@@ -48,42 +48,42 @@ Q_SIGNALS:
     void modemRemoved(const QString &udi);
 
     /**
-      * This signal is emitted when the ModemManager DBus service goes away
-      */
+     * This signal is emitted when the ModemManager DBus service goes away
+     */
     void serviceDisappeared();
     /**
-      * This signal is emitted when the ModemManager DBus service appears
-      */
+     * This signal is emitted when the ModemManager DBus service appears
+     */
     void serviceAppeared();
 };
 
 /**
-  * Retrieves the list of all modem interfaces Unique Device Identifiers (UDIs)
-  * in the system. This method is the equivalent of enumerateDevices described
-  * in Modem Manager specification.
-  *
-  * Note: only HW modems are returned (Gsm or Cdma)
-  *
-  * @return the list of modem interfaces available in this system
-  */
+ * Retrieves the list of all modem interfaces Unique Device Identifiers (UDIs)
+ * in the system. This method is the equivalent of enumerateDevices described
+ * in Modem Manager specification.
+ *
+ * Note: only HW modems are returned (Gsm or Cdma)
+ *
+ * @return the list of modem interfaces available in this system
+ */
 MODEMMANAGERQT_EXPORT ModemDevice::List modemDevices();
 
 /**
-  * Find a new ModemManagerInterface object given its UDI.
-  *
-  * Note: only Modem-inherited objects are returned (not SMS, SIM or Bearer objects)
-  *
-  * @param uni the identifier of the modem interface to find
-  * @returns a valid Modem object if there's a device having the given UDI, an invalid one otherwise
-  */
+ * Find a new ModemManagerInterface object given its UDI.
+ *
+ * Note: only Modem-inherited objects are returned (not SMS, SIM or Bearer objects)
+ *
+ * @param uni the identifier of the modem interface to find
+ * @returns a valid Modem object if there's a device having the given UDI, an invalid one otherwise
+ */
 MODEMMANAGERQT_EXPORT ModemDevice::Ptr findModemDevice(const QString &uni);
 
 /**
-  * Start a new scan for connected modem devices.
-  */
+ * Start a new scan for connected modem devices.
+ */
 MODEMMANAGERQT_EXPORT void scanDevices();
 
-MODEMMANAGERQT_EXPORT Notifier * notifier();
+MODEMMANAGERQT_EXPORT Notifier *notifier();
 }
 
 #endif

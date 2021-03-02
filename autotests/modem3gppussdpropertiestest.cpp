@@ -14,9 +14,8 @@
 
 #include "fakemodem/modem.h"
 
+#include <QSignalSpy>
 #include <QTest>
-#include <QSignalSpy>
-#include <QSignalSpy>
 
 void Modem3gppUssdPropertiesTest::initTestCase()
 {
@@ -35,9 +34,11 @@ void Modem3gppUssdPropertiesTest::initTestCase()
     modem->setMaxActiveBearers(1);
     modem->setMaxBearers(1);
     modem->setModel(QLatin1String("K2540"));
-    //modem->setOwnNumbers();
+    // modem->setOwnNumbers();
     modem->setPlugin(QLatin1String("Huawei"));
-    modem->setPorts({{QLatin1String("ttyUSB0"), MM_MODEM_PORT_TYPE_AT}, {QLatin1String("ttyUSB1"), MM_MODEM_PORT_TYPE_QCDM}, {QLatin1String("ttyUSB2"), MM_MODEM_PORT_TYPE_AT}});
+    modem->setPorts({{QLatin1String("ttyUSB0"), MM_MODEM_PORT_TYPE_AT},
+                     {QLatin1String("ttyUSB1"), MM_MODEM_PORT_TYPE_QCDM},
+                     {QLatin1String("ttyUSB2"), MM_MODEM_PORT_TYPE_AT}});
     modem->SetPowerState(3);
     modem->setPrimaryPort(QLatin1String("ttyUSB2"));
     modem->setRevision(QLatin1String("11.001.05.00.11"));
@@ -78,7 +79,8 @@ void Modem3gppUssdPropertiesTest::testModem3gppUssdProperties()
     ModemManager::ModemDevice::Ptr modemDevice = ModemManager::modemDevices().first();
     QVERIFY(modemDevice);
     QVERIFY(modemDevice->hasInterface(ModemManager::ModemDevice::GsmUssdInterface));
-    ModemManager::Modem3gppUssd::Ptr modem3gppUssdInterface = modemDevice->interface(ModemManager::ModemDevice::GsmUssdInterface).objectCast<ModemManager::Modem3gppUssd>();
+    ModemManager::Modem3gppUssd::Ptr modem3gppUssdInterface =
+        modemDevice->interface(ModemManager::ModemDevice::GsmUssdInterface).objectCast<ModemManager::Modem3gppUssd>();
     QVERIFY(modem3gppUssdInterface);
 
     modem3gppUssd->setNetworkNotification(QLatin1String("notification1"));

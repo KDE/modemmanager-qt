@@ -19,7 +19,7 @@ class ModemMessaging : public QDBusAbstractAdaptor
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.fakemodem.Modem.Messaging")
 public:
-    explicit ModemMessaging(QObject * parent = nullptr);
+    explicit ModemMessaging(QObject *parent = nullptr);
     virtual ~ModemMessaging();
 
     Q_PROPERTY(uint DefaultStorage READ defaultStorage)
@@ -31,7 +31,7 @@ public:
     ModemManager::UIntList supportedStorages() const;
 
     /* Not part of dbus interface */
-    void addMessage(Sms * sms);
+    void addMessage(Sms *sms);
     void setModemPath(const QString &path);
     void setEnableNotifications(bool enable);
     void setDefaultStorage(uint defaultStorage);
@@ -53,7 +53,7 @@ private:
     bool m_enabledNotifications;
     int m_messageCounter;
     uint m_defaultStorage;
-    QMap<QDBusObjectPath, Sms*> m_messages;
+    QMap<QDBusObjectPath, Sms *> m_messages;
     ModemManager::UIntList m_supportedStorages;
 };
 

@@ -16,7 +16,6 @@
 
 namespace ModemManager
 {
-
 class SmsPrivate : public QObject
 {
     Q_OBJECT

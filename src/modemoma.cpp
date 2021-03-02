@@ -6,8 +6,8 @@
 */
 
 #include "modemoma.h"
-#include "modemoma_p.h"
 #include "mmdebug_p.h"
+#include "modemoma_p.h"
 #ifdef MMQT_STATIC
 #include "dbus/fakedbus.h"
 #else
@@ -36,18 +36,26 @@ ModemManager::ModemOma::ModemOma(const QString &path, QObject *parent)
 {
     Q_D(ModemOma);
 
-    qRegisterMetaType<QFlags<MMOmaFeature> >();
+    qRegisterMetaType<QFlags<MMOmaFeature>>();
     qRegisterMetaType<MMOmaSessionType>();
     qRegisterMetaType<MMOmaSessionState>();
     qRegisterMetaType<MMOmaSessionStateFailedReason>();
 
     connect(&d->omaIface, &OrgFreedesktopModemManager1ModemOmaInterface::SessionStateChanged, d, &ModemOmaPrivate::onSessionStateChanged);
 #ifdef MMQT_STATIC
-    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE), d->uni, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), d,
-                                        SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
+                                          d->uni,
+                                          QLatin1String(DBUS_INTERFACE_PROPS),
+                                          QStringLiteral("PropertiesChanged"),
+                                          d,
+                                          SLOT(onPropertiesChanged(QString, QVariantMap, QStringList)));
 #else
-    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE), d->uni, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), d,
-                                        SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
+                                         d->uni,
+                                         QLatin1String(DBUS_INTERFACE_PROPS),
+                                         QStringLiteral("PropertiesChanged"),
+                                         d,
+                                         SLOT(onPropertiesChanged(QString, QVariantMap, QStringList)));
 #endif
 }
 

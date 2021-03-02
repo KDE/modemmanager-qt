@@ -6,7 +6,7 @@
 
 #include "bearer.h"
 
-Bearer::Bearer(QObject* parent)
+Bearer::Bearer(QObject *parent)
     : QObject(parent)
     , m_connected(false)
     , m_ipTimeout(0)
@@ -58,7 +58,7 @@ QString Bearer::bearerPath() const
     return m_bearerPath;
 }
 
-void Bearer::setBearerPath(const QString& path)
+void Bearer::setBearerPath(const QString &path)
 {
     m_bearerPath = path;
 }
@@ -81,7 +81,7 @@ void Bearer::setConnected(bool connected)
     }
 }
 
-void Bearer::setInterface(const QString& interface)
+void Bearer::setInterface(const QString &interface)
 {
     m_interface = interface;
 
@@ -94,7 +94,7 @@ void Bearer::setInterface(const QString& interface)
     }
 }
 
-void Bearer::setIp4Config(const QVariantMap& config)
+void Bearer::setIp4Config(const QVariantMap &config)
 {
     m_ip4Config = config;
 
@@ -107,7 +107,7 @@ void Bearer::setIp4Config(const QVariantMap& config)
     }
 }
 
-void Bearer::setIp6Config(const QVariantMap& config)
+void Bearer::setIp6Config(const QVariantMap &config)
 {
     m_ip6Config = config;
 
@@ -133,7 +133,7 @@ void Bearer::setIpTimeout(uint timeout)
     }
 }
 
-void Bearer::setProperties(const QVariantMap& properties)
+void Bearer::setProperties(const QVariantMap &properties)
 {
     m_properties = properties;
 

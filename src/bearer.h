@@ -17,7 +17,6 @@
 
 namespace ModemManager
 {
-
 class BearerPrivate;
 
 /**
@@ -126,7 +125,7 @@ private:
  *
  * This class provides access to specific actions that may be performed on available bearers.
  */
-class MODEMMANAGERQT_EXPORT Bearer: public QObject
+class MODEMMANAGERQT_EXPORT Bearer : public QObject
 {
     Q_OBJECT
 public:

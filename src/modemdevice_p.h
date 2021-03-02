@@ -8,18 +8,17 @@
 #ifndef MODEMMANAGERQT_MODEMDEVICE_P_H
 #define MODEMMANAGERQT_MODEMDEVICE_P_H
 
+#include <QMap>
 #include <QObject>
 #include <QStringList>
-#include <QMap>
 
-#include "modemdevice.h"
-#include "interface.h"
 #include "bearer.h"
+#include "interface.h"
+#include "modemdevice.h"
 #include "sim.h"
 
 namespace ModemManager
 {
-
 class ModemDevicePrivate : public QObject
 {
     Q_OBJECT
@@ -31,9 +30,9 @@ public:
     QString introspect() const;
     QString uni;
     QMap<ModemManager::ModemDevice::InterfaceType, ModemManager::Interface::Ptr> interfaceList;
-    //QMap<QString, ModemManager::Bearer::Ptr> bearerList;
+    // QMap<QString, ModemManager::Bearer::Ptr> bearerList;
     ModemManager::Sim::Ptr simCard;
-    ModemManager::Interface::List interfaces() ;
+    ModemManager::Interface::List interfaces();
     ModemManager::Interface::Ptr interface(ModemManager::ModemDevice::InterfaceType type);
     ModemManager::Interface::Ptr createInterface(ModemManager::ModemDevice::InterfaceType type);
     ModemManager::Bearer::Ptr findBearer(const QString &uni);

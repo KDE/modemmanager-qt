@@ -39,7 +39,7 @@ ModemManager::ModemVoice::ModemVoice(const QString &path, QObject *parent)
     // Note: no need to listen for PropertiesChanged signals. Additions and
     // removals of calls are already notified via CallAdded and CallRemoved
 
-    QList <QDBusObjectPath> calls = d->modemVoiceIface.calls();
+    QList<QDBusObjectPath> calls = d->modemVoiceIface.calls();
     Q_FOREACH (const QDBusObjectPath &op, calls) {
         const QString path = op.path();
         d->callList.insert(path, ModemManager::Call::Ptr());
@@ -99,7 +99,7 @@ void ModemManager::ModemVoicePrivate::onCallDeleted(const QDBusObjectPath &path)
 ModemManager::Call::List ModemManager::ModemVoice::calls() const
 {
     Q_D(const ModemVoice);
-    return const_cast<ModemVoicePrivate*>(d)->calls();
+    return const_cast<ModemVoicePrivate *>(d)->calls();
 }
 
 QDBusPendingReply<QDBusObjectPath> ModemManager::ModemVoice::createCall(const QString &number)
@@ -109,7 +109,7 @@ QDBusPendingReply<QDBusObjectPath> ModemManager::ModemVoice::createCall(const QS
     return createCall(map);
 }
 
-QDBusPendingReply<QDBusObjectPath> ModemManager::ModemVoice::createCall(const QVariantMap& call)
+QDBusPendingReply<QDBusObjectPath> ModemManager::ModemVoice::createCall(const QVariantMap &call)
 {
     Q_D(ModemVoice);
 
@@ -127,7 +127,7 @@ QDBusPendingReply<void> ModemManager::ModemVoice::deleteCall(const QString &uni)
     return d->modemVoiceIface.DeleteCall(QDBusObjectPath(uni));
 }
 
-ModemManager::Call::Ptr ModemManager::ModemVoice::findCall(const QString& uni)
+ModemManager::Call::Ptr ModemManager::ModemVoice::findCall(const QString &uni)
 {
     Q_D(ModemVoice);
     return d->findCall(uni);

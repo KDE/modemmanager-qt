@@ -15,9 +15,9 @@
 
 #include <modemmanagerqt_export.h>
 
+#include <QDBusObjectPath>
 #include <QObject>
 #include <QSharedPointer>
-#include <QDBusObjectPath>
 
 #include "bearer.h"
 #include "generictypes.h"
@@ -25,7 +25,6 @@
 
 namespace ModemManager
 {
-
 class ModemPrivate;
 
 /**
@@ -163,7 +162,7 @@ public:
     typedef QSharedPointer<Modem> Ptr;
     typedef QList<Ptr> List;
 
-    explicit Modem(const QString &path, QObject *parent = nullptr );
+    explicit Modem(const QString &path, QObject *parent = nullptr);
     ~Modem();
 
     QString uni() const;

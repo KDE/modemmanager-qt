@@ -7,15 +7,14 @@
 #ifndef MODEMMANAGERQT_MODEMFIRMWARE_H
 #define MODEMMANAGERQT_MODEMFIRMWARE_H
 
-#include <modemmanagerqt_export.h>
 #include "interface.h"
+#include <modemmanagerqt_export.h>
 
 #include <QObject>
 #include <QSharedPointer>
 
 namespace ModemManager
 {
-
 class ModemFirmwarePrivate;
 
 /**
@@ -27,7 +26,7 @@ class ModemFirmwarePrivate;
  *
  * @since 1.1.94
  */
-class MODEMMANAGERQT_EXPORT ModemFirmware: public Interface
+class MODEMMANAGERQT_EXPORT ModemFirmware : public Interface
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(ModemFirmware)

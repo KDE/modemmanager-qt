@@ -18,7 +18,6 @@
 
 namespace ModemManager
 {
-
 class ModemOmaPrivate;
 
 /**
@@ -69,7 +68,7 @@ public:
      */
     MMOmaSessionState sessionState() const;
 
-    //methods
+    // methods
     /**
      * Configures which OMA device management features should be enabled.
      *

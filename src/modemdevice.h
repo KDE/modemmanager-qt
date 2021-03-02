@@ -12,12 +12,12 @@
 
 #include <modemmanagerqt_export.h>
 
+#include <QDBusObjectPath>
 #include <QObject>
 #include <QSharedPointer>
-#include <QDBusObjectPath>
 
-#include "generictypes.h"
 #include "bearer.h"
+#include "generictypes.h"
 #include "interface.h"
 #include "modem.h"
 #include "modemmessaging.h"
@@ -25,7 +25,6 @@
 
 namespace ModemManager
 {
-
 class ModemDevicePrivate;
 
 class MODEMMANAGERQT_EXPORT ModemDevice : public QObject

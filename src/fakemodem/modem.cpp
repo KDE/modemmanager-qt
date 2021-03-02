@@ -6,7 +6,7 @@
 
 #include "modem.h"
 
-Modem::Modem(QObject* parent)
+Modem::Modem(QObject *parent)
     : QObject(parent)
     , m_accessTechnologies(0)
     , m_currentCapabilities(0)
@@ -31,7 +31,7 @@ uint Modem::accessTechnologies() const
     return m_accessTechnologies;
 }
 
-QList< QDBusObjectPath > Modem::bearers() const
+QList<QDBusObjectPath> Modem::bearers() const
 {
     return m_bearers;
 }
@@ -176,17 +176,17 @@ ModemManager::UnlockRetriesMap Modem::unlockRetries() const
     return m_unlockRetries;
 }
 
-void Modem::addBearer(const QDBusObjectPath& bearer)
+void Modem::addBearer(const QDBusObjectPath &bearer)
 {
     m_bearers << bearer;
 }
 
-void Modem::removeBearer(const QDBusObjectPath& bearer)
+void Modem::removeBearer(const QDBusObjectPath &bearer)
 {
     m_bearers.removeAll(bearer);
 }
 
-void Modem::setDevice(const QString& device)
+void Modem::setDevice(const QString &device)
 {
     m_device = device;
 
@@ -204,7 +204,7 @@ void Modem::setEnableNotifications(bool enable)
     m_enabledNotifications = enable;
 }
 
-void Modem::setDeviceIdentifier(const QString& deviceIdentifier)
+void Modem::setDeviceIdentifier(const QString &deviceIdentifier)
 {
     m_deviceIdentifier = deviceIdentifier;
 
@@ -217,7 +217,7 @@ void Modem::setDeviceIdentifier(const QString& deviceIdentifier)
     }
 }
 
-void Modem::setDrivers(const QStringList& drivers)
+void Modem::setDrivers(const QStringList &drivers)
 {
     m_drivers = drivers;
 
@@ -230,7 +230,7 @@ void Modem::setDrivers(const QStringList& drivers)
     }
 }
 
-void Modem::setEquipmentIdentifier(const QString& identifier)
+void Modem::setEquipmentIdentifier(const QString &identifier)
 {
     m_equipmentIdentifier = identifier;
 
@@ -243,7 +243,7 @@ void Modem::setEquipmentIdentifier(const QString& identifier)
     }
 }
 
-void Modem::setManufacturer(const QString& manufacturer)
+void Modem::setManufacturer(const QString &manufacturer)
 {
     m_manufacturer = manufacturer;
 
@@ -282,12 +282,12 @@ void Modem::setMaxBearers(uint bearers)
     }
 }
 
-void Modem::setModemPath(const QString& path)
+void Modem::setModemPath(const QString &path)
 {
     m_path = path;
 }
 
-void Modem::setModel(const QString& model)
+void Modem::setModel(const QString &model)
 {
     m_model = model;
 
@@ -300,7 +300,7 @@ void Modem::setModel(const QString& model)
     }
 }
 
-void Modem::setOwnNumbers(const QStringList& numbers)
+void Modem::setOwnNumbers(const QStringList &numbers)
 {
     m_ownNumbers = numbers;
 
@@ -313,7 +313,7 @@ void Modem::setOwnNumbers(const QStringList& numbers)
     }
 }
 
-void Modem::setPlugin(const QString& plugin)
+void Modem::setPlugin(const QString &plugin)
 {
     m_plugin = plugin;
 
@@ -326,7 +326,7 @@ void Modem::setPlugin(const QString& plugin)
     }
 }
 
-void Modem::setPorts(const ModemManager::PortList& ports)
+void Modem::setPorts(const ModemManager::PortList &ports)
 {
     m_ports = ports;
 
@@ -339,7 +339,7 @@ void Modem::setPorts(const ModemManager::PortList& ports)
     }
 }
 
-void Modem::setPrimaryPort(const QString& port)
+void Modem::setPrimaryPort(const QString &port)
 {
     m_primaryPort = port;
 
@@ -352,7 +352,7 @@ void Modem::setPrimaryPort(const QString& port)
     }
 }
 
-void Modem::setRevision(const QString& revision)
+void Modem::setRevision(const QString &revision)
 {
     m_revision = revision;
 
@@ -365,7 +365,7 @@ void Modem::setRevision(const QString& revision)
     }
 }
 
-void Modem::setSignalQuality(const ModemManager::SignalQualityPair& signalQuality)
+void Modem::setSignalQuality(const ModemManager::SignalQualityPair &signalQuality)
 {
     m_signalQuality = signalQuality;
 
@@ -378,7 +378,7 @@ void Modem::setSignalQuality(const ModemManager::SignalQualityPair& signalQualit
     }
 }
 
-void Modem::setSim(const QDBusObjectPath& sim)
+void Modem::setSim(const QDBusObjectPath &sim)
 {
     m_sim = sim;
 
@@ -414,7 +414,7 @@ void Modem::setStateFailedReason(uint reason)
     }
 }
 
-void Modem::setSupportedBands(const ModemManager::UIntList& bands)
+void Modem::setSupportedBands(const ModemManager::UIntList &bands)
 {
     m_supportedBands = bands;
 
@@ -427,7 +427,7 @@ void Modem::setSupportedBands(const ModemManager::UIntList& bands)
     }
 }
 
-void Modem::setSupportedCapabilities(const ModemManager::UIntList& capabilities)
+void Modem::setSupportedCapabilities(const ModemManager::UIntList &capabilities)
 {
     m_supportedCapabilities = capabilities;
 
@@ -453,7 +453,7 @@ void Modem::setSupportedIpFamilies(uint families)
     }
 }
 
-void Modem::setSupportedModes(const ModemManager::SupportedModesType& modes)
+void Modem::setSupportedModes(const ModemManager::SupportedModesType &modes)
 {
     m_supportedModes = modes;
 
@@ -479,7 +479,7 @@ void Modem::setUnlockRequired(uint unlockRequired)
     }
 }
 
-void Modem::setUnlockRetries(const ModemManager::UnlockRetriesMap& unlockRetries)
+void Modem::setUnlockRetries(const ModemManager::UnlockRetriesMap &unlockRetries)
 {
     m_unlockRetries = unlockRetries;
 
@@ -505,13 +505,13 @@ void Modem::setAccessTechnologies(uint technologies)
     }
 }
 
-void Modem::SetCurrentBands(const QList< uint >& bands)
+void Modem::SetCurrentBands(const QList<uint> &bands)
 {
     m_currentBands = bands;
 
     if (m_enabledNotifications) {
         QVariantMap map;
-        map.insert(QLatin1String("CurrentBands"), QVariant::fromValue<QList<uint> >(m_currentBands));
+        map.insert(QLatin1String("CurrentBands"), QVariant::fromValue<QList<uint>>(m_currentBands));
         QDBusMessage message = QDBusMessage::createSignal(m_path, QLatin1String("org.freedesktop.DBus.Properties"), QLatin1String("PropertiesChanged"));
         message << QLatin1String("org.kde.fakemodem.Modem") << map << QStringList();
         QDBusConnection::sessionBus().send(message);
@@ -557,7 +557,7 @@ void Modem::SetPowerState(uint state)
     }
 }
 
-QString Modem::Command(const QString& cmd, uint timeout)
+QString Modem::Command(const QString &cmd, uint timeout)
 {
     Q_UNUSED(cmd);
     Q_UNUSED(timeout);
@@ -565,14 +565,14 @@ QString Modem::Command(const QString& cmd, uint timeout)
     return QString();
 }
 
-QDBusObjectPath Modem::CreateBearer(const QVariantMap& properties)
+QDBusObjectPath Modem::CreateBearer(const QVariantMap &properties)
 {
     Q_UNUSED(properties);
     // TODO
     return QDBusObjectPath();
 }
 
-void Modem::DeleteBearer(const QDBusObjectPath& bearer)
+void Modem::DeleteBearer(const QDBusObjectPath &bearer)
 {
     Q_UNUSED(bearer);
     // TODO
@@ -584,13 +584,13 @@ void Modem::Enable(bool enable)
     // TODO
 }
 
-void Modem::FactoryReset(const QString& code)
+void Modem::FactoryReset(const QString &code)
 {
     Q_UNUSED(code);
     // TODO
 }
 
-QList< QDBusObjectPath > Modem::ListBearers()
+QList<QDBusObjectPath> Modem::ListBearers()
 {
     return m_bearers;
 }
@@ -605,7 +605,7 @@ QVariantMap Modem::toMap() const
     QVariantMap map;
     map.insert(QLatin1String(MM_MODEM_PROPERTY_SIM), QVariant::fromValue<QDBusObjectPath>(m_sim));
 #if MM_CHECK_VERSION(1, 2, 0)
-    map.insert(QLatin1String(MM_MODEM_PROPERTY_BEARERS), QVariant::fromValue<QList<QDBusObjectPath> >(m_bearers));
+    map.insert(QLatin1String(MM_MODEM_PROPERTY_BEARERS), QVariant::fromValue<QList<QDBusObjectPath>>(m_bearers));
 #endif
     map.insert(QLatin1String(MM_MODEM_PROPERTY_SUPPORTEDCAPABILITIES), QVariant::fromValue<ModemManager::UIntList>(m_supportedCapabilities));
     map.insert(QLatin1String(MM_MODEM_PROPERTY_CURRENTCAPABILITIES), m_currentCapabilities);
@@ -636,4 +636,3 @@ QVariantMap Modem::toMap() const
     map.insert(QLatin1String(MM_MODEM_PROPERTY_SUPPORTEDIPFAMILIES), m_supportedIpFamilies);
     return map;
 }
-

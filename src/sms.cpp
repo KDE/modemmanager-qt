@@ -7,8 +7,8 @@
 */
 
 #include "sms.h"
-#include "sms_p.h"
 #include "mmdebug_p.h"
+#include "sms_p.h"
 
 #ifdef MMQT_STATIC
 #include "dbus/fakedbus.h"
@@ -28,8 +28,8 @@ ModemManager::SmsPrivate::SmsPrivate(const QString &path, Sms *q)
 {
     if (smsIface.isValid()) {
         uni = path;
-        state = (MMSmsState) smsIface.state();
-        pduType = (MMSmsPduType) smsIface.pduType();
+        state = (MMSmsState)smsIface.state();
+        pduType = (MMSmsPduType)smsIface.pduType();
         number = smsIface.number();
         text = smsIface.text();
         smsc = smsIface.SMSC();
@@ -38,13 +38,13 @@ ModemManager::SmsPrivate::SmsPrivate(const QString &path, Sms *q)
         smsClass = smsIface.smsClass();
         deliveryReportRequest = smsIface.deliveryReportRequest();
         messageReference = smsIface.messageReference();
-        timestamp =  QDateTime::fromString(smsIface.timestamp(), Qt::ISODate);
+        timestamp = QDateTime::fromString(smsIface.timestamp(), Qt::ISODate);
         dischargeTimestamp = QDateTime::fromString(smsIface.dischargeTimestamp(), Qt::ISODate);
-        deliveryState = (MMSmsDeliveryState) smsIface.deliveryState();
-        storage = (MMSmsStorage) smsIface.storage();
+        deliveryState = (MMSmsDeliveryState)smsIface.deliveryState();
+        storage = (MMSmsStorage)smsIface.storage();
 #if MM_CHECK_VERSION(1, 2, 0)
-        serviceCategory = (MMSmsCdmaServiceCategory) smsIface.serviceCategory();
-        teleserviceId = (MMSmsCdmaTeleserviceId) smsIface.teleserviceId();
+        serviceCategory = (MMSmsCdmaServiceCategory)smsIface.serviceCategory();
+        teleserviceId = (MMSmsCdmaTeleserviceId)smsIface.teleserviceId();
 #endif
     }
 }
@@ -65,11 +65,19 @@ ModemManager::Sms::Sms(const QString &path, QObject *parent)
 #endif
 
 #ifdef MMQT_STATIC
-    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE), path, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), d,
-                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
+                                          path,
+                                          QLatin1String(DBUS_INTERFACE_PROPS),
+                                          QStringLiteral("PropertiesChanged"),
+                                          d,
+                                          SLOT(onPropertiesChanged(QString, QVariantMap, QStringList)));
 #else
-    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE), path, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), d,
-                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
+                                         path,
+                                         QLatin1String(DBUS_INTERFACE_PROPS),
+                                         QStringLiteral("PropertiesChanged"),
+                                         d,
+                                         SLOT(onPropertiesChanged(QString, QVariantMap, QStringList)));
 #endif
 }
 
@@ -213,13 +221,13 @@ void ModemManager::SmsPrivate::onPropertiesChanged(const QString &interfaceName,
     if (interfaceName == QLatin1String(MMQT_DBUS_INTERFACE_SMS)) {
         QVariantMap::const_iterator it = changedProperties.constFind(QLatin1String(MM_SMS_PROPERTY_STATE));
         if (it != changedProperties.constEnd()) {
-            state = (MMSmsState) it->toUInt();
+            state = (MMSmsState)it->toUInt();
             qCDebug(MMQT) << state;
             Q_EMIT q->stateChanged(state);
         }
         it = changedProperties.constFind(QLatin1String(MM_SMS_PROPERTY_PDUTYPE));
         if (it != changedProperties.constEnd()) {
-            pduType = (MMSmsPduType) it->toUInt();
+            pduType = (MMSmsPduType)it->toUInt();
             Q_EMIT q->pduTypeChanged(pduType);
         }
         it = changedProperties.constFind(QLatin1String(MM_SMS_PROPERTY_NUMBER));
@@ -274,23 +282,23 @@ void ModemManager::SmsPrivate::onPropertiesChanged(const QString &interfaceName,
         }
         it = changedProperties.constFind(QLatin1String(MM_SMS_PROPERTY_DELIVERYSTATE));
         if (it != changedProperties.constEnd()) {
-            deliveryState = (MMSmsDeliveryState) it->toUInt();
+            deliveryState = (MMSmsDeliveryState)it->toUInt();
             Q_EMIT q->deliveryStateChanged(deliveryState);
         }
         it = changedProperties.constFind(QLatin1String(MM_SMS_PROPERTY_STORAGE));
         if (it != changedProperties.constEnd()) {
-            storage = (MMSmsStorage) it->toUInt();
+            storage = (MMSmsStorage)it->toUInt();
             Q_EMIT q->storageChanged(storage);
         }
 #if MM_CHECK_VERSION(1, 2, 0)
         it = changedProperties.constFind(QLatin1String(MM_SMS_PROPERTY_SERVICECATEGORY));
         if (it != changedProperties.constEnd()) {
-            serviceCategory = (MMSmsCdmaServiceCategory) it->toUInt();
+            serviceCategory = (MMSmsCdmaServiceCategory)it->toUInt();
             Q_EMIT q->serviceCategoryChanged(serviceCategory);
         }
         it = changedProperties.constFind(QLatin1String(MM_SMS_PROPERTY_TELESERVICEID));
         if (it != changedProperties.constEnd()) {
-            teleserviceId = (MMSmsCdmaTeleserviceId) it->toUInt();
+            teleserviceId = (MMSmsCdmaTeleserviceId)it->toUInt();
             Q_EMIT q->teleserviceIdChanged(teleserviceId);
         }
 #endif

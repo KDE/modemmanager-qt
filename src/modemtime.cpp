@@ -6,8 +6,8 @@
 */
 
 #include "modemtime.h"
-#include "modemtime_p.h"
 #include "mmdebug_p.h"
+#include "modemtime_p.h"
 #ifdef MMQT_STATIC
 #include "dbus/fakedbus.h"
 #else
@@ -16,12 +16,12 @@
 
 namespace ModemManager
 {
-
 class ModemManager::NetworkTimezone::Private
 {
 public:
     Private()
-    { }
+    {
+    }
     int offset;
     int dstOffset;
     int leapSecond;
@@ -34,7 +34,7 @@ ModemManager::NetworkTimezone::NetworkTimezone()
 {
 }
 
-ModemManager::NetworkTimezone::NetworkTimezone(const ModemManager::NetworkTimezone& other)
+ModemManager::NetworkTimezone::NetworkTimezone(const ModemManager::NetworkTimezone &other)
     : d(new Private)
 {
     *this = other;
@@ -75,7 +75,7 @@ void ModemManager::NetworkTimezone::setLeapSecond(int leapSecond)
     d->leapSecond = leapSecond;
 }
 
-ModemManager::NetworkTimezone& ModemManager::NetworkTimezone::operator=(const ModemManager::NetworkTimezone& other)
+ModemManager::NetworkTimezone &ModemManager::NetworkTimezone::operator=(const ModemManager::NetworkTimezone &other)
 {
     if (this == &other) {
         return *this;
@@ -106,11 +106,19 @@ ModemManager::ModemTime::ModemTime(const QString &path, QObject *parent)
 
     connect(&d->modemTimeIface, &OrgFreedesktopModemManager1ModemTimeInterface::NetworkTimeChanged, d, &ModemTimePrivate::onNetworkTimeChanged);
 #ifdef MMQT_STATIC
-    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE), d->uni, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), d,
-                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
+                                          d->uni,
+                                          QLatin1String(DBUS_INTERFACE_PROPS),
+                                          QStringLiteral("PropertiesChanged"),
+                                          d,
+                                          SLOT(onPropertiesChanged(QString, QVariantMap, QStringList)));
 #else
-    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE), d->uni, QLatin1String(DBUS_INTERFACE_PROPS), QStringLiteral("PropertiesChanged"), d,
-                                         SLOT(onPropertiesChanged(QString,QVariantMap,QStringList)));
+    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
+                                         d->uni,
+                                         QLatin1String(DBUS_INTERFACE_PROPS),
+                                         QStringLiteral("PropertiesChanged"),
+                                         d,
+                                         SLOT(onPropertiesChanged(QString, QVariantMap, QStringList)));
 #endif
 }
 
@@ -137,9 +145,11 @@ ModemManager::NetworkTimezone ModemManager::ModemTimePrivate::variantMapToTimezo
     ModemManager::NetworkTimezone result;
     if (map.contains(QLatin1String("offset"))) {
         result.setOffset(map.value(QStringLiteral("offset")).toInt());
-    } if (map.contains(QLatin1String("dst-offset"))) {
+    }
+    if (map.contains(QLatin1String("dst-offset"))) {
         result.setDstOffset(map.value(QStringLiteral("dst-offset")).toInt());
-    } if (map.contains(QLatin1String("leap-seconds"))) {
+    }
+    if (map.contains(QLatin1String("leap-seconds"))) {
         result.setLeapSecond(map.value(QStringLiteral("leap-seconds")).toInt());
     }
 

@@ -11,9 +11,8 @@
 
 #include "fakemodem/modem.h"
 
+#include <QSignalSpy>
 #include <QTest>
-#include <QSignalSpy>
-#include <QSignalSpy>
 
 void ModemTest::initTestCase()
 {
@@ -35,9 +34,11 @@ void ModemTest::testModems()
     modem->setMaxActiveBearers(1);
     modem->setMaxBearers(1);
     modem->setModel(QLatin1String("K2540"));
-    //modem->setOwnNumbers();
+    // modem->setOwnNumbers();
     modem->setPlugin(QLatin1String("Huawei"));
-    modem->setPorts({{QLatin1String("ttyUSB0"), MM_MODEM_PORT_TYPE_AT}, {QLatin1String("ttyUSB1"), MM_MODEM_PORT_TYPE_QCDM}, {QLatin1String("ttyUSB2"), MM_MODEM_PORT_TYPE_AT}});
+    modem->setPorts({{QLatin1String("ttyUSB0"), MM_MODEM_PORT_TYPE_AT},
+                     {QLatin1String("ttyUSB1"), MM_MODEM_PORT_TYPE_QCDM},
+                     {QLatin1String("ttyUSB2"), MM_MODEM_PORT_TYPE_AT}});
     modem->SetPowerState(3);
     modem->setPrimaryPort(QLatin1String("ttyUSB2"));
     modem->setRevision(QLatin1String("11.001.05.00.11"));
@@ -65,14 +66,14 @@ void ModemTest::testModems()
     QCOMPARE(ModemManager::modemDevices().first()->uni(), addModemSpy.at(0).at(0).toString());
     const QString addedModemPath = ModemManager::modemDevices().first()->uni();
 
-    Bearer * bearer = new Bearer();
+    Bearer *bearer = new Bearer();
     // We need to set some default values
     bearer->setConnected(false);
     bearer->setInterface(QLatin1String("ttyUSB0"));
     bearer->setIp4Config({{QLatin1String("method"), MM_BEARER_IP_METHOD_PPP}});
     bearer->setIp6Config({{QLatin1String("method"), MM_BEARER_IP_METHOD_UNKNOWN}});
     bearer->setIpTimeout(20);
-    bearer->setProperties({{QLatin1String("apn"),QLatin1String("internet")},{QLatin1String("ip-type"), 1}, {QLatin1String("number"), QLatin1String("*99#")}});
+    bearer->setProperties({{QLatin1String("apn"), QLatin1String("internet")}, {QLatin1String("ip-type"), 1}, {QLatin1String("number"), QLatin1String("*99#")}});
     bearer->setSuspended(false);
 
     ModemManager::Modem::Ptr modemInterface = ModemManager::modemDevices().first()->modemInterface();
@@ -135,7 +136,9 @@ void ModemTest::testModemAdded(const QString &dev)
     QCOMPARE(modem->model(), QLatin1String("K2540"));
     // TODO ownNumbers
     QCOMPARE(modem->plugin(), QLatin1String("Huawei"));
-    ModemManager::PortList ports = {{QLatin1String("ttyUSB0"), MM_MODEM_PORT_TYPE_AT}, {QLatin1String("ttyUSB1"), MM_MODEM_PORT_TYPE_QCDM}, {QLatin1String("ttyUSB2"), MM_MODEM_PORT_TYPE_AT}};
+    ModemManager::PortList ports = {{QLatin1String("ttyUSB0"), MM_MODEM_PORT_TYPE_AT},
+                                    {QLatin1String("ttyUSB1"), MM_MODEM_PORT_TYPE_QCDM},
+                                    {QLatin1String("ttyUSB2"), MM_MODEM_PORT_TYPE_AT}};
     ModemManager::PortList modemPorts = modem->ports();
     QCOMPARE(ports.count(), modemPorts.count());
     Q_FOREACH (const ModemManager::Port port, ports) {
@@ -181,7 +184,10 @@ void ModemTest::testModemAdded(const QString &dev)
         found = false;
     }
     QCOMPARE(modem->unlockRequired(), MM_MODEM_LOCK_NONE);
-    ModemManager::UnlockRetriesMap unlockRetries = {{MM_MODEM_LOCK_SIM_PIN, 3}, {MM_MODEM_LOCK_SIM_PIN2, 3}, {MM_MODEM_LOCK_SIM_PUK, 10}, {MM_MODEM_LOCK_SIM_PUK2, 10}};
+    ModemManager::UnlockRetriesMap unlockRetries = {{MM_MODEM_LOCK_SIM_PIN, 3},
+                                                    {MM_MODEM_LOCK_SIM_PIN2, 3},
+                                                    {MM_MODEM_LOCK_SIM_PUK, 10},
+                                                    {MM_MODEM_LOCK_SIM_PUK2, 10}};
     QCOMPARE(modem->unlockRetries(), unlockRetries);
 }
 

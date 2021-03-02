@@ -6,7 +6,7 @@
 
 #include "modem3gpp.h"
 
-Modem3gpp::Modem3gpp(QObject* parent)
+Modem3gpp::Modem3gpp(QObject *parent)
     : QDBusAbstractAdaptor(parent)
     , m_enabledNotifications(false)
     , m_enabledFacilityLocks(0)
@@ -49,7 +49,7 @@ uint Modem3gpp::subscriptionState() const
     return m_subscriptionState;
 }
 
-void Modem3gpp::Register(const QString& operator_id)
+void Modem3gpp::Register(const QString &operator_id)
 {
     Q_UNUSED(operator_id);
 }
@@ -59,7 +59,7 @@ ModemManager::QVariantMapList Modem3gpp::Scan()
     return ModemManager::QVariantMapList();
 }
 
-void Modem3gpp::setModemPath(const QString& path)
+void Modem3gpp::setModemPath(const QString &path)
 {
     m_modemPath = path;
 }
@@ -82,7 +82,7 @@ void Modem3gpp::setEnabledFacilityLocks(uint enabledFacilityLocks)
     }
 }
 
-void Modem3gpp::setImei(const QString& imei)
+void Modem3gpp::setImei(const QString &imei)
 {
     m_imei = imei;
 
@@ -95,7 +95,7 @@ void Modem3gpp::setImei(const QString& imei)
     }
 }
 
-void Modem3gpp::setOperatorCode(const QString& operatorCode)
+void Modem3gpp::setOperatorCode(const QString &operatorCode)
 {
     m_operatorCode = operatorCode;
 
@@ -108,7 +108,7 @@ void Modem3gpp::setOperatorCode(const QString& operatorCode)
     }
 }
 
-void Modem3gpp::setOperatorName(const QString& operatorName)
+void Modem3gpp::setOperatorName(const QString &operatorName)
 {
     m_operatorName = operatorName;
 
@@ -154,7 +154,7 @@ QVariantMap Modem3gpp::toMap() const
     map.insert(QLatin1String(MM_MODEM_MODEM3GPP_PROPERTY_REGISTRATIONSTATE), m_registrationState);
     map.insert(QLatin1String(MM_MODEM_MODEM3GPP_PROPERTY_OPERATORCODE), m_operatorCode);
     map.insert(QLatin1String(MM_MODEM_MODEM3GPP_PROPERTY_OPERATORNAME), m_operatorName);
-    map.insert(QLatin1String(MM_MODEM_MODEM3GPP_PROPERTY_ENABLEDFACILITYLOCKS ), m_enabledFacilityLocks);
+    map.insert(QLatin1String(MM_MODEM_MODEM3GPP_PROPERTY_ENABLEDFACILITYLOCKS), m_enabledFacilityLocks);
 #if MM_CHECK_VERSION(1, 2, 0)
     map.insert(QLatin1String(MM_MODEM_MODEM3GPP_PROPERTY_SUBSCRIPTIONSTATE), m_subscriptionState);
 #endif
