@@ -23,13 +23,13 @@ class ModemManager::IpConfig::Private
 public:
     Private()
     { }
-    MMBearerIpMethod method;
-    QString address;
-    uint prefix;
-    QString dns1;
-    QString dns2;
-    QString dns3;
-    QString gateway;
+    MMBearerIpMethod method{MM_BEARER_IP_METHOD_UNKNOWN};
+    QString address{};
+    uint prefix{0};
+    QString dns1{};
+    QString dns2{};
+    QString dns3{};
+    QString gateway{};
 };
 
 }
