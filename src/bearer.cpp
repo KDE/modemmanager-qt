@@ -24,12 +24,12 @@ public:
     Private()
     { }
     MMBearerIpMethod method{MM_BEARER_IP_METHOD_UNKNOWN};
-    QString address{};
+    QString address;
     uint prefix{0};
-    QString dns1{};
-    QString dns2{};
-    QString dns3{};
-    QString gateway{};
+    QString dns1;
+    QString dns2;
+    QString dns3;
+    QString gateway;
 };
 
 }
