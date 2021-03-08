@@ -20,8 +20,6 @@ include(KDECMakeSettings)
 set(REQUIRED_QT_VERSION 5.14.0)
 find_package(Qt5 ${REQUIRED_QT_VERSION} REQUIRED Core DBus Xml)
 
-add_definitions(${QT_DEFINITIONS})
-
 remove_definitions(-DQT_NO_FOREACH) # set by KDEFrameworkCompilerSettings
 
 include(GenerateExportHeader)
