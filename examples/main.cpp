@@ -29,25 +29,25 @@ int main(int argc, char *argv[])
 
         QStringList interfaces;
         if (modemInterface) {
-            interfaces << "modem";
+            interfaces << QStringLiteral("modem");
         }
         if (modemdevice->hasInterface(ModemManager::ModemDevice::GsmInterface)) {
-            interfaces << "gsm";
+            interfaces << QStringLiteral("gsm");
         }
         if (modemdevice->hasInterface(ModemManager::ModemDevice::GsmUssdInterface)) {
-            interfaces << "gsm ussd";
+            interfaces << QStringLiteral("gsm ussd");
         }
         if (modemdevice->hasInterface(ModemManager::ModemDevice::CdmaInterface)) {
-            interfaces << "cdma";
+            interfaces << QStringLiteral("cdma");
         }
         if (modemdevice->hasInterface(ModemManager::ModemDevice::MessagingInterface)) {
-            interfaces << "messaging";
+            interfaces << QStringLiteral("messaging");
         }
         if (modemdevice->hasInterface(ModemManager::ModemDevice::LocationInterface)) {
-            interfaces << "location";
+            interfaces << QStringLiteral("location");
         }
         if (modemdevice->hasInterface(ModemManager::ModemDevice::TimeInterface)) {
-            interfaces << "time";
+            interfaces << QStringLiteral("time");
         }
 
         qDebug() << "Interfaces: " << interfaces;
@@ -71,8 +71,8 @@ int main(int argc, char *argv[])
 
         if (messaging) {
             ModemManager::ModemMessaging::Message msg;
-            msg.number = "number";
-            msg.text = "message text";
+            msg.number = QStringLiteral("number");
+            msg.text = QStringLiteral("message text");
             QDBusReply<QString> sms = messaging->createMessage(msg);
             if (sms.isValid() && !sms.value().isEmpty()) {
                 qDebug() << "Message created";
