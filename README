@@ -65,7 +65,7 @@ The backend organizes MM interfaces as follow:
 
 // TODO - needs to update to mach the new ModemManager
 
-Current Implemenation Status
+Current Implementation Status
 ============================
 org.freedesktop.ModemManager1
         - fully implemented

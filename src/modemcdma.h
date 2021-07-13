@@ -77,7 +77,7 @@ public:
     QString meid() const;
 
     /**
-     * @return the modem's Electronic Serial Number (superceded by MEID but still used by older devices).
+     * @return the modem's Electronic Serial Number (superseded by MEID but still used by older devices).
      */
     QString esn() const;
 
@@ -120,7 +120,7 @@ Q_SIGNALS:
      *
      * @param state current activation state, given as a MMModemCdmaActivationState.
      * @param error carrier-specific error code, given as a MMCdmaActivationError.
-     * @param status_changes properties that have changed as a result of this activation state chage, including "mdn" and "min".
+     * @param status_changes properties that have changed as a result of this activation state change, including "mdn" and "min".
      *                       The map may be empty if the changed properties are unknown.
      */
     void activationStateChanged(MMModemCdmaActivationState state, MMCdmaActivationError error, const QVariantMap &status_changes);
