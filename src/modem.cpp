@@ -289,19 +289,25 @@ QDBusPendingReply<QDBusObjectPath> ModemManager::Modem::createBearer(const Modem
     Q_D(Modem);
     QVariantMap map;
     map.insert(QStringLiteral("apn"), bearerProperties.apn());
-    if (bearerProperties.ipType() != MM_BEARER_IP_FAMILY_NONE)
+    if (bearerProperties.ipType() != MM_BEARER_IP_FAMILY_NONE) {
         map.insert(QStringLiteral("ip-type"), (uint)bearerProperties.ipType());
-    if (bearerProperties.allowedAuthentication() != MM_BEARER_ALLOWED_AUTH_UNKNOWN)
+    }
+    if (bearerProperties.allowedAuthentication() != MM_BEARER_ALLOWED_AUTH_UNKNOWN) {
         map.insert(QStringLiteral("allowed-auth"), (uint)bearerProperties.allowedAuthentication());
-    if (!bearerProperties.user().isEmpty())
+    }
+    if (!bearerProperties.user().isEmpty()) {
         map.insert(QStringLiteral("user"), bearerProperties.user());
-    if (!bearerProperties.password().isEmpty())
+    }
+    if (!bearerProperties.password().isEmpty()) {
         map.insert(QStringLiteral("password"), bearerProperties.password());
+    }
     map.insert(QStringLiteral("allow-roaming"), bearerProperties.allowRoaming());
-    if (bearerProperties.rmProtocol() != MM_MODEM_CDMA_RM_PROTOCOL_UNKNOWN)
+    if (bearerProperties.rmProtocol() != MM_MODEM_CDMA_RM_PROTOCOL_UNKNOWN) {
         map.insert(QStringLiteral("rm-protocol"), (uint)bearerProperties.rmProtocol());
-    if (!bearerProperties.number().isEmpty())
+    }
+    if (!bearerProperties.number().isEmpty()) {
         map.insert(QStringLiteral("number"), bearerProperties.number());
+    }
     return d->modemIface.CreateBearer(map);
 }
 

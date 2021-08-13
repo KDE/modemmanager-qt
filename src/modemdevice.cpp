@@ -146,9 +146,9 @@ QString ModemManager::ModemDevicePrivate::introspect() const
     QDBusPendingReply<QString> reply = QDBusConnection::systemBus().call(call);
 #endif
 
-    if (reply.isValid())
+    if (reply.isValid()) {
         return reply.value();
-    else {
+    } else {
         return QString();
     }
 }

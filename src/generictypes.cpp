@@ -42,7 +42,8 @@ QDBusArgument &operator<<(QDBusArgument &arg, const ModemManager::CurrentModesTy
 // Retrieve the CurrentModesType data from the D-BUS argument
 const QDBusArgument &operator>>(const QDBusArgument &arg, ModemManager::CurrentModesType &mode)
 {
-    uint temp1, temp2;
+    uint temp1;
+    uint temp2;
     arg.beginStructure();
     arg >> temp1 >> temp2;
     mode.allowed = (MMModemMode)temp1;
@@ -65,7 +66,8 @@ QDBusArgument &operator<<(QDBusArgument &arg, const ModemManager::OmaSessionType
 // Retrieve the OmaSessionType data from the D-BUS argument
 const QDBusArgument &operator>>(const QDBusArgument &arg, ModemManager::OmaSessionType &sessionType)
 {
-    uint type, id;
+    uint type;
+    uint id;
     arg.beginStructure();
     arg >> type >> id;
     sessionType.type = (MMOmaSessionType)type;
@@ -106,7 +108,8 @@ QDBusArgument &operator<<(QDBusArgument &arg, const ModemManager::ValidityPair &
 // Retrieve the ValidityPair data from the D-BUS argument
 const QDBusArgument &operator>>(const QDBusArgument &arg, ModemManager::ValidityPair &vp)
 {
-    uint temp1, temp2;
+    uint temp1;
+    uint temp2;
     arg.beginStructure();
     arg >> temp1 >> temp2;
     vp.validity = (MMSmsValidityType)temp1;
@@ -156,8 +159,9 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, ModemManager::Unl
 QDBusArgument &operator<<(QDBusArgument &argument, const ModemManager::QVariantMapList &variantMapList)
 {
     argument.beginArray(qMetaTypeId<QVariantMap>());
-    for (int i = 0; i < variantMapList.length(); ++i)
+    for (int i = 0; i < variantMapList.length(); ++i) {
         argument << variantMapList[i];
+    }
     argument.endArray();
     return argument;
 }

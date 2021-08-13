@@ -93,8 +93,9 @@ void ModemManager::ModemManagerPrivate::init()
             const QString uni = path.path();
             qCDebug(MMQT) << "Adding device" << uni;
 
-            if (uni == QLatin1String(MMQT_DBUS_PATH) || !uni.startsWith(QLatin1String(MMQT_DBUS_MODEM_PREFIX)))
+            if (uni == QLatin1String(MMQT_DBUS_PATH) || !uni.startsWith(QLatin1String(MMQT_DBUS_MODEM_PREFIX))) {
                 continue;
+            }
 
             modemList.insert(uni, ModemDevice::Ptr());
             Q_EMIT modemAdded(uni);
