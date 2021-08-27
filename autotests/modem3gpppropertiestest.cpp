@@ -102,6 +102,11 @@ void Modem3gppPropertiesTest::testModem3gppProperties()
     QVERIFY(operatorCodeChangedSpy.wait());
     QCOMPARE(modem3gppInterface->operatorCode(), operatorCodeChangedSpy.at(0).at(0).toString());
 
+    modem3gpp->setOperatorCode(QLatin1String("25011"));
+    QSignalSpy countryCodeChangedSpy(modem3gppInterface.data(), SIGNAL(countryCodeChanged(QString)));
+    QVERIFY(countryCodeChangedSpy.wait());
+    QCOMPARE(modem3gppInterface->countryCode(), countryCodeChangedSpy.at(0).at(0).toString());
+
     modem3gpp->setOperatorName(QLatin1String("op-name2"));
     QSignalSpy operatorNameChangedSpy(modem3gppInterface.data(), SIGNAL(operatorNameChanged(QString)));
     QVERIFY(operatorNameChangedSpy.wait());

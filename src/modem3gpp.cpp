@@ -92,6 +92,12 @@ QString ModemManager::Modem3gpp::operatorName() const
     return d->operatorName;
 }
 
+QString ModemManager::Modem3gpp::countryCode() const
+{
+    Q_D(const Modem3gpp);
+    return d->countryCode;
+}
+
 ModemManager::Modem3gpp::FacilityLocks ModemManager::Modem3gpp::enabledFacilityLocks() const
 {
     Q_D(const Modem3gpp);
@@ -151,6 +157,13 @@ void ModemManager::Modem3gppPrivate::onPropertiesChanged(const QString &interfac
         if (it != properties.constEnd()) {
             operatorCode = it->toString();
             Q_EMIT q->operatorCodeChanged(operatorCode);
+
+            QStringRef mcc(&operatorCode, 0, 3);
+            QString cc = mobileCountryCodeToAlpha2CountryCode(mcc.toInt());
+            if (cc != countryCode) {
+                countryCode = cc;
+                Q_EMIT q->countryCodeChanged(countryCode);
+            }
         }
         it = properties.constFind(QLatin1String(MM_MODEM_MODEM3GPP_PROPERTY_OPERATORNAME));
         if (it != properties.constEnd()) {
@@ -169,5 +182,32 @@ void ModemManager::Modem3gppPrivate::onPropertiesChanged(const QString &interfac
             Q_EMIT q->subscriptionStateChanged(subscriptionState);
         }
 #endif
+    }
+}
+
+// The logic ported from the Qt wrapper for ofono from Jolla's Sailfish OS
+// https://github.com/sailfishos/libqofono/blob/94e793860debe9c73c70de94cc3510e7609137b9/src/qofono.cpp#L2379
+
+QString ModemManager::Modem3gppPrivate::mobileCountryCodeToAlpha2CountryCode(int mcc) const
+{
+    const int n = sizeof(mccList) / sizeof(mccList[0]);
+
+    int low = 0;
+    int high = n;
+
+    while (low < high) {
+        const int mid = (low + high) / 2;
+        if (mccList[mid].mcc >= mcc) {
+            high = mid;
+        } else {
+            low = mid + 1;
+        }
+    }
+
+    if (high < n && mccList[high].mcc == mcc) {
+        return QString::fromLatin1(mccList[high].cc);
+    } else {
+        qCWarning(MMQT) << "Unknown Mobile Country Code:" << mcc;
+        return QString();
     }
 }

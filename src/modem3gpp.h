@@ -73,6 +73,18 @@ public:
     QString operatorName() const;
 
     /**
+     * @return country code of the operator to which the mobile is currently registered.
+     *
+     * Returned in the format "ISO 3166-1 alpha-2" according to the MMC mapping from Wikipedia.
+     * Country Code is the two-letter country codes defined in ISO 3166-1, part of the ISO 3166 standard,
+     * e.g. "RU" or "FI".
+     *
+     * If the MCC is not known or the mobile is not registered to a
+     * mobile network, this property will be an empty string.
+     */
+    QString countryCode() const;
+
+    /**
      * @return QFlags of MMModem3gppFacility values for which PIN locking is enabled
      */
     FacilityLocks enabledFacilityLocks() const;
@@ -133,6 +145,7 @@ Q_SIGNALS:
     void registrationStateChanged(MMModem3gppRegistrationState registrationState);
     void operatorCodeChanged(const QString &operatorCode);
     void operatorNameChanged(const QString &operatorName);
+    void countryCodeChanged(const QString &countryCode);
     void enabledFacilityLocksChanged(QFlags<MMModem3gppFacility> locks);
     void subscriptionStateChanged(MMModem3gppSubscriptionState subscriptionState);
 };
