@@ -48,26 +48,26 @@ void ModemManager::ModemDevicePrivate::init()
                                           QLatin1String(MMQT_DBUS_PATH),
                                           QLatin1String(DBUS_INTERFACE_MANAGER),
                                           QStringLiteral("InterfacesAdded"),
-                                          q,
-                                          SLOT(onInterfacesAdded(QDBusObjectPath, MMVariantMapMap)));
+                                          this,
+                                          SLOT(onInterfacesAdded(QDBusObjectPath, ModemManager::MMVariantMapMap)));
     QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
                                           QLatin1String(MMQT_DBUS_PATH),
                                           QLatin1String(DBUS_INTERFACE_MANAGER),
                                           QStringLiteral("InterfacesRemoved"),
-                                          q,
+                                          this,
                                           SLOT(onInterfacesRemoved(QDBusObjectPath, QStringList)));
 #else
     QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
                                          QLatin1String(MMQT_DBUS_PATH),
                                          QLatin1String(DBUS_INTERFACE_MANAGER),
                                          QStringLiteral("InterfacesAdded"),
-                                         q,
-                                         SLOT(onInterfacesAdded(QDBusObjectPath, MMVariantMapMap)));
+                                         this,
+                                         SLOT(onInterfacesAdded(QDBusObjectPath, ModemManager::MMVariantMapMap)));
     QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
                                          QLatin1String(MMQT_DBUS_PATH),
                                          QLatin1String(DBUS_INTERFACE_MANAGER),
                                          QStringLiteral("InterfacesRemoved"),
-                                         q,
+                                         this,
                                          SLOT(onInterfacesRemoved(QDBusObjectPath, QStringList)));
 #endif
 
