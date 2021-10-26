@@ -78,6 +78,9 @@ Q_SIGNALS:
     void bearerAdded(const QString &udi); // TODO emit these signals in the next version
     void bearerRemoved(const QString &udi);
 
+    void interfaceAdded(InterfaceType type);
+    void interfaceRemoved(InterfaceType type);
+
 private:
     ModemDevicePrivate *const d_ptr;
 };
