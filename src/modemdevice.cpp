@@ -23,6 +23,9 @@
 #include "modemoma.h"
 #include "modemsignal.h"
 #endif
+#if MM_CHECK_VERSION(1, 6, 0)
+#include "modemvoice.h"
+#endif
 #include "modemfirmware.h"
 #include "modemsimple.h"
 #include "modemtime.h"
@@ -130,6 +133,11 @@ void ModemManager::ModemDevicePrivate::initInterfaces()
             else if (name == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_FIRMWARE)) {
                 interfaceList.insert(ModemManager::ModemDevice::FirmwareInterface, ModemManager::ModemFirmware::Ptr());
             }
+#if MM_CHECK_VERSION(1, 6, 0)
+            else if (name == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_VOICE)) {
+                interfaceList.insert(ModemManager::ModemDevice::VoiceInterface, ModemManager::ModemVoice::Ptr());
+            }
+#endif
         }
     }
 
@@ -242,6 +250,11 @@ ModemManager::Interface::Ptr ModemManager::ModemDevicePrivate::createInterface(M
     case ModemManager::ModemDevice::FirmwareInterface:
         createdInterface = ModemManager::Interface::Ptr(new ModemManager::ModemFirmware(uni), &QObject::deleteLater);
         break;
+#if MM_CHECK_VERSION(1, 6, 0)
+    case ModemManager::ModemDevice::VoiceInterface:
+        createdInterface = ModemManager::Interface::Ptr(new ModemManager::ModemVoice(uni), &QObject::deleteLater);
+        break;
+#endif
     }
     return createdInterface;
 }
@@ -390,6 +403,12 @@ void ModemManager::ModemDevicePrivate::onInterfacesAdded(const QDBusObjectPath &
                 interfaceList.insert(ModemManager::ModemDevice::FirmwareInterface, ModemManager::ModemFirmware::Ptr());
                 Q_EMIT q->interfaceAdded(ModemManager::ModemDevice::FirmwareInterface);
             }
+#if MM_CHECK_VERSION(1, 6, 0)
+            else if (iface == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_VOICE)) {
+                interfaceList.insert(ModemManager::ModemDevice::VoiceInterface, ModemManager::ModemVoice::Ptr());
+                Q_EMIT q->interfaceAdded(ModemManager::ModemDevice::VoiceInterface);
+            }
+#endif
         }
     }
 }
@@ -447,6 +466,12 @@ void ModemManager::ModemDevicePrivate::onInterfacesRemoved(const QDBusObjectPath
             interfaceList.remove(ModemManager::ModemDevice::FirmwareInterface);
             Q_EMIT q->interfaceRemoved(ModemManager::ModemDevice::FirmwareInterface);
         }
+#if MM_CHECK_VERSION(1, 6, 0)
+        else if (iface == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_VOICE)) {
+            interfaceList.remove(ModemManager::ModemDevice::VoiceInterface);
+            Q_EMIT q->interfaceRemoved(ModemManager::ModemDevice::VoiceInterface);
+        }
+#endif
     }
 }
 

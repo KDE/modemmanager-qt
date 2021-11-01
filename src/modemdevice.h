@@ -49,6 +49,7 @@ public:
         FirmwareInterface,
         OmaInterface,
         SignalInterface,
+        VoiceInterface,
     };
 
     explicit ModemDevice(const QString &path, QObject *parent = nullptr);

@@ -49,6 +49,9 @@ int main(int argc, char *argv[])
         if (modemdevice->hasInterface(ModemManager::ModemDevice::TimeInterface)) {
             interfaces << QStringLiteral("time");
         }
+        if (modemdevice->hasInterface(ModemManager::ModemDevice::VoiceInterface)) {
+            interfaces << QStringLiteral("voice");
+        }
 
         qDebug() << "Interfaces: " << interfaces;
         qDebug() << "SIM Card: ";
