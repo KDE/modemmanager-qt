@@ -37,7 +37,7 @@ public:
     typedef QList<Ptr> List;
 
     explicit Sms(const QString &path, QObject *parent = nullptr);
-    ~Sms();
+    ~Sms() override;
 
     QString uni() const;
 

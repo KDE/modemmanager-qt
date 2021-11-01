@@ -31,7 +31,7 @@ public:
 
     explicit Interface(const QString &path, QObject *parent = nullptr);
     explicit Interface(InterfacePrivate &dd, QObject *parent = nullptr);
-    virtual ~Interface();
+    ~Interface() override;
 
     QString uni() const;
 

@@ -41,7 +41,7 @@ public:
                                                        const QDBusConnection &connection,
                                                        QObject *parent = nullptr);
 
-    ~OrgFreedesktopModemManager1ModemModem3gppInterface();
+    ~OrgFreedesktopModemManager1ModemModem3gppInterface() override;
 
     Q_PROPERTY(uint EnabledFacilityLocks READ enabledFacilityLocks)
     inline uint enabledFacilityLocks() const

@@ -35,7 +35,7 @@ public:
     typedef QList<Ptr> List;
 
     explicit Sim(const QString &path, QObject *parent = nullptr);
-    ~Sim();
+    ~Sim() override;
 
     /**
      * @return An obfuscated SIM identifier based on the IMSI or the ICCID.

@@ -133,7 +133,7 @@ public:
     typedef QList<Ptr> List;
 
     explicit Bearer(const QString &path, QObject *parent = nullptr);
-    ~Bearer();
+    ~Bearer() override;
 
     /**
      * @return the operating system name for the network data interface that

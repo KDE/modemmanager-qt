@@ -35,7 +35,7 @@ public:
     typedef QList<Ptr> List;
 
     explicit Call(const QString &path, QObject *parent = nullptr);
-    ~Call();
+    ~Call() override;
 
     QString uni() const;
 

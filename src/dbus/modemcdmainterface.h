@@ -41,7 +41,7 @@ public:
                                                        const QDBusConnection &connection,
                                                        QObject *parent = nullptr);
 
-    ~OrgFreedesktopModemManager1ModemModemCdmaInterface();
+    ~OrgFreedesktopModemManager1ModemModemCdmaInterface() override;
 
     Q_PROPERTY(uint ActivationState READ activationState)
     inline uint activationState() const

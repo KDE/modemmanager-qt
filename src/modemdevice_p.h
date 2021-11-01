@@ -24,7 +24,7 @@ class ModemDevicePrivate : public QObject
     Q_OBJECT
 public:
     ModemDevicePrivate(const QString &path, ModemManager::ModemDevice *q);
-    virtual ~ModemDevicePrivate();
+    ~ModemDevicePrivate() override;
     void init();
     void initInterfaces();
     QString introspect() const;

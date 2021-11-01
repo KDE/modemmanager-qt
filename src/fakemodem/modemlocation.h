@@ -19,7 +19,7 @@ class ModemLocation : public QDBusAbstractAdaptor
     Q_CLASSINFO("D-Bus Interface", "org.kde.fakemodem.Modem.Location")
 public:
     explicit ModemLocation(QObject *parent = nullptr);
-    virtual ~ModemLocation();
+    ~ModemLocation() override;
 
     Q_PROPERTY(uint Capabilities READ capabilities)
     Q_PROPERTY(uint Enabled READ enabled)

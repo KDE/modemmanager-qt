@@ -53,7 +53,7 @@ public:
 
     explicit ModemDevice(const QString &path, QObject *parent = nullptr);
     explicit ModemDevice(ModemDevicePrivate &dd, QObject *parent = nullptr);
-    virtual ~ModemDevice();
+    ~ModemDevice() override;
 
     QString uni() const;
 

@@ -40,7 +40,7 @@ public:
                                                       const QDBusConnection &connection,
                                                       QObject *parent = nullptr);
 
-    ~OrgFreedesktopModemManager1ModemFirmwareInterface();
+    ~OrgFreedesktopModemManager1ModemFirmwareInterface() override;
 
 public Q_SLOTS: // METHODS
     inline QDBusPendingReply<QString, ModemManager::QVariantMapList> List()

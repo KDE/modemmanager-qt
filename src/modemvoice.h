@@ -35,7 +35,7 @@ public:
     typedef QList<Ptr> List;
 
     explicit ModemVoice(const QString &path, QObject *parent = nullptr);
-    ~ModemVoice();
+    ~ModemVoice() override;
 
     /**
      * Retrieve all calls.

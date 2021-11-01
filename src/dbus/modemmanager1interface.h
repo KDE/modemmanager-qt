@@ -38,7 +38,7 @@ public:
 public:
     OrgFreedesktopModemManager1Interface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
 
-    ~OrgFreedesktopModemManager1Interface();
+    ~OrgFreedesktopModemManager1Interface() override;
 
 public Q_SLOTS: // METHODS
     inline QDBusPendingReply<> ScanDevices()

@@ -32,7 +32,7 @@ public:
 public:
     OrgFreedesktopModemManager1ModemVoiceInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
 
-    ~OrgFreedesktopModemManager1ModemVoiceInterface();
+    ~OrgFreedesktopModemManager1ModemVoiceInterface() override;
 
     Q_PROPERTY(QList<QDBusObjectPath> Calls READ calls)
     inline QList<QDBusObjectPath> calls() const

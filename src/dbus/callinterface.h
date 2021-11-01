@@ -32,7 +32,7 @@ public:
 public:
     OrgFreedesktopModemManager1CallInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
 
-    ~OrgFreedesktopModemManager1CallInterface();
+    ~OrgFreedesktopModemManager1CallInterface() override;
 
     Q_PROPERTY(int Direction READ direction)
     inline int direction() const

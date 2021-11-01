@@ -38,7 +38,7 @@ public:
 public:
     OrgFreedesktopModemManager1ModemTimeInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
 
-    ~OrgFreedesktopModemManager1ModemTimeInterface();
+    ~OrgFreedesktopModemManager1ModemTimeInterface() override;
 
     Q_PROPERTY(QVariantMap NetworkTimezone READ networkTimezone)
     inline QVariantMap networkTimezone() const

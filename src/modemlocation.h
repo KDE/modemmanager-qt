@@ -42,7 +42,7 @@ public:
     Q_DECLARE_FLAGS(LocationSources, MMModemLocationSource)
 
     explicit ModemLocation(const QString &path, QObject *parent = nullptr);
-    ~ModemLocation();
+    ~ModemLocation() override;
 
     /**
      * Configure the location sources to use when gathering location

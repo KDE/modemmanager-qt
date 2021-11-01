@@ -37,7 +37,7 @@ public:
     typedef QList<Ptr> List;
 
     explicit ModemCdma(const QString &path, QObject *parent = nullptr);
-    ~ModemCdma();
+    ~ModemCdma() override;
 
     /**
      * Provisions the modem for use with a given carrier using the modem's

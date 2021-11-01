@@ -19,7 +19,7 @@ class ModemSimple : public QDBusAbstractAdaptor
     Q_CLASSINFO("D-Bus Interface", "org.kde.fakemodem.Modem.Simple")
 public:
     explicit ModemSimple(QObject *parent = nullptr);
-    virtual ~ModemSimple();
+    ~ModemSimple() override;
 
 public Q_SLOTS:
     Q_SCRIPTABLE QDBusObjectPath Connect(const QVariantMap &properties);

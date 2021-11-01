@@ -39,7 +39,7 @@ public:
 public:
     OrgFreedesktopModemManager1SmsInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
 
-    ~OrgFreedesktopModemManager1SmsInterface();
+    ~OrgFreedesktopModemManager1SmsInterface() override;
 
     Q_PROPERTY(int SmsClass READ smsClass)
     inline int smsClass() const

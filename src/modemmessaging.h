@@ -43,7 +43,7 @@ public:
     typedef QList<Ptr> List;
 
     explicit ModemMessaging(const QString &path, QObject *parent = nullptr);
-    ~ModemMessaging();
+    ~ModemMessaging() override;
 
     /**
      * @return A list of MMSmsStorage values, specifying the storages supported by this

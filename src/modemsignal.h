@@ -35,7 +35,7 @@ public:
     typedef QList<Ptr> List;
 
     explicit ModemSignal(const QString &path, QObject *parent = nullptr);
-    ~ModemSignal();
+    ~ModemSignal() override;
 
     /**
      * @return refresh rate for the extended signal quality information updates, in seconds.

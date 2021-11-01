@@ -41,7 +41,7 @@ public:
                                                            const QDBusConnection &connection,
                                                            QObject *parent = nullptr);
 
-    ~OrgFreedesktopModemManager1ModemModem3gppUssdInterface();
+    ~OrgFreedesktopModemManager1ModemModem3gppUssdInterface() override;
 
     Q_PROPERTY(QString NetworkNotification READ networkNotification)
     inline QString networkNotification() const

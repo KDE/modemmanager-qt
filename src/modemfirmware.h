@@ -36,7 +36,7 @@ public:
     typedef QList<Ptr> List;
 
     explicit ModemFirmware(const QString &path, QObject *parent = nullptr);
-    ~ModemFirmware();
+    ~ModemFirmware() override;
 
     /**
      * List installed firmware images.

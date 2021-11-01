@@ -20,7 +20,7 @@ class FakeModem : public QObject
     Q_CLASSINFO("D-Bus Interface", "org.kde.fakemodem")
 public:
     explicit FakeModem(QObject *parent = nullptr);
-    virtual ~FakeModem();
+    ~FakeModem() override;
 
     /* Not part of DBus interface */
     void addModem(Modem *modem);

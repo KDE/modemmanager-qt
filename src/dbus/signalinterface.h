@@ -38,7 +38,7 @@ public:
 public:
     OrgFreedesktopModemManager1ModemSignalInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
 
-    ~OrgFreedesktopModemManager1ModemSignalInterface();
+    ~OrgFreedesktopModemManager1ModemSignalInterface() override;
 
     Q_PROPERTY(QVariantMap Cdma READ cdma)
     inline QVariantMap cdma() const

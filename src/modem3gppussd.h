@@ -37,7 +37,7 @@ public:
     typedef QList<Ptr> List;
 
     explicit Modem3gppUssd(const QString &path, QObject *parent = nullptr);
-    ~Modem3gppUssd();
+    ~Modem3gppUssd() override;
 
     /**
      * Sends a USSD @p command string to the network initiating a USSD session.

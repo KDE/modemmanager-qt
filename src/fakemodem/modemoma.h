@@ -19,7 +19,7 @@ class ModemOma : public QDBusAbstractAdaptor
     Q_CLASSINFO("D-Bus Interface", "org.kde.fakemodem.Modem.Oma")
 public:
     explicit ModemOma(QObject *parent = nullptr);
-    virtual ~ModemOma();
+    ~ModemOma() override;
 
     Q_PROPERTY(uint Features READ features)
     Q_PROPERTY(ModemManager::OmaSessionTypes PendingNetworkInitiatedSessions READ pendingNetworkInitiatedSessions)

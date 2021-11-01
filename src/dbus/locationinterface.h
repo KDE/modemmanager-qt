@@ -41,7 +41,7 @@ public:
                                                       const QDBusConnection &connection,
                                                       QObject *parent = nullptr);
 
-    ~OrgFreedesktopModemManager1ModemLocationInterface();
+    ~OrgFreedesktopModemManager1ModemLocationInterface() override;
 
     Q_PROPERTY(uint Capabilities READ capabilities)
     inline uint capabilities() const

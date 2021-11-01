@@ -163,7 +163,7 @@ public:
     typedef QList<Ptr> List;
 
     explicit Modem(const QString &path, QObject *parent = nullptr);
-    ~Modem();
+    ~Modem() override;
 
     QString uni() const;
     /**

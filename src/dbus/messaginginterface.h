@@ -42,7 +42,7 @@ public:
                                                        const QDBusConnection &connection,
                                                        QObject *parent = nullptr);
 
-    ~OrgFreedesktopModemManager1ModemMessagingInterface();
+    ~OrgFreedesktopModemManager1ModemMessagingInterface() override;
 
     Q_PROPERTY(uint DefaultStorage READ defaultStorage)
     inline uint defaultStorage() const

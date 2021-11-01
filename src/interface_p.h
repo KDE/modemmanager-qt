@@ -16,7 +16,7 @@ class InterfacePrivate : public QObject
     Q_OBJECT
 public:
     explicit InterfacePrivate(const QString &path, Interface *q);
-    virtual ~InterfacePrivate();
+    ~InterfacePrivate() override;
     QString uni;
 
     Q_DECLARE_PUBLIC(Interface)

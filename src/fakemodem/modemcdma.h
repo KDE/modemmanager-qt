@@ -19,7 +19,7 @@ class ModemCdma : public QDBusAbstractAdaptor
     Q_CLASSINFO("D-Bus Interface", "org.kde.fakemodem.Modem.ModemCdma")
 public:
     explicit ModemCdma(QObject *parent = nullptr);
-    virtual ~ModemCdma();
+    ~ModemCdma() override;
 
     Q_PROPERTY(uint ActivationState READ activationState)
     Q_PROPERTY(uint Cdma1xRegistrationState READ cdma1xRegistrationState)

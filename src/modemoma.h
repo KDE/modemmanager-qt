@@ -43,7 +43,7 @@ public:
     Q_DECLARE_FLAGS(Features, MMOmaFeature)
 
     explicit ModemOma(const QString &path, QObject *parent = nullptr);
-    ~ModemOma();
+    ~ModemOma() override;
 
     // properties
     /**

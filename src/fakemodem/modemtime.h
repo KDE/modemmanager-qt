@@ -19,7 +19,7 @@ class ModemTime : public QDBusAbstractAdaptor
     Q_CLASSINFO("D-Bus Interface", "org.kde.fakemodem.Modem.Time")
 public:
     explicit ModemTime(QObject *parent = nullptr);
-    virtual ~ModemTime();
+    ~ModemTime() override;
 
     Q_PROPERTY(QVariantMap NetworkTimezone READ networkTimezone)
 

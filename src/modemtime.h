@@ -94,7 +94,7 @@ public:
     typedef QList<Ptr> List;
 
     explicit ModemTime(const QString &path, QObject *parent = nullptr);
-    ~ModemTime();
+    ~ModemTime() override;
 
     /**
      * @return the current network time in local time.

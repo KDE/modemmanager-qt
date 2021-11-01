@@ -34,7 +34,7 @@ public:
 public:
     OrgFreedesktopDBusObjectManagerInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
 
-    ~OrgFreedesktopDBusObjectManagerInterface();
+    ~OrgFreedesktopDBusObjectManagerInterface() override;
 
 public Q_SLOTS: // METHODS
     inline QDBusPendingReply<ModemManager::DBUSManagerStruct> GetManagedObjects()

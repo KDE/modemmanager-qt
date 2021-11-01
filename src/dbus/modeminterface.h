@@ -40,7 +40,7 @@ public:
 public:
     OrgFreedesktopModemManager1ModemInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
 
-    ~OrgFreedesktopModemManager1ModemInterface();
+    ~OrgFreedesktopModemManager1ModemInterface() override;
 
     Q_PROPERTY(uint AccessTechnologies READ accessTechnologies)
     inline uint accessTechnologies() const

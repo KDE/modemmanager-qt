@@ -19,7 +19,7 @@ class Bearer : public QObject
     Q_CLASSINFO("D-Bus Interface", "org.kde.fakemodem.Bearer")
 public:
     explicit Bearer(QObject *parent = nullptr);
-    virtual ~Bearer();
+    ~Bearer() override;
 
     Q_PROPERTY(bool Connected READ connected)
     Q_PROPERTY(QString Interface READ interface)

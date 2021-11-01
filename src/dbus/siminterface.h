@@ -38,7 +38,7 @@ public:
 public:
     OrgFreedesktopModemManager1SimInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
 
-    ~OrgFreedesktopModemManager1SimInterface();
+    ~OrgFreedesktopModemManager1SimInterface() override;
 
     Q_PROPERTY(QString Imsi READ imsi)
     inline QString imsi() const

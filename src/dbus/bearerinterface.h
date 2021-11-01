@@ -38,7 +38,7 @@ public:
 public:
     OrgFreedesktopModemManager1BearerInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
 
-    ~OrgFreedesktopModemManager1BearerInterface();
+    ~OrgFreedesktopModemManager1BearerInterface() override;
 
     Q_PROPERTY(bool Connected READ connected)
     inline bool connected() const

@@ -27,7 +27,7 @@ class ModemManagerPrivate : public Notifier
 
 public:
     ModemManagerPrivate();
-    ~ModemManagerPrivate();
+    ~ModemManagerPrivate() override;
     QDBusServiceWatcher watcher;
     OrgFreedesktopModemManager1Interface iface;
     QMap<QString, ModemDevice::Ptr> modemList;
