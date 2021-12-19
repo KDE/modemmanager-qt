@@ -159,6 +159,9 @@ void ModemManager::Modem3gppPrivate::onPropertiesChanged(const QString &interfac
             Q_EMIT q->operatorCodeChanged(operatorCode);
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
             QStringView mcc(operatorCode);
+            if (!operatorCode.isEmpty() && operatorCode.count() > 3) {
+                mcc = mcc.sliced(0, 3);
+            }
 #else
             QStringRef mcc(&operatorCode, 0, 3);
 #endif
