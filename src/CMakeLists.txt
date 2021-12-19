@@ -81,9 +81,9 @@ add_library(KF5ModemManagerQt SHARED ${ModemManagerQt_SRCS} ${DBUS_INTERFACES_FI
 generate_export_header(KF5ModemManagerQt BASE_NAME ModemManagerQt)
 add_library(KF5::ModemManagerQt ALIAS KF5ModemManagerQt)
 
-target_include_directories(KF5ModemManagerQt INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF5}/ModemManagerQt>")
+target_include_directories(KF5ModemManagerQt INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF}/ModemManagerQt>")
 
-target_link_libraries(KF5ModemManagerQt PUBLIC Qt5::Core Qt5::DBus PRIVATE Qt5::Xml)
+target_link_libraries(KF5ModemManagerQt PUBLIC Qt${QT_MAJOR_VERSION}::Core Qt${QT_MAJOR_VERSION}::DBus PRIVATE Qt${QT_MAJOR_VERSION}::Xml)
 
 set_target_properties(KF5ModemManagerQt PROPERTIES VERSION ${MODEMMANAGERQT_VERSION}
                                                    SOVERSION ${MODEMMANAGERQT_SOVERSION}
@@ -96,7 +96,7 @@ target_include_directories(KF5ModemManagerQt PUBLIC ${MODEMMANAGER_INCLUDE_DIRS}
 add_library(KF5ModemManagerQt_static STATIC ${ModemManagerQt_SRCS} ${DBUS_INTERFACES_FILES})
 set_target_properties(KF5ModemManagerQt_static PROPERTIES COMPILE_FLAGS -DMMQT_STATIC=1)
 
-target_link_libraries(KF5ModemManagerQt_static PUBLIC Qt5::Core Qt5::DBus Qt5::Xml)
+target_link_libraries(KF5ModemManagerQt_static PUBLIC Qt${QT_MAJOR_VERSION}::Core Qt${QT_MAJOR_VERSION}::DBus Qt${QT_MAJOR_VERSION}::Xml)
 target_include_directories(KF5ModemManagerQt_static PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..;${CMAKE_CURRENT_BINARY_DIR}/..>")
 
 ecm_generate_headers(ModemManagerQt_HEADERS
@@ -128,16 +128,16 @@ ecm_generate_headers(ModemManagerQt_HEADERS
 install(TARGETS KF5ModemManagerQt EXPORT KF5ModemManagerQtTargets ${KF5_INSTALL_TARGETS_DEFAULT_ARGS})
 
 # KF6: install to path having both include visibility layer & namespace dir prefix
-# CamelCase includes to ${KDE_INSTALL_INCLUDEDIR_KF5}/ModemManagerQt/ModemManagerQt
-# normal headers to ${KDE_INSTALL_INCLUDEDIR_KF5}/ModemManagerQt/modemmanagerqt
+# CamelCase includes to ${KDE_INSTALL_INCLUDEDIR_KF}/ModemManagerQt/ModemManagerQt
+# normal headers to ${KDE_INSTALL_INCLUDEDIR_KF}/ModemManagerQt/modemmanagerqt
 # The generated cmake config files are already accidentally pointing to the first layer, by
-# target_include_directories(KF5ModemManagerQt INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF5}/ModemManagerQt>")
-# next to the actual include base ${KDE_INSTALL_INCLUDEDIR_KF5} being set via KF5_INSTALL_TARGETS_DEFAULT_ARGS
+# target_include_directories(KF5ModemManagerQt INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF}/ModemManagerQt>")
+# next to the actual include base ${KDE_INSTALL_INCLUDEDIR_KF} being set via KF5_INSTALL_TARGETS_DEFAULT_ARGS
 # so this can stay untouched
 install(FILES
   ${CMAKE_CURRENT_BINARY_DIR}/modemmanagerqt_export.h
   ${ModemManagerQt_HEADERS}
-  DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}/ModemManagerQt COMPONENT Devel
+  DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/ModemManagerQt COMPONENT Devel
 )
 
 ecm_qt_install_logging_categories(

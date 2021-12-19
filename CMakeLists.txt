@@ -19,7 +19,7 @@ include(KDECMakeSettings)
 include(KDEGitCommitHooks)
 
 set(REQUIRED_QT_VERSION 5.15.2)
-find_package(Qt5 ${REQUIRED_QT_VERSION} REQUIRED Core DBus Xml)
+find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} REQUIRED Core DBus Xml)
 
 add_definitions(${QT_DEFINITIONS})
 
@@ -86,7 +86,7 @@ install(EXPORT KF5ModemManagerQtTargets DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
 
 install(FILES
    ${CMAKE_CURRENT_BINARY_DIR}/modemmanagerqt_version.h
-  DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5} COMPONENT Devel
+  DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF} COMPONENT Devel
 )
 
 feature_summary(WHAT ALL   FATAL_ON_MISSING_REQUIRED_PACKAGES)

@@ -26,5 +26,5 @@ add_library(fakeModem STATIC ${fakeModem_SRCS})
 
 target_link_libraries(fakeModem
     KF5ModemManagerQt_static
-    Qt5::Core
-    Qt5::DBus)
+    Qt${QT_MAJOR_VERSION}::Core
+    Qt${QT_MAJOR_VERSION}::DBus)

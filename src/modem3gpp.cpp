@@ -157,8 +157,11 @@ void ModemManager::Modem3gppPrivate::onPropertiesChanged(const QString &interfac
         if (it != properties.constEnd()) {
             operatorCode = it->toString();
             Q_EMIT q->operatorCodeChanged(operatorCode);
-
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+            QStringView mcc(operatorCode);
+#else
             QStringRef mcc(&operatorCode, 0, 3);
+#endif
             QString cc = mobileCountryCodeToAlpha2CountryCode(mcc.toInt());
             if (cc != countryCode) {
                 countryCode = cc;
