@@ -10,6 +10,7 @@
 ObjectManager::ObjectManager(QObject *parent)
     : QDBusAbstractAdaptor(parent)
 {
+    qDBusRegisterMetaType<QDBusObjectPath>();
     qDBusRegisterMetaType<ModemManager::MMVariantMapMap>();
     qDBusRegisterMetaType<ModemManager::DBUSManagerStruct>();
 }
