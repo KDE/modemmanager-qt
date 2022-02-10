@@ -98,47 +98,88 @@ set_target_properties(KF5ModemManagerQt_static PROPERTIES COMPILE_FLAGS -DMMQT_S
 
 target_link_libraries(KF5ModemManagerQt_static PUBLIC Qt${QT_MAJOR_VERSION}::Core Qt${QT_MAJOR_VERSION}::DBus Qt${QT_MAJOR_VERSION}::Xml)
 target_include_directories(KF5ModemManagerQt_static PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..;${CMAKE_CURRENT_BINARY_DIR}/..>")
-
-ecm_generate_headers(ModemManagerQt_HEADERS
-  HEADER_NAMES
-  Call
-  Bearer
-  GenericTypes
-  Interface
-  Manager
-  Modem
-  Modem3Gpp
-  Modem3GppUssd
-  ModemCdma
-  ModemDevice
-  ModemFirmware
-  ModemLocation
-  ModemMessaging
-  ModemSignal
-  ModemSimple
-  ModemTime
-  ModemOma
-  ModemVoice
-  Sim
-  Sms
-
-  REQUIRED_HEADERS ModemManagerQt_HEADERS
-)
+if (QT_MAJOR_VERSION STREQUAL "5")
+    ecm_generate_headers(ModemManagerQt_CamelCaseHEADERS
+        HEADER_NAMES
+        Call
+        Bearer
+        GenericTypes
+        Interface
+        Manager
+        Modem
+        Modem3Gpp
+        Modem3GppUssd
+        ModemCdma
+        ModemDevice
+        ModemFirmware
+        ModemLocation
+        ModemMessaging
+        ModemSignal
+        ModemSimple
+        ModemTime
+        ModemOma
+        ModemVoice
+        Sim
+        Sms
+        REQUIRED_HEADERS ModemManagerQt_HEADERS
+    )
+else()
+    ecm_generate_headers(ModemManagerQt_CamelCaseHEADERS
+      HEADER_NAMES
+      Call
+      Bearer
+      GenericTypes
+      Interface
+      Manager
+      Modem
+      Modem3Gpp
+      Modem3GppUssd
+      ModemCdma
+      ModemDevice
+      ModemFirmware
+      ModemLocation
+      ModemMessaging
+      ModemSignal
+      ModemSimple
+      ModemTime
+      ModemOma
+      ModemVoice
+      Sim
+      Sms
+      PREFIX ModemManagerQt
+      REQUIRED_HEADERS ModemManagerQt_HEADERS
+    )
+endif()
 
 install(TARGETS KF5ModemManagerQt EXPORT KF5ModemManagerQtTargets ${KF5_INSTALL_TARGETS_DEFAULT_ARGS})
 
-# KF6: install to path having both include visibility layer & namespace dir prefix
-# CamelCase includes to ${KDE_INSTALL_INCLUDEDIR_KF}/ModemManagerQt/ModemManagerQt
-# normal headers to ${KDE_INSTALL_INCLUDEDIR_KF}/ModemManagerQt/modemmanagerqt
-# The generated cmake config files are already accidentally pointing to the first layer, by
-# target_include_directories(KF5ModemManagerQt INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF}/ModemManagerQt>")
-# next to the actual include base ${KDE_INSTALL_INCLUDEDIR_KF} being set via KF5_INSTALL_TARGETS_DEFAULT_ARGS
-# so this can stay untouched
-install(FILES
-  ${CMAKE_CURRENT_BINARY_DIR}/modemmanagerqt_export.h
-  ${ModemManagerQt_HEADERS}
-  DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/ModemManagerQt COMPONENT Devel
-)
+
+# To keep backwards compatibility we stick with this layout for KF5,
+# and use the Prison/Prison and Prison/prison layout for KF6
+if (QT_MAJOR_VERSION STREQUAL "5")
+    install(FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/modemmanagerqt_export.h
+        ${ModemManagerQt_HEADERS}
+	${ModemManagerQt_CamelCaseHEADERS}
+        DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/ModemManagerQt COMPONENT Devel
+    )
+else()
+    install(FILES
+        ${ModemManagerQt_CamelCaseHEADERS}
+        DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/ModemManagerQt/ModemManagerQt COMPONENT Devel
+    )
+
+    install(FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/modemmanagerqt_export.h
+        DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/ModemManagerQt
+        COMPONENT Devel
+    )
+
+    install(FILES
+        ${ModemManagerQt_HEADERS}
+        DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/ModemManagerQt/modemmanagerqt COMPONENT Devel
+    )
+endif()
 
 ecm_qt_install_logging_categories(
     EXPORT MODEMMANAGERQT
