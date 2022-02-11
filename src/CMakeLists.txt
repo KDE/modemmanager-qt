@@ -155,7 +155,7 @@ install(TARGETS KF5ModemManagerQt EXPORT KF5ModemManagerQtTargets ${KF5_INSTALL_
 
 
 # To keep backwards compatibility we stick with this layout for KF5,
-# and use the Prison/Prison and Prison/prison layout for KF6
+# and use the ModemManagerQt/ModemManagerQt and ModemManagerQt/modemmanagerqt layout for KF6
 if (QT_MAJOR_VERSION STREQUAL "5")
     install(FILES
         ${CMAKE_CURRENT_BINARY_DIR}/modemmanagerqt_export.h
