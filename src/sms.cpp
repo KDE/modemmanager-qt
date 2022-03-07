@@ -38,8 +38,8 @@ ModemManager::SmsPrivate::SmsPrivate(const QString &path, Sms *q)
         smsClass = smsIface.smsClass();
         deliveryReportRequest = smsIface.deliveryReportRequest();
         messageReference = smsIface.messageReference();
-        timestamp = QDateTime::fromString(smsIface.timestamp(), Qt::ISODate);
-        dischargeTimestamp = QDateTime::fromString(smsIface.dischargeTimestamp(), Qt::ISODate);
+        timestamp = QDateTime::fromString(smsIface.timestamp(), Qt::ISODateWithMs);
+        dischargeTimestamp = QDateTime::fromString(smsIface.dischargeTimestamp(), Qt::ISODateWithMs);
         deliveryState = (MMSmsDeliveryState)smsIface.deliveryState();
         storage = (MMSmsStorage)smsIface.storage();
 #if MM_CHECK_VERSION(1, 2, 0)
