@@ -16,7 +16,9 @@ find_package(ModemManager 1.0 REQUIRED)
 include(KDEInstallDirs)
 include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
 include(KDECMakeSettings)
+
 include(KDEGitCommitHooks)
+include(ECMDeprecationSettings)
 
 set(REQUIRED_QT_VERSION 5.15.2)
 find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} REQUIRED Core DBus Xml)
@@ -39,7 +41,10 @@ ecm_setup_version(PROJECT VARIABLE_PREFIX MODEMMANAGERQT
                         VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/modemmanagerqt_version.h"
                         PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF5ModemManagerQtConfigVersion.cmake"
                         SOVERSION 6)
-add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050f02)
+ecm_set_disabled_deprecation_versions(
+    QT 5.15.2
+)
+
 # Enable unit testing
 if (BUILD_TESTING)
     add_subdirectory(src/fakemodem)
