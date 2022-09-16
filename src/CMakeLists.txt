@@ -151,7 +151,7 @@ else()
     )
 endif()
 
-install(TARGETS KF5ModemManagerQt EXPORT KF5ModemManagerQtTargets ${KF5_INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS KF5ModemManagerQt EXPORT KF5ModemManagerQtTargets ${KF_INSTALL_TARGETS_DEFAULT_ARGS})
 
 
 # To keep backwards compatibility we stick with this layout for KF5,
