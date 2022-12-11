@@ -70,7 +70,7 @@ void BearerPropertiesTest::initTestCase()
     bearer->setProperties({{QLatin1String("apn"), QLatin1String("internet")}, {QLatin1String("ip-type"), 1}, {QLatin1String("number"), QLatin1String("*99#")}});
     bearer->setSuspended(false);
 #if MM_CHECK_VERSION(1, 2, 0)
-    ModemManager::Modem::Ptr modemInterface = ModemManager::modemDevices().first()->modemInterface();
+    ModemManager::Modem::Ptr modemInterface = ModemManager::modemDevices().constFirst()->modemInterface();
     QCOMPARE(modemInterface->listBearers().count(), 0);
     QSignalSpy bearerAddedSpy(modemInterface.data(), SIGNAL(bearerAdded(QString)));
     fakeModem->addBearer(bearer);
