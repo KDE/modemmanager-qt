@@ -149,7 +149,6 @@ void ModemPropertiesTest::testModemProperties()
             }
         }
         QVERIFY(found);
-        found = false;
     }
     QCOMPARE(modemInterface->plugin(), pluginChangedSpy.at(0).at(0).toString());
 
