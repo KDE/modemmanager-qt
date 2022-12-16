@@ -34,6 +34,19 @@ ModemManager::Modem3gppPrivate::Modem3gppPrivate(const QString &path, Modem3gpp 
 #if MM_CHECK_VERSION(1, 2, 0)
         subscriptionState = (MMModem3gppSubscriptionState)modem3gppIface.subscriptionState();
 #endif
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        QStringView mcc(operatorCode);
+        if (!operatorCode.isEmpty() && operatorCode.count() > 3) {
+            mcc = mcc.sliced(0, 3);
+        }
+#else
+        QStringRef mcc(&operatorCode, 0, 3);
+#endif
+        QString cc = mobileCountryCodeToAlpha2CountryCode(mcc.toInt());
+        if (cc != countryCode) {
+            countryCode = cc;
+        }
     }
 }
 
