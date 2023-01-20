@@ -25,6 +25,6 @@ endif()
 add_library(fakeModem STATIC ${fakeModem_SRCS})
 
 target_link_libraries(fakeModem
-    KF5ModemManagerQt_static
+    KF6ModemManagerQt_static
     Qt${QT_MAJOR_VERSION}::Core
     Qt${QT_MAJOR_VERSION}::DBus)

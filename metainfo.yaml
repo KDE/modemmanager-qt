@@ -12,8 +12,8 @@ portingAid: false
 deprecated: false
 release: true
 libraries:
-    - cmake: "KF5ModemManagerQt"
-cmakename: KF5ModemManagerQt
+    - cmake: "KF6ModemManagerQt"
+cmakename: KF6ModemManagerQt
 
 public_lib: true
 group: Frameworks
