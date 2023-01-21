@@ -42,7 +42,7 @@ ecm_setup_version(PROJECT VARIABLE_PREFIX MODEMMANAGERQT
                         PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF6ModemManagerQtConfigVersion.cmake"
                         SOVERSION 6)
 ecm_set_disabled_deprecation_versions(
-    QT 5.15.2
+    QT 6.4
 )
 
 # Enable unit testing

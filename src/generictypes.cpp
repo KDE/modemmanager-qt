@@ -122,7 +122,7 @@ const QDBusArgument &operator>>(const QDBusArgument &arg, ModemManager::Validity
 // Marshall the UnlockRetriesMap data into a D-BUS argument
 QDBusArgument &operator<<(QDBusArgument &argument, const ModemManager::UnlockRetriesMap &unlockRetriesMap)
 {
-    argument.beginMap(QVariant::Int, QVariant::UInt);
+    argument.beginMap(QMetaType::Int, QMetaType::UInt);
 
     QMapIterator<MMModemLock, uint> i(unlockRetriesMap);
     while (i.hasNext()) {

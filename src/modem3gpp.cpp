@@ -37,7 +37,7 @@ ModemManager::Modem3gppPrivate::Modem3gppPrivate(const QString &path, Modem3gpp 
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
         QStringView mcc(operatorCode);
-        if (!operatorCode.isEmpty() && operatorCode.count() > 3) {
+        if (!operatorCode.isEmpty() && operatorCode.size() > 3) {
             mcc = mcc.sliced(0, 3);
         }
 #else
@@ -172,7 +172,7 @@ void ModemManager::Modem3gppPrivate::onPropertiesChanged(const QString &interfac
             Q_EMIT q->operatorCodeChanged(operatorCode);
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
             QStringView mcc(operatorCode);
-            if (!operatorCode.isEmpty() && operatorCode.count() > 3) {
+            if (!operatorCode.isEmpty() && operatorCode.size() > 3) {
                 mcc = mcc.sliced(0, 3);
             }
 #else
