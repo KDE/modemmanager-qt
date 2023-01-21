@@ -21,7 +21,7 @@ include(KDEGitCommitHooks)
 include(ECMDeprecationSettings)
 
 set(REQUIRED_QT_VERSION 6.4.0)
-find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} REQUIRED Core DBus Xml)
+find_package(Qt6 ${REQUIRED_QT_VERSION} REQUIRED Core DBus Xml)
 
 add_definitions(${QT_DEFINITIONS})
 
