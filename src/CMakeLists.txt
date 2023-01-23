@@ -198,9 +198,9 @@ if(BUILD_QCH)
             ${ModemManagerQt_HEADERS}
         MD_MAINPAGE "${CMAKE_SOURCE_DIR}/README.md"
         LINK_QCHS
-            Qt5Core_QCH
-            Qt5DBus_QCH
-            Qt5Xml_QCH
+            Qt6Core_QCH
+            Qt6DBus_QCH
+            Qt6Xml_QCH
         BLANK_MACROS
             MODEMMANAGERQT_EXPORT
             MODEMMANAGERQT_DEPRECATED
