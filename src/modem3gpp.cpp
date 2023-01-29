@@ -35,14 +35,10 @@ ModemManager::Modem3gppPrivate::Modem3gppPrivate(const QString &path, Modem3gpp 
         subscriptionState = (MMModem3gppSubscriptionState)modem3gppIface.subscriptionState();
 #endif
 
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
         QStringView mcc(operatorCode);
         if (!operatorCode.isEmpty() && operatorCode.size() > 3) {
             mcc = mcc.sliced(0, 3);
         }
-#else
-        QStringRef mcc(&operatorCode, 0, 3);
-#endif
         QString cc = mobileCountryCodeToAlpha2CountryCode(mcc.toInt());
         if (cc != countryCode) {
             countryCode = cc;
@@ -170,14 +166,10 @@ void ModemManager::Modem3gppPrivate::onPropertiesChanged(const QString &interfac
         if (it != properties.constEnd()) {
             operatorCode = it->toString();
             Q_EMIT q->operatorCodeChanged(operatorCode);
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
             QStringView mcc(operatorCode);
             if (!operatorCode.isEmpty() && operatorCode.size() > 3) {
                 mcc = mcc.sliced(0, 3);
             }
-#else
-            QStringRef mcc(&operatorCode, 0, 3);
-#endif
             QString cc = mobileCountryCodeToAlpha2CountryCode(mcc.toInt());
             if (cc != countryCode) {
                 countryCode = cc;
