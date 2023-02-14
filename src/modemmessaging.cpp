@@ -61,9 +61,9 @@ ModemManager::ModemMessaging::ModemMessaging(const QString &path, QObject *paren
 #endif
     QList<QDBusObjectPath> messages = d->modemMessagingIface.messages();
     Q_FOREACH (const QDBusObjectPath &op, messages) {
-        const QString path = op.path();
-        d->messageList.insert(path, ModemManager::Sms::Ptr());
-        Q_EMIT messageAdded(path, false);
+        const QString objectPathAsString = op.path();
+        d->messageList.insert(objectPathAsString, ModemManager::Sms::Ptr());
+        Q_EMIT messageAdded(objectPathAsString, false);
     }
 }
 
