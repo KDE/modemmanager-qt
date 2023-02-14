@@ -593,7 +593,6 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
     if (ifaceName == QLatin1String(MMQT_DBUS_INTERFACE_MODEM)) {
         QVariantMap::const_iterator it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_SIM));
 
-        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_SIM));
         if (it != changedProps.constEnd()) {
             Q_EMIT q->simPathChanged(simPath, it->toString());
             simPath = it->toString();
