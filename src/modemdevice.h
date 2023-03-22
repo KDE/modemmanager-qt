@@ -53,7 +53,6 @@ public:
     };
 
     explicit ModemDevice(const QString &path, QObject *parent = nullptr);
-    explicit ModemDevice(ModemDevicePrivate &dd, QObject *parent = nullptr);
     ~ModemDevice() override;
 
     QString uni() const;
@@ -81,6 +80,9 @@ Q_SIGNALS:
 
     void interfaceAdded(InterfaceType type);
     void interfaceRemoved(InterfaceType type);
+
+protected:
+    MODEMMANAGERQT_NO_EXPORT explicit ModemDevice(ModemDevicePrivate &dd, QObject *parent = nullptr);
 
 private:
     ModemDevicePrivate *const d_ptr;
