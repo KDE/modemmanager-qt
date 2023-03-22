@@ -30,10 +30,12 @@ public:
     typedef QList<Ptr> List;
 
     explicit Interface(const QString &path, QObject *parent = nullptr);
-    explicit Interface(InterfacePrivate &dd, QObject *parent = nullptr);
     ~Interface() override;
 
     QString uni() const;
+
+protected:
+    MODEMMANAGERQT_NO_EXPORT explicit Interface(InterfacePrivate &dd, QObject *parent = nullptr);
 
 protected:
     InterfacePrivate *const d_ptr;
