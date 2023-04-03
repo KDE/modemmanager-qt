@@ -78,8 +78,15 @@ ecm_qt_export_logging_category(
 )
 
 add_library(KF6ModemManagerQt SHARED ${ModemManagerQt_SRCS} ${DBUS_INTERFACES_FILES})
-generate_export_header(KF6ModemManagerQt BASE_NAME ModemManagerQt)
 add_library(KF6::ModemManagerQt ALIAS KF6ModemManagerQt)
+
+ecm_generate_export_header(KF6ModemManagerQt
+    BASE_NAME ModemManagerQt
+    GROUP_BASE_NAME KF
+    VERSION ${KF_VERSION}
+    USE_VERSION_HEADER
+    DEPRECATED_BASE_VERSION 0
+)
 
 target_include_directories(KF6ModemManagerQt INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF}/ModemManagerQt>")
 

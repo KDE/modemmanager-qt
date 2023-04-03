@@ -27,8 +27,7 @@ add_definitions(${QT_DEFINITIONS})
 
 remove_definitions(-DQT_NO_FOREACH) # set by KDEFrameworkCompilerSettings
 
-include(GenerateExportHeader)
-
+include(ECMGenerateExportHeader)
 include(ECMSetupVersion)
 include(ECMGenerateHeaders)
 include(ECMAddQch)
