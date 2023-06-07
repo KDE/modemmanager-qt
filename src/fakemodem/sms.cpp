@@ -6,6 +6,9 @@
 
 #include "sms.h"
 
+#include <QDBusConnection>
+#include <QDBusMessage>
+
 Sms::Sms(QObject *parent)
     : QObject(parent)
     , m_enabledNotifications(false)

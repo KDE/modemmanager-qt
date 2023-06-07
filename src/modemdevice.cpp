@@ -30,6 +30,7 @@
 #include "modemsimple.h"
 #include "modemtime.h"
 
+#include <QDBusConnection>
 #include <QDomDocument>
 
 ModemManager::ModemDevicePrivate::ModemDevicePrivate(const QString &path, ModemManager::ModemDevice *q)

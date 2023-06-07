@@ -10,6 +10,7 @@
 
 #include <modemmanagerqt_export.h>
 
+#include <QDBusPendingReply>
 #include <QObject>
 #include <QSharedPointer>
 

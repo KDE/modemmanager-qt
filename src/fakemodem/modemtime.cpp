@@ -6,6 +6,9 @@
 
 #include "modemtime.h"
 
+#include <QDBusConnection>
+#include <QDBusMessage>
+
 ModemTime::ModemTime(QObject *parent)
     : QDBusAbstractAdaptor(parent)
     , m_enabledNotifications(false)

@@ -11,8 +11,6 @@
 
 #include <QObject>
 
-#include <QDBusObjectPath>
-
 class Sms : public QObject
 {
     Q_OBJECT

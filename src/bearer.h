@@ -13,6 +13,8 @@
 #include <QObject>
 #include <QSharedPointer>
 
+#include <QDBusPendingReply>
+
 #include "generictypes.h"
 
 namespace ModemManager

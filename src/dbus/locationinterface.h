@@ -13,6 +13,8 @@
 #define MODEMMANAGERQT_LOCATIONINTERFACE_H
 
 #include "generictypes.h"
+#include <QDBusAbstractInterface>
+#include <QDBusPendingReply>
 #include <QList>
 #include <QObject>
 #include <QString>

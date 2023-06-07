@@ -10,8 +10,7 @@
 #include "generictypes.h"
 #include "generictypes_p.h"
 
-#include <QObject>
-
+#include <QDBusAbstractAdaptor>
 #include <QDBusObjectPath>
 
 class ObjectManager : public QDBusAbstractAdaptor

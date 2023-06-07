@@ -6,6 +6,9 @@
 
 #include "modem3gppussd.h"
 
+#include <QDBusConnection>
+#include <QDBusMessage>
+
 Modem3gppUssd::Modem3gppUssd(QObject *parent)
     : QDBusAbstractAdaptor(parent)
     , m_enabledNotifications(false)

@@ -22,6 +22,10 @@
 #include "mmdebug_p.h"
 #include "modem.h"
 
+#include <QDBusConnectionInterface>
+#include <QDBusMetaType>
+#include <QDBusReply>
+
 Q_GLOBAL_STATIC(ModemManager::ModemManagerPrivate, globalModemManager)
 
 ModemManager::ModemManagerPrivate::ModemManagerPrivate()

@@ -6,6 +6,9 @@
 
 #include "modemoma.h"
 
+#include <QDBusConnection>
+#include <QDBusMessage>
+
 ModemOma::ModemOma(QObject *parent)
     : QDBusAbstractAdaptor(parent)
     , m_enabledNotifications(false)

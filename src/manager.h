@@ -13,7 +13,6 @@
 
 #include <modemmanagerqt_export.h>
 
-#include <QDBusObjectPath>
 #include <QObject>
 #include <QSharedPointer>
 

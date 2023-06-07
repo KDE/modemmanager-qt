@@ -14,6 +14,8 @@
 #include "generictypes.h"
 #include "interface.h"
 
+#include <QDBusPendingReply>
+
 namespace ModemManager
 {
 class ModemSimplePrivate;

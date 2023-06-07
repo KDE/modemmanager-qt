@@ -8,6 +8,8 @@
 #include "dbus/fakedbus.h"
 
 #include <QDBusConnection>
+#include <QDBusMessage>
+#include <QDBusMetaType>
 
 FakeModem::FakeModem(QObject *parent)
     : QObject(parent)

@@ -12,8 +12,9 @@
 #include <ModemManager/ModemManager.h>
 #include <modemmanagerqt_export.h>
 
+#include <QDBusArgument>
+#include <QDBusObjectPath>
 #include <QMetaType>
-#include <QtDBus>
 
 // Enums from ModemManager-enums.h which needs to be defined all the time,
 // because it's not possible to use MM_CHECK_VERSION for signals

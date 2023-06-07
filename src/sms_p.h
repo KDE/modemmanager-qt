@@ -14,6 +14,8 @@
 #include "dbus/smsinterface.h"
 #include "sms.h"
 
+#include <QDateTime>
+
 namespace ModemManager
 {
 class SmsPrivate : public QObject

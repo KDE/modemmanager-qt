@@ -6,6 +6,9 @@
 
 #include "modemlocation.h"
 
+#include <QDBusConnection>
+#include <QDBusMessage>
+
 ModemLocation::ModemLocation(QObject *parent)
     : QDBusAbstractAdaptor(parent)
     , m_enabledNotifications(false)

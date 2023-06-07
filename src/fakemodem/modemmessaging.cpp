@@ -6,6 +6,9 @@
 
 #include "modemmessaging.h"
 
+#include <QDBusConnection>
+#include <QDBusMessage>
+
 ModemMessaging::ModemMessaging(QObject *parent)
     : QDBusAbstractAdaptor(parent)
     , m_enabledNotifications(false)

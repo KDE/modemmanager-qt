@@ -6,6 +6,9 @@
 
 #include "modem.h"
 
+#include <QDBusConnection>
+#include <QDBusMessage>
+
 Modem::Modem(QObject *parent)
     : QObject(parent)
     , m_accessTechnologies(0)

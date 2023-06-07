@@ -6,6 +6,9 @@
 
 #include "modemcdma.h"
 
+#include <QDBusConnection>
+#include <QDBusMessage>
+
 ModemCdma::ModemCdma(QObject *parent)
     : QDBusAbstractAdaptor(parent)
     , m_enabledNotifications(false)

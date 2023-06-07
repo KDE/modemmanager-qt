@@ -11,8 +11,6 @@
 
 #include <QObject>
 
-#include <QDBusObjectPath>
-
 class Bearer : public QObject
 {
     Q_OBJECT

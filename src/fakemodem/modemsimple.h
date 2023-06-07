@@ -9,8 +9,7 @@
 
 #include "generictypes.h"
 
-#include <QObject>
-
+#include <QDBusAbstractAdaptor>
 #include <QDBusObjectPath>
 
 class ModemSimple : public QDBusAbstractAdaptor

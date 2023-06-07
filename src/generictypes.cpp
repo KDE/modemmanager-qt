@@ -9,6 +9,8 @@
 #include "generictypes.h"
 #include "generictypes_p.h"
 
+#include <QDBusMetaType>
+
 QDBusArgument &operator<<(QDBusArgument &arg, const ModemManager::Port &port)
 {
     arg.beginStructure();

@@ -11,6 +11,7 @@
 #include "interface.h"
 #include <modemmanagerqt_export.h>
 
+#include <QDBusPendingReply>
 #include <QDateTime>
 #include <QObject>
 #include <QSharedPointer>

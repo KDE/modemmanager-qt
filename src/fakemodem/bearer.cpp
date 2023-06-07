@@ -6,6 +6,9 @@
 
 #include "bearer.h"
 
+#include <QDBusConnection>
+#include <QDBusMessage>
+
 Bearer::Bearer(QObject *parent)
     : QObject(parent)
     , m_connected(false)

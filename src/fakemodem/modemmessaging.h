@@ -10,8 +10,7 @@
 #include "generictypes.h"
 #include "sms.h"
 
-#include <QObject>
-
+#include <QDBusAbstractAdaptor>
 #include <QDBusObjectPath>
 
 class ModemMessaging : public QDBusAbstractAdaptor

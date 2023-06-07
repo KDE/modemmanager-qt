@@ -13,6 +13,8 @@
 
 #include "generictypes.h"
 #include "generictypes_p.h"
+#include <QDBusAbstractInterface>
+#include <QDBusPendingReply>
 #include <QList>
 #include <QObject>
 #include <QString>

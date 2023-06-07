@@ -19,6 +19,8 @@
 #include "generictypes_p.h"
 #include "mmdebug_p.h"
 
+#include <QTimer>
+
 namespace ModemManager
 {
 class ModemManager::BearerProperties::Private
