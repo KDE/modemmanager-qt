@@ -340,3 +340,5 @@ void Sms::setValidity(const ModemManager::ValidityPair &validity)
         QDBusConnection::sessionBus().send(message);
     }
 }
+
+#include "moc_sms.cpp"

@@ -45,3 +45,6 @@ void ModemManager::InterfacePrivate::onPropertiesChanged(const QString &interfac
     Q_UNUSED(properties)
     Q_UNUSED(invalidatedProps)
 }
+
+#include "moc_interface.cpp"
+#include "moc_interface_p.cpp"

@@ -108,3 +108,5 @@ QVariantMap Modem3gppUssd::toMap() const
     map.insert(QLatin1String(MM_MODEM_MODEM3GPP_USSD_PROPERTY_NETWORKREQUEST), m_networkRequest);
     return map;
 }
+
+#include "moc_modem3gppussd.cpp"

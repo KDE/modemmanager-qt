@@ -171,3 +171,5 @@ void Bearer::Disconnect()
 {
     // TODO
 }
+
+#include "moc_bearer.cpp"

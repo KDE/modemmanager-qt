@@ -222,3 +222,5 @@ QString ModemManager::Modem3gppPrivate::mobileCountryCodeToAlpha2CountryCode(int
         return QString();
     }
 }
+
+#include "moc_modem3gpp.cpp"

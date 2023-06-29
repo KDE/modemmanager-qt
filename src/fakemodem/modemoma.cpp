@@ -130,3 +130,5 @@ QVariantMap ModemOma::toMap() const
     map.insert(QLatin1String(MM_MODEM_OMA_PROPERTY_SESSIONSTATE), m_sessionState);
     return map;
 }
+
+#include "moc_modemoma.cpp"

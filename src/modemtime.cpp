@@ -192,3 +192,5 @@ void ModemManager::ModemTimePrivate::onPropertiesChanged(const QString &interfac
         }
     }
 }
+
+#include "moc_modemtime.cpp"

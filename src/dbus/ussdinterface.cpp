@@ -27,3 +27,5 @@ OrgFreedesktopModemManager1ModemModem3gppUssdInterface::OrgFreedesktopModemManag
 OrgFreedesktopModemManager1ModemModem3gppUssdInterface::~OrgFreedesktopModemManager1ModemModem3gppUssdInterface()
 {
 }
+
+#include "moc_ussdinterface.cpp"

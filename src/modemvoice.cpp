@@ -144,3 +144,5 @@ int ModemManager::ModemVoice::timeout() const
     Q_D(const ModemVoice);
     return d->modemVoiceIface.timeout();
 }
+
+#include "moc_modemvoice.cpp"

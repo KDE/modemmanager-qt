@@ -27,3 +27,5 @@ OrgFreedesktopModemManager1ModemOmaInterface::OrgFreedesktopModemManager1ModemOm
 OrgFreedesktopModemManager1ModemOmaInterface::~OrgFreedesktopModemManager1ModemOmaInterface()
 {
 }
+
+#include "moc_omainterface.cpp"

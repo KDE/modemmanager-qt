@@ -224,3 +224,6 @@ void ModemManager::scanDevices()
 {
     globalModemManager->scanDevices();
 }
+
+#include "moc_manager.cpp"
+#include "moc_manager_p.cpp"

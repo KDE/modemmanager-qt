@@ -144,3 +144,5 @@ void ModemManager::ModemLocationPrivate::onPropertiesChanged(const QString &inte
         }
     }
 }
+
+#include "moc_modemlocation.cpp"

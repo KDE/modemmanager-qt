@@ -27,3 +27,5 @@ OrgFreedesktopModemManager1ModemTimeInterface::OrgFreedesktopModemManager1ModemT
 OrgFreedesktopModemManager1ModemTimeInterface::~OrgFreedesktopModemManager1ModemTimeInterface()
 {
 }
+
+#include "moc_timeinterface.cpp"

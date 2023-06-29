@@ -111,3 +111,5 @@ QVariantMap ModemMessaging::toMap() const
     map.insert(QLatin1String(MM_MODEM_MESSAGING_PROPERTY_DEFAULTSTORAGE), m_defaultStorage);
     return map;
 }
+
+#include "moc_modemmessaging.cpp"

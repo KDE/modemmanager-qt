@@ -158,3 +158,5 @@ void ModemManager::ModemOmaPrivate::onPropertiesChanged(const QString &interface
         }
     }
 }
+
+#include "moc_modemoma.cpp"

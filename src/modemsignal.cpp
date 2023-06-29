@@ -151,3 +151,5 @@ void ModemManager::ModemSignalPrivate::onPropertiesChanged(const QString &interf
         }
     }
 }
+
+#include "moc_modemsignal.cpp"

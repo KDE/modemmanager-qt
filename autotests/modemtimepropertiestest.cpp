@@ -99,3 +99,5 @@ void ModemTimePropertiesTest::testModemTimeProperties()
 }
 
 QTEST_MAIN(ModemTimePropertiesTest)
+
+#include "moc_modemtimepropertiestest.cpp"

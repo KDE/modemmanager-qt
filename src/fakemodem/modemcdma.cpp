@@ -178,3 +178,5 @@ QVariantMap ModemCdma::toMap() const
     map.insert(QLatin1String(MM_MODEM_MODEMCDMA_PROPERTY_EVDOREGISTRATIONSTATE), m_evdoRegistrationState);
     return map;
 }
+
+#include "moc_modemcdma.cpp"

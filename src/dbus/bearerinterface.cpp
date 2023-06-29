@@ -27,3 +27,5 @@ OrgFreedesktopModemManager1BearerInterface::OrgFreedesktopModemManager1BearerInt
 OrgFreedesktopModemManager1BearerInterface::~OrgFreedesktopModemManager1BearerInterface()
 {
 }
+
+#include "moc_bearerinterface.cpp"

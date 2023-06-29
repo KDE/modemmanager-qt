@@ -27,3 +27,5 @@ OrgFreedesktopModemManager1ModemLocationInterface::OrgFreedesktopModemManager1Mo
 OrgFreedesktopModemManager1ModemLocationInterface::~OrgFreedesktopModemManager1ModemLocationInterface()
 {
 }
+
+#include "moc_locationinterface.cpp"

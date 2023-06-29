@@ -123,3 +123,5 @@ void ModemCdmaPropertiesTest::testModemCdmaProperties()
 }
 
 QTEST_MAIN(ModemCdmaPropertiesTest)
+
+#include "moc_modemcdmapropertiestest.cpp"

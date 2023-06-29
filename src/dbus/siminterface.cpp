@@ -27,3 +27,5 @@ OrgFreedesktopModemManager1SimInterface::OrgFreedesktopModemManager1SimInterface
 OrgFreedesktopModemManager1SimInterface::~OrgFreedesktopModemManager1SimInterface()
 {
 }
+
+#include "moc_siminterface.cpp"

@@ -192,3 +192,5 @@ void ModemTest::testModemAdded(const QString &dev)
 }
 
 QTEST_MAIN(ModemTest)
+
+#include "moc_modemtest.cpp"

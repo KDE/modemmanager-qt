@@ -202,3 +202,5 @@ int ModemManager::ModemMessaging::timeout() const
     Q_D(const ModemMessaging);
     return d->modemMessagingIface.timeout();
 }
+
+#include "moc_modemmessaging.cpp"

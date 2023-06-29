@@ -26,3 +26,5 @@ OrgFreedesktopModemManager1CallInterface::OrgFreedesktopModemManager1CallInterfa
 OrgFreedesktopModemManager1CallInterface::~OrgFreedesktopModemManager1CallInterface()
 {
 }
+
+#include "moc_callinterface.cpp"

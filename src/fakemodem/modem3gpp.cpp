@@ -163,3 +163,5 @@ QVariantMap Modem3gpp::toMap() const
 #endif
     return map;
 }
+
+#include "moc_modem3gpp.cpp"

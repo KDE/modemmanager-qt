@@ -27,3 +27,5 @@ OrgFreedesktopModemManager1ModemModem3gppInterface::OrgFreedesktopModemManager1M
 OrgFreedesktopModemManager1ModemModem3gppInterface::~OrgFreedesktopModemManager1ModemModem3gppInterface()
 {
 }
+
+#include "moc_modem3gppinterface.cpp"

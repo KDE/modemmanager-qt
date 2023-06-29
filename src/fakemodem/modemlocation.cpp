@@ -124,3 +124,5 @@ QVariantMap ModemLocation::toMap() const
     map.insert(QLatin1String(MM_MODEM_LOCATION_PROPERTY_LOCATION), m_signalsLocation);
     return map;
 }
+
+#include "moc_modemlocation.cpp"
