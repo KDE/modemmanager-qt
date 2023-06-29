@@ -111,3 +111,5 @@ void FakeModem::SetLogging(const QString &level)
 {
     Q_UNUSED(level);
 }
+
+#include "moc_fakemodem.cpp"

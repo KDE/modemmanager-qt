@@ -26,3 +26,5 @@ OrgFreedesktopDBusObjectManagerInterface::OrgFreedesktopDBusObjectManagerInterfa
 OrgFreedesktopDBusObjectManagerInterface::~OrgFreedesktopDBusObjectManagerInterface()
 {
 }
+
+#include "moc_dbus_manager.cpp"

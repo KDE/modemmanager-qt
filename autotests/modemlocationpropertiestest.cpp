@@ -111,3 +111,5 @@ void ModemLocationPropertiesTest::testModemLocationProperties()
 }
 
 QTEST_MAIN(ModemLocationPropertiesTest)
+
+#include "moc_modemlocationpropertiestest.cpp"

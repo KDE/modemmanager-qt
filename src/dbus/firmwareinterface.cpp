@@ -26,3 +26,5 @@ OrgFreedesktopModemManager1ModemFirmwareInterface::OrgFreedesktopModemManager1Mo
 OrgFreedesktopModemManager1ModemFirmwareInterface::~OrgFreedesktopModemManager1ModemFirmwareInterface()
 {
 }
+
+#include "moc_firmwareinterface.cpp"

@@ -100,3 +100,5 @@ void Modem3gppUssdPropertiesTest::testModem3gppUssdProperties()
 }
 
 QTEST_MAIN(Modem3gppUssdPropertiesTest)
+
+#include "moc_modem3gppussdpropertiestest.cpp"

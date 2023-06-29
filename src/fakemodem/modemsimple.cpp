@@ -33,3 +33,5 @@ QVariantMap ModemSimple::GetStatus()
     // TODO
     return QVariantMap();
 }
+
+#include "moc_modemsimple.cpp"

@@ -493,3 +493,6 @@ void ModemManager::ModemDevicePrivate::onSimPathChanged(const QString &oldPath, 
         Q_EMIT q->simAdded(newPath);
     }
 }
+
+#include "moc_modemdevice.cpp"
+#include "moc_modemdevice_p.cpp"

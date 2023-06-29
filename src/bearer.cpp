@@ -313,3 +313,6 @@ QString ModemManager::Bearer::uni() const
     Q_D(const Bearer);
     return d->uni;
 }
+
+#include "moc_bearer.cpp"
+#include "moc_bearer_p.cpp"

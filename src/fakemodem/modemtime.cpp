@@ -55,3 +55,5 @@ QVariantMap ModemTime::toMap() const
     map.insert(QLatin1String(MM_MODEM_TIME_PROPERTY_NETWORKTIMEZONE), QVariant::fromValue<QVariantMap>(m_timezone));
     return map;
 }
+
+#include "moc_modemtime.cpp"

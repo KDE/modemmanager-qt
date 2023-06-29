@@ -199,3 +199,5 @@ void ModemMessagingPropertiesTest::testModemMessagingProperties()
 }
 
 QTEST_MAIN(ModemMessagingPropertiesTest)
+
+#include "moc_modemmessagingpropertiestest.cpp"

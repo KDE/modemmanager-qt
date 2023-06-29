@@ -636,3 +636,5 @@ QVariantMap Modem::toMap() const
     map.insert(QLatin1String(MM_MODEM_PROPERTY_SUPPORTEDIPFAMILIES), m_supportedIpFamilies);
     return map;
 }
+
+#include "moc_modem.cpp"

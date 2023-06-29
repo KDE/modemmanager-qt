@@ -132,3 +132,6 @@ int ModemManager::Modem3gppUssd::timeout() const
     Q_D(const Modem3gppUssd);
     return d->ussdIface.timeout();
 }
+
+#include "moc_modem3gppussd.cpp"
+#include "moc_modem3gppussd_p.cpp"

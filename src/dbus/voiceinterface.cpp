@@ -26,3 +26,5 @@ OrgFreedesktopModemManager1ModemVoiceInterface::OrgFreedesktopModemManager1Modem
 OrgFreedesktopModemManager1ModemVoiceInterface::~OrgFreedesktopModemManager1ModemVoiceInterface()
 {
 }
+
+#include "moc_voiceinterface.cpp"

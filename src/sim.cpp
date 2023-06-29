@@ -155,3 +155,6 @@ void ModemManager::SimPrivate::onPropertiesChanged(const QString &interface, con
         }
     }
 }
+
+#include "moc_sim.cpp"
+#include "moc_sim_p.cpp"

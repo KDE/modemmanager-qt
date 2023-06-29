@@ -27,3 +27,5 @@ OrgFreedesktopModemManager1ModemModemCdmaInterface::OrgFreedesktopModemManager1M
 OrgFreedesktopModemManager1ModemModemCdmaInterface::~OrgFreedesktopModemManager1ModemModemCdmaInterface()
 {
 }
+
+#include "moc_modemcdmainterface.cpp"

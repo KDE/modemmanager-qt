@@ -74,3 +74,6 @@ int ModemManager::ModemSimple::timeout() const
     Q_D(const ModemSimple);
     return d->modemSimpleIface.timeout();
 }
+
+#include "moc_modemsimple.cpp"
+#include "moc_modemsimple_p.cpp"

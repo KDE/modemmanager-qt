@@ -304,3 +304,6 @@ void ModemManager::SmsPrivate::onPropertiesChanged(const QString &interfaceName,
 #endif
     }
 }
+
+#include "moc_sms.cpp"
+#include "moc_sms_p.cpp"

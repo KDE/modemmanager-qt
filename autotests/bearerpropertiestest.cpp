@@ -127,3 +127,5 @@ void BearerPropertiesTest::testBearerProperties()
 }
 #endif
 QTEST_MAIN(BearerPropertiesTest)
+
+#include "moc_bearerpropertiestest.cpp"

@@ -781,3 +781,6 @@ void ModemManager::ModemPrivate::onStateChanged(int oldState, int newState, uint
     state = (MMModemState)newState;
     Q_EMIT q->stateChanged((MMModemState)oldState, (MMModemState)newState, (MMModemStateChangeReason)reason);
 }
+
+#include "moc_modem.cpp"
+#include "moc_modem_p.cpp"

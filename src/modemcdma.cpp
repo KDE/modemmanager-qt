@@ -182,3 +182,5 @@ void ModemManager::ModemCdmaPrivate::onPropertiesChanged(const QString &interfac
         }
     }
 }
+
+#include "moc_modemcdma.cpp"

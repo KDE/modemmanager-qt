@@ -51,3 +51,5 @@ ModemManager::DBUSManagerStruct ObjectManager::GetManagedObjects()
 {
     return m_managedObjects;
 }
+
+#include "moc_objectmanager.cpp"

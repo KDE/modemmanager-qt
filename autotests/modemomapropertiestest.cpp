@@ -118,3 +118,5 @@ void ModemOmaPropertiesTest::testModemOmaProperties()
 }
 
 QTEST_MAIN(ModemOmaPropertiesTest)
+
+#include "moc_modemomapropertiestest.cpp"

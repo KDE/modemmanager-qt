@@ -27,3 +27,5 @@ OrgFreedesktopModemManager1ModemSignalInterface::OrgFreedesktopModemManager1Mode
 OrgFreedesktopModemManager1ModemSignalInterface::~OrgFreedesktopModemManager1ModemSignalInterface()
 {
 }
+
+#include "moc_signalinterface.cpp"

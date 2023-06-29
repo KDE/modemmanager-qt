@@ -43,3 +43,5 @@ void ModemManager::ModemFirmware::selectImage(const QString &uniqueid)
     Q_D(ModemFirmware);
     d->modemFirmwareIface.Select(uniqueid);
 }
+
+#include "moc_modemfirmware.cpp"

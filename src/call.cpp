@@ -163,3 +163,6 @@ void ModemManager::CallPrivate::onPropertiesChanged(const QString &interfaceName
         }
     }
 }
+
+#include "moc_call.cpp"
+#include "moc_call_p.cpp"

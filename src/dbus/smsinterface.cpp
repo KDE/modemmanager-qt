@@ -27,3 +27,5 @@ OrgFreedesktopModemManager1SmsInterface::OrgFreedesktopModemManager1SmsInterface
 OrgFreedesktopModemManager1SmsInterface::~OrgFreedesktopModemManager1SmsInterface()
 {
 }
+
+#include "moc_smsinterface.cpp"
