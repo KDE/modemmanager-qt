@@ -4,13 +4,15 @@
   SPDX-License-Identifier: GPL-2.0-only OR GPL-3.0-only OR LicenseRef-KDE-Accepted-GPL
 */
 
-#include <ModemManagerQt/interface.h>
-#include <ModemManagerQt/manager.h>
-#include <ModemManagerQt/modem.h>
-#include <ModemManagerQt/modemdevice.h>
-#include <ModemManagerQt/modemmessaging.h>
-#include <ModemManagerQt/sim.h>
-#include <ModemManagerQt/sms.h>
+#include <ModemManagerQt/Interface>
+#include <ModemManagerQt/Manager>
+#include <ModemManagerQt/Modem>
+#include <ModemManagerQt/ModemDevice>
+#include <ModemManagerQt/ModemMessaging>
+#include <ModemManagerQt/Sim>
+#include <ModemManagerQt/Sms>
+
+#include <QDBusReply>
 
 #include <QDebug>
 
