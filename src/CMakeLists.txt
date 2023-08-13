@@ -121,6 +121,7 @@ if (QT_MAJOR_VERSION STREQUAL "5")
         ModemVoice
         Sim
         Sms
+        OUTPUT_DIR "${CMAKE_CURRENT_BINARY_DIR}/ModemManagerQt"
         REQUIRED_HEADERS ModemManagerQt_HEADERS
     )
 else()
