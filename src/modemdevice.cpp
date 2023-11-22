@@ -49,34 +49,30 @@ void ModemManager::ModemDevicePrivate::init()
     Q_Q(ModemManager::ModemDevice);
 #ifdef MMQT_STATIC
     bool success = QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
-                                          QLatin1String(MMQT_DBUS_PATH),
-                                          QLatin1String(DBUS_INTERFACE_MANAGER),
-                                          QStringLiteral("InterfacesAdded"),
-                                          this,
-                                          SLOT(onInterfacesAdded(QDBusObjectPath, ModemManager::MMVariantMapMap)));
-    Q_ASSERT(success);
+                                                         QLatin1String(MMQT_DBUS_PATH),
+                                                         QLatin1String(DBUS_INTERFACE_MANAGER),
+                                                         QStringLiteral("InterfacesAdded"),
+                                                         this,
+                                                         SLOT(onInterfacesAdded(QDBusObjectPath, ModemManager::MMVariantMapMap)));
     success = QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
-                                          QLatin1String(MMQT_DBUS_PATH),
-                                          QLatin1String(DBUS_INTERFACE_MANAGER),
-                                          QStringLiteral("InterfacesRemoved"),
-                                          this,
-                                          SLOT(onInterfacesRemoved(QDBusObjectPath, QStringList)));
-    Q_ASSERT(success);
+                                                    QLatin1String(MMQT_DBUS_PATH),
+                                                    QLatin1String(DBUS_INTERFACE_MANAGER),
+                                                    QStringLiteral("InterfacesRemoved"),
+                                                    this,
+                                                    SLOT(onInterfacesRemoved(QDBusObjectPath, QStringList)));
 #else
     bool success = QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
-                                         QLatin1String(MMQT_DBUS_PATH),
-                                         QLatin1String(DBUS_INTERFACE_MANAGER),
-                                         QStringLiteral("InterfacesAdded"),
-                                         this,
-                                         SLOT(onInterfacesAdded(QDBusObjectPath, ModemManager::MMVariantMapMap)));
-    Q_ASSERT(success);
+                                                        QLatin1String(MMQT_DBUS_PATH),
+                                                        QLatin1String(DBUS_INTERFACE_MANAGER),
+                                                        QStringLiteral("InterfacesAdded"),
+                                                        this,
+                                                        SLOT(onInterfacesAdded(QDBusObjectPath, ModemManager::MMVariantMapMap)));
     success = QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
-                                         QLatin1String(MMQT_DBUS_PATH),
-                                         QLatin1String(DBUS_INTERFACE_MANAGER),
-                                         QStringLiteral("InterfacesRemoved"),
-                                         this,
-                                         SLOT(onInterfacesRemoved(QDBusObjectPath, QStringList)));
-    Q_ASSERT(success);
+                                                   QLatin1String(MMQT_DBUS_PATH),
+                                                   QLatin1String(DBUS_INTERFACE_MANAGER),
+                                                   QStringLiteral("InterfacesRemoved"),
+                                                   this,
+                                                   SLOT(onInterfacesRemoved(QDBusObjectPath, QStringList)));
 #endif
 
     initInterfaces();
