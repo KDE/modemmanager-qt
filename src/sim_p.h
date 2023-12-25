@@ -22,10 +22,21 @@ public:
     explicit SimPrivate(const QString &path, Sim *q);
     OrgFreedesktopModemManager1SimInterface simIface;
     QString uni;
+    bool active;
     QString simIdentifier;
     QString imsi;
+    QString eid;
     QString operatorIdentifier;
     QString operatorName;
+    QStringList emergencyNumbers;
+    QVariantMap preferredNetworks;
+    QByteArray gid1;
+    QByteArray gid2;
+#if MM_CHECK_VERSION(1, 20, 0)
+    MMSimType simType;
+    MMSimEsimStatus esimStatus;
+    MMSimRemovability removability;
+#endif
 
     Q_DECLARE_PUBLIC(Sim)
     Sim *q_ptr;

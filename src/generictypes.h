@@ -165,6 +165,11 @@ Q_DECLARE_METATYPE(MMCallState)
 Q_DECLARE_METATYPE(MMCallStateReason)
 Q_DECLARE_METATYPE(MMCallDirection)
 #endif
+#if MM_CHECK_VERSION(1, 20, 0)
+Q_DECLARE_METATYPE(MMSimType)
+Q_DECLARE_METATYPE(MMSimEsimStatus)
+Q_DECLARE_METATYPE(MMSimRemovability)
+#endif
 
 // Others
 Q_DECLARE_METATYPE(ModemManager::DBUSManagerStruct)
