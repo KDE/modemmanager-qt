@@ -131,7 +131,7 @@ QByteArray ModemManager::Sim::gid2() const
     return d->gid2;
 }
 
-#ifdef MM_CHECK_VERSION(1, 20, 0)
+#if MM_CHECK_VERSION(1, 20, 0)
 MMSimType ModemManager::Sim::simType() const
 {
     Q_D(const Sim);
@@ -256,7 +256,7 @@ void ModemManager::SimPrivate::onPropertiesChanged(const QString &interface, con
             gid2 = it->toByteArray();
             Q_EMIT q->gid1Changed(gid2);
         }
-#ifdef MM_CHECK_VERSION(1, 20, 0)
+#if MM_CHECK_VERSION(1, 20, 0)
         it = properties.constFind(QLatin1String(MM_SIM_PROPERTY_SIMTYPE));
         if (it != properties.constEnd()) {
             simType = (MMSimType)it->toUInt();
