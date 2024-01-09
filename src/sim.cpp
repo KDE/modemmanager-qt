@@ -34,9 +34,9 @@ ModemManager::SimPrivate::SimPrivate(const QString &path, Sim *q)
         operatorName = simIface.operatorName();
         emergencyNumbers = simIface.emergencyNumbers();
         preferredNetworks = simIface.preferredNetworks();
+#if MM_CHECK_VERSION(1, 20, 0)
         gid1 = simIface.gid1();
         gid2 = simIface.gid2();
-#if MM_CHECK_VERSION(1, 20, 0)
         simType = (MMSimType)simIface.simType();
         esimStatus = (MMSimEsimStatus)simIface.esimStatus();
         removability = (MMSimRemovability)simIface.removability();
@@ -119,6 +119,7 @@ QVariantMap ModemManager::Sim::preferredNetworks() const
     return d->preferredNetworks;
 }
 
+#if MM_CHECK_VERSION(1, 20, 0)
 QByteArray ModemManager::Sim::gid1() const
 {
     Q_D(const Sim);
@@ -131,7 +132,6 @@ QByteArray ModemManager::Sim::gid2() const
     return d->gid2;
 }
 
-#if MM_CHECK_VERSION(1, 20, 0)
 MMSimType ModemManager::Sim::simType() const
 {
     Q_D(const Sim);
@@ -246,6 +246,7 @@ void ModemManager::SimPrivate::onPropertiesChanged(const QString &interface, con
             preferredNetworks = it->toMap();
             Q_EMIT q->preferredNetworksChanged(preferredNetworks);
         }
+#if MM_CHECK_VERSION(1, 20, 0)
         it = properties.constFind(QLatin1String(MM_SIM_PROPERTY_GID1));
         if (it != properties.constEnd()) {
             gid1 = it->toByteArray();
@@ -256,7 +257,6 @@ void ModemManager::SimPrivate::onPropertiesChanged(const QString &interface, con
             gid2 = it->toByteArray();
             Q_EMIT q->gid1Changed(gid2);
         }
-#if MM_CHECK_VERSION(1, 20, 0)
         it = properties.constFind(QLatin1String(MM_SIM_PROPERTY_SIMTYPE));
         if (it != properties.constEnd()) {
             simType = (MMSimType)it->toUInt();

@@ -95,6 +95,7 @@ public:
      */
     QVariantMap preferredNetworks() const;
 
+#if MM_CHECK_VERSION(1, 20, 0)
     /**
      * @return Group identifier 1evel 1.
      */
@@ -105,7 +106,6 @@ public:
      */
     QByteArray gid2() const;
 
-#if MM_CHECK_VERSION(1, 20, 0)
     /**
      * @return Indicates whether the current primary SIM is a ESIM or a physical SIM.
      */
@@ -185,9 +185,9 @@ Q_SIGNALS:
     void operatorNameChanged(const QString &name);
     void emergencyNumbersChanged(const QStringList &emergencyNumbers);
     void preferredNetworksChanged(const QVariantMap &preferredNetworks);
+#if MM_CHECK_VERSION(1, 20, 0)
     void gid1Changed(const QByteArray &gid1);
     void gid2Changed(const QByteArray &gid2);
-#if MM_CHECK_VERSION(1, 20, 0)
     void simTypeChanged(MMSimType simType);
     void esimStatusChanged(MMSimEsimStatus esimStatus);
     void removabilityChanged(MMSimRemovability removability);

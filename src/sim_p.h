@@ -30,9 +30,9 @@ public:
     QString operatorName;
     QStringList emergencyNumbers;
     QVariantMap preferredNetworks;
+#if MM_CHECK_VERSION(1, 20, 0)
     QByteArray gid1;
     QByteArray gid2;
-#if MM_CHECK_VERSION(1, 20, 0)
     MMSimType simType;
     MMSimEsimStatus esimStatus;
     MMSimRemovability removability;
