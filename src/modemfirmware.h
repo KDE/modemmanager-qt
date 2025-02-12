@@ -18,14 +18,20 @@ namespace ModemManager
 {
 class ModemFirmwarePrivate;
 
-/**
- * @brief The ModemFirmware class
+/*!
+ * \class ModemManager::ModemFirmware
+ *
+ * \inheaderfile ModemManagerQt/ModemFirmware
+ *
+ * \inmodule ModemManagerQt
+ *
+ * \brief The ModemFirmware class.
  *
  * This class allows clients to select or install firmware images on modems.
  *
  * Firmware slots and firmware images are identified by arbitrary opaque strings.
  *
- * @since 1.1.94
+ * \since 1.1.94
  */
 class MODEMMANAGERQT_EXPORT ModemFirmware : public Interface
 {
@@ -33,33 +39,41 @@ class MODEMMANAGERQT_EXPORT ModemFirmware : public Interface
     Q_DECLARE_PRIVATE(ModemFirmware)
 
 public:
+    /*!
+     * \typedef ModemManager::ModemFirmware::Ptr
+     */
     typedef QSharedPointer<ModemFirmware> Ptr;
+    /*!
+     * \typedef ModemManager::ModemFirmware::List
+     */
     typedef QList<Ptr> List;
 
+    /*!
+     */
     explicit ModemFirmware(const QString &path, QObject *parent = nullptr);
     ~ModemFirmware() override;
 
-    /**
+    /*!
      * List installed firmware images.
      *
      * Depending on the type of modem, installed images may be stored on the host or the modem.
      * Installed images can be selected non-destructively.
      *
-     * @return @param selected (QString)
+     * Returns \a selected (QString)
      *         The unique name of the selected firmware image, or the empty string if no image is selected.
-     *         @param installed (QVariantMapList)
+     *         \a installed (QVariantMapList)
      *         A map of dictionaries containing the properties of the installed firmware images.
      */
     QDBusPendingReply<QString, QVariantMapList> listImages();
 
-    /**
+    /*!
      * Selects a different firmware image to use, and immediately resets the modem so that it
      * begins using the new firmware image.
      *
      * The method will fail if the identifier does not match any of the names returned by listImages(),
      * or if the image could not be selected for some reason.
      *
-     * @param uniqueid The unique ID of the firmware image to select.
+     * \a uniqueid The unique ID of the firmware image to select.
      */
     void selectImage(const QString &uniqueid);
 };

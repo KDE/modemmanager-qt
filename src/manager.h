@@ -18,7 +18,8 @@
 
 #include "modemdevice.h"
 
-/**
+/*!
+ * \namespace ModemManager
  * This namespace allows to query the underlying system to discover the available
  * modem interfaces
  * responsibility to notify when a modem interface or a modem appears or disappears.
@@ -29,59 +30,68 @@ namespace ModemManager
 {
 class Modem;
 
+/*!
+ * \class ModemManager::Notifier
+ *
+ * \inheaderfile ModemManagerQt/Manager
+ *
+ * \inmodule ModemManagerQt
+ */
 class MODEMMANAGERQT_EXPORT Notifier : public QObject
 {
     Q_OBJECT
 Q_SIGNALS:
-    /**
+    /*!
      * This signal is emitted when a new modem interface is available.
      *
-     * @param udi the network interface identifier
+     * \a udi the network interface identifier
      */
     void modemAdded(const QString &udi);
-    /**
+    /*!
      * This signal is emitted when a network interface is not available anymore.
      *
-     * @param udi the network interface identifier
+     * \a udi the network interface identifier
      */
     void modemRemoved(const QString &udi);
 
-    /**
+    /*!
      * This signal is emitted when the ModemManager DBus service goes away
      */
     void serviceDisappeared();
-    /**
+    /*!
      * This signal is emitted when the ModemManager DBus service appears
      */
     void serviceAppeared();
 };
 
-/**
+/*!
  * Retrieves the list of all modem interfaces Unique Device Identifiers (UDIs)
  * in the system. This method is the equivalent of enumerateDevices described
  * in Modem Manager specification.
  *
- * Note: only HW modems are returned (Gsm or Cdma)
+ * \note only HW modems are returned (Gsm or Cdma)
  *
- * @return the list of modem interfaces available in this system
+ * Returns the list of modem interfaces available in this system
  */
 MODEMMANAGERQT_EXPORT ModemDevice::List modemDevices();
 
-/**
+/*!
  * Find a new ModemManagerInterface object given its UDI.
  *
- * Note: only Modem-inherited objects are returned (not SMS, SIM or Bearer objects)
+ * \note only Modem-inherited objects are returned (not SMS, SIM or Bearer objects)
  *
- * @param uni the identifier of the modem interface to find
- * @returns a valid Modem object if there's a device having the given UDI, an invalid one otherwise
+ * \a uni the identifier of the modem interface to find
+ * Returns a valid Modem object if there's a device having the given UDI, an invalid one otherwise
  */
 MODEMMANAGERQT_EXPORT ModemDevice::Ptr findModemDevice(const QString &uni);
 
-/**
+/*!
  * Start a new scan for connected modem devices.
  */
 MODEMMANAGERQT_EXPORT void scanDevices();
 
+/*!
+ */
 MODEMMANAGERQT_EXPORT Notifier *notifier();
 }
 

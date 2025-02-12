@@ -19,11 +19,17 @@ namespace ModemManager
 {
 class CallPrivate;
 
-/**
- * Provides an interface to manipulate and control a call
+/*!
+ * \class ModemManager::Call
  *
- * Note: MMCallState, MMCallStateReason and MMCallDirection enums are defined in <ModemManager/ModemManager-enums.h>
- * See http://www.freedesktop.org/software/ModemManager/api/latest/ModemManager-Flags-and-Enumerations.html
+ * \inheaderfile ModemManagerQt/Call
+ *
+ * \inmodule ModemManagerQt
+ *
+ * \brief Provides an interface to manipulate and control a call
+ *
+ * \note MMCallState, MMCallStateReason and MMCallDirection enums are defined in <ModemManager/ModemManager-enums.h>
+ * See http://www.freedesktop.org/software/ModemManager/api/latest/ModemManager-Flags-and-Enumerations.html .
  */
 class MODEMMANAGERQT_EXPORT Call : public QObject
 {
@@ -31,69 +37,85 @@ class MODEMMANAGERQT_EXPORT Call : public QObject
     Q_DECLARE_PRIVATE(Call)
 
 public:
+    /*!
+     * \typedef ModemManager::Call::Ptr
+     */
     typedef QSharedPointer<Call> Ptr;
+    /*!
+     * \typedef ModemManager::Call::List
+     */
     typedef QList<Ptr> List;
 
+    /*!
+     */
     explicit Call(const QString &path, QObject *parent = nullptr);
     ~Call() override;
 
+    /*!
+     */
     QString uni() const;
 
-    /**
+    /*!
      * Start a call
      */
     QDBusPendingReply<> start();
 
-    /**
+    /*!
      * Accept a call
      */
     QDBusPendingReply<> accept();
 
-    /**
+    /*!
      * Hangup a call
      */
     QDBusPendingReply<> hangup();
 
-    /**
+    /*!
      * Send DTMF
      */
     QDBusPendingReply<> sendDtmf(const QString &dtmf);
 
-    /**
+    /*!
      * This method returns the state of the call
      */
     MMCallState state() const;
 
-    /**
+    /*!
      * This method returns the reason for the call state change
      */
     MMCallStateReason stateReason() const;
 
-    /**
+    /*!
      * This method returns the direction of the call
      */
     MMCallDirection direction() const;
 
-    /**
+    /*!
      * This method returns the remote phone number
      */
     QString number() const;
 
-    /**
+    /*!
      * Sets the timeout in milliseconds for all async method DBus calls.
      * -1 means the default DBus timeout (usually 25 seconds).
      */
     void setTimeout(int timeout);
 
-    /**
+    /*!
      * Returns the current value of the DBus timeout in milliseconds.
      * -1 means the default DBus timeout (usually 25 seconds).
      */
     int timeout() const;
 
 Q_SIGNALS:
+    /*!
+     */
     void stateChanged(MMCallState oldState, MMCallState newState, MMCallStateReason reason);
+    /*!
+     */
     void numberChanged(const QString &number);
+    /*!
+     */
     void dtmfReceived(const QString &dtmf);
 
 private:

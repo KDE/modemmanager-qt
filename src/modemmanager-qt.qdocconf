@@ -1,0 +1,29 @@
+include($KDE_DOCS/global/qt-module-defaults.qdocconf)
+
+project = ModemManagerQt
+description = Qt wrapper for modemmanager API
+
+documentationinheaders = true
+
+headerdirs = .
+sourcedirs = .
+
+excludedirs += fakemodem dbus
+
+outputformats = HTML
+
+depends += qtcore qtdbus qtxml
+
+qhp.projects            = ModemManagerQt
+
+qhp.ModemManagerQt.file                = modemmanager-qt.qhp
+qhp.ModemManagerQt.namespace           = org.kde.modemmanager-qt.$QT_VERSION_TAG
+qhp.ModemManagerQt.virtualFolder       = modemmanager-qt
+qhp.ModemManagerQt.indexTitle          = ModemManagerQt
+qhp.ModemManagerQt.indexRoot           =
+
+qhp.ModemManagerQt.subprojects         = classes
+qhp.ModemManagerQt.subprojects.classes.title = C++ Classes
+qhp.ModemManagerQt.subprojects.classes.indexTitle = ModemManagerQt C++ Classes
+qhp.ModemManagerQt.subprojects.classes.selectors = class fake:headerfile
+qhp.ModemManagerQt.subprojects.classes.sortPages = true

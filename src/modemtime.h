@@ -20,58 +20,64 @@ namespace ModemManager
 {
 class ModemTimePrivate;
 
-/**
- * This class represents the timezone data provided by the network
+/*!
+ * \class ModemManager::NetworkTimezone
+ *
+ * \inheaderfile ModemManagerQt/ModemTime
+ *
+ * \inmodule ModemManagerQt
+ *
+ * \brief This class represents the timezone data provided by the network.
  */
 class MODEMMANAGERQT_EXPORT NetworkTimezone
 {
 public:
-    /**
+    /*!
      * Constructs an empty timezone data object
      */
     NetworkTimezone();
 
-    /**
+    /*!
      * Destroys this NetworkTimezone object.
      */
     ~NetworkTimezone();
 
-    /**
-     * Constructs an NetworkTimezone object that is a copy of the object @p other.
+    /*!
+     * Constructs an NetworkTimezone object that is a copy of the object \a other.
      */
     NetworkTimezone(const NetworkTimezone &other);
 
-    /**
+    /*!
      * Returns offset of the timezone from UTC, in minutes (including DST, if applicable)
      */
     int offset() const;
 
-    /**
+    /*!
      * Sets offset of the timezone from UTC
      */
     void setOffset(int offset);
 
-    /**
+    /*!
      * Returns amount of offset that is due to DST (daylight saving time)
      */
     int dstOffset() const;
 
-    /**
+    /*!
      * Sets amount of offset that is due to DST
      */
     void setDstOffset(int dstOffset);
 
-    /**
+    /*!
      * Returns number of leap seconds included in the network time
      */
     int leapSecond() const;
 
-    /**
+    /*!
      * Sets number of leap seconds included in the network timezone
      */
     void setLeapSecond(int leapSecond);
-    /**
-     * Makes a copy of the NetworkTimezone object @p other.
+    /*!
+     * Makes a copy of the NetworkTimezone object \a other.
      */
     NetworkTimezone &operator=(const NetworkTimezone &other);
 
@@ -80,8 +86,14 @@ private:
     Private *const d;
 };
 
-/**
- * @brief The ModemTime class
+/*!
+ * \class ModemManager::ModemTime
+ *
+ * \inheaderfile ModemManagerQt/ModemTime
+ *
+ * \inmodule ModemManagerQt
+ *
+ * \brief The ModemTime class.
  *
  * This class allows clients to receive network time and timezone updates broadcast by mobile networks.
  */
@@ -91,14 +103,22 @@ class MODEMMANAGERQT_EXPORT ModemTime : public Interface
     Q_DECLARE_PRIVATE(ModemTime)
 
 public:
+    /*!
+     * \typedef ModemManager::ModemTime::Ptr
+     */
     typedef QSharedPointer<ModemTime> Ptr;
+    /*!
+     * \typedef ModemManager::ModemTime::List
+     */
     typedef QList<Ptr> List;
 
+    /*!
+     */
     explicit ModemTime(const QString &path, QObject *parent = nullptr);
     ~ModemTime() override;
 
-    /**
-     * @return the current network time in local time.
+    /*!
+     * Returns the current network time in local time.
      *
      * This method will only work if the modem tracks, or can request, the
      * current network time; it will not attempt to use previously-received
@@ -106,30 +126,33 @@ public:
      */
     QDBusPendingReply<QString> networkTime();
 
-    /**
-     * @return the timezone data provided by the network.
-     * @see NetworkTimezone
+    /*!
+     * Returns the timezone data provided by the network.
+     * \sa NetworkTimezone
      */
     ModemManager::NetworkTimezone networkTimezone() const;
 
-    /**
+    /*!
      * Sets the timeout in milliseconds for all async method DBus calls.
      * -1 means the default DBus timeout (usually 25 seconds).
      */
     void setTimeout(int timeout);
 
-    /**
+    /*!
      * Returns the current value of the DBus timeout in milliseconds.
      * -1 means the default DBus timeout (usually 25 seconds).
      */
     int timeout() const;
 
 Q_SIGNALS:
-    /**
+    /*!
      * Sent when the network time is updated.
-     * @param dateTime the new date and time
+     *
+     * \a dateTime the new date and time
      */
     void networkTimeChanged(const QDateTime &dateTime);
+    /*!
+     */
     void networkTimezoneChanged(const ModemManager::NetworkTimezone &timeZone);
 };
 

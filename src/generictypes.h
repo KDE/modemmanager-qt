@@ -19,6 +19,9 @@
 // Enums from ModemManager-enums.h which needs to be defined all the time,
 // because it's not possible to use MM_CHECK_VERSION for signals
 #if !MM_CHECK_VERSION(1, 2, 0)
+/*!
+ * \typedef MMModem3gppSubscriptionState
+ */
 typedef enum { /*< underscore_name=mm_modem_3gpp_subscription_state >*/
                MM_MODEM_3GPP_SUBSCRIPTION_STATE_UNKNOWN = 0,
                MM_MODEM_3GPP_SUBSCRIPTION_STATE_UNPROVISIONED = 1,
@@ -26,6 +29,9 @@ typedef enum { /*< underscore_name=mm_modem_3gpp_subscription_state >*/
                MM_MODEM_3GPP_SUBSCRIPTION_STATE_OUT_OF_DATA = 3,
 } MMModem3gppSubscriptionState;
 
+/*!
+ * \typedef MMSmsCdmaServiceCategory
+ */
 typedef enum { /*< underscore_name=mm_sms_cdma_service_category >*/
                MM_SMS_CDMA_SERVICE_CATEGORY_UNKNOWN = 0x0000,
                MM_SMS_CDMA_SERVICE_CATEGORY_EMERGENCY_BROADCAST = 0x0001,
@@ -66,6 +72,9 @@ typedef enum { /*< underscore_name=mm_sms_cdma_service_category >*/
                MM_SMS_CDMA_SERVICE_CATEGORY_CMAS_TEST = 0x1004,
 } MMSmsCdmaServiceCategory;
 
+/*!
+ * \typedef MMSmsCdmaTeleserviceId
+ */
 typedef enum { /*< underscore_name=mm_sms_cdma_teleservice_id >*/
                MM_SMS_CDMA_TELESERVICE_ID_UNKNOWN = 0x0000,
                MM_SMS_CDMA_TELESERVICE_ID_CMT91 = 0x1000,
@@ -81,38 +90,83 @@ typedef enum { /*< underscore_name=mm_sms_cdma_teleservice_id >*/
 
 namespace ModemManager
 {
+/*!
+ * \typedef ModemManager::MMVariantMapMap
+ */
 typedef QMap<QString, QVariantMap> MMVariantMapMap;
+/*!
+ * \typedef ModemManager::DBUSManagerStruct
+ */
 typedef QMap<QDBusObjectPath, MMVariantMapMap> DBUSManagerStruct;
+/*!
+ * \typedef ModemManager::UIntList
+ */
 typedef QList<uint> UIntList;
+/*!
+ * \typedef ModemManager::UIntListList
+ */
 typedef QList<QList<uint>> UIntListList;
 
+/*!
+ * \typedef ModemManager::Port
+ */
 typedef struct {
     QString name;
     MMModemPortType type;
 } Port;
+/*!
+ * \typedef ModemManager::PortList
+ */
 typedef QList<Port> PortList;
 
+/*!
+ * \typedef ModemManager::SignalQualityPair
+ */
 typedef struct {
     uint signal;
     bool recent;
 } SignalQualityPair;
 
+/*!
+ * \typedef ModemManager::CurrentModesType
+ */
 typedef struct {
     uint allowed; // bitfield
     MMModemMode preferred;
 } CurrentModesType;
+/*!
+ * \typedef ModemManager::SupportedModesType
+ */
 typedef QList<CurrentModesType> SupportedModesType;
 
 #if MM_CHECK_VERSION(1, 2, 0)
+/*!
+ * \typedef ModemManager::OmaSessionType
+ */
 typedef struct {
     MMOmaSessionType type;
     uint id;
 } OmaSessionType;
+/*!
+ * \typedef ModemManager::OmaSessionTypes
+ */
 typedef QList<OmaSessionType> OmaSessionTypes;
 #endif
+/*!
+ * \typedef ModemManager::UnlockRetriesMap
+ */
 typedef QMap<MMModemLock, uint> UnlockRetriesMap;
+/*!
+ * \typedef ModemManager::QVariantMapList
+ */
 typedef QList<QVariantMap> QVariantMapList;
+/*!
+ * \typedef ModemManager::LocationInformationMap
+ */
 typedef QMap<MMModemLocationSource, QVariant> LocationInformationMap;
+/*!
+ * \typedef ModemManager::ValidityPair
+ */
 typedef struct {
     MMSmsValidityType validity;
     uint value;
@@ -187,39 +241,73 @@ Q_DECLARE_METATYPE(ModemManager::LocationInformationMap)
 Q_DECLARE_METATYPE(ModemManager::ValidityPair)
 
 // Port
+/*!
+ */
 MODEMMANAGERQT_EXPORT QDBusArgument &operator<<(QDBusArgument &arg, const ModemManager::Port &port);
+/*!
+ */
 MODEMMANAGERQT_EXPORT const QDBusArgument &operator>>(const QDBusArgument &arg, ModemManager::Port &port);
 
 // CurrentModesType
+/*!
+ */
 MODEMMANAGERQT_EXPORT QDBusArgument &operator<<(QDBusArgument &arg, const ModemManager::CurrentModesType &mode);
+/*!
+ */
 MODEMMANAGERQT_EXPORT const QDBusArgument &operator>>(const QDBusArgument &arg, ModemManager::CurrentModesType &mode);
 
 // SignalQualityPair
+/*!
+ */
 MODEMMANAGERQT_EXPORT QDBusArgument &operator<<(QDBusArgument &arg, const ModemManager::SignalQualityPair &sqp);
+/*!
+ */
 MODEMMANAGERQT_EXPORT const QDBusArgument &operator>>(const QDBusArgument &arg, ModemManager::SignalQualityPair &sqp);
 
 // ValidityPair
+/*!
+ */
 MODEMMANAGERQT_EXPORT QDBusArgument &operator<<(QDBusArgument &arg, const ModemManager::ValidityPair &vp);
+/*!
+ */
 MODEMMANAGERQT_EXPORT const QDBusArgument &operator>>(const QDBusArgument &arg, ModemManager::ValidityPair &vp);
 
 #if MM_CHECK_VERSION(1, 2, 0)
 // OmaSessionType
+/*!
+ */
 MODEMMANAGERQT_EXPORT QDBusArgument &operator<<(QDBusArgument &arg, const ModemManager::OmaSessionType &sessionType);
+/*!
+ */
 MODEMMANAGERQT_EXPORT const QDBusArgument &operator>>(const QDBusArgument &arg, ModemManager::OmaSessionType &sessionType);
 #endif
 
 // UnlockRetriesMap
+/*!
+ */
 MODEMMANAGERQT_EXPORT QDBusArgument &operator<<(QDBusArgument &argument, const ModemManager::UnlockRetriesMap &unlockRetriesMap);
+/*!
+ */
 MODEMMANAGERQT_EXPORT const QDBusArgument &operator>>(const QDBusArgument &argument, ModemManager::UnlockRetriesMap &unlockRetriesMap);
 
 // QVariantMapList
+/*!
+ */
 MODEMMANAGERQT_EXPORT QDBusArgument &operator<<(QDBusArgument &argument, const ModemManager::QVariantMapList &variantMapList);
+/*!
+ */
 MODEMMANAGERQT_EXPORT const QDBusArgument &operator>>(const QDBusArgument &argument, ModemManager::QVariantMapList &variantMapList);
 
 // LocationInformationMap
+/*!
+ */
 MODEMMANAGERQT_EXPORT QDBusArgument &operator<<(QDBusArgument &argument, const ModemManager::LocationInformationMap &locationMap);
+/*!
+ */
 MODEMMANAGERQT_EXPORT const QDBusArgument &operator>>(const QDBusArgument &argument, ModemManager::LocationInformationMap &locationMap);
 
+/*!
+ */
 MODEMMANAGERQT_EXPORT void registerModemManagerTypes();
 
 #endif // MODEMMANAGERQT_GENERIC_TYPES_P_H

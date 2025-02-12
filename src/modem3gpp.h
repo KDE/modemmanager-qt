@@ -23,8 +23,14 @@ namespace ModemManager
 {
 class Modem3gppPrivate;
 
-/**
- * @brief The Modem3gpp class
+/*!
+ * \class ModemManager::Modem3gpp
+ *
+ * \inheaderfile ModemManagerQt/Modem3gpp
+ *
+ * \inmodule ModemManagerQt
+ *
+ * \brief The Modem3gpp class.
  *
  * This class provides access to specific actions that may be performed in modems with 3GPP capabilities.
  */
@@ -35,26 +41,34 @@ class MODEMMANAGERQT_EXPORT Modem3gpp : public Interface
     Q_FLAGS(MMModem3gppFacility)
 
 public:
+    /*!
+     * \typedef ModemManager::Modem3gpp::Ptr
+     */
     typedef QSharedPointer<Modem3gpp> Ptr;
+    /*!
+     * \typedef ModemManager::Modem3gpp::List
+     */
     typedef QList<Ptr> List;
 
     Q_DECLARE_FLAGS(FacilityLocks, MMModem3gppFacility)
 
+    /*!
+     */
     explicit Modem3gpp(const QString &path, QObject *parent = nullptr);
     ~Modem3gpp() override;
 
-    /**
-     * @return the IMEI of the device
+    /*!
+     * Returns the IMEI of the device
      */
     QString imei() const;
 
-    /**
-     * @return mobile registration status as defined in 3GPP TS 27.007 section 10.1.19
+    /*!
+     * Returns mobile registration status as defined in 3GPP TS 27.007 section 10.1.19
      */
     MMModem3gppRegistrationState registrationState() const;
 
-    /**
-     * @return code of the operator to which the mobile is currently registered.
+    /*!
+     * Returns code of the operator to which the mobile is currently registered.
      *
      * Returned in the format "MCCMNC", where MCC is the three-digit ITU E.212
      * Mobile Country Code and MNC is the two- or three-digit GSM Mobile Network
@@ -65,16 +79,16 @@ public:
      */
     QString operatorCode() const;
 
-    /**
-     * @return name of the operator to which the mobile is currently registered.
+    /*!
+     * Returns name of the operator to which the mobile is currently registered.
      *
      * If the operator name is not known or the mobile is not registered to a
      * mobile network, this property will be an empty string.
      */
     QString operatorName() const;
 
-    /**
-     * @return country code of the operator to which the mobile is currently registered.
+    /*!
+     * Returns country code of the operator to which the mobile is currently registered.
      *
      * Returned in the format "ISO 3166-1 alpha-2" according to the MMC mapping from Wikipedia.
      * Country Code is the two-letter country codes defined in ISO 3166-1, part of the ISO 3166 standard,
@@ -85,28 +99,28 @@ public:
      */
     QString countryCode() const;
 
-    /**
-     * @return QFlags of MMModem3gppFacility values for which PIN locking is enabled
+    /*!
+     * Returns QFlags of MMModem3gppFacility values for which PIN locking is enabled
      */
     FacilityLocks enabledFacilityLocks() const;
 
 #if MM_CHECK_VERSION(1, 2, 0)
-    /**
-     * @return Value representing the subscription status of the account and whether there is any data remaining.
+    /*!
+     * Returns Value representing the subscription status of the account and whether there is any data remaining.
      */
     MMModem3gppSubscriptionState subscriptionState() const;
 #endif
-    /**
+    /*!
      * Register the device to network.
      *
-     * @param networkId The operator ID (ie, "MCCMNC", like "310260") to register. An empty string can be used to register to the home network.
+     * \a networkId The operator ID (ie, "MCCMNC", like "310260") to register. An empty string can be used to register to the home network.
      */
     void registerToNetwork(const QString &networkId = QString());
 
-    /**
+    /*!
      * Scan for available networks.
      *
-     * @return a QList<QVariantMap> with the results, where each map may contain these values:
+     * Returns a QList<QVariantMap> with the results, where each map may contain these values:
      *
      * "status": A MMModem3gppNetworkAvailability value representing network
      * availability status, given as an unsigned integer (signature "u"). This
@@ -129,25 +143,39 @@ public:
      */
     QDBusPendingReply<QVariantMapList> scan();
 
-    /**
+    /*!
      * Sets the timeout in milliseconds for all async method DBus calls.
      * -1 means the default DBus timeout (usually 25 seconds).
      */
     void setTimeout(int timeout);
 
-    /**
+    /*!
      * Returns the current value of the DBus timeout in milliseconds.
      * -1 means the default DBus timeout (usually 25 seconds).
      */
     int timeout() const;
 
 Q_SIGNALS:
+    /*!
+     */
     void imeiChanged(const QString &imei);
+    /*!
+     */
     void registrationStateChanged(MMModem3gppRegistrationState registrationState);
+    /*!
+     */
     void operatorCodeChanged(const QString &operatorCode);
+    /*!
+     */
     void operatorNameChanged(const QString &operatorName);
+    /*!
+     */
     void countryCodeChanged(const QString &countryCode);
+    /*!
+     */
     void enabledFacilityLocksChanged(QFlags<MMModem3gppFacility> locks);
+    /*!
+     */
     void subscriptionStateChanged(MMModem3gppSubscriptionState subscriptionState);
 };
 

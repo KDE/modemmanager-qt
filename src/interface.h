@@ -18,22 +18,44 @@ namespace ModemManager
 {
 class InterfacePrivate;
 
+/*!
+ * \class ModemManager::Interface
+ *
+ * \inheaderfile ModemManagerQt/Interface
+ *
+ * \inmodule ModemManagerQt
+ */
 class MODEMMANAGERQT_EXPORT Interface : public QObject
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(Interface)
 
+    /*!
+     * \property ModemManager::uni
+     */
     Q_PROPERTY(QString uni READ uni)
 public:
+    /*!
+     * \typedef ModemManager::Interface::Ptr
+     */
     typedef QSharedPointer<Interface> Ptr;
+    /*!
+     * \typedef ModemManager::Interface::List
+     */
     typedef QList<Ptr> List;
 
+    /*!
+     */
     explicit Interface(const QString &path, QObject *parent = nullptr);
     ~Interface() override;
 
+    /*!
+     */
     QString uni() const;
 
 protected:
+    /*!
+     */
     MODEMMANAGERQT_NO_EXPORT explicit Interface(InterfacePrivate &dd, QObject *parent = nullptr);
 
 protected:

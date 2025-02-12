@@ -130,6 +130,7 @@ ecm_generate_headers(ModemManagerQt_CamelCaseHEADERS
     PREFIX ModemManagerQt
     REQUIRED_HEADERS ModemManagerQt_HEADERS
 )
+ecm_generate_qdoc(KF6ModemManagerQt modemmanager-qt.qdocconf)
 
 install(TARGETS KF6ModemManagerQt EXPORT KF6ModemManagerQtTargets ${KF_INSTALL_TARGETS_DEFAULT_ARGS})
 
@@ -154,27 +155,3 @@ ecm_qt_install_logging_categories(
     FILE modemmanagerqt.categories
     DESTINATION ${KDE_INSTALL_LOGGINGCATEGORIESDIR}
 )
-
-if(BUILD_QCH)
-    ecm_add_qch(
-        KF6ModemManagerQt_QCH
-        NAME ModemManagerQt
-        BASE_NAME KF6ModemManagerQt
-        VERSION ${KF_VERSION}
-        ORG_DOMAIN org.kde
-        SOURCES # using only public headers, to cover only public API
-            ${ModemManagerQt_HEADERS}
-        MD_MAINPAGE "${CMAKE_SOURCE_DIR}/README.md"
-        LINK_QCHS
-            Qt6Core_QCH
-            Qt6DBus_QCH
-            Qt6Xml_QCH
-        BLANK_MACROS
-            MODEMMANAGERQT_EXPORT
-            MODEMMANAGERQT_DEPRECATED
-            MODEMMANAGERQT_DEPRECATED_EXPORT
-        TAGFILE_INSTALL_DESTINATION ${KDE_INSTALL_QTQCHDIR}
-        QCH_INSTALL_DESTINATION ${KDE_INSTALL_QTQCHDIR}
-        COMPONENT Devel
-    )
-endif()

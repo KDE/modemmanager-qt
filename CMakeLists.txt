@@ -30,11 +30,8 @@ remove_definitions(-DQT_NO_FOREACH) # set by KDEFrameworkCompilerSettings
 include(ECMGenerateExportHeader)
 include(ECMSetupVersion)
 include(ECMGenerateHeaders)
-include(ECMAddQch)
 include(ECMQtDeclareLoggingCategory)
-
-option(BUILD_QCH "Build API documentation in QCH format (for e.g. Qt Assistant, Qt Creator & KDevelop)" OFF)
-add_feature_info(QCH ${BUILD_QCH} "API documentation in QCH format (for e.g. Qt Assistant, Qt Creator & KDevelop)")
+include(ECMGenerateQDoc)
 
 set(modemmanagerqt_version_header "${CMAKE_CURRENT_BINARY_DIR}/src/modemmanagerqt_version.h")
 ecm_setup_version(PROJECT VARIABLE_PREFIX MODEMMANAGERQT
@@ -61,16 +58,6 @@ add_subdirectory(src)
 
 # create a Config.cmake and a ConfigVersion.cmake file and install them
 set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/KF6ModemManagerQt")
-
-if (BUILD_QCH)
-    ecm_install_qch_export(
-        TARGETS KF6ModemManagerQt_QCH
-        FILE KF6ModemManagerQtQchTargets.cmake
-        DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
-        COMPONENT Devel
-    )
-    set(PACKAGE_INCLUDE_QCHTARGETS "include(\"\${CMAKE_CURRENT_LIST_DIR}/KF6ModemManagerQtQchTargets.cmake\")")
-endif()
 
 include(CMakePackageConfigHelpers)
 
