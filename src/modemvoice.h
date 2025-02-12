@@ -20,10 +20,16 @@ namespace ModemManager
 {
 class ModemVoicePrivate;
 
-/**
- * @brief The ModemVoice class
+/*!
+ * \class ModemManager::ModemVoice
  *
- * The Voice interface handles call related actions
+ * \inheaderfile ModemManagerQt/ModemVoice
+ *
+ * \inmodule ModemManagerQt
+ *
+ * \brief The ModemVoice class.
+ *
+ * The Voice interface handles call related actions.
  */
 class MODEMMANAGERQT_EXPORT ModemVoice : public Interface
 {
@@ -31,13 +37,21 @@ class MODEMMANAGERQT_EXPORT ModemVoice : public Interface
     Q_DECLARE_PRIVATE(ModemVoice)
 
 public:
+    /*!
+     * \typedef ModemManager::ModemVoice::Ptr
+     */
     typedef QSharedPointer<ModemVoice> Ptr;
+    /*!
+     * \typedef ModemManager::ModemVoice::List
+     */
     typedef QList<Ptr> List;
 
+    /*!
+     */
     explicit ModemVoice(const QString &path, QObject *parent = nullptr);
     ~ModemVoice() override;
 
-    /**
+    /*!
      * Retrieve all calls.
      *
      * This method should only be used once and subsequent information retrieved
@@ -46,55 +60,58 @@ public:
      */
     ModemManager::Call::List calls() const;
 
-    /**
+    /*!
      * Creates a new call object.
-     * @param number Number property
+     * \a number Number property
      */
     QDBusPendingReply<QDBusObjectPath> createCall(const QString &number);
 
-    /**
+    /*!
      * Creates a new call object.
-     * @param call QVariantMap containing call properties
+     *
+     * \a call QVariantMap containing call properties
+     *
      * The 'number' property is mandatory.
      */
     QDBusPendingReply<QDBusObjectPath> createCall(const QVariantMap &call);
 
-    /**
+    /*!
      * Delete a call.
      *
-     * @param uni path to the Call object
+     * \a uni path to the Call object
      */
     QDBusPendingReply<void> deleteCall(const QString &uni);
 
-    /**
-     * @param uni path to the Call object
-     * @return pointer to the found Call (may be null if not found)
+    /*!
+     * \a uni path to the Call object
+     * Returns pointer to the found Call (may be null if not found)
      */
     ModemManager::Call::Ptr findCall(const QString &uni);
 
-    /**
+    /*!
      * Sets the timeout in milliseconds for all async method DBus calls.
      * -1 means the default DBus timeout (usually 25 seconds).
      */
     void setTimeout(int timeout);
 
-    /**
+    /*!
      * Returns the current value of the DBus timeout in milliseconds.
      * -1 means the default DBus timeout (usually 25 seconds).
      */
     int timeout() const;
 
 Q_SIGNALS:
-    /**
+    /*!
      * Emitted when an new Call is detected.
      *
-     * @param uni path to the Call object
+     * \a uni path to the Call object
      */
     void callAdded(const QString &uni);
 
-    /**
+    /*!
      * Emitted when a call has been deleted.
-     * @param uni path to the Call object
+     *
+     * \a uni path to the Call object
      */
     void callDeleted(const QString &uni);
 };

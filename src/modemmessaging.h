@@ -22,8 +22,14 @@ namespace ModemManager
 {
 class ModemMessagingPrivate;
 
-/**
- * @brief The ModemMessaging class
+/*!
+ * \class ModemManager::ModemMessaging
+ *
+ * \inheaderfile ModemManagerQt/ModemMessaging
+ *
+ * \inmodule ModemManagerQt
+ *
+ * \brief The ModemMessaging class.
  *
  * The Messaging interface handles sending SMS messages and notification of new incoming messages.
  */
@@ -33,30 +39,52 @@ class MODEMMANAGERQT_EXPORT ModemMessaging : public Interface
     Q_DECLARE_PRIVATE(ModemMessaging)
 
 public:
+    /*!
+     * \struct ModemManager::ModemMessaging::Message
+     */
     struct Message {
+        /*!
+         *
+         */
         QString number;
+
+        /*!
+         *
+         */
         QString text;
+
+        /*!
+         *
+         */
         QByteArray data;
     };
 
+    /*!
+     * \typedef ModemManager::ModemMessaging::Ptr
+     */
     typedef QSharedPointer<ModemMessaging> Ptr;
+    /*!
+     * \typedef ModemManager::ModemMessaging::List
+     */
     typedef QList<Ptr> List;
 
+    /*!
+     */
     explicit ModemMessaging(const QString &path, QObject *parent = nullptr);
     ~ModemMessaging() override;
 
-    /**
-     * @return A list of MMSmsStorage values, specifying the storages supported by this
+    /*!
+     * Returns A list of MMSmsStorage values, specifying the storages supported by this
      * modem for storing and receiving SMS.
      */
     QList<MMSmsStorage> supportedStorages() const;
 
-    /**
-     * @return A MMSmsStorage value, specifying the storage to be used when receiving or storing SMS.
+    /*!
+     * Returns A MMSmsStorage value, specifying the storage to be used when receiving or storing SMS.
      */
     MMSmsStorage defaultStorage() const;
 
-    /**
+    /*!
      * Retrieve all SMS messages.
      *
      * This method should only be used once and subsequent information retrieved
@@ -65,45 +93,51 @@ public:
      */
     ModemManager::Sms::List messages() const;
 
-    /**
+    /*!
      * Creates a new message object.
-     * @param message Message structure with the 'number' and either 'text' or 'data' properties
+     *
+     * \a message Message structure with the 'number' and either 'text' or 'data' properties
      */
     QDBusPendingReply<QDBusObjectPath> createMessage(const Message &message);
-    /**
+    /*!
      * Creates a new message object.
-     * @param message QVariantMap containing message properties
+     *
+     * \a message QVariantMap containing message properties
+     *
      * The 'number' and either 'text' or 'data' properties are mandatory, others are optional.
      */
     QDBusPendingReply<QDBusObjectPath> createMessage(const QVariantMap &message);
 
-    /**
+    /*!
      * Delete an SMS message.
      *
-     * @param uni path to the Sms object
+     * \a uni path to the Sms object
      */
     QDBusPendingReply<void> deleteMessage(const QString &uni);
 
-    /**
-     * @param uni path to the Sms object
-     * @return pointer to the found Sms (may be null if not found)
+    /*!
+     * \a uni path to the Sms object
+     *
+     * Returns pointer to the found Sms (may be null if not found)
      */
     ModemManager::Sms::Ptr findMessage(const QString &uni);
 
-    /**
+    /*!
      * Sets the timeout in milliseconds for all async method DBus calls.
+     *
      * -1 means the default DBus timeout (usually 25 seconds).
      */
     void setTimeout(int timeout);
 
-    /**
+    /*!
      * Returns the current value of the DBus timeout in milliseconds.
+     *
      * -1 means the default DBus timeout (usually 25 seconds).
      */
     int timeout() const;
 
 Q_SIGNALS:
-    /**
+    /*!
      * Emitted when any part of a new SMS has been received or added (but not
      * for subsequent parts, if any). For messages received from the network,
      * not all parts may have been received and the message may not be
@@ -111,14 +145,16 @@ Q_SIGNALS:
      *
      * Check the 'State' property to determine if the message is complete.
      *
-     * @param uni path to the Sms object
-     * @param received @p true if the message was received from the network, as opposed to being added locally.
+     * \a uni path to the Sms object
+     *
+     * \a received \c true if the message was received from the network, as opposed to being added locally.
      */
     void messageAdded(const QString &uni, bool received);
 
-    /**
+    /*!
      * Emitted when a message has been deleted.
-     * @param uni path to the Sms object
+     *
+     * \a uni path to the Sms object
      */
     void messageDeleted(const QString &uni);
 };

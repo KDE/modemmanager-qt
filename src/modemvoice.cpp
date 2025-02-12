@@ -36,7 +36,7 @@ ModemManager::ModemVoice::ModemVoice(const QString &path, QObject *parent)
 {
     Q_D(ModemVoice);
 
-    // Note: no need to listen for PropertiesChanged signals. Additions and
+    // \note no need to listen for PropertiesChanged signals. Additions and
     // removals of calls are already notified via CallAdded and CallRemoved
 
     QList<QDBusObjectPath> calls = d->modemVoiceIface.calls();
