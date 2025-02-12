@@ -22,8 +22,12 @@ namespace ModemManager
 {
 class SimPrivate;
 
-/**
- * @brief The Sim class
+/*!
+ * \class Sim
+ *
+ * \inmodule ModemManagerQt
+ *
+ * \brief The Sim class
  *
  * The SIM class handles communication with SIM, USIM, and RUIM (CDMA SIM) cards.
  */
@@ -39,8 +43,8 @@ public:
     explicit Sim(const QString &path, QObject *parent = nullptr);
     ~Sim() override;
 
-    /**
-     * @return Boolean indicating whether the SIM is currently active.
+    /*!
+     * Returns Boolean indicating whether the SIM is currently active.
      *
      * On systems that support Multi SIM Single Standby, only one SIM may be
      * active at any given time, which will be the one considered primary.
@@ -50,43 +54,43 @@ public:
      */
     bool active() const;
 
-    /**
-     * @return The ICCID of the SIM card.
+    /*!
+     * Returns The ICCID of the SIM card.
      *
      * This may be available before the PIN has been entered depending on the device itself.
      */
     QString simIdentifier() const;
 
-    /**
-     * @return The IMSI of the SIM card, if any.
+    /*!
+     * Returns The IMSI of the SIM card, if any.
      */
     QString imsi() const;
 
-    /**
-     * @return The EID of the SIM card, if any.
+    /*!
+     * Returns The EID of the SIM card, if any.
      */
     QString eid() const;
 
-    /**
-     * @return The ID of the network operator, as given by the SIM card, if known.
+    /*!
+     * Returns The ID of the network operator, as given by the SIM card, if known.
      */
     QString operatorIdentifier() const;
 
-    /**
-     * @return The name of the network operator, as given by the SIM card, if known.
+    /*!
+     * Returns The name of the network operator, as given by the SIM card, if known.
      */
     QString operatorName() const;
 
-    /**
-     * @return List of emergency numbers programmed in the SIM card.
+    /*!
+     * Returns List of emergency numbers programmed in the SIM card.
      *
      * These numbers should be treated as numbers for emergency calls in
      * addition to 112 and 911.
      */
     QStringList emergencyNumbers() const;
 
-    /**
-     * @return Map of preferred networks with access technologies configured in the SIM card.
+    /*!
+     * Returns Map of preferred networks with access technologies configured in the SIM card.
      *
      * Each entry contains an operator id string key "MCCMNC"
      * consisting of 5 or 6 digits, to an MMModemAccessTechnology mask value.
@@ -96,61 +100,61 @@ public:
     QVariantMap preferredNetworks() const;
 
 #if MM_CHECK_VERSION(1, 20, 0)
-    /**
-     * @return Group identifier 1evel 1.
+    /*!
+     * Returns Group identifier 1evel 1.
      */
     QByteArray gid1() const;
 
-    /**
-     * @return Group identifier 1evel 2.
+    /*!
+     * Returns Group identifier 1evel 2.
      */
     QByteArray gid2() const;
 
-    /**
-     * @return Indicates whether the current primary SIM is a ESIM or a physical SIM.
+    /*!
+     * Returns Indicates whether the current primary SIM is a ESIM or a physical SIM.
      */
     MMSimType simType() const;
 
-    /**
-     * @return If current SIM is ESIM then this indicates whether there is a profile or not.
+    /*!
+     * Returns If current SIM is ESIM then this indicates whether there is a profile or not.
      */
     MMSimEsimStatus esimStatus() const;
 
-    /**
-     * @return Indicates whether the current SIM is a removable SIM or not.
+    /*!
+     * Returns Indicates whether the current SIM is a removable SIM or not.
      */
     MMSimRemovability removability() const;
 #endif
 
-    /**
+    /*!
      * Send the PIN to unlock the SIM card.
-     * @param pin A string containing the PIN code.
+     * \a pin A string containing the PIN code.
      */
     QDBusPendingReply<> sendPin(const QString &pin);
 
-    /**
+    /*!
      * Send the PUK and a new PIN to unlock the SIM card.
-     * @param puk A string containing the PUK code.
-     * @param pin A string containing the PIN code.
+     * \a puk A string containing the PUK code.
+     * \a pin A string containing the PIN code.
      */
     QDBusPendingReply<> sendPuk(const QString &puk, const QString &pin);
 
-    /**
+    /*!
      * Enable or disable the PIN checking.
-     * @param pin A string containing the PIN code.
-     * @param enabled TRUE to enable PIN checking, FALSE otherwise.
+     * \a pin A string containing the PIN code.
+     * \a enabled TRUE to enable PIN checking, FALSE otherwise.
      */
     QDBusPendingReply<> enablePin(const QString &pin, bool enabled);
 
-    /**
+    /*!
      * Change the PIN code.
-     * @param oldPin A string containing the current PIN code.
-     * @param newPin A string containing the new PIN code.
+     * \a oldPin A string containing the current PIN code.
+     * \a newPin A string containing the new PIN code.
      */
     QDBusPendingReply<> changePin(const QString &oldPin, const QString &newPin);
 
-    /**
-     * @param preferred_plmns List of preferred networks.
+    /*!
+     * \a preferred_plmns List of preferred networks.
      *
      * Stores the provided preferred network list to the SIM card. Each entry contains
      * an operator id string ("MCCMNC") consisting of 5 or 6 digits,
@@ -164,13 +168,13 @@ public:
 
     QString uni() const;
 
-    /**
+    /*!
      * Sets the timeout in milliseconds for all async method DBus calls.
      * -1 means the default DBus timeout (usually 25 seconds).
      */
     void setTimeout(int timeout);
 
-    /**
+    /*!
      * Returns the current value of the DBus timeout in milliseconds.
      * -1 means the default DBus timeout (usually 25 seconds).
      */

@@ -23,8 +23,12 @@ namespace ModemManager
 {
 class Modem3gppUssdPrivate;
 
-/**
- * @brief The Modem3gppUssd class
+/*!
+ * \class Modem3gppUssd
+ *
+ * \inmodule ModemManagerQt
+ *
+ * \brief The Modem3gppUssd class
  *
  * This class provides access to actions based on the USSD protocol.
  */
@@ -40,8 +44,8 @@ public:
     explicit Modem3gppUssd(const QString &path, QObject *parent = nullptr);
     ~Modem3gppUssd() override;
 
-    /**
-     * Sends a USSD @p command string to the network initiating a USSD session.
+    /*!
+     * Sends a USSD \a command string to the network initiating a USSD session.
      *
      * When the request is handled by the network, the method returns the
      * response or an appropriate error. The network may be awaiting further
@@ -50,31 +54,31 @@ public:
      */
     QDBusPendingReply<QString> initiate(const QString &command);
 
-    /**
+    /*!
      * Respond to a USSD request that is either initiated by the mobile network,
      * or that is awaiting further input after initiate() was called.
      */
     QDBusPendingReply<QString> respond(const QString &response);
 
-    /**
+    /*!
      * Cancel an ongoing USSD session, either mobile or network initiated.
      */
     void cancel();
 
-    /**
-     * @return the state of any ongoing USSD session
+    /*!
+     * Returns the state of any ongoing USSD session
      */
     MMModem3gppUssdSessionState state() const;
 
-    /**
-     * @return any network-initiated request to which no USSD response is required
+    /*!
+     * Returns any network-initiated request to which no USSD response is required
      *
      * When no USSD session is active, or when there is no network- initiated request, this property will be an empty string.
      */
     QString networkNotification() const;
 
-    /**
-     * @return any pending network-initiated request for a response. Client
+    /*!
+     * Returns any pending network-initiated request for a response. Client
      * should call respond() with the appropriate response to this request.
      *
      * When no USSD session is active, or when there is no pending
@@ -82,13 +86,13 @@ public:
      */
     QString networkRequest() const;
 
-    /**
+    /*!
      * Sets the timeout in milliseconds for all async method DBus calls.
      * -1 means the default DBus timeout (usually 25 seconds).
      */
     void setTimeout(int timeout);
 
-    /**
+    /*!
      * Returns the current value of the DBus timeout in milliseconds.
      * -1 means the default DBus timeout (usually 25 seconds).
      */

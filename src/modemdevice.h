@@ -36,6 +36,22 @@ public:
     typedef QSharedPointer<ModemDevice> Ptr;
     typedef QList<Ptr> List;
 
+    /*!
+     * \enum InterfaceType
+     *
+     * \value ModemInterface
+     * \value SimpleInterface
+     * \value GsmInterface
+     * \value GsmUssdInterface
+     * \value CdmaInterface
+     * \value MessagingInterface
+     * \value LocationInterface
+     * \value TimeInterface
+     * \value FirmwareInterface
+     * \value OmaInterface
+     * \value SignalInterface
+     * \value VoiceInterface
+     */
     enum InterfaceType {
         ModemInterface,
         SimpleInterface,
