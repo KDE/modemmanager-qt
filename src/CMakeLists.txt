@@ -130,6 +130,7 @@ ecm_generate_headers(ModemManagerQt_CamelCaseHEADERS
     PREFIX ModemManagerQt
     REQUIRED_HEADERS ModemManagerQt_HEADERS
 )
+ecm_generate_qdoc(KF6ModemManagerQt modemmanager-qt.qdocconf)
 
 install(TARGETS KF6ModemManagerQt EXPORT KF6ModemManagerQtTargets ${KF_INSTALL_TARGETS_DEFAULT_ARGS})
 
