@@ -25,7 +25,13 @@ class MODEMMANAGERQT_EXPORT Interface : public QObject
 
     Q_PROPERTY(QString uni READ uni)
 public:
+    /*!
+     * \typedef ModemManager::Interface::Ptr
+     */
     typedef QSharedPointer<Interface> Ptr;
+    /*!
+     * \typedef ModemManager::Interface::List
+     */
     typedef QList<Ptr> List;
 
     /*!

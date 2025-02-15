@@ -52,6 +52,9 @@ private:
 // For MCC to country code mapping crawling, see aslo:
 // https://github.com/sailfishos/tzdata-timed/blob/master/scripts/create-mcc-country-mappings.sh
 
+/*!
+ * \typedef ModemManager::MccListEntry
+ */
 typedef struct _MccListEntry {
     int mcc;
     char mnc[4];

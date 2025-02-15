@@ -38,7 +38,13 @@ class MODEMMANAGERQT_EXPORT Modem3gppUssd : public Interface
     Q_DECLARE_PRIVATE(Modem3gppUssd)
 
 public:
+    /*!
+     * \typedef ModemManager::Modem3gppUssd::Ptr
+     */
     typedef QSharedPointer<Modem3gppUssd> Ptr;
+    /*!
+     * \typedef ModemManager::Modem3gppUssd::List
+     */
     typedef QList<Ptr> List;
 
     /*!

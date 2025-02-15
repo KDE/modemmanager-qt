@@ -43,7 +43,13 @@ public:
         QByteArray data;
     };
 
+    /*!
+     * \typedef ModemManager::ModemMessaging::Ptr
+     */
     typedef QSharedPointer<ModemMessaging> Ptr;
+    /*!
+     * \typedef ModemManager::ModemMessaging::List
+     */
     typedef QList<Ptr> List;
 
     /*!

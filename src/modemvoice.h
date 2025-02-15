@@ -35,7 +35,13 @@ class MODEMMANAGERQT_EXPORT ModemVoice : public Interface
     Q_DECLARE_PRIVATE(ModemVoice)
 
 public:
+    /*!
+     * \typedef ModemManager::ModemVoice::Ptr
+     */
     typedef QSharedPointer<ModemVoice> Ptr;
+    /*!
+     * \typedef ModemManager::ModemVoice::List
+     */
     typedef QList<Ptr> List;
 
     /*!

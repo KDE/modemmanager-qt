@@ -95,7 +95,13 @@ class MODEMMANAGERQT_EXPORT ModemTime : public Interface
     Q_DECLARE_PRIVATE(ModemTime)
 
 public:
+    /*!
+     * \typedef ModemManager::ModemTime::Ptr
+     */
     typedef QSharedPointer<ModemTime> Ptr;
+    /*!
+     * \typedef ModemManager::ModemTime::List
+     */
     typedef QList<Ptr> List;
 
     /*!

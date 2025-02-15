@@ -33,7 +33,13 @@ class MODEMMANAGERQT_EXPORT ModemDevice : public QObject
 
     Q_PROPERTY(QString uni READ uni)
 public:
+    /*!
+     * \typedef ModemManager::ModemDevice::Ptr
+     */
     typedef QSharedPointer<ModemDevice> Ptr;
+    /*!
+     * \typedef ModemManager::ModemDevice::List
+     */
     typedef QList<Ptr> List;
 
     /*!

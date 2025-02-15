@@ -39,7 +39,13 @@ class MODEMMANAGERQT_EXPORT Modem3gpp : public Interface
     Q_FLAGS(MMModem3gppFacility)
 
 public:
+    /*!
+     * \typedef ModemManager::Modem3gpp::Ptr
+     */
     typedef QSharedPointer<Modem3gpp> Ptr;
+    /*!
+     * \typedef ModemManager::Modem3gpp::List
+     */
     typedef QList<Ptr> List;
 
     Q_DECLARE_FLAGS(FacilityLocks, MMModem3gppFacility)

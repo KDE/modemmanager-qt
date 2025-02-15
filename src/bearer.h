@@ -135,7 +135,13 @@ class MODEMMANAGERQT_EXPORT Bearer : public QObject
 {
     Q_OBJECT
 public:
+    /*!
+     * \typedef ModemManager::Bearer::Ptr
+     */
     typedef QSharedPointer<Bearer> Ptr;
+    /*!
+     * \typedef ModemManager::Bearer::List
+     */
     typedef QList<Ptr> List;
 
     /*!

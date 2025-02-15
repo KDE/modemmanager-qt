@@ -33,7 +33,13 @@ class MODEMMANAGERQT_EXPORT Sms : public QObject
     Q_DECLARE_PRIVATE(Sms)
 
 public:
+    /*!
+     * \typedef ModemManager::Sms::Ptr
+     */
     typedef QSharedPointer<Sms> Ptr;
+    /*!
+     * \typedef ModemManager::Sms::List
+     */
     typedef QList<Ptr> List;
 
     /*!

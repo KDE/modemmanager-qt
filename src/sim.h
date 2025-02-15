@@ -37,7 +37,13 @@ class MODEMMANAGERQT_EXPORT Sim : public QObject
     Q_DECLARE_PRIVATE(Sim)
 
 public:
+    /*!
+     * \typedef ModemManager::Sim::Ptr
+     */
     typedef QSharedPointer<Sim> Ptr;
+    /*!
+     * \typedef ModemManager::Sim::List
+     */
     typedef QList<Ptr> List;
 
     /*!

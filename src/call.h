@@ -31,7 +31,13 @@ class MODEMMANAGERQT_EXPORT Call : public QObject
     Q_DECLARE_PRIVATE(Call)
 
 public:
+    /*!
+     * \typedef ModemManager::Call::Ptr
+     */
     typedef QSharedPointer<Call> Ptr;
+    /*!
+     * \typedef ModemManager::Call::List
+     */
     typedef QList<Ptr> List;
 
     /*!

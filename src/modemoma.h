@@ -42,7 +42,13 @@ class MODEMMANAGERQT_EXPORT ModemOma : public Interface
     Q_FLAGS(MMOmaFeature)
 
 public:
+    /*!
+     * \typedef ModemManager::ModemOma::Ptr
+     */
     typedef QSharedPointer<ModemOma> Ptr;
+    /*!
+     * \typedef ModemManager::ModemOma::List
+     */
     typedef QList<Ptr> List;
 
     Q_DECLARE_FLAGS(Features, MMOmaFeature)

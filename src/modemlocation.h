@@ -41,7 +41,13 @@ class MODEMMANAGERQT_EXPORT ModemLocation : public Interface
     Q_FLAGS(MMModemLocationSource)
 
 public:
+    /*!
+     * \typedef ModemManager::ModemLocation::Ptr
+     */
     typedef QSharedPointer<ModemLocation> Ptr;
+    /*!
+     * \typedef ModemManager::ModemLocation::List
+     */
     typedef QList<Ptr> List;
 
     Q_DECLARE_FLAGS(LocationSources, MMModemLocationSource)

@@ -37,7 +37,13 @@ class MODEMMANAGERQT_EXPORT ModemFirmware : public Interface
     Q_DECLARE_PRIVATE(ModemFirmware)
 
 public:
+    /*!
+     * \typedef ModemManager::ModemFirmware::Ptr
+     */
     typedef QSharedPointer<ModemFirmware> Ptr;
+    /*!
+     * \typedef ModemManager::ModemFirmware::List
+     */
     typedef QList<Ptr> List;
 
     /*!

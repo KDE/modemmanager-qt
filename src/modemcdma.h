@@ -38,7 +38,13 @@ class MODEMMANAGERQT_EXPORT ModemCdma : public Interface
     Q_OBJECT
     Q_DECLARE_PRIVATE(ModemCdma)
 public:
+    /*!
+     * \typedef ModemManager::ModemCdma::Ptr
+     */
     typedef QSharedPointer<ModemCdma> Ptr;
+    /*!
+     * \typedef ModemManager::ModemCdma::List
+     */
     typedef QList<Ptr> List;
 
     /*!

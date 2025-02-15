@@ -163,7 +163,13 @@ public:
     Q_DECLARE_FLAGS(ModemModes, MMModemMode)
     Q_DECLARE_FLAGS(IpBearerFamilies, MMBearerIpFamily)
 
+    /*!
+     * \typedef ModemManager:Modem:Ptr
+     */
     typedef QSharedPointer<Modem> Ptr;
+    /*!
+     * \typedef ModemManager:Modem:Ptr
+     */
     typedef QList<Ptr> List;
 
     /*!

@@ -36,7 +36,13 @@ class MODEMMANAGERQT_EXPORT ModemSignal : public Interface
     Q_DECLARE_PRIVATE(ModemSignal)
 
 public:
+    /*!
+     * \typedef ModemManager::ModemSignal::Ptr
+     */
     typedef QSharedPointer<ModemSignal> Ptr;
+    /*!
+     * \typedef ModemManager::ModemSignal::List
+     */
     typedef QList<Ptr> List;
 
     /*!
