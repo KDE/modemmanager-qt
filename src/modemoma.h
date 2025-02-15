@@ -47,6 +47,8 @@ public:
 
     Q_DECLARE_FLAGS(Features, MMOmaFeature)
 
+    /*!
+     */
     explicit ModemOma(const QString &path, QObject *parent = nullptr);
     ~ModemOma() override;
 
@@ -115,8 +117,14 @@ public:
     int timeout() const;
 
 Q_SIGNALS:
+    /*!
+     */
     void featuresChanged(QFlags<MMOmaFeature> features);
+    /*!
+     */
     void pendingNetworkInitiatedSessionsChanged(const ModemManager::OmaSessionTypes &sessions);
+    /*!
+     */
     void sessionTypeChanged(MMOmaSessionType sessionType);
     /*!
      * Emitted when the session state changed.

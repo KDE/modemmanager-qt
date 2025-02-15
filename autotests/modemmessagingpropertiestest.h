@@ -18,7 +18,11 @@ class ModemMessagingPropertiesTest : public QObject
     Q_OBJECT
 
 private Q_SLOTS:
+    /*!
+     */
     void initTestCase();
+    /*!
+     */
     void testModemMessagingProperties();
 
 private:

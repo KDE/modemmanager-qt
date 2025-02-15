@@ -44,6 +44,8 @@ public:
 
     Q_DECLARE_FLAGS(FacilityLocks, MMModem3gppFacility)
 
+    /*!
+     */
     explicit Modem3gpp(const QString &path, QObject *parent = nullptr);
     ~Modem3gpp() override;
 
@@ -146,12 +148,26 @@ public:
     int timeout() const;
 
 Q_SIGNALS:
+    /*!
+     */
     void imeiChanged(const QString &imei);
+    /*!
+     */
     void registrationStateChanged(MMModem3gppRegistrationState registrationState);
+    /*!
+     */
     void operatorCodeChanged(const QString &operatorCode);
+    /*!
+     */
     void operatorNameChanged(const QString &operatorName);
+    /*!
+     */
     void countryCodeChanged(const QString &countryCode);
+    /*!
+     */
     void enabledFacilityLocksChanged(QFlags<MMModem3gppFacility> locks);
+    /*!
+     */
     void subscriptionStateChanged(MMModem3gppSubscriptionState subscriptionState);
 };
 

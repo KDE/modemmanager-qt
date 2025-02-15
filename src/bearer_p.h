@@ -17,6 +17,8 @@ class BearerPrivate : public QObject
 {
     Q_OBJECT
 public:
+    /*!
+     */
     explicit BearerPrivate(const QString &path, Bearer *q);
 
     OrgFreedesktopModemManager1BearerInterface bearerIface;
@@ -34,6 +36,8 @@ public:
     Q_DECLARE_PUBLIC(Bearer)
     Bearer *q_ptr;
 private Q_SLOTS:
+    /*!
+     */
     void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps);
 };
 

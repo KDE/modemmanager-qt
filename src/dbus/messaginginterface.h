@@ -28,6 +28,8 @@ class OrgFreedesktopModemManager1ModemMessagingInterface : public QDBusAbstractI
 {
     Q_OBJECT
 public:
+    /*!
+     */
     static inline const char *staticInterfaceName()
 #ifdef MMQT_STATIC
     {
@@ -39,6 +41,8 @@ public:
     }
 #endif
 public:
+    /*!
+     */
     OrgFreedesktopModemManager1ModemMessagingInterface(const QString &service,
                                                        const QString &path,
                                                        const QDBusConnection &connection,
@@ -47,24 +51,32 @@ public:
     ~OrgFreedesktopModemManager1ModemMessagingInterface() override;
 
     Q_PROPERTY(uint DefaultStorage READ defaultStorage)
+    /*!
+     */
     inline uint defaultStorage() const
     {
         return qvariant_cast<uint>(property("DefaultStorage"));
     }
 
     Q_PROPERTY(QList<QDBusObjectPath> Messages READ messages)
+    /*!
+     */
     inline QList<QDBusObjectPath> messages() const
     {
         return qvariant_cast<QList<QDBusObjectPath>>(property("Messages"));
     }
 
     Q_PROPERTY(ModemManager::UIntList SupportedStorages READ supportedStorages)
+    /*!
+     */
     inline ModemManager::UIntList supportedStorages() const
     {
         return qvariant_cast<ModemManager::UIntList>(property("SupportedStorages"));
     }
 
 public Q_SLOTS: // METHODS
+    /*!
+     */
     inline QDBusPendingReply<QDBusObjectPath> Create(const QVariantMap &properties)
     {
         QList<QVariant> argumentList;
@@ -72,6 +84,8 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QLatin1String("Create"), argumentList);
     }
 
+    /*!
+     */
     inline QDBusPendingReply<> Delete(const QDBusObjectPath &path)
     {
         QList<QVariant> argumentList;
@@ -79,6 +93,8 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QLatin1String("Delete"), argumentList);
     }
 
+    /*!
+     */
     inline QDBusPendingReply<QList<QDBusObjectPath>> List()
     {
         QList<QVariant> argumentList;
@@ -86,7 +102,11 @@ public Q_SLOTS: // METHODS
     }
 
 Q_SIGNALS: // SIGNALS
+    /*!
+     */
     void Added(const QDBusObjectPath &path, bool received);
+    /*!
+     */
     void Deleted(const QDBusObjectPath &path);
 };
 

@@ -39,6 +39,8 @@ public:
     typedef QSharedPointer<ModemSignal> Ptr;
     typedef QList<Ptr> List;
 
+    /*!
+     */
     explicit ModemSignal(const QString &path, QObject *parent = nullptr);
     ~ModemSignal() override;
 
@@ -115,11 +117,23 @@ public:
     int timeout() const;
 
 Q_SIGNALS:
+    /*!
+     */
     void rateChanged(uint rate);
+    /*!
+     */
     void cdmaChanged(const QVariantMap &cdma);
+    /*!
+     */
     void evdoChanged(const QVariantMap &evdo);
+    /*!
+     */
     void gsmChanged(const QVariantMap &gsm);
+    /*!
+     */
     void umtsChanged(const QVariantMap &umts);
+    /*!
+     */
     void lteChanged(const QString &lte);
 };
 

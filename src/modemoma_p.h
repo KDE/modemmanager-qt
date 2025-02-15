@@ -17,6 +17,8 @@ namespace ModemManager
 class ModemOmaPrivate : public InterfacePrivate
 {
 public:
+    /*!
+     */
     explicit ModemOmaPrivate(const QString &path, ModemOma *q);
     OrgFreedesktopModemManager1ModemOmaInterface omaIface;
 
@@ -28,6 +30,8 @@ public:
     Q_DECLARE_PUBLIC(ModemOma)
     ModemOma *q_ptr;
 private Q_SLOTS:
+    /*!
+     */
     void onSessionStateChanged(int oldState, int newState, uint failedReason);
     void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) override;
 };

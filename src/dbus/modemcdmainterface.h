@@ -27,6 +27,8 @@ class OrgFreedesktopModemManager1ModemModemCdmaInterface : public QDBusAbstractI
 {
     Q_OBJECT
 public:
+    /*!
+     */
     static inline const char *staticInterfaceName()
 #ifdef MMQT_STATIC
     {
@@ -38,6 +40,8 @@ public:
     }
 #endif
 public:
+    /*!
+     */
     OrgFreedesktopModemManager1ModemModemCdmaInterface(const QString &service,
                                                        const QString &path,
                                                        const QDBusConnection &connection,
@@ -46,48 +50,64 @@ public:
     ~OrgFreedesktopModemManager1ModemModemCdmaInterface() override;
 
     Q_PROPERTY(uint ActivationState READ activationState)
+    /*!
+     */
     inline uint activationState() const
     {
         return qvariant_cast<uint>(property("ActivationState"));
     }
 
     Q_PROPERTY(uint Cdma1xRegistrationState READ cdma1xRegistrationState)
+    /*!
+     */
     inline uint cdma1xRegistrationState() const
     {
         return qvariant_cast<uint>(property("Cdma1xRegistrationState"));
     }
 
     Q_PROPERTY(QString Esn READ esn)
+    /*!
+     */
     inline QString esn() const
     {
         return qvariant_cast<QString>(property("Esn"));
     }
 
     Q_PROPERTY(uint EvdoRegistrationState READ evdoRegistrationState)
+    /*!
+     */
     inline uint evdoRegistrationState() const
     {
         return qvariant_cast<uint>(property("EvdoRegistrationState"));
     }
 
     Q_PROPERTY(QString Meid READ meid)
+    /*!
+     */
     inline QString meid() const
     {
         return qvariant_cast<QString>(property("Meid"));
     }
 
     Q_PROPERTY(uint Nid READ nid)
+    /*!
+     */
     inline uint nid() const
     {
         return qvariant_cast<uint>(property("Nid"));
     }
 
     Q_PROPERTY(uint Sid READ sid)
+    /*!
+     */
     inline uint sid() const
     {
         return qvariant_cast<uint>(property("Sid"));
     }
 
 public Q_SLOTS: // METHODS
+    /*!
+     */
     inline QDBusPendingReply<> Activate(const QString &carrier_code)
     {
         QList<QVariant> argumentList;
@@ -95,6 +115,8 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QLatin1String("Activate"), argumentList);
     }
 
+    /*!
+     */
     inline QDBusPendingReply<> ActivateManual(const QVariantMap &properties)
     {
         QList<QVariant> argumentList;
@@ -103,6 +125,8 @@ public Q_SLOTS: // METHODS
     }
 
 Q_SIGNALS: // SIGNALS
+    /*!
+     */
     void ActivationStateChanged(uint activation_state, uint activation_error, const QVariantMap &status_changes);
 };
 

@@ -41,6 +41,8 @@ public:
     typedef QSharedPointer<ModemCdma> Ptr;
     typedef QList<Ptr> List;
 
+    /*!
+     */
     explicit ModemCdma(const QString &path, QObject *parent = nullptr);
     ~ModemCdma() override;
 
@@ -129,11 +131,23 @@ Q_SIGNALS:
      *                       The map may be empty if the changed properties are unknown.
      */
     void activationStateChanged(MMModemCdmaActivationState state, MMCdmaActivationError error, const QVariantMap &status_changes);
+    /*!
+     */
     void meidChanged(const QString &meid);
+    /*!
+     */
     void esnChanged(const QString &esn);
+    /*!
+     */
     void sidChanged(uint sid);
+    /*!
+     */
     void nidChanged(uint nid);
+    /*!
+     */
     void cdma1xRegistrationStateChanged(MMModemCdmaRegistrationState cdma1xRegistrationState);
+    /*!
+     */
     void evdoRegistrationStateChanged(MMModemCdmaRegistrationState evdoRegistrationState);
 };
 } // namespace ModemManager

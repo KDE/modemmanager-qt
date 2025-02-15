@@ -82,6 +82,8 @@ MODEMMANAGERQT_EXPORT ModemDevice::Ptr findModemDevice(const QString &uni);
  */
 MODEMMANAGERQT_EXPORT void scanDevices();
 
+/*!
+ */
 MODEMMANAGERQT_EXPORT Notifier *notifier();
 }
 

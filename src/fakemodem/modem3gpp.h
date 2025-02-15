@@ -16,6 +16,8 @@ class Modem3gpp : public QDBusAbstractAdaptor
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.fakemodem.Modem.Modem3gpp")
 public:
+    /*!
+     */
     explicit Modem3gpp(QObject *parent = nullptr);
     ~Modem3gpp() override;
 
@@ -26,27 +28,61 @@ public:
     Q_PROPERTY(uint RegistrationState READ registrationState)
     Q_PROPERTY(uint SubscriptionState READ subscriptionState)
 
+    /*!
+     */
     uint enabledFacilityLocks() const;
+    /*!
+     */
     QString imei() const;
+    /*!
+     */
     QString operatorCode() const;
+    /*!
+     */
     QString operatorName() const;
+    /*!
+     */
     uint registrationState() const;
+    /*!
+     */
     uint subscriptionState() const;
 
     /* Not part of dbus interface */
+    /*!
+     */
     void setModemPath(const QString &path);
+    /*!
+     */
     void setEnableNotifications(bool enable);
+    /*!
+     */
     void setEnabledFacilityLocks(uint enabledFacilitiesLocks);
+    /*!
+     */
     void setImei(const QString &imei);
+    /*!
+     */
     void setOperatorCode(const QString &operatorCode);
+    /*!
+     */
     void setOperatorName(const QString &operatorName);
+    /*!
+     */
     void setRegistrationState(uint registrationState);
+    /*!
+     */
     void setSubscriptionState(uint subscriptionState);
 
+    /*!
+     */
     QVariantMap toMap() const;
 
 public Q_SLOTS:
+    /*!
+     */
     Q_SCRIPTABLE void Register(const QString &operator_id);
+    /*!
+     */
     Q_SCRIPTABLE ModemManager::QVariantMapList Scan();
 
 private:

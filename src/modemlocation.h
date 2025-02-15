@@ -46,6 +46,8 @@ public:
 
     Q_DECLARE_FLAGS(LocationSources, MMModemLocationSource)
 
+    /*!
+     */
     explicit ModemLocation(const QString &path, QObject *parent = nullptr);
     ~ModemLocation() override;
 
@@ -115,8 +117,14 @@ public:
     int timeout() const;
 
 Q_SIGNALS:
+    /*!
+     */
     void capabilitiesChanged(QFlags<MMModemLocationSource> capabilities);
+    /*!
+     */
     void enabledCapabilitiesChanged(QFlags<MMModemLocationSource> capabilities);
+    /*!
+     */
     void signalsLocationChanged(bool signalsLocation);
     /*!
      * Emitted when the location has changed

@@ -22,6 +22,8 @@ class SmsPrivate : public QObject
 {
     Q_OBJECT
 public:
+    /*!
+     */
     explicit SmsPrivate(const QString &path, Sms *q);
     OrgFreedesktopModemManager1SmsInterface smsIface;
 
@@ -48,6 +50,8 @@ public:
     Q_DECLARE_PUBLIC(Sms)
     Sms *q_ptr;
 private Q_SLOTS:
+    /*!
+     */
     void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps);
 };
 

@@ -27,6 +27,8 @@ class OrgFreedesktopModemManager1ModemModem3gppUssdInterface : public QDBusAbstr
 {
     Q_OBJECT
 public:
+    /*!
+     */
     static inline const char *staticInterfaceName()
 #ifdef MMQT_STATIC
     {
@@ -38,6 +40,8 @@ public:
     }
 #endif
 public:
+    /*!
+     */
     OrgFreedesktopModemManager1ModemModem3gppUssdInterface(const QString &service,
                                                            const QString &path,
                                                            const QDBusConnection &connection,
@@ -46,30 +50,40 @@ public:
     ~OrgFreedesktopModemManager1ModemModem3gppUssdInterface() override;
 
     Q_PROPERTY(QString NetworkNotification READ networkNotification)
+    /*!
+     */
     inline QString networkNotification() const
     {
         return qvariant_cast<QString>(property("NetworkNotification"));
     }
 
     Q_PROPERTY(QString NetworkRequest READ networkRequest)
+    /*!
+     */
     inline QString networkRequest() const
     {
         return qvariant_cast<QString>(property("NetworkRequest"));
     }
 
     Q_PROPERTY(uint State READ state)
+    /*!
+     */
     inline uint state() const
     {
         return qvariant_cast<uint>(property("State"));
     }
 
 public Q_SLOTS: // METHODS
+    /*!
+     */
     inline QDBusPendingReply<> Cancel()
     {
         QList<QVariant> argumentList;
         return asyncCallWithArgumentList(QLatin1String("Cancel"), argumentList);
     }
 
+    /*!
+     */
     inline QDBusPendingReply<QString> Initiate(const QString &command)
     {
         QList<QVariant> argumentList;
@@ -77,6 +91,8 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QLatin1String("Initiate"), argumentList);
     }
 
+    /*!
+     */
     inline QDBusPendingReply<QString> Respond(const QString &response)
     {
         QList<QVariant> argumentList;

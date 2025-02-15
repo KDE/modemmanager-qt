@@ -36,9 +36,13 @@ public:
     typedef QSharedPointer<Sms> Ptr;
     typedef QList<Ptr> List;
 
+    /*!
+     */
     explicit Sms(const QString &path, QObject *parent = nullptr);
     ~Sms() override;
 
+    /*!
+     */
     QString uni() const;
 
     /*!
@@ -160,16 +164,38 @@ Q_SIGNALS:
      * \a newState the new state of the SMS
      */
     void stateChanged(MMSmsState newState);
+    /*!
+     */
     void pduTypeChanged(MMSmsPduType pduType);
+    /*!
+     */
     void numberChanged(const QString &number);
+    /*!
+     */
     void SMSCChanged(const QString &smsc);
+    /*!
+     */
     void dataChanged(const QByteArray &data);
+    /*!
+     */
     void textChanged(const QString &text);
+    /*!
+     */
     void validityChanged(const ModemManager::ValidityPair &validity);
+    /*!
+     */
     void smsClassChanged(int smsClass);
+    /*!
+     */
     void deliveryReportRequestChanged(bool deliveryReportRequest);
+    /*!
+     */
     void messageReferenceChanged(uint messageReference);
+    /*!
+     */
     void timestampChanged(const QDateTime &timestamp);
+    /*!
+     */
     void dischargeTimestampChanged(const QDateTime &dischargeTimestamp);
     /*!
      * This signal is emitted when the delivery state of the SMS has changed
@@ -177,8 +203,14 @@ Q_SIGNALS:
      * \a newDeliveryState the new delivery state of the SMS
      */
     void deliveryStateChanged(MMSmsDeliveryState newDeliveryState);
+    /*!
+     */
     void storageChanged(MMSmsStorage storage);
+    /*!
+     */
     void serviceCategoryChanged(MMSmsCdmaServiceCategory serviceCategory);
+    /*!
+     */
     void teleserviceIdChanged(MMSmsCdmaTeleserviceId teleserviceId);
 
 private:

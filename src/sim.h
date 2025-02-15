@@ -40,6 +40,8 @@ public:
     typedef QSharedPointer<Sim> Ptr;
     typedef QList<Ptr> List;
 
+    /*!
+     */
     explicit Sim(const QString &path, QObject *parent = nullptr);
     ~Sim() override;
 
@@ -166,6 +168,8 @@ public:
      */
     QDBusPendingReply<> setPreferredNetworks(QVariantMap preferredNetworks);
 
+    /*!
+     */
     QString uni() const;
 
     /*!
@@ -181,19 +185,45 @@ public:
     int timeout() const;
 
 Q_SIGNALS:
+    /*!
+     */
     void activeChanged(bool active);
+    /*!
+     */
     void simIdentifierChanged(const QString &identifier);
+    /*!
+     */
     void imsiChanged(const QString &imsi);
+    /*!
+     */
     void eidChanged(const QString &eid);
+    /*!
+     */
     void operatorIdentifierChanged(const QString &identifier);
+    /*!
+     */
     void operatorNameChanged(const QString &name);
+    /*!
+     */
     void emergencyNumbersChanged(const QStringList &emergencyNumbers);
+    /*!
+     */
     void preferredNetworksChanged(const QVariantMap &preferredNetworks);
 #if MM_CHECK_VERSION(1, 20, 0)
+    /*!
+     */
     void gid1Changed(const QByteArray &gid1);
+    /*!
+     */
     void gid2Changed(const QByteArray &gid2);
+    /*!
+     */
     void simTypeChanged(MMSimType simType);
+    /*!
+     */
     void esimStatusChanged(MMSimEsimStatus esimStatus);
+    /*!
+     */
     void removabilityChanged(MMSimRemovability removability);
 #endif
 

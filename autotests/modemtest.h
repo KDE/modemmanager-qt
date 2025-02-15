@@ -16,8 +16,14 @@ class ModemTest : public QObject
     Q_OBJECT
 
 private Q_SLOTS:
+    /*!
+     */
     void initTestCase();
+    /*!
+     */
     void testModems();
+    /*!
+     */
     void testModemAdded(const QString &dev);
 
 private:

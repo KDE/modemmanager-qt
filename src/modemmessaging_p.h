@@ -19,20 +19,30 @@ namespace ModemManager
 class ModemMessagingPrivate : public InterfacePrivate
 {
 public:
+    /*!
+     */
     explicit ModemMessagingPrivate(const QString &path, ModemMessaging *q);
     OrgFreedesktopModemManager1ModemMessagingInterface modemMessagingIface;
 
     QMap<QString, ModemManager::Sms::Ptr> messageList;
     QList<MMSmsStorage> supportedStorages;
     MMSmsStorage defaultStorage;
+    /*!
+     */
     ModemManager::Sms::Ptr findMessage(const QString &uni);
+    /*!
+     */
     ModemManager::Sms::List messages();
 
     Q_DECLARE_PUBLIC(ModemMessaging)
     ModemMessaging *q_ptr;
 private Q_SLOTS:
     void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) override;
+    /*!
+     */
     void onMessageAdded(const QDBusObjectPath &path, bool received);
+    /*!
+     */
     void onMessageDeleted(const QDBusObjectPath &path);
 };
 

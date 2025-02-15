@@ -27,6 +27,8 @@ class OrgFreedesktopModemManager1Interface : public QDBusAbstractInterface
 {
     Q_OBJECT
 public:
+    /*!
+     */
     static inline const char *staticInterfaceName()
 #ifdef MMQT_STATIC
     {
@@ -38,17 +40,23 @@ public:
     }
 #endif
 public:
+    /*!
+     */
     OrgFreedesktopModemManager1Interface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
 
     ~OrgFreedesktopModemManager1Interface() override;
 
 public Q_SLOTS: // METHODS
+    /*!
+     */
     inline QDBusPendingReply<> ScanDevices()
     {
         QList<QVariant> argumentList;
         return asyncCallWithArgumentList(QLatin1String("ScanDevices"), argumentList);
     }
 
+    /*!
+     */
     inline QDBusPendingReply<> SetLogging(const QString &level)
     {
         QList<QVariant> argumentList;

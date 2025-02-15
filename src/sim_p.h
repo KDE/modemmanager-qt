@@ -19,6 +19,8 @@ class SimPrivate : public QObject
 {
     Q_OBJECT
 public:
+    /*!
+     */
     explicit SimPrivate(const QString &path, Sim *q);
     OrgFreedesktopModemManager1SimInterface simIface;
     QString uni;
@@ -41,6 +43,8 @@ public:
     Q_DECLARE_PUBLIC(Sim)
     Sim *q_ptr;
 private Q_SLOTS:
+    /*!
+     */
     void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps);
 };
 

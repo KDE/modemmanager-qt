@@ -38,6 +38,8 @@ public:
     typedef QSharedPointer<ModemVoice> Ptr;
     typedef QList<Ptr> List;
 
+    /*!
+     */
     explicit ModemVoice(const QString &path, QObject *parent = nullptr);
     ~ModemVoice() override;
 

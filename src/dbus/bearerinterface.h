@@ -27,6 +27,8 @@ class OrgFreedesktopModemManager1BearerInterface : public QDBusAbstractInterface
 {
     Q_OBJECT
 public:
+    /*!
+     */
     static inline const char *staticInterfaceName()
 #ifdef MMQT_STATIC
     {
@@ -38,59 +40,79 @@ public:
     }
 #endif
 public:
+    /*!
+     */
     OrgFreedesktopModemManager1BearerInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
 
     ~OrgFreedesktopModemManager1BearerInterface() override;
 
     Q_PROPERTY(bool Connected READ connected)
+    /*!
+     */
     inline bool connected() const
     {
         return qvariant_cast<bool>(property("Connected"));
     }
 
     Q_PROPERTY(QString Interface READ interface)
+    /*!
+     */
     inline QString interface() const
     {
         return qvariant_cast<QString>(property("Interface"));
     }
 
     Q_PROPERTY(QVariantMap Ip4Config READ ip4Config)
+    /*!
+     */
     inline QVariantMap ip4Config() const
     {
         return qvariant_cast<QVariantMap>(property("Ip4Config"));
     }
 
     Q_PROPERTY(QVariantMap Ip6Config READ ip6Config)
+    /*!
+     */
     inline QVariantMap ip6Config() const
     {
         return qvariant_cast<QVariantMap>(property("Ip6Config"));
     }
 
     Q_PROPERTY(uint IpTimeout READ ipTimeout)
+    /*!
+     */
     inline uint ipTimeout() const
     {
         return qvariant_cast<uint>(property("IpTimeout"));
     }
 
     Q_PROPERTY(QVariantMap Properties READ properties)
+    /*!
+     */
     inline QVariantMap properties() const
     {
         return qvariant_cast<QVariantMap>(property("Properties"));
     }
 
     Q_PROPERTY(bool Suspended READ suspended)
+    /*!
+     */
     inline bool suspended() const
     {
         return qvariant_cast<bool>(property("Suspended"));
     }
 
 public Q_SLOTS: // METHODS
+    /*!
+     */
     inline QDBusPendingReply<> Connect()
     {
         QList<QVariant> argumentList;
         return asyncCallWithArgumentList(QLatin1String("Connect"), argumentList);
     }
 
+    /*!
+     */
     inline QDBusPendingReply<> Disconnect()
     {
         QList<QVariant> argumentList;

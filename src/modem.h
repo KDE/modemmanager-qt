@@ -166,15 +166,21 @@ public:
     typedef QSharedPointer<Modem> Ptr;
     typedef QList<Ptr> List;
 
+    /*!
+     */
     explicit Modem(const QString &path, QObject *parent = nullptr);
     ~Modem() override;
 
+    /*!
+     */
     QString uni() const;
     /*!
      * Returns \a true if the modem is fully functional, \a false when in low power mode or disabled
      * \sa setEnabled()
      */
     bool isEnabled() const;
+    /*!
+     */
     bool isValid() const;
 
     /*!
@@ -468,37 +474,99 @@ public:
     int timeout() const;
 
 Q_SIGNALS:
+    /*!
+     */
     void bearerAdded(const QString &bearer);
+    /*!
+     */
     void bearerRemoved(const QString &bearer);
+    /*!
+     */
     void bearersChanged();
 
+    /*!
+     */
     void simPathChanged(const QString &oldPath, const QString &newPath);
+    /*!
+     */
     void supportedCapabilitiesChanged(const QList<MMModemCapability> &supportedCapabilities);
+    /*!
+     */
     void currentCapabilitiesChanged(const QFlags<MMModemCapability> &currentCapabilities);
+    /*!
+     */
     void maxBearersChanged(uint maxBearers);
+    /*!
+     */
     void maxActiveBearersChanged(uint maxActiveBearers);
+    /*!
+     */
     void manufacturerChanged(const QString &manufacturer);
+    /*!
+     */
     void modelChanged(const QString &model);
+    /*!
+     */
     void revisionChanged(const QString &revision);
+    /*!
+     */
     void deviceIdentifierChanged(const QString &deviceIdentifier);
+    /*!
+     */
     void deviceChanged(const QString &device);
+    /*!
+     */
     void driversChanged(const QStringList &drivers);
+    /*!
+     */
     void pluginChanged(const QString &plugin);
+    /*!
+     */
     void primaryPortChanged(const QString &primaryPort);
+    /*!
+     */
     void portsChanged(const ModemManager::PortList &ports);
+    /*!
+     */
     void equipmentIdentifierChanged(const QString &equipmentIdentifier);
+    /*!
+     */
     void unlockRequiredChanged(MMModemLock unlockRequired);
+    /*!
+     */
     void unlockRetriesChanged(const ModemManager::UnlockRetriesMap &unlockRetries);
+    /*!
+     */
     void stateFailedReasonChanged(MMModemStateFailedReason stateFailedReason);
+    /*!
+     */
     void accessTechnologiesChanged(QFlags<MMModemAccessTechnology> accessTechnologies);
+    /*!
+     */
     void signalQualityChanged(ModemManager::SignalQualityPair signalQuality);
+    /*!
+     */
     void ownNumbersChanged(const QStringList &ownNumbers);
+    /*!
+     */
     void powerStateChanged(MMModemPowerState powerState);
+    /*!
+     */
     void supportedModesChanged(ModemManager::SupportedModesType supportedModes);
+    /*!
+     */
     void currentModesChanged(ModemManager::CurrentModesType currentModes);
+    /*!
+     */
     void supportedBandsChanged(const QList<MMModemBand> &supportedBands);
+    /*!
+     */
     void currentBandsChanged(const QList<MMModemBand> &supportedBands);
+    /*!
+     */
     void supportedIpFamiliesChanged(QFlags<MMBearerIpFamily> supportedIpFamilies);
+    /*!
+     */
     void stateChanged(MMModemState oldState, MMModemState newState, MMModemStateChangeReason reason);
 };
 

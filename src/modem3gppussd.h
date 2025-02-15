@@ -41,6 +41,8 @@ public:
     typedef QSharedPointer<Modem3gppUssd> Ptr;
     typedef QList<Ptr> List;
 
+    /*!
+     */
     explicit Modem3gppUssd(const QString &path, QObject *parent = nullptr);
     ~Modem3gppUssd() override;
 
@@ -99,8 +101,14 @@ public:
     int timeout() const;
 
 Q_SIGNALS:
+    /*!
+     */
     void stateChanged(MMModem3gppUssdSessionState state);
+    /*!
+     */
     void networkNotificationChanged(const QString &networkNotification);
+    /*!
+     */
     void networkRequestChanged(const QString &networkRequest);
 };
 

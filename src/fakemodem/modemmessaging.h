@@ -18,6 +18,8 @@ class ModemMessaging : public QDBusAbstractAdaptor
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.fakemodem.Modem.Messaging")
 public:
+    /*!
+     */
     explicit ModemMessaging(QObject *parent = nullptr);
     ~ModemMessaging() override;
 
@@ -25,26 +27,54 @@ public:
     Q_PROPERTY(QList<QDBusObjectPath> Messages READ messages)
     Q_PROPERTY(ModemManager::UIntList SupportedStorages READ supportedStorages)
 
+    /*!
+     */
     uint defaultStorage() const;
+    /*!
+     */
     QList<QDBusObjectPath> messages() const;
+    /*!
+     */
     ModemManager::UIntList supportedStorages() const;
 
     /* Not part of dbus interface */
+    /*!
+     */
     void addMessage(Sms *sms);
+    /*!
+     */
     void setModemPath(const QString &path);
+    /*!
+     */
     void setEnableNotifications(bool enable);
+    /*!
+     */
     void setDefaultStorage(uint defaultStorage);
+    /*!
+     */
     void setSupportedStorages(const ModemManager::UIntList &supportedStorages);
 
+    /*!
+     */
     QVariantMap toMap() const;
 
 public Q_SLOTS: // METHODS
+    /*!
+     */
     Q_SCRIPTABLE QDBusObjectPath Create(const QVariantMap &properties);
+    /*!
+     */
     Q_SCRIPTABLE void Delete(const QDBusObjectPath &path);
+    /*!
+     */
     Q_SCRIPTABLE QList<QDBusObjectPath> List();
 
 Q_SIGNALS: // SIGNALS
+    /*!
+     */
     Q_SCRIPTABLE void Added(const QDBusObjectPath &path, bool received);
+    /*!
+     */
     Q_SCRIPTABLE void Deleted(const QDBusObjectPath &path);
 
 private:

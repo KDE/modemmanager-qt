@@ -21,6 +21,8 @@ class ModemPrivate : public InterfacePrivate
 {
     Q_OBJECT
 public:
+    /*!
+     */
     explicit ModemPrivate(const QString &path, Modem *q);
     OrgFreedesktopModemManager1ModemInterface modemIface;
 
@@ -54,13 +56,19 @@ public:
     QList<MMModemBand> currentBands;
     ModemManager::Modem::IpBearerFamilies supportedIpFamilies;
 
+    /*!
+     */
     ModemManager::Bearer::Ptr findRegisteredBearer(const QString &path);
 
     Q_DECLARE_PUBLIC(Modem)
     Modem *q_ptr;
 private Q_SLOTS:
+    /*!
+     */
     void initializeBearers();
     void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) override;
+    /*!
+     */
     void onStateChanged(int oldState, int newState, uint reason);
 };
 

@@ -16,6 +16,8 @@ class ModemCdma : public QDBusAbstractAdaptor
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.fakemodem.Modem.ModemCdma")
 public:
+    /*!
+     */
     explicit ModemCdma(QObject *parent = nullptr);
     ~ModemCdma() override;
 
@@ -27,32 +29,72 @@ public:
     Q_PROPERTY(uint Nid READ nid)
     Q_PROPERTY(uint Sid READ sid)
 
+    /*!
+     */
     uint activationState() const;
+    /*!
+     */
     uint cdma1xRegistrationState() const;
+    /*!
+     */
     QString esn() const;
+    /*!
+     */
     uint evdoRegistrationState() const;
+    /*!
+     */
     QString meid() const;
+    /*!
+     */
     uint nid() const;
+    /*!
+     */
     uint sid() const;
 
     /* Not part of dbus interface */
+    /*!
+     */
     void setModemPath(const QString &path);
+    /*!
+     */
     void setEnableNotifications(bool enable);
+    /*!
+     */
     void setActivationState(uint state);
+    /*!
+     */
     void setCdma1xRegistrationState(uint state);
+    /*!
+     */
     void setEsn(const QString &esn);
+    /*!
+     */
     void setEvdoRegistrationState(uint state);
+    /*!
+     */
     void setMeid(const QString &meid);
+    /*!
+     */
     void setNid(uint nid);
+    /*!
+     */
     void setSid(uint sid);
 
+    /*!
+     */
     QVariantMap toMap() const;
 
 public Q_SLOTS:
+    /*!
+     */
     void Activate(const QString &carrier_code);
+    /*!
+     */
     void ActivateManual(const QVariantMap &properties);
 
 Q_SIGNALS: // SIGNALS
+    /*!
+     */
     void ActivationStateChanged(uint activation_state, uint activation_error, const QVariantMap &status_changes);
 
 private:

@@ -98,6 +98,8 @@ public:
     typedef QSharedPointer<ModemTime> Ptr;
     typedef QList<Ptr> List;
 
+    /*!
+     */
     explicit ModemTime(const QString &path, QObject *parent = nullptr);
     ~ModemTime() override;
 
@@ -134,6 +136,8 @@ Q_SIGNALS:
      * \a dateTime the new date and time
      */
     void networkTimeChanged(const QDateTime &dateTime);
+    /*!
+     */
     void networkTimezoneChanged(const ModemManager::NetworkTimezone &timeZone);
 };
 

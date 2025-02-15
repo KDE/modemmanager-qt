@@ -34,9 +34,13 @@ public:
     typedef QSharedPointer<Call> Ptr;
     typedef QList<Ptr> List;
 
+    /*!
+     */
     explicit Call(const QString &path, QObject *parent = nullptr);
     ~Call() override;
 
+    /*!
+     */
     QString uni() const;
 
     /*!
@@ -92,8 +96,14 @@ public:
     int timeout() const;
 
 Q_SIGNALS:
+    /*!
+     */
     void stateChanged(MMCallState oldState, MMCallState newState, MMCallStateReason reason);
+    /*!
+     */
     void numberChanged(const QString &number);
+    /*!
+     */
     void dtmfReceived(const QString &dtmf);
 
 private:

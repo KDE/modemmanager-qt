@@ -27,6 +27,8 @@ class OrgFreedesktopModemManager1ModemOmaInterface : public QDBusAbstractInterfa
 {
     Q_OBJECT
 public:
+    /*!
+     */
     static inline const char *staticInterfaceName()
 #ifdef MMQT_STATIC
     {
@@ -38,35 +40,47 @@ public:
     }
 #endif
 public:
+    /*!
+     */
     OrgFreedesktopModemManager1ModemOmaInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
 
     ~OrgFreedesktopModemManager1ModemOmaInterface() override;
 
     Q_PROPERTY(uint Features READ features)
+    /*!
+     */
     inline uint features() const
     {
         return qvariant_cast<uint>(property("Features"));
     }
 
     Q_PROPERTY(ModemManager::OmaSessionTypes PendingNetworkInitiatedSessions READ pendingNetworkInitiatedSessions)
+    /*!
+     */
     inline ModemManager::OmaSessionTypes pendingNetworkInitiatedSessions() const
     {
         return qvariant_cast<ModemManager::OmaSessionTypes>(property("PendingNetworkInitiatedSessions"));
     }
 
     Q_PROPERTY(int SessionState READ sessionState)
+    /*!
+     */
     inline int sessionState() const
     {
         return qvariant_cast<int>(property("SessionState"));
     }
 
     Q_PROPERTY(uint SessionType READ sessionType)
+    /*!
+     */
     inline uint sessionType() const
     {
         return qvariant_cast<uint>(property("SessionType"));
     }
 
 public Q_SLOTS: // METHODS
+    /*!
+     */
     inline QDBusPendingReply<> AcceptNetworkInitiatedSession(uint session_id, bool accept)
     {
         QList<QVariant> argumentList;
@@ -74,12 +88,16 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QLatin1String("AcceptNetworkInitiatedSession"), argumentList);
     }
 
+    /*!
+     */
     inline QDBusPendingReply<> CancelSession()
     {
         QList<QVariant> argumentList;
         return asyncCallWithArgumentList(QLatin1String("CancelSession"), argumentList);
     }
 
+    /*!
+     */
     inline QDBusPendingReply<> Setup(uint features)
     {
         QList<QVariant> argumentList;
@@ -87,6 +105,8 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QLatin1String("Setup"), argumentList);
     }
 
+    /*!
+     */
     inline QDBusPendingReply<> StartClientInitiatedSession(uint session_type)
     {
         QList<QVariant> argumentList;
@@ -95,6 +115,8 @@ public Q_SLOTS: // METHODS
     }
 
 Q_SIGNALS: // SIGNALS
+    /*!
+     */
     void SessionStateChanged(int old_session_state, int new_session_state, uint session_state_failed_reason);
 };
 

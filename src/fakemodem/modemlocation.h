@@ -16,6 +16,8 @@ class ModemLocation : public QDBusAbstractAdaptor
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.fakemodem.Modem.Location")
 public:
+    /*!
+     */
     explicit ModemLocation(QObject *parent = nullptr);
     ~ModemLocation() override;
 
@@ -24,23 +26,49 @@ public:
     Q_PROPERTY(ModemManager::LocationInformationMap Location READ location)
     Q_PROPERTY(bool SignalsLocation READ signalsLocation)
 
+    /*!
+     */
     uint capabilities() const;
+    /*!
+     */
     uint enabled() const;
+    /*!
+     */
     ModemManager::LocationInformationMap location() const;
+    /*!
+     */
     bool signalsLocation() const;
 
     /* Not part of dbus interface */
+    /*!
+     */
     void setModemPath(const QString &path);
+    /*!
+     */
     void setEnableNotifications(bool enable);
+    /*!
+     */
     void setCapabilities(uint capabilities);
+    /*!
+     */
     void setEnabled(uint enabled);
+    /*!
+     */
     void setLocation(const ModemManager::LocationInformationMap &location);
+    /*!
+     */
     void setSignalsLocation(bool signalsLocation);
 
+    /*!
+     */
     QVariantMap toMap() const;
 
 public Q_SLOTS:
+    /*!
+     */
     Q_SCRIPTABLE ModemManager::LocationInformationMap GetLocation();
+    /*!
+     */
     Q_SCRIPTABLE void Setup(uint sources, bool signal_location);
 
 private:

@@ -40,6 +40,8 @@ public:
     typedef QSharedPointer<ModemFirmware> Ptr;
     typedef QList<Ptr> List;
 
+    /*!
+     */
     explicit ModemFirmware(const QString &path, QObject *parent = nullptr);
     ~ModemFirmware() override;
 

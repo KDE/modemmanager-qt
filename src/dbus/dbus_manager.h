@@ -28,17 +28,23 @@ class OrgFreedesktopDBusObjectManagerInterface : public QDBusAbstractInterface
 {
     Q_OBJECT
 public:
+    /*!
+     */
     static inline const char *staticInterfaceName()
     {
         return "org.freedesktop.DBus.ObjectManager";
     }
 
 public:
+    /*!
+     */
     OrgFreedesktopDBusObjectManagerInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
 
     ~OrgFreedesktopDBusObjectManagerInterface() override;
 
 public Q_SLOTS: // METHODS
+    /*!
+     */
     inline QDBusPendingReply<ModemManager::DBUSManagerStruct> GetManagedObjects()
     {
         QList<QVariant> argumentList;
@@ -46,7 +52,11 @@ public Q_SLOTS: // METHODS
     }
 
 Q_SIGNALS: // SIGNALS
+    /*!
+     */
     void InterfacesAdded(const QDBusObjectPath &object_path, const ModemManager::MMVariantMapMap &interfaces_and_properties);
+    /*!
+     */
     void InterfacesRemoved(const QDBusObjectPath &object_path, const QStringList &interfaces);
 };
 

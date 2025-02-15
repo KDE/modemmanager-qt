@@ -16,6 +16,8 @@ class Modem3gppUssd : public QDBusAbstractAdaptor
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.fakemodem.Modem.Modem3gpp.Ussd")
 public:
+    /*!
+     */
     explicit Modem3gppUssd(QObject *parent = nullptr);
     ~Modem3gppUssd() override;
 
@@ -23,22 +25,46 @@ public:
     Q_PROPERTY(QString NetworkRequest READ networkRequest)
     Q_PROPERTY(uint State READ state)
 
+    /*!
+     */
     QString networkNotification() const;
+    /*!
+     */
     QString networkRequest() const;
+    /*!
+     */
     uint state() const;
 
     /* Not part of dbus interface */
+    /*!
+     */
     void setModemPath(const QString &path);
+    /*!
+     */
     void setEnableNotifications(bool enable);
+    /*!
+     */
     void setNetworkNotification(const QString &networkNotification);
+    /*!
+     */
     void setNetworkRequest(const QString &networkRequest);
+    /*!
+     */
     void setState(uint state);
 
+    /*!
+     */
     QVariantMap toMap() const;
 
 public Q_SLOTS:
+    /*!
+     */
     Q_SCRIPTABLE void Cancel();
+    /*!
+     */
     Q_SCRIPTABLE QString Initiate(const QString &command);
+    /*!
+     */
     Q_SCRIPTABLE QString Respond(const QString &response);
 
 private:

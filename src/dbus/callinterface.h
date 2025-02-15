@@ -26,53 +26,71 @@ class OrgFreedesktopModemManager1CallInterface : public QDBusAbstractInterface
 {
     Q_OBJECT
 public:
+    /*!
+     */
     static inline const char *staticInterfaceName()
     {
         return "org.freedesktop.ModemManager1.Call";
     }
 
 public:
+    /*!
+     */
     OrgFreedesktopModemManager1CallInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
 
     ~OrgFreedesktopModemManager1CallInterface() override;
 
     Q_PROPERTY(int Direction READ direction)
+    /*!
+     */
     inline int direction() const
     {
         return qvariant_cast<int>(property("Direction"));
     }
 
     Q_PROPERTY(QString Number READ number)
+    /*!
+     */
     inline QString number() const
     {
         return qvariant_cast<QString>(property("Number"));
     }
 
     Q_PROPERTY(int State READ state)
+    /*!
+     */
     inline int state() const
     {
         return qvariant_cast<int>(property("State"));
     }
 
     Q_PROPERTY(int StateReason READ stateReason)
+    /*!
+     */
     inline int stateReason() const
     {
         return qvariant_cast<int>(property("StateReason"));
     }
 
 public Q_SLOTS: // METHODS
+    /*!
+     */
     inline QDBusPendingReply<> Accept()
     {
         QList<QVariant> argumentList;
         return asyncCallWithArgumentList(QStringLiteral("Accept"), argumentList);
     }
 
+    /*!
+     */
     inline QDBusPendingReply<> Hangup()
     {
         QList<QVariant> argumentList;
         return asyncCallWithArgumentList(QStringLiteral("Hangup"), argumentList);
     }
 
+    /*!
+     */
     inline QDBusPendingReply<> SendDtmf(const QString &dtmf)
     {
         QList<QVariant> argumentList;
@@ -80,6 +98,8 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QStringLiteral("SendDtmf"), argumentList);
     }
 
+    /*!
+     */
     inline QDBusPendingReply<> Start()
     {
         QList<QVariant> argumentList;
@@ -87,7 +107,11 @@ public Q_SLOTS: // METHODS
     }
 
 Q_SIGNALS: // SIGNALS
+    /*!
+     */
     void DtmfReceived(const QString &dtmf);
+    /*!
+     */
     void StateChanged(int oldState, int newState, uint reason);
 };
 

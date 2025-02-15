@@ -26,6 +26,8 @@ class OrgFreedesktopModemManager1ModemFirmwareInterface : public QDBusAbstractIn
 {
     Q_OBJECT
 public:
+    /*!
+     */
     static inline const char *staticInterfaceName()
 #ifdef MMQT_STATIC
     {
@@ -37,6 +39,8 @@ public:
     }
 #endif
 public:
+    /*!
+     */
     OrgFreedesktopModemManager1ModemFirmwareInterface(const QString &service,
                                                       const QString &path,
                                                       const QDBusConnection &connection,
@@ -45,11 +49,15 @@ public:
     ~OrgFreedesktopModemManager1ModemFirmwareInterface() override;
 
 public Q_SLOTS: // METHODS
+    /*!
+     */
     inline QDBusPendingReply<QString, ModemManager::QVariantMapList> List()
     {
         QList<QVariant> argumentList;
         return asyncCallWithArgumentList(QLatin1String("List"), argumentList);
     }
+    /*!
+     */
     inline QDBusPendingReply<> Select(const QString &uniqueid)
     {
         QList<QVariant> argumentList;

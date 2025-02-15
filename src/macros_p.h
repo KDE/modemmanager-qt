@@ -8,12 +8,17 @@
 #define MM_MACROS_H
 
 #define MM_GLOBAL_STATIC_STRUCT_NAME(NAME)
+/*!
+ * \typedef MmCleanUpFunction
+ */
 typedef void (*MmCleanUpFunction)();
 class MmCleanUpGlobalStatic
 {
 public:
     MmCleanUpFunction func;
 
+    /*!
+     */
     inline ~MmCleanUpGlobalStatic()
     {
         func();

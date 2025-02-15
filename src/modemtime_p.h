@@ -17,16 +17,24 @@ namespace ModemManager
 class ModemTimePrivate : public InterfacePrivate
 {
 public:
+    /*!
+     */
     explicit ModemTimePrivate(const QString &path, ModemTime *q);
     OrgFreedesktopModemManager1ModemTimeInterface modemTimeIface;
     ModemManager::NetworkTimezone networkTimezone;
 
+    /*!
+     */
     ModemManager::NetworkTimezone variantMapToTimezone(const QVariantMap &map);
 
     Q_DECLARE_PUBLIC(ModemTime)
     ModemTime *q_ptr;
 private Q_SLOTS:
+    /*!
+     */
     void onNetworkTimeChanged(const QString &isoDateTime);
+    /*!
+     */
     void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) override;
 };
 

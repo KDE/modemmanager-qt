@@ -138,6 +138,8 @@ public:
     typedef QSharedPointer<Bearer> Ptr;
     typedef QList<Ptr> List;
 
+    /*!
+     */
     explicit Bearer(const QString &path, QObject *parent = nullptr);
     ~Bearer() override;
 
@@ -233,12 +235,26 @@ public:
     QString uni() const;
 
 Q_SIGNALS:
+    /*!
+     */
     void interfaceChanged(const QString &iface);
+    /*!
+     */
     void connectedChanged(bool connected);
+    /*!
+     */
     void suspendedChanged(bool suspended);
+    /*!
+     */
     void ip4ConfigChanged(const ModemManager::IpConfig &ipv4Config);
+    /*!
+     */
     void ip6ConfigChanged(const ModemManager::IpConfig &ipv6Config);
+    /*!
+     */
     void ipTimeoutChanged(uint ipTimeout);
+    /*!
+     */
     void propertiesChanged(const QVariantMap &properties);
 
 private:
