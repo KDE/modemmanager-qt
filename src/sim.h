@@ -27,7 +27,7 @@ class SimPrivate;
  *
  * \inmodule ModemManagerQt
  *
- * \brief The Sim class
+ * \brief The Sim class.
  *
  * The SIM class handles communication with SIM, USIM, and RUIM (CDMA SIM) cards.
  */

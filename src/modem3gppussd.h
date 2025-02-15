@@ -28,7 +28,7 @@ class Modem3gppUssdPrivate;
  *
  * \inmodule ModemManagerQt
  *
- * \brief The Modem3gppUssd class
+ * \brief The Modem3gppUssd class.
  *
  * This class provides access to actions based on the USSD protocol.
  */

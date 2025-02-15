@@ -143,7 +143,7 @@ private:
  *
  * \inmodule ModemManagerQt
  *
- * \brief The Modem class
+ * \brief The Modem class.
  *
  * The Modem interface controls the status and actions in a given modem object.
  */

@@ -28,7 +28,7 @@ class ModemLocationPrivate;
  *
  * \inmodule ModemManagerQt
  *
- * \brief The ModemLocation class
+ * \brief The ModemLocation class.
  *
  * The Location class allows devices to provide location information to
  * client applications. Not all devices can provide this information, or even if

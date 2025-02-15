@@ -23,7 +23,7 @@ class ModemFirmwarePrivate;
  *
  * \inmodule ModemManagerQt
  *
- * \brief The ModemFirmware class
+ * \brief The ModemFirmware class.
  *
  * This class allows clients to select or install firmware images on modems.
  *

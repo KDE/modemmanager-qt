@@ -25,7 +25,7 @@ class ModemSimplePrivate;
  *
  * \inmodule ModemManagerQt
  *
- * \brief The ModemSimple class
+ * \brief The ModemSimple class.
  *
  * The Simple interface allows controlling and querying the status of Modems.
  */

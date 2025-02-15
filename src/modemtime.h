@@ -85,7 +85,7 @@ private:
  *
  * \inmodule ModemManagerQt
  *
- * \brief The ModemTime class
+ * \brief The ModemTime class.
  *
  * This class allows clients to receive network time and timezone updates broadcast by mobile networks.
  */

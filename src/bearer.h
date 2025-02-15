@@ -127,7 +127,7 @@ private:
  *
  * \inmodule ModemManagerQt
  *
- * \brief The Bearer class
+ * \brief The Bearer class.
  *
  * This class provides access to specific actions that may be performed on available bearers.
  */

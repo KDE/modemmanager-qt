@@ -27,7 +27,7 @@ class ModemMessagingPrivate;
  *
  * \inmodule ModemManagerQt
  *
- * \brief The ModemMessaging class
+ * \brief The ModemMessaging class.
  *
  * The Messaging interface handles sending SMS messages and notification of new incoming messages.
  */

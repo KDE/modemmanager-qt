@@ -29,7 +29,7 @@ class ModemCdmaPrivate;
  *
  * \inmodule ModemManagerQt
  *
- * \brief The ModemCdma class
+ * \brief The ModemCdma class.
  *
  * This class provides access to specific actions that may be performed in modems with CDMA capabilities.
  */

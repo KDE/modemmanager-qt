@@ -24,7 +24,7 @@ class ModemSignalPrivate;
  *
  * \inmodule ModemManagerQt
  *
- * \brief The ModemSignal class
+ * \brief The ModemSignal class.
  *
  * This class provides access to extended signal quality information.
  *

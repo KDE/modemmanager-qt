@@ -28,7 +28,7 @@ class Modem3gppPrivate;
  *
  * \inmodule ModemManagerQt
  *
- * \brief The Modem3gpp class
+ * \brief The Modem3gpp class.
  *
  * This class provides access to specific actions that may be performed in modems with 3GPP capabilities.
  */

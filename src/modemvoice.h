@@ -25,7 +25,7 @@ class ModemVoicePrivate;
  *
  * \inmodule ModemManagerQt
  *
- * \brief The ModemVoice class
+ * \brief The ModemVoice class.
  *
  * The Voice interface handles call related actions.
  */
