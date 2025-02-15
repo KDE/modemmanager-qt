@@ -24,7 +24,7 @@ namespace ModemManager
 class ModemLocationPrivate;
 
 /*!
- * \class ModemLocation
+ * \class ModemManager::ModemLocation
  *
  * \inmodule ModemManagerQt
  *

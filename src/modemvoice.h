@@ -21,7 +21,7 @@ namespace ModemManager
 class ModemVoicePrivate;
 
 /*!
- * \class ModemVoice
+ * \class ModemManager::ModemVoice
  *
  * \inmodule ModemManagerQt
  *

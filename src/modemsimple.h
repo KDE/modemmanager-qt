@@ -21,7 +21,7 @@ namespace ModemManager
 class ModemSimplePrivate;
 
 /*!
- * \class ModemSimple
+ * \class ModemManager::ModemSimple
  *
  * \inmodule ModemManagerQt
  *

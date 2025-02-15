@@ -22,7 +22,7 @@ namespace ModemManager
 class ModemOmaPrivate;
 
 /*!
- * \class ModemOma
+ * \class ModemManager::ModemOma
  *
  * \inmodule ModemManagerQt
  *

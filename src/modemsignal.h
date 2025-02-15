@@ -20,7 +20,7 @@ namespace ModemManager
 class ModemSignalPrivate;
 
 /*!
- * \class ModemSignal
+ * \class ModemManager::ModemSignal
  *
  * \inmodule ModemManagerQt
  *

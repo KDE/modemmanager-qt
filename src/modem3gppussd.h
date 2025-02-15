@@ -24,7 +24,7 @@ namespace ModemManager
 class Modem3gppUssdPrivate;
 
 /*!
- * \class Modem3gppUssd
+ * \class ModemManager::Modem3gppUssd
  *
  * \inmodule ModemManagerQt
  *

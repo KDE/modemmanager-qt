@@ -139,7 +139,7 @@ private:
 };
 
 /*!
- * \class Modem
+ * \class ModemManager::Modem
  *
  * \inmodule ModemManagerQt
  *

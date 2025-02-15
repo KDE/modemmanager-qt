@@ -25,7 +25,7 @@ namespace ModemManager
 class ModemCdmaPrivate;
 
 /*!
- * \class ModemCdma
+ * \class ModemManager::ModemCdma
  *
  * \inmodule ModemManagerQt
  *

@@ -19,7 +19,7 @@ namespace ModemManager
 class ModemFirmwarePrivate;
 
 /*!
- * \class ModemFirmware
+ * \class ModemManager::ModemFirmware
  *
  * \inmodule ModemManagerQt
  *

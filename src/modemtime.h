@@ -81,7 +81,7 @@ private:
 };
 
 /*!
- * \class ModemTime
+ * \class ModemManager::ModemTime
  *
  * \inmodule ModemManagerQt
  *

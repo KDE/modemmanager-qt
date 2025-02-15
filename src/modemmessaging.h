@@ -23,7 +23,7 @@ namespace ModemManager
 class ModemMessagingPrivate;
 
 /*!
- * \class ModemMessaging
+ * \class ModemManager::ModemMessaging
  *
  * \inmodule ModemManagerQt
  *

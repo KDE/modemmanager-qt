@@ -123,7 +123,7 @@ private:
 };
 
 /*!
- * \class Bearer
+ * \class ModemManager::Bearer
  *
  * \inmodule ModemManagerQt
  *

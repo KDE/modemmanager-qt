@@ -23,7 +23,7 @@ namespace ModemManager
 class SimPrivate;
 
 /*!
- * \class Sim
+ * \class ModemManager::Sim
  *
  * \inmodule ModemManagerQt
  *
