@@ -25,6 +25,8 @@ class SimPrivate;
 /*!
  * \class ModemManager::Sim
  *
+ * \inheaderfile ModemManager::Sim
+ *
  * \inmodule ModemManagerQt
  *
  * \brief The Sim class.

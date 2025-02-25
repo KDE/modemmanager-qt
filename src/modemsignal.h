@@ -22,6 +22,8 @@ class ModemSignalPrivate;
 /*!
  * \class ModemManager::ModemSignal
  *
+ * \inheaderfile ModemManager::ModemSignal
+ *
  * \inmodule ModemManagerQt
  *
  * \brief The ModemSignal class.

@@ -24,6 +24,8 @@ class ModemOmaPrivate;
 /*!
  * \class ModemManager::ModemOma
  *
+ * \inheaderfile ModemManager::ModemOma
+ *
  * \inmodule ModemManagerQt
  *
  * \brief The ModemManager Open Mobile Alliance interface.

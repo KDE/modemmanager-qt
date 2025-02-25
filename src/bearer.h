@@ -22,7 +22,13 @@ namespace ModemManager
 class BearerPrivate;
 
 /*!
- * This class represents IP configuration
+ * \class ModemManager::IpConfig
+ *
+ * \inheaderfile ModemManager::Bearer
+ *
+ * \inmodule ModemManagerQt
+ *
+ * \brief This class represents IP configuration.
  */
 class MODEMMANAGERQT_EXPORT IpConfig
 {
@@ -124,6 +130,8 @@ private:
 
 /*!
  * \class ModemManager::Bearer
+ *
+ * \inheaderfile ModemManager::Bearer
  *
  * \inmodule ModemManagerQt
  *

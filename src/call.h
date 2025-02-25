@@ -20,10 +20,16 @@ namespace ModemManager
 class CallPrivate;
 
 /*!
- * Provides an interface to manipulate and control a call
+ * \class ModemManager::Call
+ *
+ * \inheaderfile ModemManager::Call
+ *
+ * \inmodule ModemManagerQt
+ *
+ * \brief Provides an interface to manipulate and control a call
  *
  * \note MMCallState, MMCallStateReason and MMCallDirection enums are defined in <ModemManager/ModemManager-enums.h>
- * See http://www.freedesktop.org/software/ModemManager/api/latest/ModemManager-Flags-and-Enumerations.html
+ * See http://www.freedesktop.org/software/ModemManager/api/latest/ModemManager-Flags-and-Enumerations.html .
  */
 class MODEMMANAGERQT_EXPORT Call : public QObject
 {

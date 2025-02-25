@@ -29,6 +29,13 @@ namespace ModemManager
 {
 class Modem;
 
+/*!
+ * \class ModemManager::Notifier
+ *
+ * \inheaderfile ModemManager::Manager
+ *
+ * \inmodule ModemManagerQt
+ */
 class MODEMMANAGERQT_EXPORT Notifier : public QObject
 {
     Q_OBJECT

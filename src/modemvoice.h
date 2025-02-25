@@ -23,6 +23,8 @@ class ModemVoicePrivate;
 /*!
  * \class ModemManager::ModemVoice
  *
+ * \inheaderfile ModemManager::ModemVoice
+ *
  * \inmodule ModemManagerQt
  *
  * \brief The ModemVoice class.

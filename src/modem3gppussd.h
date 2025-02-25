@@ -26,6 +26,8 @@ class Modem3gppUssdPrivate;
 /*!
  * \class ModemManager::Modem3gppUssd
  *
+ * \inheaderfile ModemManager::Modem3gppUssd
+ *
  * \inmodule ModemManagerQt
  *
  * \brief The Modem3gppUssd class.

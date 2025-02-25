@@ -18,6 +18,13 @@ namespace ModemManager
 {
 class InterfacePrivate;
 
+/*!
+ * \class ModemManager::Interface
+ *
+ * \inheaderfile ModemManager::Interface
+ *
+ * \inmodule ModemManagerQt
+ */
 class MODEMMANAGERQT_EXPORT Interface : public QObject
 {
     Q_OBJECT

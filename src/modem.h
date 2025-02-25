@@ -28,7 +28,13 @@ namespace ModemManager
 class ModemPrivate;
 
 /*!
- * This class represents bearer properties used for creating of new bearers
+ * \class ModemManager::BearerProperties
+ *
+ * \inheaderfile ModemManager::Modem
+ *
+ * \inmodule ModemManagerQt
+ *
+ * \brief This class represents bearer properties used for creating of new bearers.
  */
 class MODEMMANAGERQT_EXPORT BearerProperties
 {
@@ -140,6 +146,8 @@ private:
 
 /*!
  * \class ModemManager::Modem
+ *
+ * \inheaderfile ModemManager::Modem
  *
  * \inmodule ModemManagerQt
  *

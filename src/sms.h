@@ -22,10 +22,16 @@ namespace ModemManager
 class SmsPrivate;
 
 /*!
- * Provides an interface to manipulate and control an SMS
+ * \class ModemManager::Sms
+ *
+ * \inheaderfile ModemManager::Sms
+ *
+ * \inmodule ModemManagerQt
+ *
+ * \brief Provides an interface to manipulate and control an SMS.
  *
  * \note MMSmsStorage, MMSmsState, MMSmsPduType and MMSmsDeliveryState enums are defined in <ModemManager/ModemManager-enums.h>
- * See http://www.freedesktop.org/software/ModemManager/api/1.0.0/ModemManager-Flags-and-Enumerations.html
+ * See http://www.freedesktop.org/software/ModemManager/api/1.0.0/ModemManager-Flags-and-Enumerations.html .
  */
 class MODEMMANAGERQT_EXPORT Sms : public QObject
 {

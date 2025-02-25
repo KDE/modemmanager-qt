@@ -23,6 +23,8 @@ class ModemSimplePrivate;
 /*!
  * \class ModemManager::ModemSimple
  *
+ * \inheaderfile ModemManager::ModemSimple
+ *
  * \inmodule ModemManagerQt
  *
  * \brief The ModemSimple class.

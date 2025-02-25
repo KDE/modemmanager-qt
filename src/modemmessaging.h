@@ -25,6 +25,8 @@ class ModemMessagingPrivate;
 /*!
  * \class ModemManager::ModemMessaging
  *
+ * \inheaderfile ModemManager::ModemMessaging
+ *
  * \inmodule ModemManagerQt
  *
  * \brief The ModemMessaging class.

@@ -26,6 +26,13 @@ namespace ModemManager
 {
 class ModemDevicePrivate;
 
+/*!
+ * \class ModemManager::ModemDevice
+ *
+ * \inheaderfile ModemManager::ModemDevice
+ *
+ * \inmodule ModemManagerQt
+ */
 class MODEMMANAGERQT_EXPORT ModemDevice : public QObject
 {
     Q_OBJECT

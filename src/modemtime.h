@@ -21,7 +21,13 @@ namespace ModemManager
 class ModemTimePrivate;
 
 /*!
- * This class represents the timezone data provided by the network
+ * \class ModemManager::NetworkTimezone
+ *
+ * \inheaderfile ModemManager::ModemTime
+ *
+ * \inmodule ModemManagerQt
+ *
+ * \brief This class represents the timezone data provided by the network.
  */
 class MODEMMANAGERQT_EXPORT NetworkTimezone
 {
@@ -82,6 +88,8 @@ private:
 
 /*!
  * \class ModemManager::ModemTime
+ *
+ * \inheaderfile ModemManager::ModemTime
  *
  * \inmodule ModemManagerQt
  *
