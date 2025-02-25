@@ -26,31 +26,23 @@ class OrgFreedesktopModemManager1ModemVoiceInterface : public QDBusAbstractInter
 {
     Q_OBJECT
 public:
-    /*!
-     */
     static inline const char *staticInterfaceName()
     {
         return "org.freedesktop.ModemManager1.Modem.Voice";
     }
 
 public:
-    /*!
-     */
     OrgFreedesktopModemManager1ModemVoiceInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
 
     ~OrgFreedesktopModemManager1ModemVoiceInterface() override;
 
     Q_PROPERTY(QList<QDBusObjectPath> Calls READ calls)
-    /*!
-     */
     inline QList<QDBusObjectPath> calls() const
     {
         return qvariant_cast<QList<QDBusObjectPath>>(property("Calls"));
     }
 
 public Q_SLOTS: // METHODS
-    /*!
-     */
     inline QDBusPendingReply<QDBusObjectPath> CreateCall(const QVariantMap &properties)
     {
         QList<QVariant> argumentList;
@@ -58,8 +50,6 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QStringLiteral("CreateCall"), argumentList);
     }
 
-    /*!
-     */
     inline QDBusPendingReply<> DeleteCall(const QDBusObjectPath &path)
     {
         QList<QVariant> argumentList;
@@ -67,8 +57,6 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QStringLiteral("DeleteCall"), argumentList);
     }
 
-    /*!
-     */
     inline QDBusPendingReply<QList<QDBusObjectPath>> ListCalls()
     {
         QList<QVariant> argumentList;
@@ -76,11 +64,7 @@ public Q_SLOTS: // METHODS
     }
 
 Q_SIGNALS: // SIGNALS
-    /*!
-     */
     void CallAdded(const QDBusObjectPath &path);
-    /*!
-     */
     void CallDeleted(const QDBusObjectPath &path);
 };
 

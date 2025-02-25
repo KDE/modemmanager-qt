@@ -19,37 +19,19 @@ class FakeModem : public QObject
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.fakemodem")
 public:
-    /*!
-     */
     explicit FakeModem(QObject *parent = nullptr);
     ~FakeModem() override;
 
     /* Not part of DBus interface */
-    /*!
-     */
     void addModem(Modem *modem);
-    /*!
-     */
     void removeModem(Modem *modem);
-    /*!
-     */
     void addBearer(Bearer *bearer);
-    /*!
-     */
     void removeBearer(Bearer *bearer);
-    /*!
-     */
     void addInterfaces(const QDBusObjectPath &object_path, const ModemManager::MMVariantMapMap &interfaces_and_properties);
-    /*!
-     */
     void removeInterfaces(const QDBusObjectPath &object_path, const QStringList &interfaces);
 
 public Q_SLOTS:
-    /*!
-     */
     Q_SCRIPTABLE void ScanDevices();
-    /*!
-     */
     Q_SCRIPTABLE void SetLogging(const QString &level);
 
 private:

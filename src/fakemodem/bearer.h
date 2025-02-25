@@ -16,8 +16,6 @@ class Bearer : public QObject
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.fakemodem.Bearer")
 public:
-    /*!
-     */
     explicit Bearer(QObject *parent = nullptr);
     ~Bearer() override;
 
@@ -29,66 +27,28 @@ public:
     Q_PROPERTY(QVariantMap Properties READ properties)
     Q_PROPERTY(bool Suspended READ suspended)
 
-    /*!
-     */
     bool connected() const;
-    /*!
-     */
     QString interface() const;
-    /*!
-     */
     QVariantMap ip4Config() const;
-    /*!
-     */
     QVariantMap ip6Config() const;
-    /*!
-     */
     uint ipTimeout() const;
-    /*!
-     */
     QVariantMap properties() const;
-    /*!
-     */
     bool suspended() const;
 
     /* Not part of dbus interface */
-    /*!
-     */
     QString bearerPath() const;
-    /*!
-     */
     void setEnableNotifications(bool enable);
-    /*!
-     */
     void setBearerPath(const QString &path);
-    /*!
-     */
     void setConnected(bool connected);
-    /*!
-     */
     void setInterface(const QString &interface);
-    /*!
-     */
     void setIp4Config(const QVariantMap &config);
-    /*!
-     */
     void setIp6Config(const QVariantMap &config);
-    /*!
-     */
     void setIpTimeout(uint timeout);
-    /*!
-     */
     void setProperties(const QVariantMap &properties);
-    /*!
-     */
     void setSuspended(bool suspended);
 
 public Q_SLOTS:
-    /*!
-     */
     Q_SCRIPTABLE void Connect();
-    /*!
-     */
     Q_SCRIPTABLE void Disconnect();
 
 private:

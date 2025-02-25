@@ -27,8 +27,6 @@ class OrgFreedesktopModemManager1ModemLocationInterface : public QDBusAbstractIn
 {
     Q_OBJECT
 public:
-    /*!
-     */
     static inline const char *staticInterfaceName()
 #ifdef MMQT_STATIC
     {
@@ -40,8 +38,6 @@ public:
     }
 #endif
 public:
-    /*!
-     */
     OrgFreedesktopModemManager1ModemLocationInterface(const QString &service,
                                                       const QString &path,
                                                       const QDBusConnection &connection,
@@ -50,48 +46,36 @@ public:
     ~OrgFreedesktopModemManager1ModemLocationInterface() override;
 
     Q_PROPERTY(uint Capabilities READ capabilities)
-    /*!
-     */
     inline uint capabilities() const
     {
         return qvariant_cast<uint>(property("Capabilities"));
     }
 
     Q_PROPERTY(uint Enabled READ enabled)
-    /*!
-     */
     inline uint enabled() const
     {
         return qvariant_cast<uint>(property("Enabled"));
     }
 
     Q_PROPERTY(ModemManager::LocationInformationMap Location READ location)
-    /*!
-     */
     inline ModemManager::LocationInformationMap location() const
     {
         return qvariant_cast<ModemManager::LocationInformationMap>(property("Location"));
     }
 
     Q_PROPERTY(bool SignalsLocation READ signalsLocation)
-    /*!
-     */
     inline bool signalsLocation() const
     {
         return qvariant_cast<bool>(property("SignalsLocation"));
     }
 
 public Q_SLOTS: // METHODS
-    /*!
-     */
     inline QDBusPendingReply<ModemManager::LocationInformationMap> GetLocation()
     {
         QList<QVariant> argumentList;
         return asyncCallWithArgumentList(QLatin1String("GetLocation"), argumentList);
     }
 
-    /*!
-     */
     inline QDBusPendingReply<> Setup(uint sources, bool signal_location)
     {
         QList<QVariant> argumentList;

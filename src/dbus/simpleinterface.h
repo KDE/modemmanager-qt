@@ -27,8 +27,6 @@ class OrgFreedesktopModemManager1ModemSimpleInterface : public QDBusAbstractInte
 {
     Q_OBJECT
 public:
-    /*!
-     */
     static inline const char *staticInterfaceName()
 #ifdef MMQT_STATIC
     {
@@ -40,15 +38,11 @@ public:
     }
 #endif
 public:
-    /*!
-     */
     OrgFreedesktopModemManager1ModemSimpleInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
 
     ~OrgFreedesktopModemManager1ModemSimpleInterface() override;
 
 public Q_SLOTS: // METHODS
-    /*!
-     */
     inline QDBusPendingReply<QDBusObjectPath> Connect(const QVariantMap &properties)
     {
         QList<QVariant> argumentList;
@@ -56,8 +50,6 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QLatin1String("Connect"), argumentList);
     }
 
-    /*!
-     */
     inline QDBusPendingReply<> Disconnect(const QDBusObjectPath &bearer)
     {
         QList<QVariant> argumentList;
@@ -65,8 +57,6 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QLatin1String("Disconnect"), argumentList);
     }
 
-    /*!
-     */
     inline QDBusPendingReply<QVariantMap> GetStatus()
     {
         QList<QVariant> argumentList;

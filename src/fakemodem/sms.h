@@ -16,8 +16,6 @@ class Sms : public QObject
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.fakemodem.Sms")
 public:
-    /*!
-     */
     explicit Sms(QObject *parent = nullptr);
     ~Sms() override;
 
@@ -38,120 +36,46 @@ public:
     Q_PROPERTY(QString Timestamp READ timestamp)
     Q_PROPERTY(ModemManager::ValidityPair Validity READ validity)
 
-    /*!
-     */
     int smsClass() const;
-    /*!
-     */
     QByteArray data() const;
-    /*!
-     */
     bool deliveryReportRequest() const;
-    /*!
-     */
     uint deliveryState() const;
-    /*!
-     */
     QString dischargeTimestamp() const;
-    /*!
-     */
     uint messageReference() const;
-    /*!
-     */
     QString number() const;
-    /*!
-     */
     uint pduType() const;
-    /*!
-     */
     QString SMSC() const;
-    /*!
-     */
     uint serviceCategory() const;
-    /*!
-     */
     uint state() const;
-    /*!
-     */
     uint storage() const;
-    /*!
-     */
     uint teleserviceId() const;
-    /*!
-     */
     QString text() const;
-    /*!
-     */
     QString timestamp() const;
-    /*!
-     */
     ModemManager::ValidityPair validity() const;
 
     /* Not part of dbus interface */
-    /*!
-     */
     QString smsPath() const;
-    /*!
-     */
     void setSmsPath(const QString &path);
-    /*!
-     */
     void setEnableNotifications(bool enable);
-    /*!
-     */
     void setSmsClass(int smsClass);
-    /*!
-     */
     void setData(const QByteArray &data);
-    /*!
-     */
     void setDeliveryReportRequest(bool deliveryReportRequest);
-    /*!
-     */
     void setDeliveryState(uint state);
-    /*!
-     */
     void setDischargeTimestamp(const QString &timestamp);
-    /*!
-     */
     void setMessageReference(uint messageReference);
-    /*!
-     */
     void setNumber(const QString &number);
-    /*!
-     */
     void setPduType(uint pduType);
-    /*!
-     */
     void setSMSC(const QString &smsc);
-    /*!
-     */
     void setServiceCategory(uint serviceCategory);
-    /*!
-     */
     void setState(uint state);
-    /*!
-     */
     void setStorage(uint storage);
-    /*!
-     */
     void setTeleserviceId(uint teleserviceId);
-    /*!
-     */
     void setText(const QString &text);
-    /*!
-     */
     void setTimestamp(const QString &timestamp);
-    /*!
-     */
     void setValidity(const ModemManager::ValidityPair &validity);
 
 public Q_SLOTS:
-    /*!
-     */
     Q_SCRIPTABLE void Send();
-    /*!
-     */
     Q_SCRIPTABLE void Store(uint storage);
 
 private:

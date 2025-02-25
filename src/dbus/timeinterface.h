@@ -27,8 +27,6 @@ class OrgFreedesktopModemManager1ModemTimeInterface : public QDBusAbstractInterf
 {
     Q_OBJECT
 public:
-    /*!
-     */
     static inline const char *staticInterfaceName()
 #ifdef MMQT_STATIC
     {
@@ -40,23 +38,17 @@ public:
     }
 #endif
 public:
-    /*!
-     */
     OrgFreedesktopModemManager1ModemTimeInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
 
     ~OrgFreedesktopModemManager1ModemTimeInterface() override;
 
     Q_PROPERTY(QVariantMap NetworkTimezone READ networkTimezone)
-    /*!
-     */
     inline QVariantMap networkTimezone() const
     {
         return qvariant_cast<QVariantMap>(property("NetworkTimezone"));
     }
 
 public Q_SLOTS: // METHODS
-    /*!
-     */
     inline QDBusPendingReply<QString> GetNetworkTime()
     {
         QList<QVariant> argumentList;
@@ -64,8 +56,6 @@ public Q_SLOTS: // METHODS
     }
 
 Q_SIGNALS: // SIGNALS
-    /*!
-     */
     void NetworkTimeChanged(const QString &time);
 };
 

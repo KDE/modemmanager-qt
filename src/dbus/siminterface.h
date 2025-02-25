@@ -29,127 +29,95 @@ class OrgFreedesktopModemManager1SimInterface : public QDBusAbstractInterface
 {
     Q_OBJECT
 public:
-    /*!
-     */
     static inline const char *staticInterfaceName()
     {
         return "org.freedesktop.ModemManager1.Sim";
     }
 
 public:
-    /*!
-     */
     OrgFreedesktopModemManager1SimInterface(const QString &service, const QString &path, const QDBusConnection &connection, QObject *parent = nullptr);
 
     ~OrgFreedesktopModemManager1SimInterface();
 
     Q_PROPERTY(bool Active READ active)
-    /*!
-     */
     inline bool active() const
     {
         return qvariant_cast<bool>(property("Active"));
     }
 
     Q_PROPERTY(QString Eid READ eid)
-    /*!
-     */
     inline QString eid() const
     {
         return qvariant_cast<QString>(property("Eid"));
     }
 
     Q_PROPERTY(QStringList EmergencyNumbers READ emergencyNumbers)
-    /*!
-     */
     inline QStringList emergencyNumbers() const
     {
         return qvariant_cast<QStringList>(property("EmergencyNumbers"));
     }
 
     Q_PROPERTY(uint EsimStatus READ esimStatus)
-    /*!
-     */
     inline uint esimStatus() const
     {
         return qvariant_cast<uint>(property("EsimStatus"));
     }
 
     Q_PROPERTY(QByteArray Gid1 READ gid1)
-    /*!
-     */
     inline QByteArray gid1() const
     {
         return qvariant_cast<QByteArray>(property("Gid1"));
     }
 
     Q_PROPERTY(QByteArray Gid2 READ gid2)
-    /*!
-     */
     inline QByteArray gid2() const
     {
         return qvariant_cast<QByteArray>(property("Gid2"));
     }
 
     Q_PROPERTY(QString Imsi READ imsi)
-    /*!
-     */
     inline QString imsi() const
     {
         return qvariant_cast<QString>(property("Imsi"));
     }
 
     Q_PROPERTY(QString OperatorIdentifier READ operatorIdentifier)
-    /*!
-     */
     inline QString operatorIdentifier() const
     {
         return qvariant_cast<QString>(property("OperatorIdentifier"));
     }
 
     Q_PROPERTY(QString OperatorName READ operatorName)
-    /*!
-     */
     inline QString operatorName() const
     {
         return qvariant_cast<QString>(property("OperatorName"));
     }
 
     Q_PROPERTY(QVariantMap PreferredNetworks READ preferredNetworks)
-    /*!
-     */
     inline QVariantMap preferredNetworks() const
     {
         return qvariant_cast<QVariantMap>(property("PreferredNetworks"));
     }
 
     Q_PROPERTY(uint Removability READ removability)
-    /*!
-     */
     inline uint removability() const
     {
         return qvariant_cast<uint>(property("Removability"));
     }
 
     Q_PROPERTY(QString SimIdentifier READ simIdentifier)
-    /*!
-     */
     inline QString simIdentifier() const
     {
         return qvariant_cast<QString>(property("SimIdentifier"));
     }
 
     Q_PROPERTY(uint SimType READ simType)
-    /*!
-     */
     inline uint simType() const
     {
         return qvariant_cast<uint>(property("SimType"));
     }
 
 public Q_SLOTS: // METHODS
-    /*!
-     */
     inline QDBusPendingReply<> ChangePin(const QString &old_pin, const QString &new_pin)
     {
         QList<QVariant> argumentList;
@@ -157,8 +125,6 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QStringLiteral("ChangePin"), argumentList);
     }
 
-    /*!
-     */
     inline QDBusPendingReply<> EnablePin(const QString &pin, bool enabled)
     {
         QList<QVariant> argumentList;
@@ -166,8 +132,6 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QStringLiteral("EnablePin"), argumentList);
     }
 
-    /*!
-     */
     inline QDBusPendingReply<> SendPin(const QString &pin)
     {
         QList<QVariant> argumentList;
@@ -175,8 +139,6 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QStringLiteral("SendPin"), argumentList);
     }
 
-    /*!
-     */
     inline QDBusPendingReply<> SendPuk(const QString &puk, const QString &pin)
     {
         QList<QVariant> argumentList;
@@ -184,8 +146,6 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QStringLiteral("SendPuk"), argumentList);
     }
 
-    /*!
-     */
     inline QDBusPendingReply<> SetPreferredNetworks(const QVariantMap &preferred_networks)
     {
         QList<QVariant> argumentList;

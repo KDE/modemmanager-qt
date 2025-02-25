@@ -18,8 +18,6 @@ class Modem : public QObject
     Q_OBJECT
     Q_CLASSINFO("D-Bus Interface", "org.kde.fakemodem.Modem")
 public:
-    /*!
-     */
     explicit Modem(QObject *parent = nullptr);
     ~Modem() override;
 
@@ -53,225 +51,83 @@ public:
     Q_PROPERTY(uint UnlockRequired READ unlockRequired)
     Q_PROPERTY(ModemManager::UnlockRetriesMap UnlockRetries READ unlockRetries)
 
-    /*!
-     */
     uint accessTechnologies() const;
-    /*!
-     */
     QList<QDBusObjectPath> bearers() const;
-    /*!
-     */
     ModemManager::UIntList currentBands() const;
-    /*!
-     */
     uint currentCapabilities() const;
-    /*!
-     */
     ModemManager::CurrentModesType currentModes() const;
-    /*!
-     */
     QString device() const;
-    /*!
-     */
     QString deviceIdentifier() const;
-    /*!
-     */
     QStringList drivers() const;
-    /*!
-     */
     QString equipmentIdentifier() const;
-    /*!
-     */
     QString manufacturer() const;
-    /*!
-     */
     uint maxActiveBearers() const;
-    /*!
-     */
     uint maxBearers() const;
-    /*!
-     */
     QString model() const;
-    /*!
-     */
     QStringList ownNumbers() const;
-    /*!
-     */
     QString plugin() const;
-    /*!
-     */
     ModemManager::PortList ports() const;
-    /*!
-     */
     uint powerState() const;
-    /*!
-     */
     QString primaryPort() const;
-    /*!
-     */
     QString revision() const;
-    /*!
-     */
     ModemManager::SignalQualityPair signalQuality() const;
-    /*!
-     */
     QDBusObjectPath sim() const;
-    /*!
-     */
     int state() const;
-    /*!
-     */
     uint stateFailedReason() const;
-    /*!
-     */
     ModemManager::UIntList supportedBands() const;
-    /*!
-     */
     ModemManager::UIntList supportedCapabilities() const;
-    /*!
-     */
     uint supportedIpFamilies() const;
-    /*!
-     */
     ModemManager::SupportedModesType supportedModes() const;
-    /*!
-     */
     uint unlockRequired() const;
-    /*!
-     */
     ModemManager::UnlockRetriesMap unlockRetries() const;
 
     /* Not part of DBus interface */
-    /*!
-     */
     void addBearer(const QDBusObjectPath &bearer);
-    /*!
-     */
     void removeBearer(const QDBusObjectPath &bearer);
-    /*!
-     */
     QString modemPath() const;
-    /*!
-     */
     void setEnableNotifications(bool enable);
-    /*!
-     */
     void setAccessTechnologies(uint technologies);
-    /*!
-     */
     void setDevice(const QString &device);
-    /*!
-     */
     void setDeviceIdentifier(const QString &deviceIdentifier);
-    /*!
-     */
     void setDrivers(const QStringList &drivers);
-    /*!
-     */
     void setEquipmentIdentifier(const QString &identifier);
-    /*!
-     */
     void setManufacturer(const QString &manufacturer);
-    /*!
-     */
     void setMaxActiveBearers(uint bearers);
-    /*!
-     */
     void setMaxBearers(uint bearers);
-    /*!
-     */
     void setModemPath(const QString &path);
-    /*!
-     */
     void setModel(const QString &model);
-    /*!
-     */
     void setOwnNumbers(const QStringList &numbers);
-    /*!
-     */
     void setPlugin(const QString &plugin);
-    /*!
-     */
     void setPorts(const ModemManager::PortList &ports);
-    /*!
-     */
     void setPrimaryPort(const QString &port);
-    /*!
-     */
     void setRevision(const QString &revision);
-    /*!
-     */
     void setSignalQuality(const ModemManager::SignalQualityPair &signalQuality);
-    /*!
-     */
     void setSim(const QDBusObjectPath &sim);
-    /*!
-     */
     void setState(int state);
-    /*!
-     */
     void setStateFailedReason(uint reason);
-    /*!
-     */
     void setSupportedBands(const ModemManager::UIntList &bands);
-    /*!
-     */
     void setSupportedCapabilities(const ModemManager::UIntList &capabilities);
-    /*!
-     */
     void setSupportedIpFamilies(uint families);
-    /*!
-     */
     void setSupportedModes(const ModemManager::SupportedModesType &modes);
-    /*!
-     */
     void setUnlockRequired(uint unlockRequired);
-    /*!
-     */
     void setUnlockRetries(const ModemManager::UnlockRetriesMap &unlockRetries);
 
-    /*!
-     */
     QVariantMap toMap() const;
 
 public Q_SLOTS:
-    /*!
-     */
     Q_SCRIPTABLE QString Command(const QString &cmd, uint timeout);
-    /*!
-     */
     Q_SCRIPTABLE QDBusObjectPath CreateBearer(const QVariantMap &properties);
-    /*!
-     */
     Q_SCRIPTABLE void DeleteBearer(const QDBusObjectPath &bearer);
-    /*!
-     */
     Q_SCRIPTABLE void Enable(bool enable);
-    /*!
-     */
     Q_SCRIPTABLE void FactoryReset(const QString &code);
-    /*!
-     */
     Q_SCRIPTABLE QList<QDBusObjectPath> ListBearers();
-    /*!
-     */
     Q_SCRIPTABLE void Reset();
-    /*!
-     */
     Q_SCRIPTABLE void SetCurrentBands(const QList<uint> &bands);
-    /*!
-     */
     Q_SCRIPTABLE void SetCurrentCapabilities(uint capabilities);
-    /*!
-     */
     Q_SCRIPTABLE void SetCurrentModes(ModemManager::CurrentModesType modes);
-    /*!
-     */
     Q_SCRIPTABLE void SetPowerState(uint state);
 
 Q_SIGNALS:
-    /*!
-     */
     Q_SCRIPTABLE void StateChanged(int oldState, int newState, uint reason);
 
 private:

@@ -27,8 +27,6 @@ class OrgFreedesktopModemManager1ModemModem3gppInterface : public QDBusAbstractI
 {
     Q_OBJECT
 public:
-    /*!
-     */
     static inline const char *staticInterfaceName()
 #ifdef MMQT_STATIC
     {
@@ -40,8 +38,6 @@ public:
     }
 #endif
 public:
-    /*!
-     */
     OrgFreedesktopModemManager1ModemModem3gppInterface(const QString &service,
                                                        const QString &path,
                                                        const QDBusConnection &connection,
@@ -50,56 +46,42 @@ public:
     ~OrgFreedesktopModemManager1ModemModem3gppInterface() override;
 
     Q_PROPERTY(uint EnabledFacilityLocks READ enabledFacilityLocks)
-    /*!
-     */
     inline uint enabledFacilityLocks() const
     {
         return qvariant_cast<uint>(property("EnabledFacilityLocks"));
     }
 
     Q_PROPERTY(QString Imei READ imei)
-    /*!
-     */
     inline QString imei() const
     {
         return qvariant_cast<QString>(property("Imei"));
     }
 
     Q_PROPERTY(QString OperatorCode READ operatorCode)
-    /*!
-     */
     inline QString operatorCode() const
     {
         return qvariant_cast<QString>(property("OperatorCode"));
     }
 
     Q_PROPERTY(QString OperatorName READ operatorName)
-    /*!
-     */
     inline QString operatorName() const
     {
         return qvariant_cast<QString>(property("OperatorName"));
     }
 
     Q_PROPERTY(uint RegistrationState READ registrationState)
-    /*!
-     */
     inline uint registrationState() const
     {
         return qvariant_cast<uint>(property("RegistrationState"));
     }
 
     Q_PROPERTY(uint SubscriptionState READ subscriptionState)
-    /*!
-     */
     inline uint subscriptionState() const
     {
         return qvariant_cast<uint>(property("SubscriptionState"));
     }
 
 public Q_SLOTS: // METHODS
-    /*!
-     */
     inline QDBusPendingReply<> Register(const QString &operator_id)
     {
         QList<QVariant> argumentList;
@@ -107,8 +89,6 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QLatin1String("Register"), argumentList);
     }
 
-    /*!
-     */
     inline QDBusPendingReply<ModemManager::QVariantMapList> Scan()
     {
         QList<QVariant> argumentList;
