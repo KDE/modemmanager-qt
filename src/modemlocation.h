@@ -26,7 +26,7 @@ class ModemLocationPrivate;
 /*!
  * \class ModemManager::ModemLocation
  *
- * \inheaderfile ModemManager::ModemLocation
+ * \inheaderfile ModemManagerQt/ModemLocation
  *
  * \inmodule ModemManagerQt
  *

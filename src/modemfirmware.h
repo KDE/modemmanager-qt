@@ -21,7 +21,7 @@ class ModemFirmwarePrivate;
 /*!
  * \class ModemManager::ModemFirmware
  *
- * \inheaderfile ModemManager::ModemFirmware
+ * \inheaderfile ModemManagerQt/ModemFirmware
  *
  * \inmodule ModemManagerQt
  *

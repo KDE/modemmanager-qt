@@ -19,6 +19,7 @@
 #include "modemdevice.h"
 
 /*!
+ * \namespace ModemManager
  * This namespace allows to query the underlying system to discover the available
  * modem interfaces
  * responsibility to notify when a modem interface or a modem appears or disappears.
@@ -32,7 +33,7 @@ class Modem;
 /*!
  * \class ModemManager::Notifier
  *
- * \inheaderfile ModemManager::Manager
+ * \inheaderfile ModemManagerQt/Manager
  *
  * \inmodule ModemManagerQt
  */

@@ -23,7 +23,7 @@ class ModemVoicePrivate;
 /*!
  * \class ModemManager::ModemVoice
  *
- * \inheaderfile ModemManager::ModemVoice
+ * \inheaderfile ModemManagerQt/ModemVoice
  *
  * \inmodule ModemManagerQt
  *
@@ -68,7 +68,9 @@ public:
 
     /*!
      * Creates a new call object.
+     *
      * \a call QVariantMap containing call properties
+     *
      * The 'number' property is mandatory.
      */
     QDBusPendingReply<QDBusObjectPath> createCall(const QVariantMap &call);
@@ -108,6 +110,7 @@ Q_SIGNALS:
 
     /*!
      * Emitted when a call has been deleted.
+     *
      * \a uni path to the Call object
      */
     void callDeleted(const QString &uni);

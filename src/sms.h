@@ -24,7 +24,7 @@ class SmsPrivate;
 /*!
  * \class ModemManager::Sms
  *
- * \inheaderfile ModemManager::Sms
+ * \inheaderfile ModemManagerQt/Sms
  *
  * \inmodule ModemManagerQt
  *

@@ -26,7 +26,7 @@ class Modem3gppPrivate;
 /*!
  * \class ModemManager::Modem3gpp
  *
- * \inheaderfile ModemManager::Modem3gpp
+ * \inheaderfile ModemManagerQt/Modem3gpp
  *
  * \inmodule ModemManagerQt
  *

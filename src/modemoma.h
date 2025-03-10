@@ -24,7 +24,7 @@ class ModemOmaPrivate;
 /*!
  * \class ModemManager::ModemOma
  *
- * \inheaderfile ModemManager::ModemOma
+ * \inheaderfile ModemManagerQt/ModemOma
  *
  * \inmodule ModemManagerQt
  *
@@ -68,7 +68,9 @@ public:
 
     /*!
      * Returns list of network-initiated sessions which are waiting to be accepted or rejected, where:
+     *
      * \a the first integer is a MMOmaSessionType
+     *
      * \a the second integer is the unique session ID.
      */
     OmaSessionTypes pendingNetworkInitiatedSessions() const;
@@ -103,6 +105,7 @@ public:
      * Accepts or rejects a network-initiated device management session.
      *
      * \a sessionId unique ID of the network-initiated device management session
+     *
      * \a accept boolean specifying whether the session is accepted or rejected
      */
     QDBusPendingReply<void> acceptNetworkInitiatedSession(uint sessionId, bool accept);
@@ -138,7 +141,9 @@ Q_SIGNALS:
      * Emitted when the session state changed.
      *
      * \a oldState previous session state, given as a MMOmaSessionState
+     *
      * \a newState current session state, given as a MMOmaSessionState
+     *
      * \a failedReason reason of failure, given as a MMOmaSessionStateFailedReason, if sessionState() is MM_OMA_SESSION_STATE_FAILED
      */
     void sessionStateChanged(MMOmaSessionState oldState, MMOmaSessionState newState, MMOmaSessionStateFailedReason failedReason);

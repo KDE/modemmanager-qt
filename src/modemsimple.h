@@ -23,7 +23,7 @@ class ModemSimplePrivate;
 /*!
  * \class ModemManager::ModemSimple
  *
- * \inheaderfile ModemManager::ModemSimple
+ * \inheaderfile ModemManagerQt/ModemSimple
  *
  * \inmodule ModemManagerQt
  *
@@ -73,14 +73,23 @@ public:
      * common ones are:
      *
      * \a pin SIM-PIN unlock code, given as a string value (signature "s").
+     *
      * \a operator-id ETSI MCC-MNC of a network to force registration with, given as a string value (signature "s").
+     *
      * \a apn For GSM/UMTS and LTE devices the APN to use, given as a string value (signature "s").
+     *
      * \a ip-type For GSM/UMTS and LTE devices the IP addressing type to use, given as a MMBearerIpFamily value (signature "u").
+     *
      * \a allowed-auth The authentication method to use, given as a MMBearerAllowedAuth value (signature "u"). Optional in 3GPP.
+     *
      * \a user User name (if any) required by the network, given as a string value (signature "s"). Optional in 3GPP.
+     *
      * \a password Password (if any) required by the network, given as a string value (signature "s"). Optional in 3GPP.
+     *
      * \a number For POTS devices the number to dial,, given as a string value (signature "s").
+     *
      * \a allow-roaming FALSE to allow only connections to home networks, given as a boolean value (signature "b").
+     *
      * \a rm-protocol For CDMA devices, the protocol of the Rm interface, given as a MMModemCdmaRmProtocol value (signature "u").
      *
      * Returns On successful connect, returns the object path of the connected packet data bearer used for the connection attempt.
@@ -93,19 +102,29 @@ public:
      *  common ones are:
      *
      * \a state A MMModemState value specifying the overall state of the modem, given as an unsigned integer value (signature "u").
+     *
      * \a signal-quality Signal quality value, given only when registered, as an unsigned integer value (signature "u").
+     *
      * \a current-bands List of MMModemBand values, given only when registered, as a list of unsigned integer values (signature "au").
+     *
      * \a access-technology A MMModemAccessTechnology value, given only when registered, as an unsigned integer value (signature "u").
+     *
      * \a m3gpp-registration-state A MMModem3gppRegistrationState value specifying the state of the registration,
      *   given only when registered in a 3GPP network, as an unsigned integer value (signature "u").
+     *
      * \a m3gpp-operator-code Operator MCC-MNC, given only when registered in a 3GPP network, as a string value (signature "s").
+     *
      * \a m3gpp-operator-name Operator name, given only when registered in a 3GPP network, as a string value (signature "s").
+     *
      * \a cdma-cdma1x-registration-state A MMModemCdmaRegistrationState value specifying the state of the registration,
      *   given only when registered in a CDMA1x network, as an unsigned integer value (signature "u").
+     *
      * \a cdma-evdo-registration-state A MMModemCdmaRegistrationState value specifying the state of the registration,
      *   given only when registered in a EV-DO network, as an unsigned integer value (signature "u").
+     *
      * \a cdma-sid The System Identifier of the serving network, if registered in a CDMA1x network and if known.
      *   Given as an unsigned integer value (signature "u").
+     *
      * \a cdma-nid The Network Identifier of the serving network, if registered in a CDMA1x network and if known.
      *   Given as an unsigned integer value (signature "u").
      */
@@ -123,12 +142,14 @@ public:
 
     /*!
      * Sets the timeout in milliseconds for all async method DBus calls.
+     *
      * -1 means the default DBus timeout (usually 25 seconds).
      */
     void setTimeout(int timeout);
 
     /*!
      * Returns the current value of the DBus timeout in milliseconds.
+     *
      * -1 means the default DBus timeout (usually 25 seconds).
      */
     int timeout() const;

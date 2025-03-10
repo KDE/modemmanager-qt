@@ -22,7 +22,7 @@ class ModemSignalPrivate;
 /*!
  * \class ModemManager::ModemSignal
  *
- * \inheaderfile ModemManager::ModemSignal
+ * \inheaderfile ModemManagerQt/ModemSignal
  *
  * \inmodule ModemManagerQt
  *
@@ -62,7 +62,9 @@ public:
      * Returns Dictionary of available signal information for the CDMA1x access technology.
      *
      * This dictionary is composed of a string key, with an associated data which contains type-specific information.
+     *
      * \a rssi The CDMA1x RSSI (Received Signal Strength Indication), in dBm, given as a floating point value (signature "d").
+     *
      * \a ecio The CDMA1x Ec/Io, in dBm, given as a floating point value (signature "d").
      */
     QVariantMap cdma() const;
@@ -71,9 +73,13 @@ public:
      * Returns Dictionary of available signal information for the CDMA EV-DO access technology.
      *
      * This dictionary is composed of a string key, with an associated data which contains type-specific information.
+     *
      * \a rssi The CDMA EV-DO RSSI (Received Signal Strength Indication), in dBm, given as a floating point value (signature "d").
+     *
      * \a ecio The CDMA EV-DO Ec/Io, in dBm, given as a floating point value (signature "d").
+     *
      * \a sinr CDMA EV-DO SINR level, in dB, given as a floating point value (signature "d").
+     *
      * \a io The CDMA EV-DO Io, in dBm, given as a floating point value (signature "d").
      */
     QVariantMap evdo() const;
@@ -82,6 +88,7 @@ public:
      * Returns Dictionary of available signal information for the GSM/GPRS access technology.
      *
      * This dictionary is composed of a string key, with an associated data which contains type-specific information.
+     *
      * \a rssi The GSM RSSI (Received Signal Strength Indication), in dBm, given as a floating point value (signature "d").
      */
     QVariantMap gsm() const;
@@ -90,9 +97,13 @@ public:
      * Returns Dictionary of available signal information for the UMTS (WCDMA) access technology.
      *
      * This dictionary is composed of a string key, with an associated data which contains type-specific information.
+     *
      * \a rssi The LTE RSSI (Received Signal Strength Indication), in dBm, given as a floating point value (signature "d").
+     *
      * \a rsrq The LTE RSRQ (Reference Signal Received Quality), in dB, given as a floating point value (signature "d").
+     *
      * \a rsrp The LTE RSRP (Reference Signal Received Power), in dBm, given as a floating point value (signature "d").
+     *
      * \a snr The LTE S/R ratio, in dB, given as a floating point value (signature "d").
      */
     QVariantMap lte() const;
@@ -101,13 +112,16 @@ public:
      * Returns Dictionary of available signal information for the UMTS (WCDMA) access technology.
      *
      * This dictionary is composed of a string key, with an associated data which contains type-specific information.
+     *
      * \a rssi The UMTS RSSI (Received Signal Strength Indication), in dBm, given as a floating point value (signature "d").
+     *
      * \a ecio The UMTS Ec/Io, in dBm, given as a floating point value (signature "d").
      */
     QVariantMap umts() const;
 
     /*!
      * Setup extended signal quality information retrieval.
+     *
      * \a rate refresh rate to set, in seconds. 0 to disable retrieval.
      */
     QDBusPendingReply<void> setup(uint rate);

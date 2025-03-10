@@ -25,7 +25,7 @@ class SimPrivate;
 /*!
  * \class ModemManager::Sim
  *
- * \inheaderfile ModemManager::Sim
+ * \inheaderfile ModemManagerQt/Sim
  *
  * \inmodule ModemManagerQt
  *
@@ -138,27 +138,34 @@ public:
 
     /*!
      * Send the PIN to unlock the SIM card.
+     *
      * \a pin A string containing the PIN code.
      */
     QDBusPendingReply<> sendPin(const QString &pin);
 
     /*!
      * Send the PUK and a new PIN to unlock the SIM card.
+     *
      * \a puk A string containing the PUK code.
+     *
      * \a pin A string containing the PIN code.
      */
     QDBusPendingReply<> sendPuk(const QString &puk, const QString &pin);
 
     /*!
      * Enable or disable the PIN checking.
+     *
      * \a pin A string containing the PIN code.
+     *
      * \a enabled TRUE to enable PIN checking, FALSE otherwise.
      */
     QDBusPendingReply<> enablePin(const QString &pin, bool enabled);
 
     /*!
      * Change the PIN code.
+     *
      * \a oldPin A string containing the current PIN code.
+     *
      * \a newPin A string containing the new PIN code.
      */
     QDBusPendingReply<> changePin(const QString &oldPin, const QString &newPin);

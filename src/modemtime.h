@@ -23,7 +23,7 @@ class ModemTimePrivate;
 /*!
  * \class ModemManager::NetworkTimezone
  *
- * \inheaderfile ModemManager::ModemTime
+ * \inheaderfile ModemManagerQt/ModemTime
  *
  * \inmodule ModemManagerQt
  *
@@ -89,7 +89,7 @@ private:
 /*!
  * \class ModemManager::ModemTime
  *
- * \inheaderfile ModemManager::ModemTime
+ * \inheaderfile ModemManagerQt/ModemTime
  *
  * \inmodule ModemManagerQt
  *
@@ -147,6 +147,7 @@ public:
 Q_SIGNALS:
     /*!
      * Sent when the network time is updated.
+     *
      * \a dateTime the new date and time
      */
     void networkTimeChanged(const QDateTime &dateTime);

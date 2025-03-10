@@ -21,7 +21,7 @@ class InterfacePrivate;
 /*!
  * \class ModemManager::Interface
  *
- * \inheaderfile ModemManager::Interface
+ * \inheaderfile ModemManagerQt/Interface
  *
  * \inmodule ModemManagerQt
  */
@@ -30,6 +30,9 @@ class MODEMMANAGERQT_EXPORT Interface : public QObject
     Q_OBJECT
     Q_DECLARE_PRIVATE(Interface)
 
+    /*!
+     * \property ModemManager::uni
+     */
     Q_PROPERTY(QString uni READ uni)
 public:
     /*!

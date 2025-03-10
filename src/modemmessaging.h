@@ -25,7 +25,7 @@ class ModemMessagingPrivate;
 /*!
  * \class ModemManager::ModemMessaging
  *
- * \inheaderfile ModemManager::ModemMessaging
+ * \inheaderfile ModemManagerQt/ModemMessaging
  *
  * \inmodule ModemManagerQt
  *
@@ -39,9 +39,23 @@ class MODEMMANAGERQT_EXPORT ModemMessaging : public Interface
     Q_DECLARE_PRIVATE(ModemMessaging)
 
 public:
+    /*!
+     * \struct ModemManager::ModemMessaging::Message
+     */
     struct Message {
+        /*!
+         *
+         */
         QString number;
+
+        /*!
+         *
+         */
         QString text;
+
+        /*!
+         *
+         */
         QByteArray data;
     };
 
@@ -81,12 +95,15 @@ public:
 
     /*!
      * Creates a new message object.
+     *
      * \a message Message structure with the 'number' and either 'text' or 'data' properties
      */
     QDBusPendingReply<QDBusObjectPath> createMessage(const Message &message);
     /*!
      * Creates a new message object.
+     *
      * \a message QVariantMap containing message properties
+     *
      * The 'number' and either 'text' or 'data' properties are mandatory, others are optional.
      */
     QDBusPendingReply<QDBusObjectPath> createMessage(const QVariantMap &message);
@@ -100,18 +117,21 @@ public:
 
     /*!
      * \a uni path to the Sms object
+     *
      * Returns pointer to the found Sms (may be null if not found)
      */
     ModemManager::Sms::Ptr findMessage(const QString &uni);
 
     /*!
      * Sets the timeout in milliseconds for all async method DBus calls.
+     *
      * -1 means the default DBus timeout (usually 25 seconds).
      */
     void setTimeout(int timeout);
 
     /*!
      * Returns the current value of the DBus timeout in milliseconds.
+     *
      * -1 means the default DBus timeout (usually 25 seconds).
      */
     int timeout() const;
@@ -126,12 +146,14 @@ Q_SIGNALS:
      * Check the 'State' property to determine if the message is complete.
      *
      * \a uni path to the Sms object
-     * \a received \a true if the message was received from the network, as opposed to being added locally.
+     *
+     * \a received \c true if the message was received from the network, as opposed to being added locally.
      */
     void messageAdded(const QString &uni, bool received);
 
     /*!
      * Emitted when a message has been deleted.
+     *
      * \a uni path to the Sms object
      */
     void messageDeleted(const QString &uni);

@@ -30,7 +30,7 @@ class ModemPrivate;
 /*!
  * \class ModemManager::BearerProperties
  *
- * \inheaderfile ModemManager::Modem
+ * \inheaderfile ModemManagerQt/Modem
  *
  * \inmodule ModemManagerQt
  *
@@ -147,7 +147,7 @@ private:
 /*!
  * \class ModemManager::Modem
  *
- * \inheaderfile ModemManager::Modem
+ * \inheaderfile ModemManagerQt/Modem
  *
  * \inmodule ModemManagerQt
  *
@@ -218,6 +218,7 @@ public:
      * Delete an existing packet data bearer.
      *
      * If the bearer is currently active and providing packet data server, it will be disconnected and that packet data service will terminate.
+     *
      * \a bearer path to the bearer to delete
      */
     QDBusPendingReply<void> deleteBearer(const QString &bearer);
@@ -245,6 +246,7 @@ public:
      * If not required by the modem, \a code may be ignored.
      *
      * This command may or may not power-cycle the device.
+     *
      * \a code Carrier-supplied code required to reset the modem.
      */
     QDBusPendingReply<void> factoryReset(const QString &code);
@@ -256,6 +258,7 @@ public:
 
     /*!
      * Set the capabilities of the device. A restart of the modem may be required.
+     *
      * \a caps QFlags of MMModemCapability values, to specify the capabilities to use.
      */
     QDBusPendingReply<void> setCurrentCapabilities(Capabilities caps);
@@ -264,16 +267,19 @@ public:
      * Set the access technologies (e.g. 2G/3G/4G preference) the device is currently allowed to use when connecting to a network.
      *
      * The given combination should be supported by the modem, as specified in supportedModes()
-     * \a mode
      */
     QDBusPendingReply<void> setCurrentModes(const CurrentModesType &mode);
 
     /*!
      * Set the radio frequency and technology bands the device is currently allowed to use when connecting to a network.
+     *
      * \a bands List of MMModemBand values, to specify the bands to be used.
      */
     QDBusPendingReply<void> setCurrentBands(const QList<MMModemBand> &bands);
 
+    /*!
+     *
+     */
     QDBusPendingReply<QString> command(const QString &cmd, uint timeout);
 
     /*!

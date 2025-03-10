@@ -22,7 +22,7 @@ class CallPrivate;
 /*!
  * \class ModemManager::Call
  *
- * \inheaderfile ModemManager::Call
+ * \inheaderfile ModemManagerQt/Call
  *
  * \inmodule ModemManagerQt
  *

@@ -27,7 +27,7 @@ class ModemCdmaPrivate;
 /*!
  * \class ModemManager::ModemCdma
  *
- * \inheaderfile ModemManager::ModemCdma
+ * \inheaderfile ModemManagerQt/ModemCdma
  *
  * \inmodule ModemManagerQt
  *
@@ -134,7 +134,9 @@ Q_SIGNALS:
      * This signal is emitted when the activation info this network changes
      *
      * \a state current activation state, given as a MMModemCdmaActivationState.
+     *
      * \a error carrier-specific error code, given as a MMCdmaActivationError.
+     *
      * \a status_changes properties that have changed as a result of this activation state change, including "mdn" and "min".
      *                       The map may be empty if the changed properties are unknown.
      */
