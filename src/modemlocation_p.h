@@ -18,8 +18,6 @@ namespace ModemManager
 class ModemLocationPrivate : public InterfacePrivate
 {
 public:
-    /*!
-     */
     explicit ModemLocationPrivate(const QString &path, ModemLocation *q);
     OrgFreedesktopModemManager1ModemLocationInterface modemLocationIface;
 
@@ -31,8 +29,6 @@ public:
     Q_DECLARE_PUBLIC(ModemLocation)
     ModemLocation *q_ptr;
 private Q_SLOTS:
-    /*!
-     */
     void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) override;
 };
 

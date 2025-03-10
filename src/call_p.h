@@ -16,8 +16,6 @@ class CallPrivate : public QObject
 {
     Q_OBJECT
 public:
-    /*!
-     */
     explicit CallPrivate(const QString &path, Call *q);
     OrgFreedesktopModemManager1CallInterface callIface;
 
@@ -30,14 +28,8 @@ public:
     Q_DECLARE_PUBLIC(Call)
     Call *q_ptr;
 private Q_SLOTS:
-    /*!
-     */
     void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps);
-    /*!
-     */
     void onStateChanged(int oldState, int newState, uint reason);
-    /*!
-     */
     void onDtmfReceived(const QString &dtmf);
 };
 

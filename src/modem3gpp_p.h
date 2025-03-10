@@ -18,8 +18,6 @@ namespace ModemManager
 class Modem3gppPrivate : public InterfacePrivate
 {
 public:
-    /*!
-     */
     explicit Modem3gppPrivate(const QString &path, Modem3gpp *q);
     OrgFreedesktopModemManager1ModemModem3gppInterface modem3gppIface;
 
@@ -36,13 +34,9 @@ public:
     Q_DECLARE_PUBLIC(Modem3gpp)
     Modem3gpp *q_ptr;
 private Q_SLOTS:
-    /*!
-     */
     void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) override;
 
 private:
-    /*!
-     */
     QString mobileCountryCodeToAlpha2CountryCode(int mcc) const;
 };
 
@@ -52,9 +46,6 @@ private:
 // For MCC to country code mapping crawling, see aslo:
 // https://github.com/sailfishos/tzdata-timed/blob/master/scripts/create-mcc-country-mappings.sh
 
-/*!
- * \typedef ModemManager::MccListEntry
- */
 typedef struct _MccListEntry {
     int mcc;
     char mnc[4];

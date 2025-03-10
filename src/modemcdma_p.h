@@ -18,8 +18,6 @@ namespace ModemManager
 class ModemCdmaPrivate : public InterfacePrivate
 {
 public:
-    /*!
-     */
     explicit ModemCdmaPrivate(const QString &path, ModemCdma *q);
     OrgFreedesktopModemManager1ModemModemCdmaInterface modemCdmaIface;
 
@@ -34,11 +32,7 @@ public:
     Q_DECLARE_PUBLIC(ModemCdma)
     ModemCdma *q_ptr;
 private Q_SLOTS:
-    /*!
-     */
     void onActivationStateChanged(uint activation_state, uint activation_error, const QVariantMap &status_changes);
-    /*!
-     */
     void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) override;
 };
 

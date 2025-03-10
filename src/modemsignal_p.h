@@ -17,8 +17,6 @@ namespace ModemManager
 class ModemSignalPrivate : public InterfacePrivate
 {
 public:
-    /*!
-     */
     explicit ModemSignalPrivate(const QString &path, ModemSignal *q);
     OrgFreedesktopModemManager1ModemSignalInterface modemSignalIface;
 

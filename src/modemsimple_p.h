@@ -18,8 +18,6 @@ class ModemSimplePrivate : public InterfacePrivate
 {
     Q_OBJECT
 public:
-    /*!
-     */
     explicit ModemSimplePrivate(const QString &path, ModemSimple *q);
     OrgFreedesktopModemManager1ModemSimpleInterface modemSimpleIface;
 

@@ -26,39 +26,21 @@ class ModemManagerPrivate : public Notifier
     Q_OBJECT
 
 public:
-    /*!
-     */
     ModemManagerPrivate();
     ~ModemManagerPrivate() override;
     QDBusServiceWatcher watcher;
     OrgFreedesktopModemManager1Interface iface;
     QMap<QString, ModemDevice::Ptr> modemList;
     OrgFreedesktopDBusObjectManagerInterface manager;
-    /*!
-     */
     ModemManager::ModemDevice::Ptr findModemDevice(const QString &uni);
-    /*!
-     */
     ModemManager::ModemDevice::List modemDevices();
 
-    /*!
-     */
     void scanDevices();
 protected Q_SLOTS:
-    /*!
-     */
     void init();
-    /*!
-     */
     void daemonRegistered();
-    /*!
-     */
     void daemonUnregistered();
-    /*!
-     */
     void onInterfacesAdded(const QDBusObjectPath &object_path, const MMVariantMapMap &interfaces_and_properties);
-    /*!
-     */
     void onInterfacesRemoved(const QDBusObjectPath &object_path, const QStringList &interfaces);
 };
 } // namespace ModemManager

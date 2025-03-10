@@ -17,8 +17,6 @@ namespace ModemManager
 class ModemVoicePrivate : public InterfacePrivate
 {
 public:
-    /*!
-     */
     explicit ModemVoicePrivate(const QString &path, ModemVoice *q);
     OrgFreedesktopModemManager1ModemVoiceInterface modemVoiceIface;
 
@@ -29,11 +27,7 @@ public:
     Q_DECLARE_PUBLIC(ModemVoice)
     ModemVoice *q_ptr;
 private Q_SLOTS:
-    /*!
-     */
     void onCallAdded(const QDBusObjectPath &path);
-    /*!
-     */
     void onCallDeleted(const QDBusObjectPath &path);
 };
 

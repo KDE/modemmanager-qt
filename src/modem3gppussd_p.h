@@ -19,8 +19,6 @@ class Modem3gppUssdPrivate : public InterfacePrivate
 {
     Q_OBJECT
 public:
-    /*!
-     */
     explicit Modem3gppUssdPrivate(const QString &path, Modem3gppUssd *q);
     OrgFreedesktopModemManager1ModemModem3gppUssdInterface ussdIface;
 
@@ -31,8 +29,6 @@ public:
     Q_DECLARE_PUBLIC(Modem3gppUssd)
     Modem3gppUssd *q_ptr;
 private Q_SLOTS:
-    /*!
-     */
     void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) override;
 };
 

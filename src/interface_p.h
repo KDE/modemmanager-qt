@@ -15,8 +15,6 @@ class InterfacePrivate : public QObject
 {
     Q_OBJECT
 public:
-    /*!
-     */
     explicit InterfacePrivate(const QString &path, Interface *q);
     ~InterfacePrivate() override;
     QString uni;
@@ -24,8 +22,6 @@ public:
     Q_DECLARE_PUBLIC(Interface)
     Interface *q_ptr;
 public Q_SLOTS:
-    /*!
-     */
     virtual void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps);
 };
 
