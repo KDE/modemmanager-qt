@@ -17,11 +17,7 @@ class ModemLocationPropertiesTest : public QObject
     Q_OBJECT
 
 private Q_SLOTS:
-    /*!
-     */
     void initTestCase();
-    /*!
-     */
     void testModemLocationProperties();
 
 private:

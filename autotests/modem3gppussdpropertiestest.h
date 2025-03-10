@@ -17,11 +17,7 @@ class Modem3gppUssdPropertiesTest : public QObject
     Q_OBJECT
 
 private Q_SLOTS:
-    /*!
-     */
     void initTestCase();
-    /*!
-     */
     void testModem3gppUssdProperties();
 
 private:
