@@ -24,7 +24,7 @@ class BearerPrivate;
 /*!
  * \class ModemManager::IpConfig
  *
- * \inheaderfile ModemManager::Bearer
+ * \inheaderfile ModemManager/Bearer
  *
  * \inmodule ModemManagerQt
  *
