@@ -12,6 +12,8 @@ excludedirs += fakemodem dbus
 
 outputformats = HTML
 
+navigation.landingpage = "ModemManagerQt"
+
 depends += qtcore qtdbus qtxml
 
 qhp.projects            = ModemManagerQt
