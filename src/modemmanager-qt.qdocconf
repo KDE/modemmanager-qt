@@ -29,3 +29,5 @@ qhp.ModemManagerQt.subprojects.classes.title = C++ Classes
 qhp.ModemManagerQt.subprojects.classes.indexTitle = ModemManagerQt C++ Classes
 qhp.ModemManagerQt.subprojects.classes.selectors = class fake:headerfile
 qhp.ModemManagerQt.subprojects.classes.sortPages = true
+
+tagfile = modemmanagerqt.tags
