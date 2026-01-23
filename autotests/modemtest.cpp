@@ -19,6 +19,11 @@ void ModemTest::initTestCase()
     fakeModem = new FakeModem();
 }
 
+void ModemTest::cleanupTestCase()
+{
+    delete fakeModem;
+}
+
 void ModemTest::testModems()
 {
     Modem *modem = new Modem();
@@ -111,6 +116,7 @@ void ModemTest::testModems()
     QVERIFY(ModemManager::modemDevices().isEmpty());
     QCOMPARE(removeModemSpy.at(0).at(0).toString(), addedModemPath);
     delete modem;
+    delete bearer;
 }
 
 void ModemTest::testModemAdded(const QString &dev)

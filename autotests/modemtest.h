@@ -17,6 +17,7 @@ class ModemTest : public QObject
 
 private Q_SLOTS:
     void initTestCase();
+    void cleanupTestCase();
     void testModems();
     void testModemAdded(const QString &dev);
 

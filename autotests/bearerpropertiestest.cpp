@@ -78,6 +78,11 @@ void BearerPropertiesTest::initTestCase()
 #endif
 }
 
+void BearerPropertiesTest::cleanupTestCase()
+{
+    delete bearer;
+}
+
 #if MM_CHECK_VERSION(1, 2, 0)
 void BearerPropertiesTest::testBearerProperties()
 {

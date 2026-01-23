@@ -17,6 +17,7 @@ class BearerPropertiesTest : public QObject
 
 private Q_SLOTS:
     void initTestCase();
+    void cleanupTestCase();
 #if MM_CHECK_VERSION(1, 2, 0)
     void testBearerProperties();
 #endif
