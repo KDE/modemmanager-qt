@@ -36,6 +36,10 @@ public:
     ModemManager::ModemDevice::List modemDevices();
 
     void scanDevices();
+    QDBusPendingReply<> setLogging(const QString &level);
+    QDBusPendingReply<> reportKernelEvent(const QVariantMap &properties);
+    QDBusPendingReply<> inhibitDevice(const QString &uid, bool inhibit);
+    QString version() const;
 protected Q_SLOTS:
     void init();
     void daemonRegistered();

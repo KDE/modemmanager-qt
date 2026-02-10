@@ -145,6 +145,26 @@ void ModemManager::ModemManagerPrivate::scanDevices()
     iface.ScanDevices();
 }
 
+QDBusPendingReply<> ModemManager::ModemManagerPrivate::setLogging(const QString &level)
+{
+    return iface.SetLogging(level);
+}
+
+QDBusPendingReply<> ModemManager::ModemManagerPrivate::reportKernelEvent(const QVariantMap &properties)
+{
+    return iface.ReportKernelEvent(properties);
+}
+
+QDBusPendingReply<> ModemManager::ModemManagerPrivate::inhibitDevice(const QString &uid, bool inhibit)
+{
+    return iface.InhibitDevice(uid, inhibit);
+}
+
+QString ModemManager::ModemManagerPrivate::version() const
+{
+    return iface.version();
+}
+
 void ModemManager::ModemManagerPrivate::daemonRegistered()
 {
     init();
@@ -223,6 +243,26 @@ ModemManager::Notifier *ModemManager::notifier()
 void ModemManager::scanDevices()
 {
     globalModemManager->scanDevices();
+}
+
+QDBusPendingReply<> ModemManager::setLogging(const QString &level)
+{
+    return globalModemManager->setLogging(level);
+}
+
+QDBusPendingReply<> ModemManager::reportKernelEvent(const QVariantMap &properties)
+{
+    return globalModemManager->reportKernelEvent(properties);
+}
+
+QDBusPendingReply<> ModemManager::inhibitDevice(const QString &uid, bool inhibit)
+{
+    return globalModemManager->inhibitDevice(uid, inhibit);
+}
+
+QString ModemManager::version()
+{
+    return globalModemManager->version();
 }
 
 #include "moc_manager.cpp"

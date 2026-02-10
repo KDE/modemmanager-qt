@@ -42,6 +42,12 @@ public:
 
     ~OrgFreedesktopModemManager1Interface() override;
 
+    Q_PROPERTY(QString Version READ version)
+    inline QString version() const
+    {
+        return qvariant_cast<QString>(property("Version"));
+    }
+
 public Q_SLOTS: // METHODS
     inline QDBusPendingReply<> ScanDevices()
     {
@@ -54,6 +60,20 @@ public Q_SLOTS: // METHODS
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(level);
         return asyncCallWithArgumentList(QLatin1String("SetLogging"), argumentList);
+    }
+
+    inline QDBusPendingReply<> ReportKernelEvent(const QVariantMap &properties)
+    {
+        QList<QVariant> argumentList;
+        argumentList << QVariant::fromValue(properties);
+        return asyncCallWithArgumentList(QLatin1String("ReportKernelEvent"), argumentList);
+    }
+
+    inline QDBusPendingReply<> InhibitDevice(const QString &uid, bool inhibit)
+    {
+        QList<QVariant> argumentList;
+        argumentList << QVariant::fromValue(uid) << QVariant::fromValue(inhibit);
+        return asyncCallWithArgumentList(QLatin1String("InhibitDevice"), argumentList);
     }
 
 Q_SIGNALS: // SIGNALS

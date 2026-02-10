@@ -9,7 +9,7 @@
    Copyright (C) 2011-2013 Lanedo GmbH
 -->
 
-<node name="/" xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd">
+<node name="/org/freedesktop/ModemManager1" xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd">
 
   <!--
       org.freedesktop.ModemManager1:
@@ -24,18 +24,126 @@
         ScanDevices:
 
         Start a new scan for connected modem devices.
+
+        Since: 1.0
     -->
     <method name="ScanDevices" />
 
     <!--
         SetLogging:
-        @level: One of <literal>"ERR"</literal>, <literal>"WARN"</literal>, <literal>"INFO"</literal>, <literal>"DEBUG"</literal>.
+        @level: One of <literal>"ERR"</literal>, <literal>"WARN"</literal>,
+          <literal>"MSG"</literal> (since 1.22), <literal>"INFO"</literal>, <literal>"DEBUG"</literal>.
 
         Set logging verbosity.
+
+        Since: 1.0
     -->
     <method name="SetLogging">
       <arg name="level" type="s" direction="in" />
     </method>
+
+    <!--
+        ReportKernelEvent:
+        @properties: event properties.
+
+        Reports a kernel event to ModemManager.
+
+        This method is only available if udev is not being used to report kernel
+        events.
+
+        The @properties dictionary is composed of key/value string pairs. The
+        possible keys are:
+
+        <variablelist>
+          <varlistentry><term><literal>action</literal></term>
+            <listitem>
+              <para>
+                The type of action, given as a string value (signature
+                <literal>"s"</literal>).
+                This parameter is MANDATORY.
+              </para>
+              <variablelist>
+                <varlistentry><term><literal>add</literal></term>
+                  <listitem>
+                    A new kernel device has been added.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>remove</literal></term>
+                  <listitem>
+                    An existing kernel device has been removed.
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><literal>name</literal></term>
+            <listitem>
+              <para>
+                The device name, given as a string value (signature
+                <literal>"s"</literal>).
+                This parameter is MANDATORY.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><literal>subsystem</literal></term>
+            <listitem>
+              <para>
+                The device subsystem, given as a string value (signature
+                <literal>"s"</literal>).
+                This parameter is MANDATORY.
+              </para>
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><literal>uid</literal></term>
+            <listitem>
+              <para>
+                The unique ID of the physical device, given as a string value
+                (signature <literal>"s"</literal>).
+                This parameter is OPTIONAL, if not given the sysfs path of the
+                physical device will be used. This parameter must be the same
+                for all devices exposed by the same physical device.
+              </para>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        Since: 1.8
+    -->
+    <method name="ReportKernelEvent">
+      <arg name="properties" type="a{sv}" direction="in" />
+    </method>
+
+    <!--
+        InhibitDevice:
+        @uid: the unique ID of the physical device, given in the
+              #org.freedesktop.ModemManager1.Modem:Device property.
+        @inhibit: %TRUE to inhibit the modem and %FALSE to uninhibit it.
+
+        Inhibit or uninhibit the device.
+
+        When the modem is inhibited ModemManager will close all its ports and
+        unexport it from the bus, so that users of the interface are no longer
+        able to operate with it.
+
+        This operation binds the inhibition request to the existence of the
+        caller in the DBus bus. If the caller disappears from the bus, the
+        inhibition will automatically removed.
+
+        Since: 1.10
+    -->
+    <method name="InhibitDevice">
+      <arg name="uid"     type="s" direction="in" />
+      <arg name="inhibit" type="b" direction="in" />
+    </method>
+
+    <!--
+        Version:
+
+        The runtime version of the ModemManager daemon.
+
+        Since: 1.10
+    -->
+    <property name="Version" type="s" access="read" />
 
   </interface>
 </node>
