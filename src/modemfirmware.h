@@ -76,6 +76,19 @@ public:
      * \a uniqueid The unique ID of the firmware image to select.
      */
     void selectImage(const QString &uniqueid);
+
+    /*!
+     * Returns firmware update settings.
+     *
+     * \since 6.24.0
+     */
+    ModemManager::FirmwareUpdateSettings updateSettings() const;
+
+Q_SIGNALS:
+    /*!
+     * \since 6.24.0
+     */
+    void updateSettingsChanged(const ModemManager::FirmwareUpdateSettings &settings);
 };
 
 } // namespace ModemManager

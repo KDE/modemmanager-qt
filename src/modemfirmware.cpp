@@ -21,11 +21,29 @@ ModemManager::ModemFirmwarePrivate::ModemFirmwarePrivate(const QString &path, Mo
 #endif
     , q_ptr(q)
 {
+    if (modemFirmwareIface.isValid()) {
+        updateSettings = modemFirmwareIface.updateSettings();
+    }
 }
 
 ModemManager::ModemFirmware::ModemFirmware(const QString &path, QObject *parent)
     : Interface(*new ModemFirmwarePrivate(path, this), parent)
 {
+#ifdef MMQT_STATIC
+    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
+                                          path,
+                                          QLatin1String(DBUS_INTERFACE_PROPS),
+                                          QStringLiteral("PropertiesChanged"),
+                                          this,
+                                          SLOT(onPropertiesChanged(QString, QVariantMap, QStringList)));
+#else
+    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
+                                         path,
+                                         QLatin1String(DBUS_INTERFACE_PROPS),
+                                         QStringLiteral("PropertiesChanged"),
+                                         this,
+                                         SLOT(onPropertiesChanged(QString, QVariantMap, QStringList)));
+#endif
 }
 
 ModemManager::ModemFirmware::~ModemFirmware()
@@ -42,6 +60,25 @@ void ModemManager::ModemFirmware::selectImage(const QString &uniqueid)
 {
     Q_D(ModemFirmware);
     d->modemFirmwareIface.Select(uniqueid);
+}
+
+ModemManager::FirmwareUpdateSettings ModemManager::ModemFirmware::updateSettings() const
+{
+    Q_D(const ModemFirmware);
+    return d->updateSettings;
+}
+
+void ModemManager::ModemFirmwarePrivate::onPropertiesChanged(const QString &interfaceName, const QVariantMap &properties, const QStringList &invalidatedProps)
+{
+    Q_UNUSED(invalidatedProps);
+    if (interfaceName == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_FIRMWARE)) {
+        QVariantMap::const_iterator it = properties.constFind(QLatin1String(MM_MODEM_FIRMWARE_PROPERTY_UPDATESETTINGS));
+        if (it != properties.constEnd()) {
+            updateSettings = it->value<FirmwareUpdateSettings>();
+            Q_Q(ModemFirmware);
+            Q_EMIT q->updateSettingsChanged(updateSettings);
+        }
+    }
 }
 
 #include "moc_modemfirmware.cpp"

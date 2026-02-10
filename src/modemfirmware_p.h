@@ -17,9 +17,13 @@ class ModemFirmwarePrivate : public InterfacePrivate
 public:
     explicit ModemFirmwarePrivate(const QString &path, ModemFirmware *q);
     OrgFreedesktopModemManager1ModemFirmwareInterface modemFirmwareIface;
+    ModemManager::FirmwareUpdateSettings updateSettings;
 
     Q_DECLARE_PUBLIC(ModemFirmware)
     ModemFirmware *q_ptr;
+
+private Q_SLOTS:
+    void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) override;
 };
 
 } // namespace ModemManager

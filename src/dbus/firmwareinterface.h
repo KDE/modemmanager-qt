@@ -44,6 +44,12 @@ public:
 
     ~OrgFreedesktopModemManager1ModemFirmwareInterface() override;
 
+    Q_PROPERTY(ModemManager::FirmwareUpdateSettings UpdateSettings READ updateSettings)
+    inline ModemManager::FirmwareUpdateSettings updateSettings() const
+    {
+        return qvariant_cast<ModemManager::FirmwareUpdateSettings>(property("UpdateSettings"));
+    }
+
 public Q_SLOTS: // METHODS
     inline QDBusPendingReply<QString, ModemManager::QVariantMapList> List()
     {
