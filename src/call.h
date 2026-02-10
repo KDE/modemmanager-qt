@@ -56,44 +56,123 @@ public:
     QString uni() const;
 
     /*!
-     * Start a call
+     * If the outgoing call has not yet been started, start it.
+     *
+     * Applicable only if state is \c MM_CALL_STATE_UNKNOWN and direction is
+     * \c MM_CALL_DIRECTION_OUTGOING.
      */
     QDBusPendingReply<> start();
 
     /*!
-     * Accept a call
+     * Accept incoming call (answer).
+     *
+     * Applicable only if state is \c MM_CALL_STATE_RINGING_IN and direction is
+     * \c MM_CALL_DIRECTION_INCOMING.
      */
     QDBusPendingReply<> accept();
 
     /*!
-     * Hangup a call
+     * Deflect an incoming or waiting call to a new \a number. The call will be
+     * considered terminated once the deflection is performed.
+     *
+     * Applicable only if state is \c MM_CALL_STATE_RINGING_IN or
+     * \c MM_CALL_STATE_WAITING and direction is \c MM_CALL_DIRECTION_INCOMING.
+     *
+     * \since 6.24.0
+     */
+    QDBusPendingReply<> deflect(const QString &number);
+
+    /*!
+     * Hangup the active call.
+     *
+     * Applicable only if state is \c MM_CALL_STATE_UNKNOWN.
      */
     QDBusPendingReply<> hangup();
 
     /*!
-     * Send DTMF
+     * Join the currently held call into a single multiparty call with another
+     * already active call.
+     *
+     * The calls will be flagged with the Multiparty property while they are
+     * part of the multiparty call.
+     *
+     * Applicable only if state is \c MM_CALL_STATE_HELD.
+     *
+     * \since 6.24.0
+     */
+    QDBusPendingReply<> joinMultiparty();
+
+    /*!
+     * If this call is part of an ongoing multiparty call, detach it from the
+     * multiparty call, put the multiparty call on hold, and activate this one
+     * alone. This operation makes this call private again between both ends of
+     * the call.
+     *
+     * Applicable only if state is \c MM_CALL_STATE_ACTIVE or
+     * \c MM_CALL_STATE_HELD and the call is a multiparty call.
+     *
+     * \since 6.24.0
+     */
+    QDBusPendingReply<> leaveMultiparty();
+
+    /*!
+     * Send a DTMF tone (Dual Tone Multi-Frequency) (only on supported modems).
+     *
+     * \a dtmf is the DTMF tone identifier [0-9A-D*#].
+     *
+     * Applicable only if state is \c MM_CALL_STATE_ACTIVE.
      */
     QDBusPendingReply<> sendDtmf(const QString &dtmf);
 
     /*!
-     * This method returns the state of the call
+     * Returns the current MMCallState value describing the state of the call.
      */
     MMCallState state() const;
 
     /*!
-     * This method returns the reason for the call state change
+     * Returns the MMCallStateReason value describing why the state changed.
      */
     MMCallStateReason stateReason() const;
 
     /*!
-     * This method returns the direction of the call
+     * Returns the MMCallDirection value describing the direction of the call.
      */
     MMCallDirection direction() const;
 
     /*!
-     * This method returns the remote phone number
+     * Returns the remote phone number.
      */
     QString number() const;
+
+    /*!
+     * Returns whether the call is currently part of a multiparty conference call.
+     *
+     * \since 6.24.0
+     */
+    bool isMultiparty() const;
+
+    /*!
+     * If call audio is routed via the host, returns the name of the kernel
+     * device that provides the audio. For example, with certain Huawei USB
+     * modems, this might be "ttyUSB2" indicating audio is available via
+     * ttyUSB2 in the format described by the audioFormat property.
+     *
+     * \since 6.24.0
+     */
+    QString audioPort() const;
+
+    /*!
+     * If call audio is routed via the host, returns a description of the audio
+     * format supported by the audio port.
+     *
+     * The returned map may include the following items:
+     * \li \c "encoding" - The audio encoding format (e.g. "pcm").
+     * \li \c "resolution" - The sampling precision and encoding format (e.g. "s16le").
+     * \li \c "rate" - The sampling rate as an unsigned integer (e.g. 8000).
+     *
+     * \since 6.24.0
+     */
+    QVariantMap audioFormat() const;
 
     /*!
      * Sets the timeout in milliseconds for all async method DBus calls.
@@ -114,6 +193,18 @@ Q_SIGNALS:
     /*!
      */
     void numberChanged(const QString &number);
+    /*!
+     * \since 6.24.0
+     */
+    void multipartyChanged(bool multiparty);
+    /*!
+     * \since 6.24.0
+     */
+    void audioPortChanged(const QString &audioPort);
+    /*!
+     * \since 6.24.0
+     */
+    void audioFormatChanged(const QVariantMap &audioFormat);
     /*!
      */
     void dtmfReceived(const QString &dtmf);

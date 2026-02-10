@@ -24,6 +24,9 @@ public:
     MMCallStateReason stateReason;
     MMCallDirection direction;
     QString number;
+    bool multiparty;
+    QString audioPort;
+    QVariantMap audioFormat;
 
     Q_DECLARE_PUBLIC(Call)
     Call *q_ptr;

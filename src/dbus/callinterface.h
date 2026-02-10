@@ -42,6 +42,24 @@ public:
         return qvariant_cast<int>(property("Direction"));
     }
 
+    Q_PROPERTY(QString AudioPort READ audioPort)
+    inline QString audioPort() const
+    {
+        return qvariant_cast<QString>(property("AudioPort"));
+    }
+
+    Q_PROPERTY(QVariantMap AudioFormat READ audioFormat)
+    inline QVariantMap audioFormat() const
+    {
+        return qvariant_cast<QVariantMap>(property("AudioFormat"));
+    }
+
+    Q_PROPERTY(bool Multiparty READ multiparty)
+    inline bool multiparty() const
+    {
+        return qvariant_cast<bool>(property("Multiparty"));
+    }
+
     Q_PROPERTY(QString Number READ number)
     inline QString number() const
     {
@@ -67,10 +85,29 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QStringLiteral("Accept"), argumentList);
     }
 
+    inline QDBusPendingReply<> Deflect(const QString &number)
+    {
+        QList<QVariant> argumentList;
+        argumentList << QVariant::fromValue(number);
+        return asyncCallWithArgumentList(QStringLiteral("Deflect"), argumentList);
+    }
+
     inline QDBusPendingReply<> Hangup()
     {
         QList<QVariant> argumentList;
         return asyncCallWithArgumentList(QStringLiteral("Hangup"), argumentList);
+    }
+
+    inline QDBusPendingReply<> JoinMultiparty()
+    {
+        QList<QVariant> argumentList;
+        return asyncCallWithArgumentList(QStringLiteral("JoinMultiparty"), argumentList);
+    }
+
+    inline QDBusPendingReply<> LeaveMultiparty()
+    {
+        QList<QVariant> argumentList;
+        return asyncCallWithArgumentList(QStringLiteral("LeaveMultiparty"), argumentList);
     }
 
     inline QDBusPendingReply<> SendDtmf(const QString &dtmf)

@@ -30,6 +30,9 @@ ModemManager::CallPrivate::CallPrivate(const QString &path, Call *q)
         stateReason = (MMCallStateReason)callIface.stateReason();
         direction = (MMCallDirection)callIface.direction();
         number = callIface.number();
+        multiparty = callIface.multiparty();
+        audioPort = callIface.audioPort();
+        audioFormat = callIface.audioFormat();
     }
 }
 
@@ -86,10 +89,28 @@ QDBusPendingReply<> ModemManager::Call::accept()
     return d->callIface.Accept();
 }
 
+QDBusPendingReply<> ModemManager::Call::deflect(const QString &number)
+{
+    Q_D(Call);
+    return d->callIface.Deflect(number);
+}
+
 QDBusPendingReply<> ModemManager::Call::hangup()
 {
     Q_D(Call);
     return d->callIface.Hangup();
+}
+
+QDBusPendingReply<> ModemManager::Call::joinMultiparty()
+{
+    Q_D(Call);
+    return d->callIface.JoinMultiparty();
+}
+
+QDBusPendingReply<> ModemManager::Call::leaveMultiparty()
+{
+    Q_D(Call);
+    return d->callIface.LeaveMultiparty();
 }
 
 QDBusPendingReply<> ModemManager::Call::sendDtmf(const QString &dtmf)
@@ -120,6 +141,24 @@ QString ModemManager::Call::number() const
 {
     Q_D(const Call);
     return d->number;
+}
+
+bool ModemManager::Call::isMultiparty() const
+{
+    Q_D(const Call);
+    return d->multiparty;
+}
+
+QString ModemManager::Call::audioPort() const
+{
+    Q_D(const Call);
+    return d->audioPort;
+}
+
+QVariantMap ModemManager::Call::audioFormat() const
+{
+    Q_D(const Call);
+    return d->audioFormat;
 }
 
 void ModemManager::Call::setTimeout(int timeout)
@@ -160,6 +199,21 @@ void ModemManager::CallPrivate::onPropertiesChanged(const QString &interfaceName
         if (it != changedProperties.constEnd()) {
             number = it->toString();
             Q_EMIT q->numberChanged(number);
+        }
+        it = changedProperties.constFind(QLatin1String(MM_CALL_PROPERTY_MULTIPARTY));
+        if (it != changedProperties.constEnd()) {
+            multiparty = it->toBool();
+            Q_EMIT q->multipartyChanged(multiparty);
+        }
+        it = changedProperties.constFind(QLatin1String(MM_CALL_PROPERTY_AUDIOPORT));
+        if (it != changedProperties.constEnd()) {
+            audioPort = it->toString();
+            Q_EMIT q->audioPortChanged(audioPort);
+        }
+        it = changedProperties.constFind(QLatin1String(MM_CALL_PROPERTY_AUDIOFORMAT));
+        if (it != changedProperties.constEnd()) {
+            audioFormat = qdbus_cast<QVariantMap>(*it);
+            Q_EMIT q->audioFormatChanged(audioFormat);
         }
     }
 }
