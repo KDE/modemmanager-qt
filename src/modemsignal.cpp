@@ -25,11 +25,14 @@ ModemManager::ModemSignalPrivate::ModemSignalPrivate(const QString &path, ModemS
 {
     if (modemSignalIface.isValid()) {
         rate = modemSignalIface.rate();
+        rssiThreshold = modemSignalIface.rssiThreshold();
+        errorRateThreshold = modemSignalIface.errorRateThreshold();
         cdma = modemSignalIface.cdma();
         evdo = modemSignalIface.evdo();
         gsm = modemSignalIface.gsm();
         umts = modemSignalIface.umts();
         lte = modemSignalIface.lte();
+        nr5g = modemSignalIface.nr5g();
     }
 }
 
@@ -64,6 +67,18 @@ uint ModemManager::ModemSignal::rate() const
     return d->rate;
 }
 
+uint ModemManager::ModemSignal::rssiThreshold() const
+{
+    Q_D(const ModemSignal);
+    return d->rssiThreshold;
+}
+
+bool ModemManager::ModemSignal::errorRateThreshold() const
+{
+    Q_D(const ModemSignal);
+    return d->errorRateThreshold;
+}
+
 QVariantMap ModemManager::ModemSignal::cdma() const
 {
     Q_D(const ModemSignal);
@@ -88,6 +103,12 @@ QVariantMap ModemManager::ModemSignal::lte() const
     return d->lte;
 }
 
+QVariantMap ModemManager::ModemSignal::nr5g() const
+{
+    Q_D(const ModemSignal);
+    return d->nr5g;
+}
+
 QVariantMap ModemManager::ModemSignal::umts() const
 {
     Q_D(const ModemSignal);
@@ -98,6 +119,12 @@ QDBusPendingReply<void> ModemManager::ModemSignal::setup(uint rate)
 {
     Q_D(ModemSignal);
     return d->modemSignalIface.Setup(rate);
+}
+
+QDBusPendingReply<void> ModemManager::ModemSignal::setupThresholds(const QVariantMap &settings)
+{
+    Q_D(ModemSignal);
+    return d->modemSignalIface.SetupThresholds(settings);
 }
 
 void ModemManager::ModemSignal::setTimeout(int timeout)
@@ -124,6 +151,16 @@ void ModemManager::ModemSignalPrivate::onPropertiesChanged(const QString &interf
             rate = it->toUInt();
             Q_EMIT q->rateChanged(rate);
         }
+        it = properties.constFind(QLatin1String(MM_MODEM_SIGNAL_PROPERTY_RSSITHRESHOLD));
+        if (it != properties.constEnd()) {
+            rssiThreshold = it->toUInt();
+            Q_EMIT q->rssiThresholdChanged(rssiThreshold);
+        }
+        it = properties.constFind(QLatin1String(MM_MODEM_SIGNAL_PROPERTY_ERRORRATETHRESHOLD));
+        if (it != properties.constEnd()) {
+            errorRateThreshold = it->toBool();
+            Q_EMIT q->errorRateThresholdChanged(errorRateThreshold);
+        }
         it = properties.constFind(QLatin1String(MM_MODEM_SIGNAL_PROPERTY_CDMA));
         if (it != properties.constEnd()) {
             cdma = qdbus_cast<QVariantMap>(*it);
@@ -132,22 +169,27 @@ void ModemManager::ModemSignalPrivate::onPropertiesChanged(const QString &interf
         it = properties.constFind(QLatin1String(MM_MODEM_SIGNAL_PROPERTY_EVDO));
         if (it != properties.constEnd()) {
             evdo = qdbus_cast<QVariantMap>(*it);
-            Q_EMIT q->cdmaChanged(evdo);
+            Q_EMIT q->evdoChanged(evdo);
         }
         it = properties.constFind(QLatin1String(MM_MODEM_SIGNAL_PROPERTY_GSM));
         if (it != properties.constEnd()) {
             gsm = qdbus_cast<QVariantMap>(*it);
-            Q_EMIT q->cdmaChanged(gsm);
+            Q_EMIT q->gsmChanged(gsm);
         }
         it = properties.constFind(QLatin1String(MM_MODEM_SIGNAL_PROPERTY_UMTS));
         if (it != properties.constEnd()) {
             umts = qdbus_cast<QVariantMap>(*it);
-            Q_EMIT q->cdmaChanged(umts);
+            Q_EMIT q->umtsChanged(umts);
         }
         it = properties.constFind(QLatin1String(MM_MODEM_SIGNAL_PROPERTY_LTE));
         if (it != properties.constEnd()) {
             lte = qdbus_cast<QVariantMap>(*it);
-            Q_EMIT q->cdmaChanged(lte);
+            Q_EMIT q->lteChanged(lte);
+        }
+        it = properties.constFind(QLatin1String(MM_MODEM_SIGNAL_PROPERTY_NR5G));
+        if (it != properties.constEnd()) {
+            nr5g = qdbus_cast<QVariantMap>(*it);
+            Q_EMIT q->nr5gChanged(nr5g);
         }
     }
 }

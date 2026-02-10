@@ -21,11 +21,14 @@ public:
     OrgFreedesktopModemManager1ModemSignalInterface modemSignalIface;
 
     uint rate;
+    uint rssiThreshold;
+    bool errorRateThreshold;
     QVariantMap cdma;
     QVariantMap evdo;
     QVariantMap gsm;
     QVariantMap umts;
     QVariantMap lte;
+    QVariantMap nr5g;
 
     Q_DECLARE_PUBLIC(ModemSignal)
     ModemSignal *q_ptr;

@@ -66,10 +66,28 @@ public:
         return qvariant_cast<QVariantMap>(property("Lte"));
     }
 
+    Q_PROPERTY(QVariantMap Nr5g READ nr5g)
+    inline QVariantMap nr5g() const
+    {
+        return qvariant_cast<QVariantMap>(property("Nr5g"));
+    }
+
     Q_PROPERTY(uint Rate READ rate)
     inline uint rate() const
     {
         return qvariant_cast<uint>(property("Rate"));
+    }
+
+    Q_PROPERTY(uint RssiThreshold READ rssiThreshold)
+    inline uint rssiThreshold() const
+    {
+        return qvariant_cast<uint>(property("RssiThreshold"));
+    }
+
+    Q_PROPERTY(bool ErrorRateThreshold READ errorRateThreshold)
+    inline bool errorRateThreshold() const
+    {
+        return qvariant_cast<bool>(property("ErrorRateThreshold"));
     }
 
     Q_PROPERTY(QVariantMap Umts READ umts)
@@ -84,6 +102,13 @@ public Q_SLOTS: // METHODS
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(rate);
         return asyncCallWithArgumentList(QLatin1String("Setup"), argumentList);
+    }
+
+    inline QDBusPendingReply<> SetupThresholds(const QVariantMap &settings)
+    {
+        QList<QVariant> argumentList;
+        argumentList << QVariant::fromValue(settings);
+        return asyncCallWithArgumentList(QLatin1String("SetupThresholds"), argumentList);
     }
 
 Q_SIGNALS: // SIGNALS

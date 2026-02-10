@@ -59,6 +59,20 @@ public:
     uint rate() const;
 
     /*!
+     * Returns RSSI threshold used for reporting.
+     *
+     * \since 6.24.0
+     */
+    uint rssiThreshold() const;
+
+    /*!
+     * Returns whether error rate threshold reporting is enabled.
+     *
+     * \since 6.24.0
+     */
+    bool errorRateThreshold() const;
+
+    /*!
      * Returns Dictionary of available signal information for the CDMA1x access technology.
      *
      * This dictionary is composed of a string key, with an associated data which contains type-specific information.
@@ -109,6 +123,13 @@ public:
     QVariantMap lte() const;
 
     /*!
+     * Returns Dictionary of available signal information for the NR5G access technology.
+     *
+     * \since 6.24.0
+     */
+    QVariantMap nr5g() const;
+
+    /*!
      * Returns Dictionary of available signal information for the UMTS (WCDMA) access technology.
      *
      * This dictionary is composed of a string key, with an associated data which contains type-specific information.
@@ -127,6 +148,13 @@ public:
     QDBusPendingReply<void> setup(uint rate);
 
     /*!
+     * Setup thresholds for extended signal quality information retrieval.
+     *
+     * \since 6.24.0
+     */
+    QDBusPendingReply<void> setupThresholds(const QVariantMap &settings);
+
+    /*!
      * Sets the timeout in milliseconds for all async method DBus calls.
      * -1 means the default DBus timeout (usually 25 seconds).
      */
@@ -143,6 +171,14 @@ Q_SIGNALS:
      */
     void rateChanged(uint rate);
     /*!
+     * \since 6.24.0
+     */
+    void rssiThresholdChanged(uint threshold);
+    /*!
+     * \since 6.24.0
+     */
+    void errorRateThresholdChanged(bool enabled);
+    /*!
      */
     void cdmaChanged(const QVariantMap &cdma);
     /*!
@@ -156,7 +192,11 @@ Q_SIGNALS:
     void umtsChanged(const QVariantMap &umts);
     /*!
      */
-    void lteChanged(const QString &lte);
+    void lteChanged(const QVariantMap &lte);
+    /*!
+     * \since 6.24.0
+     */
+    void nr5gChanged(const QVariantMap &nr5g);
 };
 
 } // namespace ModemManager
