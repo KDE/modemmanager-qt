@@ -19,6 +19,9 @@
 #include "generictypes.h"
 #include "interface.h"
 #include "modem.h"
+#if MM_CHECK_VERSION(1, 24, 0)
+#include "modemcellbroadcast.h"
+#endif
 #include "modemmessaging.h"
 #include "sim.h"
 
@@ -58,6 +61,7 @@ public:
      * \value GsmUssdInterface
      * \value CdmaInterface
      * \value MessagingInterface
+     * \value CellBroadcastInterface
      * \value LocationInterface
      * \value TimeInterface
      * \value FirmwareInterface
@@ -72,6 +76,9 @@ public:
         GsmUssdInterface,
         CdmaInterface,
         MessagingInterface,
+#if MM_CHECK_VERSION(1, 24, 0)
+        CellBroadcastInterface,
+#endif
         LocationInterface,
         TimeInterface,
         FirmwareInterface,
@@ -102,6 +109,12 @@ public:
     /*!
      */
     ModemManager::ModemMessaging::Ptr messagingInterface();
+#if MM_CHECK_VERSION(1, 24, 0)
+    /*!
+     * \since 6.24.0
+     */
+    ModemManager::ModemCellBroadcast::Ptr cellBroadcastInterface();
+#endif
     /*!
      */
     ModemManager::Modem::Ptr modemInterface();

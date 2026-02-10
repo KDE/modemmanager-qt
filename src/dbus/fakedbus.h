@@ -20,6 +20,7 @@
 /* Prefix for object paths */
 #define MMQT_DBUS_MODEM_PREFIX MMQT_DBUS_PATH "/Modem"
 #define MMQT_DBUS_BEARER_PREFIX MMQT_DBUS_PATH "/Bearer"
+#define MMQT_DBUS_CBM_PREFIX MMQT_DBUS_PATH "/CBM"
 #define MMQT_DBUS_SIM_PREFIX MMQT_DBUS_PATH "/SIM"
 #define MMQT_DBUS_SMS_PREFIX MMQT_DBUS_PATH "/SMS"
 #define MMQT_DBUS_CALL_PREFIX MMQT_DBUS_PATH "/Call"
@@ -29,7 +30,9 @@
 #define MMQT_DBUS_INTERFACE_BEARER "org.kde.fakemodem.Bearer"
 #define MMQT_DBUS_INTERFACE_SMS "org.kde.fakemodem.Sms"
 #define MMQT_DBUS_INTERFACE_CALL "org.kde.fakemodem.Call"
+#define MMQT_DBUS_INTERFACE_CBM "org.kde.fakemodem.Cbm"
 #define MMQT_DBUS_INTERFACE_MODEM "org.kde.fakemodem.Modem"
+#define MMQT_DBUS_INTERFACE_MODEM_CELLBROADCAST "org.kde.fakemodem.Modem.CellBroadcast"
 #define MMQT_DBUS_INTERFACE_MODEM_SIMPLE "org.kde.fakemodem.Modem.Simple"
 #define MMQT_DBUS_INTERFACE_MODEM_MODEM3GPP "org.kde.fakemodem.Modem.Modem3gpp"
 #define MMQT_DBUS_INTERFACE_MODEM_MODEM3GPP_USSD "org.kde.fakemodem.Modem.Modem3gpp.Ussd"

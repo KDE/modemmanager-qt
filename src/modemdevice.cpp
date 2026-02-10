@@ -18,6 +18,9 @@
 #include "modem3gpp.h"
 #include "modem3gppussd.h"
 #include "modemcdma.h"
+#if MM_CHECK_VERSION(1, 24, 0)
+#include "modemcellbroadcast.h"
+#endif
 #include "modemlocation.h"
 #if MM_CHECK_VERSION(1, 2, 0)
 #include "modemoma.h"
@@ -119,6 +122,10 @@ void ModemManager::ModemDevicePrivate::initInterfaces()
                 interfaceList.insert(ModemManager::ModemDevice::CdmaInterface, ModemManager::ModemCdma::Ptr());
             } else if (name == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_MESSAGING)) {
                 interfaceList.insert(ModemManager::ModemDevice::MessagingInterface, ModemManager::ModemMessaging::Ptr());
+#if MM_CHECK_VERSION(1, 24, 0)
+            } else if (name == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_CELLBROADCAST)) {
+                interfaceList.insert(ModemManager::ModemDevice::CellBroadcastInterface, ModemManager::ModemCellBroadcast::Ptr());
+#endif
             } else if (name == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_LOCATION)) {
                 interfaceList.insert(ModemManager::ModemDevice::LocationInterface, ModemManager::ModemLocation::Ptr());
             } else if (name == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_TIME)) {
@@ -234,6 +241,11 @@ ModemManager::Interface::Ptr ModemManager::ModemDevicePrivate::createInterface(M
     case ModemManager::ModemDevice::MessagingInterface:
         createdInterface = ModemManager::Interface::Ptr(new ModemManager::ModemMessaging(uni), &QObject::deleteLater);
         break;
+#if MM_CHECK_VERSION(1, 24, 0)
+    case ModemManager::ModemDevice::CellBroadcastInterface:
+        createdInterface = ModemManager::Interface::Ptr(new ModemManager::ModemCellBroadcast(uni), &QObject::deleteLater);
+        break;
+#endif
     case ModemManager::ModemDevice::LocationInterface:
         createdInterface = ModemManager::Interface::Ptr(new ModemManager::ModemLocation(uni), &QObject::deleteLater);
         break;
@@ -318,6 +330,15 @@ ModemManager::ModemMessaging::Ptr ModemManager::ModemDevice::messagingInterface(
     return d->interface(ModemManager::ModemDevice::MessagingInterface).objectCast<ModemManager::ModemMessaging>();
 }
 
+#if MM_CHECK_VERSION(1, 24, 0)
+ModemManager::ModemCellBroadcast::Ptr ModemManager::ModemDevice::cellBroadcastInterface()
+{
+    Q_D(ModemDevice);
+
+    return d->interface(ModemManager::ModemDevice::CellBroadcastInterface).objectCast<ModemManager::ModemCellBroadcast>();
+}
+#endif
+
 ModemManager::Modem::Ptr ModemManager::ModemDevice::modemInterface()
 {
     Q_D(ModemDevice);
@@ -384,6 +405,11 @@ void ModemManager::ModemDevicePrivate::onInterfacesAdded(const QDBusObjectPath &
             } else if (iface == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_MESSAGING)) {
                 interfaceList.insert(ModemManager::ModemDevice::MessagingInterface, ModemManager::ModemMessaging::Ptr());
                 Q_EMIT q->interfaceAdded(ModemManager::ModemDevice::MessagingInterface);
+#if MM_CHECK_VERSION(1, 24, 0)
+            } else if (iface == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_CELLBROADCAST)) {
+                interfaceList.insert(ModemManager::ModemDevice::CellBroadcastInterface, ModemManager::ModemCellBroadcast::Ptr());
+                Q_EMIT q->interfaceAdded(ModemManager::ModemDevice::CellBroadcastInterface);
+#endif
             } else if (iface == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_LOCATION)) {
                 interfaceList.insert(ModemManager::ModemDevice::LocationInterface, ModemManager::ModemLocation::Ptr());
                 Q_EMIT q->interfaceAdded(ModemManager::ModemDevice::LocationInterface);
@@ -447,6 +473,11 @@ void ModemManager::ModemDevicePrivate::onInterfacesRemoved(const QDBusObjectPath
         } else if (iface == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_MESSAGING)) {
             interfaceList.remove(ModemManager::ModemDevice::MessagingInterface);
             Q_EMIT q->interfaceRemoved(ModemManager::ModemDevice::MessagingInterface);
+#if MM_CHECK_VERSION(1, 24, 0)
+        } else if (iface == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_CELLBROADCAST)) {
+            interfaceList.remove(ModemManager::ModemDevice::CellBroadcastInterface);
+            Q_EMIT q->interfaceRemoved(ModemManager::ModemDevice::CellBroadcastInterface);
+#endif
         } else if (iface == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_LOCATION)) {
             interfaceList.remove(ModemManager::ModemDevice::LocationInterface);
             Q_EMIT q->interfaceRemoved(ModemManager::ModemDevice::LocationInterface);

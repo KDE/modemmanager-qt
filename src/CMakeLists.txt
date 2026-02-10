@@ -68,6 +68,20 @@ if (${MODEMMANAGER_VERSION} VERSION_EQUAL 1.6.0 OR ${MODEMMANAGER_VERSION} VERSI
         )
 endif()
 
+if (${MODEMMANAGER_VERSION} VERSION_EQUAL 1.24.0 OR ${MODEMMANAGER_VERSION} VERSION_GREATER 1.24.0)
+    set(ModemManagerQt_SRCS
+        ${ModemManagerQt_SRCS}
+        modemcellbroadcast.cpp
+        cbm.cpp
+        )
+
+    set(DBUS_INTERFACES_FILES
+        ${DBUS_INTERFACES_FILES}
+        dbus/cellbroadcastinterface.cpp
+        dbus/cbminterface.cpp
+        )
+endif()
+
 ecm_qt_export_logging_category(
     IDENTIFIER MMQT
     CATEGORY_NAME kf.modemmanagerqt
@@ -113,6 +127,7 @@ ecm_generate_headers(ModemManagerQt_CamelCaseHEADERS
     Interface
     Manager
     Modem
+    ModemCellBroadcast
     Modem3Gpp
     Modem3GppUssd
     ModemCdma
@@ -125,6 +140,7 @@ ecm_generate_headers(ModemManagerQt_CamelCaseHEADERS
     ModemTime
     ModemOma
     ModemVoice
+    Cbm
     Sim
     Sms
     PREFIX ModemManagerQt

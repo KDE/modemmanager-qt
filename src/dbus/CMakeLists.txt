@@ -7,6 +7,7 @@ set( INTERFACE_INTROSPECTION_XML_FILES
    introspection/org.freedesktop.ModemManager1.Modem.Firmware.xml
    introspection/org.freedesktop.ModemManager1.Modem.Location.xml
    introspection/org.freedesktop.ModemManager1.Modem.Messaging.xml
+   introspection/org.freedesktop.ModemManager1.Modem.CellBroadcast.xml
    introspection/org.freedesktop.ModemManager1.Modem.Modem3gpp.Ussd.xml
    introspection/org.freedesktop.ModemManager1.Modem.Modem3gpp.xml
    introspection/org.freedesktop.ModemManager1.Modem.ModemCdma.xml
@@ -18,6 +19,7 @@ set( INTERFACE_INTROSPECTION_XML_FILES
    introspection/org.freedesktop.ModemManager1.Modem.xml
    introspection/org.freedesktop.ModemManager1.Sim.xml
    introspection/org.freedesktop.ModemManager1.Sms.xml
+   introspection/org.freedesktop.ModemManager1.Cbm.xml
    introspection/org.freedesktop.ModemManager1.xml
 #    introspection/wip-org.freedesktop.ModemManager1.Modem.Contacts.xml
    )
