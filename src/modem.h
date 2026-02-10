@@ -278,14 +278,77 @@ public:
     QDBusPendingReply<void> setCurrentBands(const QList<MMModemBand> &bands);
 
     /*!
+     * Selects which SIM slot to be considered as primary, on devices that expose
+     * multiple slots in the simSlots() property.
      *
+     * When the switch happens the modem may require a full device reprobe, so the modem
+     * object in DBus will get removed, and recreated once the selected SIM slot is in use.
+     *
+     * There is no limitation on which SIM slot to select, so the user may also set as
+     * primary a slot that doesn't currently have any valid SIM card inserted.
+     *
+     * \a slot SIM slot number to set as primary.
+     *
+     * \since 6.24.0
+     */
+    QDBusPendingReply<void> setPrimarySimSlot(uint slot);
+
+    /*!
+     * Send an arbitrary AT command to a modem and get the response.
+     *
+     * Note that using this interface call is only allowed when running
+     * ModemManager in debug mode or if the project was built using the
+     * with-at-command-via-dbus configure option.
+     *
+     * \a cmd The command string, e.g. "AT+GCAP" or "+GCAP" (leading AT is inserted if necessary).
+     * \a timeout The number of seconds to wait for a response.
      */
     QDBusPendingReply<QString> command(const QString &cmd, uint timeout);
+
+    /*!
+     * Get information for available cells in different access technologies,
+     * either serving or neighboring along with radio frequency information.
+     *
+     * Returns an array of dictionaries, where each dictionary reports information for
+     * one single cell. Each dictionary has mandatory keys "cell-type" (a MMCellType value)
+     * and "serving" (a boolean indicating whether this is a serving or neighboring cell).
+     * Additional keys depend on the cell type (CDMA, GSM, UMTS, TD-SCDMA, LTE, 5GNR).
+     *
+     * \since 6.24.0
+     */
+    QDBusPendingReply<QVariantMapList> getCellInfo();
 
     /*!
      * Returns The path of the SIM object available in this device, if any.
      */
     QString simPath() const;
+
+    /*!
+     * Returns the list of SIM slots available in the system, including the SIM object
+     * paths if the cards are present. If a given SIM slot at a given index doesn't have
+     * a SIM card available, an empty object path will be given.
+     *
+     * The length of this list will be equal to the amount of available SIM slots in the
+     * system, and the index in the list is the slot index.
+     *
+     * \since 6.24.0
+     */
+    UIntList simSlots() const;
+
+    /*!
+     * Returns the index of the primary active SIM slot in the simSlots() list,
+     * given in the [1,N] range.
+     *
+     * If multiple SIM slots aren't supported, this property will report value 0.
+     *
+     * In a Multi SIM Single Standby setup, this index identifies the only SIM
+     * that is currently active. In a Multi SIM Multi Standby setup, this index
+     * identifies the active SIM that is considered primary, i.e. the one that
+     * will be used when a data connection is setup.
+     *
+     * \since 6.24.0
+     */
+    uint primarySimSlot() const;
 
     /*!
      * Returns List of MMModemCapability values, specifying the combinations of generic family of access technologies the modem supports.
@@ -323,6 +386,16 @@ public:
     uint maxActiveBearers() const;
 
     /*!
+     * Returns the maximum number of active MM_BEARER_TYPE_DEFAULT bearers that may be
+     * explicitly enabled by the user with multiplexing support on one single network interface.
+     *
+     * If the modem doesn't support multiplexing of data sessions, a value of 0 will be reported.
+     *
+     * \since 6.24.0
+     */
+    uint maxActiveMultiplexedBearers() const;
+
+    /*!
      * Returns The equipment manufacturer, as reported by the modem.
      */
     QString manufacturer() const;
@@ -336,6 +409,27 @@ public:
      * Returns The revision identification of the software, as reported by the modem.
      */
     QString revision() const;
+
+    /*!
+     * Returns the revision identification of the hardware, as reported by the modem.
+     *
+     * \since 6.24.0
+     */
+    QString hardwareRevision() const;
+
+    /*!
+     * Returns the description of the carrier-specific configuration (MCFG) in use by the modem.
+     *
+     * \since 6.24.0
+     */
+    QString carrierConfiguration() const;
+
+    /*!
+     * Returns the revision identification of the carrier-specific configuration (MCFG) in use by the modem.
+     *
+     * \since 6.24.0
+     */
+    QString carrierConfigurationRevision() const;
 
     /*!
      * Returns A best-effort device identifier based on various device
@@ -358,6 +452,16 @@ public:
      * In Linux for example, this points to a sysfs path of the usb_device object.
      */
     QString device() const;
+
+    /*!
+     * Returns the physical modem device path (ie, USB, PCI, PCMCIA device), which
+     * may be dependent upon the operating system.
+     *
+     * In Linux for example, this points to a sysfs path of the usb_device object.
+     *
+     * \since 6.24.0
+     */
+    QString physdev() const;
 
     /*!
      * Returns The Operating System device drivers handling communication with the modem hardware.
@@ -508,6 +612,14 @@ Q_SIGNALS:
      */
     void simPathChanged(const QString &oldPath, const QString &newPath);
     /*!
+     * \since 6.24.0
+     */
+    void simSlotsChanged(const ModemManager::UIntList &simSlots);
+    /*!
+     * \since 6.24.0
+     */
+    void primarySimSlotChanged(uint slot);
+    /*!
      */
     void supportedCapabilitiesChanged(const QList<MMModemCapability> &supportedCapabilities);
     /*!
@@ -520,6 +632,10 @@ Q_SIGNALS:
      */
     void maxActiveBearersChanged(uint maxActiveBearers);
     /*!
+     * \since 6.24.0
+     */
+    void maxActiveMultiplexedBearersChanged(uint maxActiveMultiplexedBearers);
+    /*!
      */
     void manufacturerChanged(const QString &manufacturer);
     /*!
@@ -529,11 +645,28 @@ Q_SIGNALS:
      */
     void revisionChanged(const QString &revision);
     /*!
+     * \since 6.24.0
+     */
+    void hardwareRevisionChanged(const QString &hardwareRevision);
+    /*!
+     * \since 6.24.0
+     */
+    void carrierConfigurationChanged(const QString &carrierConfiguration);
+    /*!
+     * \since 6.24.0
+     */
+    void carrierConfigurationRevisionChanged(const QString &carrierConfigurationRevision);
+    /*!
      */
     void deviceIdentifierChanged(const QString &deviceIdentifier);
     /*!
      */
     void deviceChanged(const QString &device);
+    /*!
+     * Emitted when the physical modem device path changes.
+     * \since 6.24.0
+     */
+    void physdevChanged(const QString &physdev);
     /*!
      */
     void driversChanged(const QStringList &drivers);

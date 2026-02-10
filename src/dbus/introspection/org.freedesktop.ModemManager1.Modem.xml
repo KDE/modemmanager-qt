@@ -17,6 +17,9 @@
 
       The Modem interface controls the status and actions in a given modem
       object.
+
+      This interface will always be available as long a the modem is considered
+      valid.
   -->
   <interface name="org.freedesktop.ModemManager1.Modem">
 
@@ -31,6 +34,8 @@
 
         When disabled, the modem enters low-power state and no network-related
         operations are available.
+
+        Since: 1.0
     -->
     <method name="Enable">
       <arg name="enable" type="b" direction="in" />
@@ -42,6 +47,11 @@
 
         List configured packet data bearers (EPS Bearers, PDP Contexts, or
         CDMA2000 Packet Data Sessions).
+
+        Since: 1.0
+
+        Deprecated: 1.10.0. Use #org.freedesktop.ModemManager1.Modem:Bearers
+        property instead.
     -->
     <method name="ListBearers">
       <arg name="bearers" type="ao" direction="out" />
@@ -49,7 +59,7 @@
 
     <!--
         CreateBearer:
-        @properties: List of properties to assign to the bearer after creating it.
+        @properties: Dictionary of properties needed to get the bearer connected.
         @path: On success, the object path of the newly created bearer.
 
         Create a new packet data bearer using the given characteristics.
@@ -57,34 +67,13 @@
         This request may fail if the modem does not support additional bearers,
         if too many bearers are already defined, or if properties are invalid.
 
-        Allowed properties are:
-        <variablelist>
-        <varlistentry><term><literal>"apn"</literal></term>
-          <listitem><para>Access Point Name, given as a string value (signature <literal>"s"</literal>). Required in 3GPP.</para></listitem></varlistentry>
-        <varlistentry><term><literal>"ip-type"</literal></term>
-          <listitem><para>Addressing type, given as a <link linkend="MMBearerIpFamily">MMBearerIpFamily</link> value (signature <literal>"u"</literal>). Optional in 3GPP and CDMA.</para></listitem></varlistentry>
-        <varlistentry><term><literal>"allowed-auth"</literal></term>
-          <listitem><para>The authentication method to use, given as a <link linkend="MMBearerAllowedAuth">MMBearerAllowedAuth</link> value (signature <literal>"u"</literal>). Optional in 3GPP.</para></listitem></varlistentry>
-        <varlistentry><term><literal>"user"</literal></term>
-          <listitem><para>User name (if any) required by the network, given as a string value (signature <literal>"s"</literal>). Optional in 3GPP.</para></listitem></varlistentry>
-        <varlistentry><term><literal>"password"</literal></term>
-          <listitem><para>Password (if any) required by the network, given as a string value (signature <literal>"s"</literal>). Optional in 3GPP.</para></listitem></varlistentry>
-        <varlistentry><term><literal>"allow-roaming"</literal></term>
-          <listitem><para>Flag to tell whether connection is allowed during roaming, given as a boolean value (signature <literal>"b"</literal>). Optional in 3GPP.</para></listitem></varlistentry>
-        <varlistentry><term><literal>"rm-protocol"</literal></term>
-          <listitem><para>Protocol of the Rm interface, given as a <link linkend="MMModemCdmaRmProtocol">MMModemCdmaRmProtocol</link> value (signature <literal>"u"</literal>). Optional in CDMA.</para></listitem></varlistentry>
-        <varlistentry><term><literal>"number"</literal></term>
-          <listitem><para>Telephone number to dial, given as a string value (signature <literal>"s"</literal>). Required in POTS.</para></listitem></varlistentry>
-        </variablelist>
+        The properties allowed are any of the ones defined in the
+        <link linkend="gdbus-property-org-freedesktop-ModemManager1-Bearer.Properties">bearer properties</link>.
 
-        Some properties are only applicable to a bearer of certain access
-        technologies, for example the <literal>"apn"</literal> property is not
-        applicable to CDMA2000 Packet Data Session bearers.
+        Since: 1.0
     -->
     <method name="CreateBearer">
-      <arg name="properties" type="a{sv}" direction="in">
-        <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="QVariantMap" />
-      </arg>
+      <arg name="properties" type="a{sv}" direction="in"  />
       <arg name="path"       type="o"     direction="out" />
     </method>
 
@@ -96,6 +85,8 @@
 
         If the bearer is currently active and providing packet data server, it
         will be disconnected and that packet data service will terminate.
+
+        Since: 1.0
     -->
     <method name="DeleteBearer">
       <arg name="bearer" type="o" direction="in" />
@@ -108,6 +99,8 @@
         a newly-powered-on state.
 
         This command may power-cycle the device.
+
+        Since: 1.0
     -->
     <method name="Reset" />
 
@@ -121,6 +114,8 @@
         If not required by the modem, @code may be ignored.
 
         This command may or may not power-cycle the device.
+
+        Since: 1.0
     -->
     <method name="FactoryReset">
       <arg name="code" type="s" direction="in" />
@@ -128,11 +123,13 @@
 
     <!--
         SetPowerState:
-	@state: A <link linkend="MMModemPowerState">MMModemPowerState</link> value, to specify the desired power state.
+        @state: A <link linkend="MMModemPowerState">MMModemPowerState</link> value, to specify the desired power state.
 
         Set the power state of the modem. This action can only be run when the
-	modem is in <link linkend="MM-MODEM-STATE-DISABLED:CAPS"><constant>MM_MODEM_STATE_DISABLED</constant></link>
-	state.
+        modem is in <link linkend="MM-MODEM-STATE-DISABLED:CAPS"><constant>MM_MODEM_STATE_DISABLED</constant></link>
+        state.
+
+        Since: 1.0
     -->
     <method name="SetPowerState">
       <arg name="state" type="u" direction="in" />
@@ -142,7 +139,14 @@
         SetCurrentCapabilities:
         @capabilities: Bitmask of <link linkend="MMModemCapability">MMModemCapability</link> values, to specify the capabilities to use.
 
-        Set the capabilities of the device. A restart of the modem may be required.
+        Set the capabilities of the device.
+
+        The given bitmask should be supported by the modem, as specified in the
+        #org.freedesktop.ModemManager1.Modem:SupportedCapabilities property.
+
+        This command may power-cycle the device.
+
+        Since: 1.0
     -->
     <method name="SetCurrentCapabilities">
       <arg name="capabilities" type="u" direction="in" />
@@ -157,11 +161,11 @@
 
         The given combination should be supported by the modem, as specified in the
         #org.freedesktop.ModemManager1.Modem:SupportedModes property.
+
+        Since: 1.0
     -->
     <method name="SetCurrentModes">
-      <arg name="modes" type="(uu)" direction="in">
-        <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="CurrentModesType"/>
-      </arg>
+      <arg name="modes" type="(uu)" direction="in" />
     </method>
 
     <!--
@@ -170,23 +174,493 @@
 
         Set the radio frequency and technology bands the device is currently
         allowed to use when connecting to a network.
+
+        Since: 1.0
     -->
     <method name="SetCurrentBands">
-      <arg name="bands" type="au" direction="in">
-        <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="QList&lt;uint&gt;" />
-      </arg>
+      <arg name="bands" type="au" direction="in" />
     </method>
 
     <!--
-       Command
-       @cmd The command string, e.g. "AT+GCAP" or "+GCAP" (leading AT is inserted if necessary).
-       @timeout The number of seconds to wait for a response.
-       @response The modem's response.
+        SetPrimarySimSlot:
+        @sim_slot: SIM slot number to set as primary.
 
-       Send an arbitrary AT command to a modem and get the response.
+        Selects which SIM slot to be considered as primary, on devices that expose
+        multiple slots in the #org.freedesktop.ModemManager1.Modem:SimSlots property.
 
-       Note that using this interface call is only allowed when running
-       ModemManager in debug mode.
+        When the switch happens the modem may require a full device reprobe, so the modem
+        object in DBus will get removed, and recreated once the selected SIM slot is in
+        use.
+
+        There is no limitation on which SIM slot to select, so the user may also set as
+        primary a slot that doesn't currently have any valid SIM card inserted.
+
+        Since: 1.16
+    -->
+    <method name="SetPrimarySimSlot">
+      <arg name="sim_slot" type="u" direction="in" />
+    </method>
+
+
+    <!--
+        GetCellInfo:
+
+        Get information for available cells in different access technologies,
+        either serving or neighboring along with radio frequency information.
+
+        An array of dictionaries is returned, where each dictionary reports information for
+        one single cell.
+
+        The dictionaries have mandatory keys that are always given, including:
+
+        <variablelist>
+          <varlistentry><term><literal>"cell-type"</literal></term>
+            <listitem>
+              The <link linkend="MMCellType">MMCellType</link>, given as an unsigned integer
+              value (signature <literal>"u"</literal>).
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><literal>"serving"</literal></term>
+            <listitem>
+              Flag specifying whether the cell is a serving cell or otherwise a neighboring cell,
+              given as a boolean value (signature <literal>"b"</literal>).
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        For each different cell type, other optional keys may be given.
+
+        <variablelist>
+          <varlistentry><term><link linkend="MM-CELL-TYPE-CDMA:CAPS">MM_CELL_TYPE_CDMA</link></term>
+            <listitem>
+              <para>
+                The CDMA cell information may include the following additional keys:
+              </para>
+              <variablelist>
+                <varlistentry><term><literal>"nid"</literal></term>
+                  <listitem>
+                    Network id, given as a string value (signature <literal>"s"</literal>)
+                    in upper-case hexadecimal format without leading zeros. E.g. <literal>"12345"</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"sid"</literal></term>
+                  <listitem>
+                    System id, given as a string value (signature <literal>"s"</literal>)
+                    in upper-case hexadecimal format without leading zeros. E.g. <literal>"ABCD"</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"base-station-id"</literal></term>
+                  <listitem>
+                    Base station id, given as a string value (signature <literal>"s"</literal>)
+                    in upper-case hexadecimal format without leading zeros. E.g. <literal>"3F"</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"ref-pn"</literal></term>
+                  <listitem>
+                    Base station PN number, given as a string value (signature <literal>"s"</literal>)
+                    in upper-case hexadecimal format without leading zeros. E.g. <literal>"3F"</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"pilot-strength"</literal></term>
+                  <listitem>
+                    The signal strength of the pilot, given in the same format and scale as the GSM
+                    SINR level, given as an unsigned integer value (signature <literal>"u"</literal>).
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><link linkend="MM-CELL-TYPE-GSM:CAPS">MM_CELL_TYPE_GSM</link></term>
+            <listitem>
+              <para>
+                The GSM cell information may include the following additional keys:
+              </para>
+              <variablelist>
+                <varlistentry><term><literal>"operator-id"</literal></term>
+                  <listitem>
+                    PLMN MCC/MNC, given as a string value (signature <literal>"s"</literal>).
+                    E.g. <literal>21034</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"lac"</literal></term>
+                  <listitem>
+                    This is the two-byte Location Area Code of the base station, given
+                    as a string value (signature <literal>"s"</literal>) in upper-case
+                    hexadecimal format without leading zeros, as specified in 3GPP TS
+                    27.007. E.g. <literal>"84CD"</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"ci"</literal></term>
+                  <listitem>
+                    This is the two- or four-byte Cell Identifier, given as a string value
+                    (signature <literal>"s"</literal>) in upper-case hexadecimal format
+                    without leading zeros, as specified in 3GPP TS 27.007.
+                    E.g. <literal>"2BAF"</literal> or <literal>"D30156"</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"timing-advance"</literal></term>
+                  <listitem>
+                    Measured delay (in bit periods; 1 bit period = 48/13 microsecond)
+                    of an access burst transmission on the RACH or PRACH to the expected
+                    signal from a mobile station at zero distance under static channel
+                    conditions, given as an unsigned integer value (signature
+                    <literal>"u"</literal>). Only applicable for the serving cell (i.e.
+                    "serving" must be TRUE).
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"arfcn"</literal></term>
+                  <listitem>
+                    Absolute RF channel number, given as an unsigned integer value (signature
+                    <literal>"u"</literal>).
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"base-station-id"</literal></term>
+                  <listitem>
+                    Base station id, given as a string value (signature <literal>"s"</literal>)
+                    in upper-case hexadecimal format without leading zeros, as specified in
+                    3GPP TS 27.007. E.g. <literal>"3F"</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"rx-level"</literal></term>
+                  <listitem>
+                    Serving cell Rx measurement, given as a unsigned integer value
+                    (signature <literal>"u"</literal>. Values range between 0 and 63.
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><link linkend="MM-CELL-TYPE-UMTS:CAPS">MM_CELL_TYPE_UMTS</link></term>
+            <listitem>
+              <para>
+                The UMTS cell information may include the following additional keys:
+              </para>
+              <variablelist>
+                <varlistentry><term><literal>"operator-id"</literal></term>
+                  <listitem>
+                    PLMN MCC/MNC, given as a string value (signature <literal>"s"</literal>).
+                    E.g. <literal>21034</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"lac"</literal></term>
+                  <listitem>
+                    This is the two-byte Location Area Code of the base station, given
+                    as a string value (signature <literal>"s"</literal>) in upper-case
+                    hexadecimal format without leading zeros, as specified in 3GPP TS
+                    27.007. E.g. <literal>"84CD"</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"ci"</literal></term>
+                  <listitem>
+                    This is the two- or four-byte Cell Identifier, given as a string value
+                    (signature <literal>"s"</literal>) in upper-case hexadecimal format
+                    without leading zeros, as specified in 3GPP TS 27.007.
+                    e.g. <literal>"2BAF"</literal> or <literal>"D30156"</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"frequency-fdd-ul"</literal></term>
+                  <listitem>
+                    In FDD, the frequency of the uplink in kHz, given as an unsigned integer value
+                    (signature <literal>"u"</literal>). Values range between 0 and 16383.
+                    Only applicable for the serving cell (i.e. "serving" must be TRUE).
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"frequency-fdd-dl"</literal></term>
+                  <listitem>
+                    In FDD, the frequency of the downlink in kHz, given as an unsigned integer value
+                    (signature <literal>"u"</literal>). Values range between 0 and 16383.
+                    Only applicable for the serving cell (i.e. "serving" must be TRUE).
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"frequency-tdd"</literal></term>
+                  <listitem>
+                    In TDD, the frequency in kHz, given as an unsigned integer value
+                    (signature <literal>"u"</literal>). Values range between 0 and 16383.
+                    Only applicable for the serving cell (i.e. "serving" must be TRUE).
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"uarfcn"</literal></term>
+                  <listitem>
+                    UTRA absolute RF channel number, given as an unsigned integer value
+                    (signature <literal>"u"</literal>).
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"psc"</literal></term>
+                  <listitem>
+                    Primary scrambling code, given as an unsigned integer value
+                    (signature <literal>"u"</literal>).
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"rscp"</literal></term>
+                  <listitem>
+                    Received signal code power; the received power on one code measured
+                    in dBm on the primary CPICH channel of the cell, given as a
+                    signed integer value (signature <literal>"d"</literal>).
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"ecio"</literal></term>
+                  <listitem>
+                    ECIO; the received energy per chip divided by the power density in the
+                    band measured in dBm on the primary CPICH channel of the cell, given as a
+                    signed integer value (signature <literal>"d"</literal>).
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"path-loss"</literal></term>
+                  <listitem>
+                    The path loss of the cell, given as an unsigned integer value (signature
+                    <literal>"u"</literal>.
+                    Only applicable for the serving cell (i.e. "serving" must be TRUE).
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><link linkend="MM-CELL-TYPE-TDSCDMA:CAPS">MM_CELL_TYPE_TDSCDMA</link></term>
+            <listitem>
+              <para>
+                The TD-SCDMA cell information may include the following additional keys:
+              </para>
+              <variablelist>
+                <varlistentry><term><literal>"operator-id"</literal></term>
+                  <listitem>
+                    PLMN MCC/MNC, given as a string value (signature <literal>"s"</literal>).
+                    E.g. <literal>21034</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"lac"</literal></term>
+                  <listitem>
+                    This is the two-byte Location Area Code of the base station, given
+                    as a string value (signature <literal>"s"</literal>) in upper-case
+                    hexadecimal format without leading zeros, as specified in 3GPP TS
+                    27.007. E.g. <literal>"84CD"</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"ci"</literal></term>
+                  <listitem>
+                    This is the two- or four-byte Cell Identifier, given as a string value
+                    (signature <literal>"s"</literal>) in upper-case hexadecimal format
+                    without leading zeros, as specified in 3GPP TS 27.007.
+                    e.g. <literal>"2BAF"</literal> or <literal>"D30156"</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"uarfcn"</literal></term>
+                  <listitem>
+                    UTRA absolute RF channel number, given as an unsigned integer value
+                    (signature <literal>"u"</literal>).
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"cell-parameter-id"</literal></term>
+                  <listitem>
+                    The cell parameter ID, given as an unsigned integer value
+                    (signature <literal>"u"</literal>).
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"timing-advance"</literal></term>
+                  <listitem>
+                    Measured delay (in bit periods; 1 bit period = 48/13 microsecond)
+                    of an access burst transmission on the RACH or PRACH to the expected
+                    signal from an MS at zero distance under static channel conditions,
+                    given as a unsigned integer value (signature <literal>"u"</literal>).
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"rscp"</literal></term>
+                  <listitem>
+                    Received signal code power; the received power on one code measured
+                    in dBm on the primary CPICH channel of the cell, given as a
+                    signed integer value (signature <literal>"d"</literal>).
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"path-loss"</literal></term>
+                  <listitem>
+                    The path loss of the cell, given as an unsigned integer value (signature
+                    <literal>"u"</literal>.
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><link linkend="MM-CELL-TYPE-LTE:CAPS">MM_CELL_TYPE_LTE</link></term>
+            <listitem>
+              <para>
+                The LTE cell information may include the following additional keys:
+              </para>
+              <variablelist>
+                <varlistentry><term><literal>"operator-id"</literal></term>
+                  <listitem>
+                    PLMN MCC/MNC, given as a string value (signature <literal>"s"</literal>).
+                    E.g. <literal>21034</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"tac"</literal></term>
+                  <listitem>
+                    This is the two- or three-byte Tracking Area Code of the base station, given
+                    as a string value (signature <literal>"s"</literal>) in upper-case
+                    hexadecimal format without leading zeros, as specified in 3GPP TS
+                    27.007. E.g. <literal>"84CD"</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"ci"</literal></term>
+                  <listitem>
+                    This is the two- or four-byte Cell Identifier, given as a string value
+                    (signature <literal>"s"</literal>) in upper-case hexadecimal format
+                    without leading zeros, as specified in 3GPP TS 27.007.
+                    e.g. <literal>"2BAF"</literal> or <literal>"D30156"</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"physical-ci"</literal></term>
+                  <listitem>
+                    The physical cell id, given as a string value
+                    (signature <literal>"s"</literal>) in upper-case hexadecimal format
+                    without leading zeros. E.g. <literal>"1A0"</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"earfcn"</literal></term>
+                  <listitem>
+                    E-UTRA absolute RF channel number, given as an unsigned integer value
+                    (signature <literal>"u"</literal>).
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"rsrp"</literal></term>
+                  <listitem>
+                    The average reference signal received power in dBm, given as a signed
+                    integer value (signature <literal>"d"</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"rsrq"</literal></term>
+                  <listitem>
+                    The average reference signal received quality in dB, given as a signed
+                    integer value (signature <literal>"d"</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"timing-advance"</literal></term>
+                  <listitem>
+                    The timing advance, given as an unsigned integer value (signature <literal>"u"</literal>).
+                    Only applicable for the serving cell (i.e. "serving" must be TRUE).
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"serving-cell-type"</literal></term>
+                  <listitem>
+                    A <link linkend="MMServingCellType">MMServingCellType</link> value indicating that the frequency
+                    information provided in this structure belongs to which servicing cell, given as an
+                    unsigned integer (signature <literal>"u"</literal>).
+                    Only applicable for the serving cell (i.e. "serving" must be TRUE). Since 1.22.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"bandwidth"</literal></term>
+                  <listitem>
+                    Bandwidth of the particular carrier in downlink, given as an unsigned integer
+                    (signature <literal>"u"</literal>). Only applicable for the serving cell
+                    (i.e. "serving" must be TRUE). Since 1.22.
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><link linkend="MM-CELL-TYPE-5GNR:CAPS">MM_CELL_TYPE_5GNR</link></term>
+            <listitem>
+              <para>
+                The 5GNR cell information may include the following additional keys:
+              </para>
+              <variablelist>
+                <varlistentry><term><literal>"operator-id"</literal></term>
+                  <listitem>
+                    PLMN MCC/MNC, given as a string value (signature <literal>"s"</literal>).
+                    E.g. <literal>21034</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"tac"</literal></term>
+                  <listitem>
+                    This is the two- or three-byte Tracking Area Code of the base station, given
+                    as a string value (signature <literal>"s"</literal>) in upper-case
+                    hexadecimal format without leading zeros, as specified in 3GPP TS
+                    27.007. E.g. <literal>"84CD"</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"ci"</literal></term>
+                  <listitem>
+                    This is the two- or four-byte Cell Identifier, given as a string value
+                    (signature <literal>"s"</literal>) in upper-case hexadecimal format
+                    without leading zeros, as specified in 3GPP TS 27.007.
+                    e.g. <literal>"2BAF"</literal> or <literal>"D30156"</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"physical-ci"</literal></term>
+                  <listitem>
+                    The physical cell id, given as a string value
+                    (signature <literal>"s"</literal>) in upper-case hexadecimal format
+                    without leading zeros. E.g. <literal>"1A0"</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"nrarfcn"</literal></term>
+                  <listitem>
+                    NR absolute RF channel number, given as an unsigned integer value
+                    (signature <literal>"u"</literal>).
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"rsrp"</literal></term>
+                  <listitem>
+                    The average reference signal received power in dBm, given as a signed
+                    integer value (signature <literal>"d"</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"rsrq"</literal></term>
+                  <listitem>
+                    The average reference signal received quality in dB, given as a signed
+                    integer value (signature <literal>"d"</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"sinr"</literal></term>
+                  <listitem>
+                    The signal to interference and noise ratio, given as a signed integer value
+                    (signature <literal>"d"</literal>.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"timing-advance"</literal></term>
+                  <listitem>
+                    The timing advance, given as an unsigned integer value (signature
+                    <literal>"u"</literal>).
+                    Only applicable for the serving cell (i.e. "serving" must be TRUE).
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"serving-cell-type"</literal></term>
+                  <listitem>
+                    A <link linkend="MMServingCellType">MMServingCellType</link> value indicating that the frequency
+                    information provided in this structure belongs to which servicing cell, given as an
+                    unsigned integer (signature <literal>"u"</literal>).
+                    Only applicable for the serving cell (i.e. "serving" must be TRUE).  Since 1.22.
+                  </listitem>
+                </varlistentry>
+                <varlistentry><term><literal>"bandwidth"</literal></term>
+                  <listitem>
+                    Bandwidth of the particular carrier in downlink, given as an unsigned integer
+                    (signature <literal>"u"</literal>). Only applicable for the serving cell
+                    (i.e. "serving" must be TRUE).  Since 1.22.
+                  </listitem>
+                </varlistentry>
+              </variablelist>
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        Since: 1.20
+    -->
+    <method name="GetCellInfo">
+      <arg name="cell_info" type="aa{sv}" direction="out" />
+    </method>
+
+    <!--
+        Command:
+        @cmd: The command string, e.g. "AT+GCAP" or "+GCAP" (leading AT is inserted if necessary).
+        @timeout: The number of seconds to wait for a response.
+        @response: The modem's response.
+
+        Send an arbitrary AT command to a modem and get the response.
+
+        Note that using this interface call is only allowed when running
+        ModemManager in debug mode or if the project was built using
+        the <literal>with-at-command-via-dbus</literal> configure option.
+
+        Since: 1.0
       -->
     <method name="Command">
       <arg name="cmd"      type="s" direction="in"  />
@@ -201,6 +675,8 @@
         @reason: A <link linkend="MMModemStateChangeReason">MMModemStateChangeReason</link> value, specifying the reason for this state change.
 
         The modem's state (see #org.freedesktop.ModemManager1.Modem:State) changed.
+
+        Since: 1.0
     -->
     <signal name="StateChanged">
       <arg name="old"    type="i" />
@@ -211,15 +687,71 @@
     <!--
         Sim:
 
-        The path of the SIM object available in this device, if any.
+        The path of the primary active SIM object available in this device,
+        if any.
+
+        This SIM object is the one used for network registration and data
+        connection setup.
+
+        If multiple #org.freedesktop.ModemManager1.Modem.SimSlots are
+        supported, the #org.freedesktop.ModemManager1.Modem.PrimarySimSlot
+        index value specifies which is the slot number where this SIM card
+        is available.
+
+        Since: 1.0
     -->
     <property name="Sim" type="o" access="read" />
+
+    <!--
+        SimSlots:
+
+        The list of SIM slots available in the system, including the SIM object
+        paths if the cards are present. If a given SIM slot at a given index
+        doesn't have a SIM card available, an empty object path will be given.
+
+        The length of this array of objects will be equal to the amount of
+        available SIM slots in the system, and the index in the array is the
+        slot index.
+
+        This list includes the SIM object considered as primary active SIM slot
+        (#org.freedesktop.ModemManager1.Modem.Sim) at index
+        #org.freedesktop.ModemManager1.Modem.ActiveSimSlot.
+
+        Since: 1.16
+    -->
+    <property name="SimSlots" type="ao" access="read" />
+
+    <!--
+        PrimarySimSlot:
+
+        The index of the primary active SIM slot in the
+        #org.freedesktop.ModemManager1.Modem.SimSlots array, given in the [1,N]
+        range.
+
+        If multiple SIM slots aren't supported, this property will report
+        value 0.
+
+        In a Multi SIM Single Standby setup, this index identifies the only SIM
+        that is currently active. All the remaining slots will be inactive.
+
+        In a Multi SIM Multi Standby setup, this index identifies the active SIM
+        that is considered primary, i.e. the one that will be used when a data
+        connection is setup.
+
+        Since: 1.16
+    -->
+    <property name="PrimarySimSlot" type="u" access="read" />
 
     <!--
         Bearers:
 
         The list of bearer object paths (EPS Bearers, PDP Contexts, or
-        CDMA2000 Packet Data Sessions).
+        CDMA2000 Packet Data Sessions) as requested by the user.
+
+        This list does not include the initial EPS bearer details (see
+        #org.freedesktop.ModemManager1.Modem.Modem3gpp:InitialEpsBearer).
+
+        Since: 1.2
     -->
     <property name="Bearers" type="ao" access="read" />
 
@@ -227,23 +759,32 @@
         SupportedCapabilities:
 
         List of <link linkend="MMModemCapability">MMModemCapability</link>
-        values, specifying the combinations of generic family of access
+        bitmasks, specifying the combinations of generic family of access
         technologies the modem supports.
 
-        If the modem doesn't allow changing the current capabilities, a single entry with
-        <link linkend="MM-MODEM-CAPABILITY-ANY:CAPS"><constant>MM_MODEM_CAPABILITY_ANY</constant></link>
-        will be given.
+        If the modem doesn't allow changing the current capabilities, the
+        list will report one single entry with the same bitmask as in
+        #org.freedesktop.ModemManager1.Modem:CurrentCapabilities.
+
+        Only multimode devices implementing both 3GPP (GSM/UMTS/LTE/5GNR) and
+        3GPP2 (CDMA/EVDO) specs will report more than one combination of
+        capabilities.
+
+        Since: 1.0
     -->
-    <property name="SupportedCapabilities" type="au" access="read">
-      <annotation name="org.qtproject.QtDBus.QtTypeName" value="UIntList"/>
-    </property>
+    <property name="SupportedCapabilities" type="au" access="read" />
 
     <!--
         CurrentCapabilities:
 
         Bitmask of <link linkend="MMModemCapability">MMModemCapability</link>
-        values, specifying the  generic family of access technologies the modem
-        currently supports without a firmware reload or reinitialization.
+        values, specifying the currently used generic family of access
+        technologies.
+
+        This bitmask will be one of the ones listed in
+        #org.freedesktop.ModemManager1.Modem:SupportedCapabilities.
+
+        Since: 1.0
     -->
     <property name="CurrentCapabilities" type="u" access="read" />
 
@@ -258,24 +799,54 @@
         while GSM/UMTS devices typically support three or more, and any
         LTE-capable device (whether LTE-only, GSM/UMTS-capable, and/or
         CDMA2000-capable) also typically support three or more.
+
+        Deprecated: 1.18.0. There is no way to query the modem how many bearers
+        it supports, so the value exposed in this property in all the different
+        implementations is always equal to the value in
+        #org.freedesktop.ModemManager1.Modem:MaxActiveBearers, so there is no
+        point in using this property.
+
+        Since: 1.0
     -->
     <property name="MaxBearers" type="u" access="read" />
 
     <!--
         MaxActiveBearers:
 
-        The maximum number of active packet data bearers the modem supports.
+        The maximum number of active
+        <link linkend="MM-BEARER-TYPE-DEFAULT:CAPS"><constant>MM_BEARER_TYPE_DEFAULT</constant></link>
+        bearers that may be explicitly enabled by the user without multiplexing support.
 
         POTS and CDMA2000-only devices support one active bearer, while GSM/UMTS
-        and LTE-capable devices (including LTE/CDMA devices) typically support
-        at least two active bearers.
+        and LTE/5GNR capable devices (including 3GPP+3GPP3 multimode devices) may support
+        one or more active bearers, depending on the amount of physical ports exposed
+        by the device.
+
+        Since: 1.0
     -->
     <property name="MaxActiveBearers" type="u" access="read" />
+
+    <!--
+        MaxActiveMultiplexedBearers:
+
+        The maximum number of active
+        <link linkend="MM-BEARER-TYPE-DEFAULT:CAPS"><constant>MM_BEARER_TYPE_DEFAULT</constant></link>
+        bearers that may be explicitly enabled by the user with multiplexing support
+        on one single network interface.
+
+        If the modem doesn't support multiplexing of data sessiones, a value of 0 will
+        be reported.
+
+        Since: 1.18
+    -->
+    <property name="MaxActiveMultiplexedBearers" type="u" access="read" />
 
     <!--
         Manufacturer:
 
         The equipment manufacturer, as reported by the modem.
+
+        Since: 1.0
     -->
     <property name="Manufacturer" type="s" access="read" />
 
@@ -283,6 +854,8 @@
         Model:
 
         The equipment model, as reported by the modem.
+
+        Since: 1.0
     -->
     <property name="Model" type="s" access="read" />
 
@@ -290,8 +863,37 @@
         Revision:
 
         The revision identification of the software, as reported by the modem.
+
+        Since: 1.0
     -->
     <property name="Revision" type="s" access="read" />
+
+    <!--
+        CarrierConfiguration:
+
+        The description of the carrier-specific configuration (MCFG) in use by the modem.
+
+        Since: 1.12
+    -->
+    <property name="CarrierConfiguration" type="s" access="read" />
+
+    <!--
+        CarrierConfigurationRevision:
+
+        The revision identification of the carrier-specific configuration (MCFG) in use by the modem.
+
+        Since: 1.12
+    -->
+    <property name="CarrierConfigurationRevision" type="s" access="read" />
+
+    <!--
+        HardwareRevision:
+
+        The revision identification of the hardware, as reported by the modem.
+
+        Since: 1.8
+    -->
+    <property name="HardwareRevision" type="s" access="read" />
 
     <!--
         DeviceIdentifier:
@@ -306,6 +908,8 @@
 
         This is not the device's IMEI or ESN since those may not be available
         before unlocking the device via a PIN.
+
+        Since: 1.0
     -->
     <property name="DeviceIdentifier" type="s" access="read" />
 
@@ -317,14 +921,34 @@
 
         In Linux for example, this points to a sysfs path of the usb_device
         object.
+
+        This value may also be set by the user using the MM_ID_PHYSDEV_UID udev
+        tag (e.g. binding the tag to a specific sysfs path).
+
+        Since: 1.0
     -->
     <property name="Device" type="s" access="read" />
+
+    <!--
+        Physdev:
+
+        The physical modem device path (ie, USB, PCI, PCMCIA device), which
+        may be dependent upon the operating system.
+
+        In Linux for example, this points to a sysfs path of the usb_device
+        object.
+
+        Since: 1.22
+    -->
+    <property name="Physdev" type="s" access="read" />
 
     <!--
         Drivers:
 
         The Operating System device drivers handling communication with the modem
         hardware.
+
+        Since: 1.0
     -->
     <property name="Drivers" type="as" access="read" />
 
@@ -332,6 +956,8 @@
         Plugin:
 
         The name of the plugin handling this modem.
+
+        Since: 1.0
     -->
     <property name="Plugin" type="s" access="read" />
 
@@ -339,6 +965,8 @@
         PrimaryPort:
 
         The name of the primary port using to control the modem.
+
+        Since: 1.0
     -->
     <property name="PrimaryPort" type="s" access="read" />
 
@@ -349,10 +977,10 @@
         integer pairs. The string is the port name or path, and the integer is
         the port type given as a
         <link linkend="MMModemPortType">MMModemPortType</link> value.
+
+        Since: 1.0
     -->
-    <property name="Ports" type="a(su)" access="read">
-        <annotation name="org.qtproject.QtDBus.QtTypeName" value="PortList"/>
-    </property>
+    <property name="Ports" type="a(su)" access="read" />
 
     <!--
         EquipmentIdentifier:
@@ -361,6 +989,8 @@
 
         This will be the IMEI number for GSM devices and the hex-format ESN/MEID
         for CDMA devices.
+
+        Since: 1.0
     -->
     <property name="EquipmentIdentifier" type="s" access="read" />
 
@@ -369,6 +999,8 @@
 
         Current lock state of the device, given as a
         <link linkend="MMModemLock">MMModemLock</link> value.
+
+        Since: 1.0
     -->
     <property name="UnlockRequired" type="u" access="read" />
 
@@ -380,10 +1012,10 @@
         before the code becomes blocked (requiring a PUK) or permanently blocked. Dictionary
         entries exist only for the codes for which the modem is able to report retry
         counts.
+
+        Since: 1.0
      -->
-    <property name="UnlockRetries" type="a{uu}" access="read">
-      <annotation name="org.qtproject.QtDBus.QtTypeName" value="UnlockRetriesMap"/>
-    </property>
+    <property name="UnlockRetries" type="a{uu}" access="read" />
 
     <!--
         State:
@@ -394,6 +1026,8 @@
         If the device's state cannot be determined,
         <link linkend="MM-MODEM-STATE-UNKNOWN:CAPS"><constant>MM_MODEM_STATE_UNKNOWN</constant></link>
         will be reported.
+
+        Since: 1.0
     -->
     <property name="State" type="i" access="read" />
 
@@ -401,9 +1035,11 @@
         StateFailedReason:
 
         Error specifying why the modem is in
-	<link linkend="MM-MODEM-STATE-FAILED:CAPS"><constant>MM_MODEM_STATE_FAILED</constant></link>
-	state, given as a
-	<link linkend="MMModemStateFailedReason">MMModemStateFailedReason</link> value.
+        <link linkend="MM-MODEM-STATE-FAILED:CAPS"><constant>MM_MODEM_STATE_FAILED</constant></link>
+        state, given as a
+        <link linkend="MMModemStateFailedReason">MMModemStateFailedReason</link> value.
+
+        Since: 1.0
     -->
     <property name="StateFailedReason" type="u" access="read" />
 
@@ -417,6 +1053,8 @@
         If the device's access technology cannot be determined,
         <link linkend="MM-MODEM-ACCESS-TECHNOLOGY-UNKNOWN:CAPS"><constant>MM_MODEM_ACCESS_TECHNOLOGY_UNKNOWN</constant></link>
         will be reported.
+
+        Since: 1.0
     -->
     <property name="AccessTechnologies" type="u" access="read" />
 
@@ -429,24 +1067,28 @@
 
         The additional boolean value indicates if the quality value given was
         recently taken.
+
+        Since: 1.0
     -->
-    <property name="SignalQuality" type="(ub)" access="read">
-      <annotation name="org.qtproject.QtDBus.QtTypeName" value="SignalQualityPair"/>
-    </property>
+    <property name="SignalQuality" type="(ub)" access="read" />
 
     <!--
         OwnNumbers:
 
         List of numbers (e.g. MSISDN in 3GPP) being currently handled by this
         modem.
+
+        Since: 1.0
     -->
     <property name="OwnNumbers" type="as" access="read" />
 
     <!--
         PowerState:
 
-	A <link linkend="MMModemPowerState">MMModemPowerState</link> value
-	specifying the current power state of the modem.
+        A <link linkend="MMModemPowerState">MMModemPowerState</link> value
+        specifying the current power state of the modem.
+
+        Since: 1.0
     -->
     <property name="PowerState" type="u" access="read" />
 
@@ -470,10 +1112,10 @@
             </listitem>
           </varlistentry>
         </variablelist>
+
+        Since: 1.0
     -->
-    <property name="SupportedModes" type="a(uu)" access="read">
-      <annotation name="org.qtproject.QtDBus.QtTypeName" value="SupportedModesType"/>
-    </property>
+    <property name="SupportedModes" type="a(uu)" access="read" />
 
     <!--
         CurrentModes:
@@ -485,10 +1127,10 @@
 
         The pair must be one of those specified in
         #org.freedesktop.ModemManager1.Modem:SupportedModes.
+
+        Since: 1.0
     -->
-    <property name="CurrentModes" type="(uu)" access="read">
-      <annotation name="org.qtproject.QtDBus.QtTypeName" value="CurrentModesType"/>
-    </property>
+    <property name="CurrentModes" type="(uu)" access="read" />
 
     <!--
         SupportedBands:
@@ -500,10 +1142,10 @@
         For POTS devices, only the
         <link linkend="MM-MODEM-BAND-ANY:CAPS"><constant>MM_MODEM_BAND_ANY</constant></link>
         mode will be returned.
+
+        Since: 1.0
     -->
-    <property name="SupportedBands" type="au" access="read">
-      <annotation name="org.qtproject.QtDBus.QtTypeName" value="UIntList"/>
-    </property>
+    <property name="SupportedBands" type="au" access="read" />
 
     <!--
         CurrentBands:
@@ -513,16 +1155,18 @@
         currently using when connecting to a network.
 
         It must be a subset of #org.freedesktop.ModemManager1.Modem:SupportedBands.
+
+        Since: 1.0
     -->
-    <property name="CurrentBands" type="au" access="read">
-      <annotation name="org.qtproject.QtDBus.QtTypeName" value="UIntList"/>
-    </property>
+    <property name="CurrentBands" type="au" access="read" />
 
     <!--
         SupportedIpFamilies:
 
         Bitmask of <link linkend="MMBearerIpFamily">MMBearerIpFamily</link> values,
         specifying the IP families supported by the device.
+
+        Since: 1.0
     -->
     <property name="SupportedIpFamilies" type="u" access="read" />
 

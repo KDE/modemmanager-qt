@@ -56,6 +56,18 @@ public:
         return qvariant_cast<QList<QDBusObjectPath>>(property("Bearers"));
     }
 
+    Q_PROPERTY(QString CarrierConfiguration READ carrierConfiguration)
+    inline QString carrierConfiguration() const
+    {
+        return qvariant_cast<QString>(property("CarrierConfiguration"));
+    }
+
+    Q_PROPERTY(QString CarrierConfigurationRevision READ carrierConfigurationRevision)
+    inline QString carrierConfigurationRevision() const
+    {
+        return qvariant_cast<QString>(property("CarrierConfigurationRevision"));
+    }
+
     Q_PROPERTY(ModemManager::UIntList CurrentBands READ currentBands)
     inline ModemManager::UIntList currentBands() const
     {
@@ -98,6 +110,12 @@ public:
         return qvariant_cast<QString>(property("EquipmentIdentifier"));
     }
 
+    Q_PROPERTY(QString HardwareRevision READ hardwareRevision)
+    inline QString hardwareRevision() const
+    {
+        return qvariant_cast<QString>(property("HardwareRevision"));
+    }
+
     Q_PROPERTY(QString Manufacturer READ manufacturer)
     inline QString manufacturer() const
     {
@@ -108,6 +126,12 @@ public:
     inline uint maxActiveBearers() const
     {
         return qvariant_cast<uint>(property("MaxActiveBearers"));
+    }
+
+    Q_PROPERTY(uint MaxActiveMultiplexedBearers READ maxActiveMultiplexedBearers)
+    inline uint maxActiveMultiplexedBearers() const
+    {
+        return qvariant_cast<uint>(property("MaxActiveMultiplexedBearers"));
     }
 
     Q_PROPERTY(uint MaxBearers READ maxBearers)
@@ -152,6 +176,18 @@ public:
         return qvariant_cast<QString>(property("PrimaryPort"));
     }
 
+    Q_PROPERTY(uint PrimarySimSlot READ primarySimSlot)
+    inline uint primarySimSlot() const
+    {
+        return qvariant_cast<uint>(property("PrimarySimSlot"));
+    }
+
+    Q_PROPERTY(QString Physdev READ physdev)
+    inline QString physdev() const
+    {
+        return qvariant_cast<QString>(property("Physdev"));
+    }
+
     Q_PROPERTY(QString Revision READ revision)
     inline QString revision() const
     {
@@ -168,6 +204,12 @@ public:
     inline QDBusObjectPath sim() const
     {
         return qvariant_cast<QDBusObjectPath>(property("Sim"));
+    }
+
+    Q_PROPERTY(ModemManager::UIntList SimSlots READ simSlots)
+    inline ModemManager::UIntList simSlots() const
+    {
+        return qvariant_cast<ModemManager::UIntList>(property("SimSlots"));
     }
 
     Q_PROPERTY(int State READ state)
@@ -254,6 +296,12 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QLatin1String("FactoryReset"), argumentList);
     }
 
+    inline QDBusPendingReply<ModemManager::QVariantMapList> GetCellInfo()
+    {
+        QList<QVariant> argumentList;
+        return asyncCallWithArgumentList(QLatin1String("GetCellInfo"), argumentList);
+    }
+
     inline QDBusPendingReply<QList<QDBusObjectPath>> ListBearers()
     {
         QList<QVariant> argumentList;
@@ -285,6 +333,13 @@ public Q_SLOTS: // METHODS
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(modes);
         return asyncCallWithArgumentList(QLatin1String("SetCurrentModes"), argumentList);
+    }
+
+    inline QDBusPendingReply<> SetPrimarySimSlot(uint slot)
+    {
+        QList<QVariant> argumentList;
+        argumentList << QVariant::fromValue(slot);
+        return asyncCallWithArgumentList(QLatin1String("SetPrimarySimSlot"), argumentList);
     }
 
     inline QDBusPendingReply<> SetPowerState(uint state)

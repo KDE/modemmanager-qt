@@ -164,14 +164,21 @@ ModemManager::ModemPrivate::ModemPrivate(const QString &path, Modem *q)
         currentCapabilities = (QFlags<MMModemCapability>)modemIface.currentCapabilities();
         maxBearers = modemIface.maxBearers();
         maxActiveBearers = modemIface.maxActiveBearers();
+        maxActiveMultiplexedBearers = modemIface.maxActiveMultiplexedBearers();
         manufacturer = modemIface.manufacturer();
         model = modemIface.model();
         revision = modemIface.revision();
+        hardwareRevision = modemIface.hardwareRevision();
+        carrierConfiguration = modemIface.carrierConfiguration();
+        carrierConfigurationRevision = modemIface.carrierConfigurationRevision();
         deviceIdentifier = modemIface.deviceIdentifier();
         device = modemIface.device();
+        physdev = modemIface.physdev();
         drivers = modemIface.drivers();
         plugin = modemIface.plugin();
         primaryPort = modemIface.primaryPort();
+        primarySimSlot = modemIface.primarySimSlot();
+        simSlots = modemIface.simSlots();
         ports = modemIface.ports();
         equipmentIdentifier = modemIface.equipmentIdentifier();
         unlockRequired = (MMModemLock)modemIface.unlockRequired();
@@ -381,10 +388,22 @@ QDBusPendingReply<void> ModemManager::Modem::setCurrentBands(const QList<MMModem
     return d->modemIface.SetCurrentBands(tmp);
 }
 
+QDBusPendingReply<void> ModemManager::Modem::setPrimarySimSlot(uint slot)
+{
+    Q_D(Modem);
+    return d->modemIface.SetPrimarySimSlot(slot);
+}
+
 QDBusPendingReply<QString> ModemManager::Modem::command(const QString &cmd, uint timeout)
 {
     Q_D(Modem);
     return d->modemIface.Command(cmd, timeout);
+}
+
+QDBusPendingReply<ModemManager::QVariantMapList> ModemManager::Modem::getCellInfo()
+{
+    Q_D(Modem);
+    return d->modemIface.GetCellInfo();
 }
 
 QString ModemManager::Modem::simPath() const
@@ -417,6 +436,12 @@ uint ModemManager::Modem::maxActiveBearers() const
     return d->maxActiveBearers;
 }
 
+uint ModemManager::Modem::maxActiveMultiplexedBearers() const
+{
+    Q_D(const Modem);
+    return d->maxActiveMultiplexedBearers;
+}
+
 QString ModemManager::Modem::manufacturer() const
 {
     Q_D(const Modem);
@@ -435,6 +460,24 @@ QString ModemManager::Modem::revision() const
     return d->revision;
 }
 
+QString ModemManager::Modem::hardwareRevision() const
+{
+    Q_D(const Modem);
+    return d->hardwareRevision;
+}
+
+QString ModemManager::Modem::carrierConfiguration() const
+{
+    Q_D(const Modem);
+    return d->carrierConfiguration;
+}
+
+QString ModemManager::Modem::carrierConfigurationRevision() const
+{
+    Q_D(const Modem);
+    return d->carrierConfigurationRevision;
+}
+
 QString ModemManager::Modem::deviceIdentifier() const
 {
     Q_D(const Modem);
@@ -445,6 +488,12 @@ QString ModemManager::Modem::device() const
 {
     Q_D(const Modem);
     return d->device;
+}
+
+QString ModemManager::Modem::physdev() const
+{
+    Q_D(const Modem);
+    return d->physdev;
 }
 
 QStringList ModemManager::Modem::drivers() const
@@ -463,6 +512,18 @@ QString ModemManager::Modem::primaryPort() const
 {
     Q_D(const Modem);
     return d->primaryPort;
+}
+
+uint ModemManager::Modem::primarySimSlot() const
+{
+    Q_D(const Modem);
+    return d->primarySimSlot;
+}
+
+ModemManager::UIntList ModemManager::Modem::simSlots() const
+{
+    Q_D(const Modem);
+    return d->simSlots;
 }
 
 ModemManager::PortList ModemManager::Modem::ports() const
@@ -599,6 +660,16 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
             Q_EMIT q->simPathChanged(simPath, it->toString());
             simPath = it->toString();
         }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_SIMSLOTS));
+        if (it != changedProps.constEnd()) {
+            simSlots = qdbus_cast<UIntList>(*it);
+            Q_EMIT q->simSlotsChanged(simSlots);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_PRIMARYSIMSLOT));
+        if (it != changedProps.constEnd()) {
+            primarySimSlot = it->toUInt();
+            Q_EMIT q->primarySimSlotChanged(primarySimSlot);
+        }
 #if MM_CHECK_VERSION(1, 2, 0)
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_BEARERS));
         if (it != changedProps.constEnd()) {
@@ -651,6 +722,11 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
             maxActiveBearers = it->toUInt();
             Q_EMIT q->maxActiveBearersChanged(maxActiveBearers);
         }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_MAXACTIVEMULTIPLEXEDBEARERS));
+        if (it != changedProps.constEnd()) {
+            maxActiveMultiplexedBearers = it->toUInt();
+            Q_EMIT q->maxActiveMultiplexedBearersChanged(maxActiveMultiplexedBearers);
+        }
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_MANUFACTURER));
         if (it != changedProps.constEnd()) {
             manufacturer = it->toString();
@@ -666,6 +742,21 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
             revision = it->toString();
             Q_EMIT q->revisionChanged(revision);
         }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_HARDWAREREVISION));
+        if (it != changedProps.constEnd()) {
+            hardwareRevision = it->toString();
+            Q_EMIT q->hardwareRevisionChanged(hardwareRevision);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_CARRIERCONFIGURATION));
+        if (it != changedProps.constEnd()) {
+            carrierConfiguration = it->toString();
+            Q_EMIT q->carrierConfigurationChanged(carrierConfiguration);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_CARRIERCONFIGURATIONREVISION));
+        if (it != changedProps.constEnd()) {
+            carrierConfigurationRevision = it->toString();
+            Q_EMIT q->carrierConfigurationRevisionChanged(carrierConfigurationRevision);
+        }
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_DEVICEIDENTIFIER));
         if (it != changedProps.constEnd()) {
             deviceIdentifier = it->toString();
@@ -675,6 +766,11 @@ void ModemManager::ModemPrivate::onPropertiesChanged(const QString &ifaceName, c
         if (it != changedProps.constEnd()) {
             device = it->toString();
             Q_EMIT q->deviceChanged(device);
+        }
+        it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_PHYSDEV));
+        if (it != changedProps.constEnd()) {
+            physdev = it->toString();
+            Q_EMIT q->physdevChanged(physdev);
         }
         it = changedProps.constFind(QLatin1String(MM_MODEM_PROPERTY_DRIVERS));
         if (it != changedProps.constEnd()) {
