@@ -23,6 +23,10 @@ public:
 
     QFlags<MMModemLocationSource> capabilities;
     QFlags<MMModemLocationSource> enabledCapabilities;
+    QFlags<MMModemLocationAssistanceDataType> supportedAssistanceData;
+    QString suplServer;
+    QStringList assistanceDataServers;
+    uint gpsRefreshRate;
     bool signalsLocation;
     LocationInformationMap location;
 

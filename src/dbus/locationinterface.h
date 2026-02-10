@@ -13,11 +13,13 @@
 #define MODEMMANAGERQT_LOCATIONINTERFACE_H
 
 #include "generictypes.h"
+#include <QByteArray>
 #include <QDBusAbstractInterface>
 #include <QDBusPendingReply>
 #include <QList>
 #include <QObject>
 #include <QString>
+#include <QStringList>
 #include <QVariant>
 
 /*
@@ -57,6 +59,30 @@ public:
         return qvariant_cast<uint>(property("Enabled"));
     }
 
+    Q_PROPERTY(uint SupportedAssistanceData READ supportedAssistanceData)
+    inline uint supportedAssistanceData() const
+    {
+        return qvariant_cast<uint>(property("SupportedAssistanceData"));
+    }
+
+    Q_PROPERTY(QString SuplServer READ suplServer)
+    inline QString suplServer() const
+    {
+        return qvariant_cast<QString>(property("SuplServer"));
+    }
+
+    Q_PROPERTY(QStringList AssistanceDataServers READ assistanceDataServers)
+    inline QStringList assistanceDataServers() const
+    {
+        return qvariant_cast<QStringList>(property("AssistanceDataServers"));
+    }
+
+    Q_PROPERTY(uint GpsRefreshRate READ gpsRefreshRate)
+    inline uint gpsRefreshRate() const
+    {
+        return qvariant_cast<uint>(property("GpsRefreshRate"));
+    }
+
     Q_PROPERTY(ModemManager::LocationInformationMap Location READ location)
     inline ModemManager::LocationInformationMap location() const
     {
@@ -70,10 +96,31 @@ public:
     }
 
 public Q_SLOTS: // METHODS
+    inline QDBusPendingReply<> InjectAssistanceData(const QByteArray &data)
+    {
+        QList<QVariant> argumentList;
+        argumentList << QVariant::fromValue(data);
+        return asyncCallWithArgumentList(QLatin1String("InjectAssistanceData"), argumentList);
+    }
+
     inline QDBusPendingReply<ModemManager::LocationInformationMap> GetLocation()
     {
         QList<QVariant> argumentList;
         return asyncCallWithArgumentList(QLatin1String("GetLocation"), argumentList);
+    }
+
+    inline QDBusPendingReply<> SetGpsRefreshRate(uint rate)
+    {
+        QList<QVariant> argumentList;
+        argumentList << QVariant::fromValue(rate);
+        return asyncCallWithArgumentList(QLatin1String("SetGpsRefreshRate"), argumentList);
+    }
+
+    inline QDBusPendingReply<> SetSuplServer(const QString &server)
+    {
+        QList<QVariant> argumentList;
+        argumentList << QVariant::fromValue(server);
+        return asyncCallWithArgumentList(QLatin1String("SetSuplServer"), argumentList);
     }
 
     inline QDBusPendingReply<> Setup(uint sources, bool signal_location)

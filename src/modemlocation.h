@@ -15,6 +15,7 @@
 #include <QDBusPendingReply>
 #include <QObject>
 #include <QSharedPointer>
+#include <QStringList>
 
 #include "generictypes.h"
 #include "interface.h"
@@ -41,6 +42,7 @@ class MODEMMANAGERQT_EXPORT ModemLocation : public Interface
     Q_OBJECT
     Q_DECLARE_PRIVATE(ModemLocation)
     Q_FLAGS(MMModemLocationSource)
+    Q_FLAGS(MMModemLocationAssistanceDataType)
 
 public:
     /*!
@@ -53,6 +55,7 @@ public:
     typedef QList<Ptr> List;
 
     Q_DECLARE_FLAGS(LocationSources, MMModemLocationSource)
+    Q_DECLARE_FLAGS(AssistanceDataTypes, MMModemLocationAssistanceDataType)
 
     /*!
      */
@@ -83,6 +86,27 @@ public:
     QDBusPendingReply<LocationInformationMap> getLocation();
 
     /*!
+     * Set the SUPL server to use for A-GPS.
+     *
+     * \since 6.24.0
+     */
+    QDBusPendingReply<void> setSuplServer(const QString &server);
+
+    /*!
+     * Inject assistance data into the modem.
+     *
+     * \since 6.24.0
+     */
+    QDBusPendingReply<void> injectAssistanceData(const QByteArray &data);
+
+    /*!
+     * Set the refresh rate for the GPS engine.
+     *
+     * \since 6.24.0
+     */
+    QDBusPendingReply<void> setGpsRefreshRate(uint rate);
+
+    /*!
      * Returns QFlags of MMModemLocationSource values, specifying the supported location sources.
      */
     LocationSources capabilities() const;
@@ -96,6 +120,34 @@ public:
      * Returns whether the device has any location capabilities
      */
     bool isEnabled() const;
+
+    /*!
+     * Returns supported assistance data types.
+     *
+     * \since 6.24.0
+     */
+    AssistanceDataTypes supportedAssistanceData() const;
+
+    /*!
+     * Returns the configured SUPL server.
+     *
+     * \since 6.24.0
+     */
+    QString suplServer() const;
+
+    /*!
+     * Returns the list of assistance data servers.
+     *
+     * \since 6.24.0
+     */
+    QStringList assistanceDataServers() const;
+
+    /*!
+     * Returns the GPS refresh rate in seconds.
+     *
+     * \since 6.24.0
+     */
+    uint gpsRefreshRate() const;
 
     /*!
      * Returns TRUE if location updates will be emitted via the locationChanged() signal, FALSE if location updates will not be emitted.
@@ -132,6 +184,22 @@ Q_SIGNALS:
      */
     void enabledCapabilitiesChanged(QFlags<MMModemLocationSource> capabilities);
     /*!
+     * \since 6.24.0
+     */
+    void supportedAssistanceDataChanged(QFlags<MMModemLocationAssistanceDataType> supported);
+    /*!
+     * \since 6.24.0
+     */
+    void suplServerChanged(const QString &server);
+    /*!
+     * \since 6.24.0
+     */
+    void assistanceDataServersChanged(const QStringList &servers);
+    /*!
+     * \since 6.24.0
+     */
+    void gpsRefreshRateChanged(uint rate);
+    /*!
      */
     void signalsLocationChanged(bool signalsLocation);
     /*!
@@ -141,6 +209,7 @@ Q_SIGNALS:
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(ModemLocation::LocationSources)
+Q_DECLARE_OPERATORS_FOR_FLAGS(ModemLocation::AssistanceDataTypes)
 
 } // namespace ModemManager
 
