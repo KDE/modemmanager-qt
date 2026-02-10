@@ -15,6 +15,7 @@
 #else
 #include "dbus/dbus.h"
 #endif
+#include <QDBusObjectPath>
 
 ModemManager::Modem3gppPrivate::Modem3gppPrivate(const QString &path, Modem3gpp *q)
     : InterfacePrivate(path, q)
@@ -28,9 +29,20 @@ ModemManager::Modem3gppPrivate::Modem3gppPrivate(const QString &path, Modem3gpp 
     if (modem3gppIface.isValid()) {
         imei = modem3gppIface.imei();
         registrationState = (MMModem3gppRegistrationState)modem3gppIface.registrationState();
+        networkRejection = modem3gppIface.networkRejection();
         operatorCode = modem3gppIface.operatorCode();
         operatorName = modem3gppIface.operatorName();
         enabledFacilityLocks = (QFlags<MMModem3gppFacility>)modem3gppIface.enabledFacilityLocks();
+#if MM_CHECK_VERSION(1, 10, 0)
+        epsUeModeOperation = (MMModem3gppEpsUeModeOperation)modem3gppIface.epsUeModeOperation();
+        pco = modem3gppIface.pco();
+        initialEpsBearer = modem3gppIface.initialEpsBearer().path();
+        initialEpsBearerSettings = modem3gppIface.initialEpsBearerSettings();
+#endif
+#if MM_CHECK_VERSION(1, 20, 0)
+        packetServiceState = (MMModem3gppPacketServiceState)modem3gppIface.packetServiceState();
+        nr5gRegistrationSettings = modem3gppIface.nr5gRegistrationSettings();
+#endif
 #if MM_CHECK_VERSION(1, 2, 0)
         subscriptionState = (MMModem3gppSubscriptionState)modem3gppIface.subscriptionState();
 #endif
@@ -53,6 +65,12 @@ ModemManager::Modem3gpp::Modem3gpp(const QString &path, QObject *parent)
 
     qRegisterMetaType<QFlags<MMModem3gppFacility>>();
     qRegisterMetaType<MMModem3gppRegistrationState>();
+#if MM_CHECK_VERSION(1, 10, 0)
+    qRegisterMetaType<MMModem3gppEpsUeModeOperation>();
+#endif
+#if MM_CHECK_VERSION(1, 20, 0)
+    qRegisterMetaType<MMModem3gppPacketServiceState>();
+#endif
 #if MM_CHECK_VERSION(1, 2, 0)
     qRegisterMetaType<MMModem3gppSubscriptionState>();
 #endif
@@ -127,10 +145,91 @@ void ModemManager::Modem3gpp::registerToNetwork(const QString &networkId)
     d->modem3gppIface.Register(networkId);
 }
 
+QDBusPendingReply<void> ModemManager::Modem3gpp::disableFacilityLock(MMModem3gppFacility facility, const QString &controlKey)
+{
+    Q_D(Modem3gpp);
+    FacilityLock lock;
+    lock.facility = facility;
+    lock.controlKey = controlKey;
+    return d->modem3gppIface.DisableFacilityLock(lock);
+}
+
+QDBusPendingReply<void> ModemManager::Modem3gpp::setCarrierLock(const QByteArray &data)
+{
+    Q_D(Modem3gpp);
+    return d->modem3gppIface.SetCarrierLock(data);
+}
+
+QDBusPendingReply<void> ModemManager::Modem3gpp::setPacketServiceState(MMModem3gppPacketServiceState state)
+{
+    Q_D(Modem3gpp);
+    return d->modem3gppIface.SetPacketServiceState((uint)state);
+}
+
+QDBusPendingReply<void> ModemManager::Modem3gpp::setEpsUeModeOperation(MMModem3gppEpsUeModeOperation mode)
+{
+    Q_D(Modem3gpp);
+    return d->modem3gppIface.SetEpsUeModeOperation((uint)mode);
+}
+
+QDBusPendingReply<void> ModemManager::Modem3gpp::setInitialEpsBearerSettings(const QVariantMap &settings)
+{
+    Q_D(Modem3gpp);
+    return d->modem3gppIface.SetInitialEpsBearerSettings(settings);
+}
+
+QDBusPendingReply<void> ModemManager::Modem3gpp::setNr5gRegistrationSettings(const QVariantMap &properties)
+{
+    Q_D(Modem3gpp);
+    return d->modem3gppIface.SetNr5gRegistrationSettings(properties);
+}
+
 QDBusPendingReply<ModemManager::QVariantMapList> ModemManager::Modem3gpp::scan()
 {
     Q_D(Modem3gpp);
     return d->modem3gppIface.Scan();
+}
+
+QVariantMap ModemManager::Modem3gpp::networkRejection() const
+{
+    Q_D(const Modem3gpp);
+    return d->networkRejection;
+}
+
+MMModem3gppEpsUeModeOperation ModemManager::Modem3gpp::epsUeModeOperation() const
+{
+    Q_D(const Modem3gpp);
+    return d->epsUeModeOperation;
+}
+
+ModemManager::PcoInfoList ModemManager::Modem3gpp::pco() const
+{
+    Q_D(const Modem3gpp);
+    return d->pco;
+}
+
+QString ModemManager::Modem3gpp::initialEpsBearer() const
+{
+    Q_D(const Modem3gpp);
+    return d->initialEpsBearer;
+}
+
+QVariantMap ModemManager::Modem3gpp::initialEpsBearerSettings() const
+{
+    Q_D(const Modem3gpp);
+    return d->initialEpsBearerSettings;
+}
+
+MMModem3gppPacketServiceState ModemManager::Modem3gpp::packetServiceState() const
+{
+    Q_D(const Modem3gpp);
+    return d->packetServiceState;
+}
+
+QVariantMap ModemManager::Modem3gpp::nr5gRegistrationSettings() const
+{
+    Q_D(const Modem3gpp);
+    return d->nr5gRegistrationSettings;
 }
 
 void ModemManager::Modem3gpp::setTimeout(int timeout)
@@ -162,6 +261,11 @@ void ModemManager::Modem3gppPrivate::onPropertiesChanged(const QString &interfac
             registrationState = (MMModem3gppRegistrationState)it->toUInt();
             Q_EMIT q->registrationStateChanged(registrationState);
         }
+        it = properties.constFind(QLatin1String(MM_MODEM_MODEM3GPP_PROPERTY_NETWORKREJECTION));
+        if (it != properties.constEnd()) {
+            networkRejection = qdbus_cast<QVariantMap>(*it);
+            Q_EMIT q->networkRejectionChanged(networkRejection);
+        }
         it = properties.constFind(QLatin1String(MM_MODEM_MODEM3GPP_PROPERTY_OPERATORCODE));
         if (it != properties.constEnd()) {
             operatorCode = it->toString();
@@ -186,6 +290,40 @@ void ModemManager::Modem3gppPrivate::onPropertiesChanged(const QString &interfac
             enabledFacilityLocks = (QFlags<MMModem3gppFacility>)it->toUInt();
             Q_EMIT q->enabledFacilityLocksChanged(enabledFacilityLocks);
         }
+#if MM_CHECK_VERSION(1, 10, 0)
+        it = properties.constFind(QLatin1String(MM_MODEM_MODEM3GPP_PROPERTY_EPSUEMODEOPERATION));
+        if (it != properties.constEnd()) {
+            epsUeModeOperation = (MMModem3gppEpsUeModeOperation)it->toUInt();
+            Q_EMIT q->epsUeModeOperationChanged(epsUeModeOperation);
+        }
+        it = properties.constFind(QLatin1String(MM_MODEM_MODEM3GPP_PROPERTY_PCO));
+        if (it != properties.constEnd()) {
+            pco = qdbus_cast<PcoInfoList>(*it);
+            Q_EMIT q->pcoChanged(pco);
+        }
+        it = properties.constFind(QLatin1String(MM_MODEM_MODEM3GPP_PROPERTY_INITIALEPSBEARER));
+        if (it != properties.constEnd()) {
+            initialEpsBearer = qdbus_cast<QDBusObjectPath>(*it).path();
+            Q_EMIT q->initialEpsBearerChanged(initialEpsBearer);
+        }
+        it = properties.constFind(QLatin1String(MM_MODEM_MODEM3GPP_PROPERTY_INITIALEPSBEARERSETTINGS));
+        if (it != properties.constEnd()) {
+            initialEpsBearerSettings = qdbus_cast<QVariantMap>(*it);
+            Q_EMIT q->initialEpsBearerSettingsChanged(initialEpsBearerSettings);
+        }
+#endif
+#if MM_CHECK_VERSION(1, 20, 0)
+        it = properties.constFind(QLatin1String(MM_MODEM_MODEM3GPP_PROPERTY_PACKETSERVICESTATE));
+        if (it != properties.constEnd()) {
+            packetServiceState = (MMModem3gppPacketServiceState)it->toUInt();
+            Q_EMIT q->packetServiceStateChanged(packetServiceState);
+        }
+        it = properties.constFind(QLatin1String(MM_MODEM_MODEM3GPP_PROPERTY_NR5GREGISTRATIONSETTINGS));
+        if (it != properties.constEnd()) {
+            nr5gRegistrationSettings = qdbus_cast<QVariantMap>(*it);
+            Q_EMIT q->nr5gRegistrationSettingsChanged(nr5gRegistrationSettings);
+        }
+#endif
 #if MM_CHECK_VERSION(1, 2, 0)
         it = properties.constFind(QLatin1String(MM_MODEM_MODEM3GPP_PROPERTY_SUBSCRIPTIONSTATE));
         if (it != properties.constEnd()) {

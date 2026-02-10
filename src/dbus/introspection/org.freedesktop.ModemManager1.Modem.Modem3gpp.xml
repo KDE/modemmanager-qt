@@ -17,6 +17,11 @@
 
       This interface provides access to specific actions that may be performed
       in modems with 3GPP capabilities.
+
+      This interface will only be available once the modem is ready to be
+      registered in the cellular network. 3GPP devices will require a valid
+      unlocked SIM card before any of the features in the interface can be
+      used.
   -->
   <interface name="org.freedesktop.ModemManager1.Modem.Modem3gpp">
 
@@ -25,6 +30,8 @@
         @operator_id: The operator ID (ie, <literal>"MCCMNC"</literal>, like <literal>"310260"</literal>) to register. An empty string can be used to register to the home network.
 
         Request registration with a given mobile network.
+
+        Since: 1.0
     -->
     <method name="Register">
       <arg name="operator_id" type="s" direction="in" />
@@ -80,17 +87,65 @@
             </listitem>
           </varlistentry>
         </variablelist>
+
+        Since: 1.0
     -->
     <method name="Scan">
-      <arg name="results" type="aa{sv}" direction="out">
-        <annotation name="org.qtproject.QtDBus.QtTypeName.Out0" value="QVariantMapList"/>
-      </arg>
+      <arg name="results" type="aa{sv}" direction="out" />
+    </method>
+
+    <!--
+        SetEpsUeModeOperation:
+        @mode: a <link linkend="MMModem3gppEpsUeModeOperation">MMModem3gppEpsUeModeOperation</link>.
+
+        Sets the UE mode of operation for EPS.
+
+        Since: 1.10
+    -->
+    <method name="SetEpsUeModeOperation">
+      <arg name="mode" type="u" direction="in" />
+    </method>
+
+    <!--
+        SetInitialEpsBearerSettings:
+        @settings: List of properties to use when requesting the LTE attach procedure.
+
+        Updates the default settings to be used in the initial default EPS bearer when registering to the LTE network.
+
+        The allowed properties in this method are all the 3GPP-specific ones specified
+        in the <link linkend="gdbus-property-org-freedesktop-ModemManager1-Bearer.Properties">bearer properties</link>;
+        i.e.: <literal>"apn"</literal>, <literal>"ip-type"</literal>,
+        <literal>"allowed-auth"</literal>, <literal>"user"</literal>, and
+        <literal>"password"</literal>.
+
+        Since: 1.10
+    -->
+    <method name="SetInitialEpsBearerSettings">
+      <arg name="settings" type="a{sv}" direction="in" />
+    </method>
+
+    <!--
+        SetNr5gRegistrationSettings:
+        @properties: List of 5G specific registration settings.
+
+        Updates the 5G specific registration settings configured in the device.
+
+        The allowed properties in this method are all the ones specified in the
+        <link linkend="gdbus-property-org-freedesktop-ModemManager1-Modem-Modem3gpp.Nr5gRegistrationSettings">Nr5gRegistrationSettings</link>;
+        i.e.: <literal>"mico-mode"</literal> and <literal>"drx-cycle"</literal>.
+
+        Since: 1.20
+    -->
+    <method name="SetNr5gRegistrationSettings">
+      <arg name="properties" type="a{sv}" direction="in" />
     </method>
 
     <!--
         Imei:
 
         The <ulink url="http://en.wikipedia.org/wiki/Imei">IMEI</ulink> of the device.
+
+        Since: 1.0
     -->
     <property name="Imei" type="s" access="read" />
 
@@ -100,8 +155,57 @@
         A <link linkend="MMModem3gppRegistrationState">MMModem3gppRegistrationState</link>
         value specifying the mobile registration status as defined in 3GPP TS 27.007
         section 10.1.19.
+
+        Since: 1.0
     -->
     <property name="RegistrationState" type="u" access="read" />
+
+    <!--
+        NetworkRejection:
+
+        This property holds the latest network rejection information received from the
+        network during registration failure, and it will be cleared whenever the modem
+        successfully registers.
+        Network errors are defined in 3GPP TS 24.008 in sections 10.5.3.6 and
+        10.5.5.14 (detailed in annex G) and in 3GPP TS 24.301 in section 9.9.3.9.
+
+        Mandatory items include:
+        <variablelist>
+          <varlistentry><term><literal>"error"</literal></term>
+            <listitem>
+              A <link linkend="MMNetworkError">MMNetworkError</link>,
+              specifying the reason why a request from the mobile station
+              is rejected by the network, given as an unsigned integer value
+              (signature <literal>"u"</literal>).
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        Optionally following items could be included if reported by modem along
+        with network error.
+        <variablelist>
+          <varlistentry><term><literal>"operator-id"</literal></term>
+            <listitem>
+              Operator id reported along with network error, given as a string value (signature <literal>"s"</literal>).
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><literal>"operator-name"</literal></term>
+            <listitem>
+              Operator name reported along with network error, given as a string value (signature <literal>"s"</literal>).
+            </listitem>
+          </varlistentry>
+          <varlistentry><term><literal>"access-technology"</literal></term>
+            <listitem>
+              A <link linkend="MMModemAccessTechnology">MMModemAccessTechnology</link>,
+              specifying the available data class reported along with network error,
+              given as an unsigned integer value (signature <literal>"u"</literal>).
+            </listitem>
+          </varlistentry>
+        </variablelist>
+
+        Since: 1.24
+    -->
+    <property name="NetworkRejection" type="a{sv}" access="read" />
 
     <!--
         OperatorCode:
@@ -116,6 +220,8 @@
         If the <literal>MCC</literal> and <literal>MNC</literal> are not known
         or the mobile is not registered to a mobile network, this property will
         be a zero-length (blank) string.
+
+        Since: 1.0
     -->
     <property name="OperatorCode" type="s" access="read" />
 
@@ -127,6 +233,8 @@
         If the operator name is not known or the mobile is not
         registered to a mobile network, this property will be a zero-length
         (blank) string.
+
+        Since: 1.0
     -->
     <property name="OperatorName" type="s" access="read" />
 
@@ -135,8 +243,64 @@
 
         Bitmask of <link linkend="MMModem3gppFacility">MMModem3gppFacility</link> values
         for which PIN locking is enabled.
+
+        Since: 1.0
     -->
     <property name="EnabledFacilityLocks" type="u" access="read" />
+
+    <!--
+        DisableFacilityLock:
+        @properties: A tuple of facility type and control key.
+
+        Sends control key to modem to disable selected facility lock
+
+        <variablelist>
+        <varlistentry><term>"facility"</term>
+          <listitem>
+            <para>
+              A <link linkend="MMModem3gppFacility">MMModem3gppFacility</link> value
+              representing the type of the facility lock to disable.
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry><term>"control key"</term>
+          <listitem>
+            <para>
+              Alphanumeric key required to unlock facility.
+            </para>
+          </listitem>
+        </varlistentry>
+        </variablelist>
+    -->
+    <method name="DisableFacilityLock">
+        <arg name="properties" type="(us)" direction="in" />
+    </method>
+
+    <!--
+        SetCarrierLock:
+        @data: The list of carrier network information to be sent to be configured.
+
+        Command to send the list of carrier network information to the modem.
+
+        Since: 1.22
+    -->
+    <method name="SetCarrierLock">
+      <arg name="data" type="ay" direction="in">
+        <annotation name="org.gtk.GDBus.C.ForceGVariant" value="true"/>
+      </arg>
+    </method>
+
+    <!--
+        SetPacketServiceState:
+        @state: a <link linkend="MMModem3gppPacketServiceState">MMModem3gppPacketServiceState</link>.
+
+        Explicitly attach or detach packet service on the current registered network.
+
+        Since: 1.20
+    -->
+    <method name="SetPacketServiceState">
+      <arg name="state" type="u" direction="in" />
+    </method>
 
     <!--
         SubscriptionState:
@@ -144,8 +308,125 @@
         A <link linkend="MMModem3gppSubscriptionState">MMModem3gppSubscriptionState</link>
         value representing the subscription status of the account and whether there
         is any data remaining, given as an unsigned integer (signature <literal>"u"</literal>).
+
+        Since: 1.2
+
+        Deprecated: 1.10.0. The value of this property can only be obtained with operator
+        specific logic (e.g. processing specific PCO info), and therefore it doesn't make sense
+        to expose it in the ModemManager interface.
     -->
     <property name="SubscriptionState" type="u" access="read" />
+
+    <!--
+        EpsUeModeOperation:
+
+        A <link linkend="MMModem3gppEpsUeModeOperation">MMModem3gppEpsUeModeOperation</link>
+        value representing the UE mode of operation for EPS, given as an unsigned integer
+        (signature <literal>"u"</literal>).
+
+        Since: 1.10
+    -->
+    <property name="EpsUeModeOperation" type="u" access="read" />
+
+    <!--
+        Pco:
+
+        The raw PCOs received from the network, given as array of PCO
+        elements (signature <literal>"a(ubay)"</literal>).
+
+        Each PCO is defined as a sequence of 3 fields:
+        <orderedlist>
+          <listitem>
+            The session ID associated with the PCO, given as an
+            unsigned integer value (signature <literal>"u"</literal>).
+          </listitem>
+          <listitem>
+            The flag that indicates whether the PCO data contains the
+            complete PCO structure received from the network, given as
+            a boolean value (signature <literal>"b"</literal>).
+          </listitem>
+          <listitem>
+            The raw  PCO data, given as an array of bytes (signature
+            <literal>"ay"</literal>).
+          </listitem>
+        </orderedlist>
+
+        Since: 1.10
+    -->
+    <property name="Pco" type="a(ubay)" access="read" />
+
+    <!--
+        InitialEpsBearer:
+
+        The object path for the initial default EPS bearer.
+
+        Since: 1.10
+    -->
+    <property name="InitialEpsBearer" type="o" access="read" />
+
+    <!--
+        InitialEpsBearerSettings:
+
+        List of properties requested by the device for the initial EPS bearer during
+        LTE network attach procedure.
+
+        The network may decide to use different settings during the actual device attach
+        procedure, e.g. if the device is roaming or no explicit settings were requested,
+        so the values shown in the
+        #org.freedesktop.ModemManager1.Modem.Modem3gpp:InitialEpsBearer
+        bearer object may be totally different.
+
+        This is a read-only property, updating these settings should be done using the
+        <link linkend="gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp.SetInitialEpsBearerSettings">SetInitialEpsBearerSettings()</link>
+        method.
+
+        Since: 1.10
+    -->
+    <property name="InitialEpsBearerSettings" type="a{sv}" access="read" />
+
+    <!--
+        PacketServiceState:
+
+        A <link linkend="MMModem3gppPacketServiceState">MMModem3gppPacketServiceState</link>
+        value specifying the packet domain service state.
+
+        Since: 1.20
+    -->
+    <property name="PacketServiceState" type="u" access="read" />
+
+    <!--
+        Nr5gRegistrationSettings:
+
+        5G specific registration settings.
+
+        This is a read-only property, updating these settings should be done using the
+        <link linkend="gdbus-method-org-freedesktop-ModemManager1-Modem-Modem3gpp.SetNr5gRegistrationSettings">Set5gNrRegistrationSettings()</link>
+        method.
+
+        <variablelist>
+        <varlistentry><term>"mico-mode"</term>
+          <listitem>
+            <para>
+              A <link linkend="MMModem3gppMicoMode">MMModem3gppMicoMode</link> value
+              representing the Mobile Initiated Connection (MICO) mode requested by the host,
+              given as an unsigned integer (signature <literal>"u"</literal>).
+            </para>
+          </listitem>
+        </varlistentry>
+        <varlistentry><term>"drx-cycle"</term>
+          <listitem>
+            <para>
+              A <link linkend="MMModem3gppDrxCycle">MMModem3gppDrxCycle</link> value,
+              representing the DRX settings requested by the host, given as an
+              unsigned integer (signature <literal>"u"</literal>).
+            </para>
+          </listitem>
+        </varlistentry>
+        </variablelist>
+
+        Since: 1.20
+    -->
+    <property name="Nr5gRegistrationSettings" type="a{sv}" access="read" />
 
   </interface>
 </node>

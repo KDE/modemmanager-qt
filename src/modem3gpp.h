@@ -12,6 +12,7 @@
 
 #include <modemmanagerqt_export.h>
 
+#include <QByteArray>
 #include <QDBusPendingReply>
 #include <QObject>
 #include <QSharedPointer>
@@ -118,6 +119,69 @@ public:
     void registerToNetwork(const QString &networkId = QString());
 
     /*!
+     * Sends control key to modem to disable the selected facility lock.
+     *
+     * \a facility A MMModem3gppFacility value representing the type of the facility lock to disable.
+     * \a controlKey Alphanumeric key required to unlock the facility.
+     *
+     * \since 6.24.0
+     */
+    QDBusPendingReply<void> disableFacilityLock(MMModem3gppFacility facility, const QString &controlKey);
+
+    /*!
+     * Sends the list of carrier network information to the modem to configure carrier lock.
+     *
+     * \a data The list of carrier network information to be sent to the modem.
+     *
+     * \since 6.24.0
+     */
+    QDBusPendingReply<void> setCarrierLock(const QByteArray &data);
+
+    /*!
+     * Explicitly attach or detach packet service on the current registered network.
+     *
+     * \a state A MMModem3gppPacketServiceState value.
+     *
+     * \since 6.24.0
+     */
+    QDBusPendingReply<void> setPacketServiceState(MMModem3gppPacketServiceState state);
+
+    /*!
+     * Sets the UE mode of operation for EPS.
+     *
+     * \a mode A MMModem3gppEpsUeModeOperation value.
+     *
+     * \since 6.24.0
+     */
+    QDBusPendingReply<void> setEpsUeModeOperation(MMModem3gppEpsUeModeOperation mode);
+
+    /*!
+     * Updates the default settings to be used in the initial default EPS bearer
+     * when registering to the LTE network.
+     *
+     * The allowed properties are the 3GPP-specific ones specified in the bearer properties:
+     * "apn", "ip-type", "allowed-auth", "user", and "password".
+     *
+     * \a settings List of properties to use when requesting the LTE attach procedure.
+     *
+     * \since 6.24.0
+     */
+    QDBusPendingReply<void> setInitialEpsBearerSettings(const QVariantMap &settings);
+
+    /*!
+     * Updates the 5G specific registration settings configured in the device.
+     *
+     * The allowed properties are: "mico-mode" (a MMModem3gppMicoMode value representing the
+     * Mobile Initiated Connection mode requested by the host) and "drx-cycle" (a
+     * MMModem3gppDrxCycle value representing the DRX settings requested by the host).
+     *
+     * \a properties List of 5G specific registration settings.
+     *
+     * \since 6.24.0
+     */
+    QDBusPendingReply<void> setNr5gRegistrationSettings(const QVariantMap &properties);
+
+    /*!
      * Scan for available networks.
      *
      * Returns a QList<QVariantMap> with the results, where each map may contain these values:
@@ -142,6 +206,81 @@ public:
      * unsigned integer (signature "u").
      */
     QDBusPendingReply<QVariantMapList> scan();
+
+    /*!
+     * Returns the latest network rejection information received from the network
+     * during registration failure. This is cleared whenever the modem successfully registers.
+     *
+     * Network errors are defined in 3GPP TS 24.008 sections 10.5.3.6 and 10.5.5.14
+     * (detailed in annex G) and in 3GPP TS 24.301 section 9.9.3.9.
+     *
+     * The returned map always contains "error" (a MMNetworkError value), and may optionally
+     * include "operator-id", "operator-name", and "access-technology" (a MMModemAccessTechnology value).
+     *
+     * \since 6.24.0
+     */
+    QVariantMap networkRejection() const;
+
+    /*!
+     * Returns a MMModem3gppEpsUeModeOperation value representing the UE mode of
+     * operation for EPS.
+     *
+     * \since 6.24.0
+     */
+    MMModem3gppEpsUeModeOperation epsUeModeOperation() const;
+
+    /*!
+     * Returns the raw Protocol Configuration Options (PCO) received from the network.
+     *
+     * Each PCO element is a sequence of: the session ID (unsigned integer), a flag
+     * indicating whether the data contains the complete PCO structure (boolean), and
+     * the raw PCO data (byte array).
+     *
+     * \since 6.24.0
+     */
+    ModemManager::PcoInfoList pco() const;
+
+    /*!
+     * Returns the object path for the initial default EPS bearer.
+     *
+     * \since 6.24.0
+     */
+    QString initialEpsBearer() const;
+
+    /*!
+     * Returns the properties requested by the device for the initial EPS bearer during
+     * LTE network attach procedure.
+     *
+     * The network may decide to use different settings during the actual device attach
+     * procedure, e.g. if the device is roaming or no explicit settings were requested,
+     * so the values shown in the InitialEpsBearer bearer object may be totally different.
+     *
+     * These settings should be updated using setInitialEpsBearerSettings().
+     *
+     * \since 6.24.0
+     */
+    QVariantMap initialEpsBearerSettings() const;
+
+    /*!
+     * Returns a MMModem3gppPacketServiceState value specifying the packet domain
+     * service state.
+     *
+     * \since 6.24.0
+     */
+    MMModem3gppPacketServiceState packetServiceState() const;
+
+    /*!
+     * Returns the 5G specific registration settings.
+     *
+     * The returned map may contain: "mico-mode" (a MMModem3gppMicoMode value representing
+     * the Mobile Initiated Connection mode requested by the host) and "drx-cycle" (a
+     * MMModem3gppDrxCycle value representing the DRX settings requested by the host).
+     *
+     * These settings should be updated using setNr5gRegistrationSettings().
+     *
+     * \since 6.24.0
+     */
+    QVariantMap nr5gRegistrationSettings() const;
 
     /*!
      * Sets the timeout in milliseconds for all async method DBus calls.
@@ -177,6 +316,34 @@ Q_SIGNALS:
     /*!
      */
     void subscriptionStateChanged(MMModem3gppSubscriptionState subscriptionState);
+    /*!
+     * \since 6.24.0
+     */
+    void networkRejectionChanged(const QVariantMap &networkRejection);
+    /*!
+     * \since 6.24.0
+     */
+    void epsUeModeOperationChanged(MMModem3gppEpsUeModeOperation mode);
+    /*!
+     * \since 6.24.0
+     */
+    void pcoChanged(const ModemManager::PcoInfoList &pco);
+    /*!
+     * \since 6.24.0
+     */
+    void initialEpsBearerChanged(const QString &path);
+    /*!
+     * \since 6.24.0
+     */
+    void initialEpsBearerSettingsChanged(const QVariantMap &settings);
+    /*!
+     * \since 6.24.0
+     */
+    void packetServiceStateChanged(MMModem3gppPacketServiceState state);
+    /*!
+     * \since 6.24.0
+     */
+    void nr5gRegistrationSettingsChanged(const QVariantMap &settings);
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(Modem3gpp::FacilityLocks)

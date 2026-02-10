@@ -27,6 +27,13 @@ public:
     QString operatorName;
     QString countryCode;
     QFlags<MMModem3gppFacility> enabledFacilityLocks;
+    QVariantMap networkRejection;
+    MMModem3gppEpsUeModeOperation epsUeModeOperation;
+    ModemManager::PcoInfoList pco;
+    QString initialEpsBearer;
+    QVariantMap initialEpsBearerSettings;
+    MMModem3gppPacketServiceState packetServiceState;
+    QVariantMap nr5gRegistrationSettings;
 #if MM_CHECK_VERSION(1, 2, 0)
     MMModem3gppSubscriptionState subscriptionState;
 #endif

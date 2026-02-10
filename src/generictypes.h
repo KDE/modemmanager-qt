@@ -12,9 +12,11 @@
 #include <ModemManager/ModemManager.h>
 #include <modemmanagerqt_export.h>
 
+#include <QByteArray>
 #include <QDBusArgument>
 #include <QDBusObjectPath>
 #include <QMetaType>
+#include <QVariantMap>
 
 // Enums from ModemManager-enums.h which needs to be defined all the time,
 // because it's not possible to use MM_CHECK_VERSION for signals
@@ -106,6 +108,55 @@ typedef QList<uint> UIntList;
  * \typedef ModemManager::UIntListList
  */
 typedef QList<QList<uint>> UIntListList;
+
+/*!
+ * \typedef ModemManager::ConnectionError
+ */
+typedef struct {
+    QString name;
+    QString message;
+} ConnectionError;
+
+/*!
+ * \typedef ModemManager::FacilityLock
+ */
+typedef struct {
+    uint facility;
+    QString controlKey;
+} FacilityLock;
+
+/*!
+ * \typedef ModemManager::PcoInfo
+ */
+typedef struct {
+    uint sessionId;
+    bool isComplete;
+    QByteArray data;
+} PcoInfo;
+/*!
+ * \typedef ModemManager::PcoInfoList
+ */
+typedef QList<PcoInfo> PcoInfoList;
+
+/*!
+ * \typedef ModemManager::FirmwareUpdateSettings
+ */
+typedef struct {
+    uint methods;
+    QVariantMap settings;
+} FirmwareUpdateSettings;
+
+/*!
+ * \typedef ModemManager::CellBroadcastChannelRange
+ */
+typedef struct {
+    uint from;
+    uint to;
+} CellBroadcastChannelRange;
+/*!
+ * \typedef ModemManager::CellBroadcastChannelRangeList
+ */
+typedef QList<CellBroadcastChannelRange> CellBroadcastChannelRangeList;
 
 /*!
  * \typedef ModemManager::Port
@@ -224,14 +275,41 @@ Q_DECLARE_METATYPE(MMSimType)
 Q_DECLARE_METATYPE(MMSimEsimStatus)
 Q_DECLARE_METATYPE(MMSimRemovability)
 #endif
+#if MM_CHECK_VERSION(1, 10, 0)
+Q_DECLARE_METATYPE(MMBearerType)
+Q_DECLARE_METATYPE(MMModem3gppEpsUeModeOperation)
+Q_DECLARE_METATYPE(MMNetworkError)
+Q_DECLARE_METATYPE(QFlags<MMModemFirmwareUpdateMethod>)
+#endif
+#if MM_CHECK_VERSION(1, 20, 0)
+Q_DECLARE_METATYPE(MMModem3gppPacketServiceState)
+Q_DECLARE_METATYPE(MMModem3gppMicoMode)
+Q_DECLARE_METATYPE(MMModem3gppDrxCycle)
+Q_DECLARE_METATYPE(MMModemLocationAssistanceDataType)
+#endif
+#if MM_CHECK_VERSION(1, 22, 0)
+Q_DECLARE_METATYPE(MMServingCellType)
+#endif
+#if MM_CHECK_VERSION(1, 24, 0)
+Q_DECLARE_METATYPE(MMCbmState)
+#endif
 
 // Others
 Q_DECLARE_METATYPE(ModemManager::DBUSManagerStruct)
+Q_DECLARE_METATYPE(ModemManager::ConnectionError)
+Q_DECLARE_METATYPE(ModemManager::FacilityLock)
+Q_DECLARE_METATYPE(ModemManager::PcoInfo)
+Q_DECLARE_METATYPE(ModemManager::PcoInfoList)
+Q_DECLARE_METATYPE(ModemManager::FirmwareUpdateSettings)
 Q_DECLARE_METATYPE(ModemManager::Port)
 Q_DECLARE_METATYPE(ModemManager::PortList)
 Q_DECLARE_METATYPE(ModemManager::SignalQualityPair)
 Q_DECLARE_METATYPE(ModemManager::CurrentModesType)
 Q_DECLARE_METATYPE(ModemManager::SupportedModesType)
+#if MM_CHECK_VERSION(1, 24, 0)
+Q_DECLARE_METATYPE(ModemManager::CellBroadcastChannelRange)
+Q_DECLARE_METATYPE(ModemManager::CellBroadcastChannelRangeList)
+#endif
 #if MM_CHECK_VERSION(1, 2, 0)
 Q_DECLARE_METATYPE(ModemManager::OmaSessionType)
 Q_DECLARE_METATYPE(ModemManager::OmaSessionTypes)
@@ -255,6 +333,46 @@ MODEMMANAGERQT_EXPORT QDBusArgument &operator<<(QDBusArgument &arg, const ModemM
 /*!
  */
 MODEMMANAGERQT_EXPORT const QDBusArgument &operator>>(const QDBusArgument &arg, ModemManager::CurrentModesType &mode);
+
+// ConnectionError
+/*!
+ */
+MODEMMANAGERQT_EXPORT QDBusArgument &operator<<(QDBusArgument &arg, const ModemManager::ConnectionError &error);
+/*!
+ */
+MODEMMANAGERQT_EXPORT const QDBusArgument &operator>>(const QDBusArgument &arg, ModemManager::ConnectionError &error);
+
+// FacilityLock
+/*!
+ */
+MODEMMANAGERQT_EXPORT QDBusArgument &operator<<(QDBusArgument &arg, const ModemManager::FacilityLock &lock);
+/*!
+ */
+MODEMMANAGERQT_EXPORT const QDBusArgument &operator>>(const QDBusArgument &arg, ModemManager::FacilityLock &lock);
+
+// PcoInfo
+/*!
+ */
+MODEMMANAGERQT_EXPORT QDBusArgument &operator<<(QDBusArgument &arg, const ModemManager::PcoInfo &info);
+/*!
+ */
+MODEMMANAGERQT_EXPORT const QDBusArgument &operator>>(const QDBusArgument &arg, ModemManager::PcoInfo &info);
+
+// FirmwareUpdateSettings
+/*!
+ */
+MODEMMANAGERQT_EXPORT QDBusArgument &operator<<(QDBusArgument &arg, const ModemManager::FirmwareUpdateSettings &settings);
+/*!
+ */
+MODEMMANAGERQT_EXPORT const QDBusArgument &operator>>(const QDBusArgument &arg, ModemManager::FirmwareUpdateSettings &settings);
+
+// CellBroadcastChannelRange
+/*!
+ */
+MODEMMANAGERQT_EXPORT QDBusArgument &operator<<(QDBusArgument &arg, const ModemManager::CellBroadcastChannelRange &range);
+/*!
+ */
+MODEMMANAGERQT_EXPORT const QDBusArgument &operator>>(const QDBusArgument &arg, ModemManager::CellBroadcastChannelRange &range);
 
 // SignalQualityPair
 /*!

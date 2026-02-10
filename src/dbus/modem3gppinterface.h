@@ -13,7 +13,9 @@
 #define MODEMMANAGERQT_MODEM3GPPINTERFACE_H
 
 #include "generictypes.h"
+#include <QByteArray>
 #include <QDBusAbstractInterface>
+#include <QDBusObjectPath>
 #include <QDBusPendingReply>
 #include <QList>
 #include <QObject>
@@ -51,10 +53,40 @@ public:
         return qvariant_cast<uint>(property("EnabledFacilityLocks"));
     }
 
+    Q_PROPERTY(uint EpsUeModeOperation READ epsUeModeOperation)
+    inline uint epsUeModeOperation() const
+    {
+        return qvariant_cast<uint>(property("EpsUeModeOperation"));
+    }
+
     Q_PROPERTY(QString Imei READ imei)
     inline QString imei() const
     {
         return qvariant_cast<QString>(property("Imei"));
+    }
+
+    Q_PROPERTY(QDBusObjectPath InitialEpsBearer READ initialEpsBearer)
+    inline QDBusObjectPath initialEpsBearer() const
+    {
+        return qvariant_cast<QDBusObjectPath>(property("InitialEpsBearer"));
+    }
+
+    Q_PROPERTY(QVariantMap InitialEpsBearerSettings READ initialEpsBearerSettings)
+    inline QVariantMap initialEpsBearerSettings() const
+    {
+        return qvariant_cast<QVariantMap>(property("InitialEpsBearerSettings"));
+    }
+
+    Q_PROPERTY(QVariantMap NetworkRejection READ networkRejection)
+    inline QVariantMap networkRejection() const
+    {
+        return qvariant_cast<QVariantMap>(property("NetworkRejection"));
+    }
+
+    Q_PROPERTY(QVariantMap Nr5gRegistrationSettings READ nr5gRegistrationSettings)
+    inline QVariantMap nr5gRegistrationSettings() const
+    {
+        return qvariant_cast<QVariantMap>(property("Nr5gRegistrationSettings"));
     }
 
     Q_PROPERTY(QString OperatorCode READ operatorCode)
@@ -67,6 +99,18 @@ public:
     inline QString operatorName() const
     {
         return qvariant_cast<QString>(property("OperatorName"));
+    }
+
+    Q_PROPERTY(ModemManager::PcoInfoList Pco READ pco)
+    inline ModemManager::PcoInfoList pco() const
+    {
+        return qvariant_cast<ModemManager::PcoInfoList>(property("Pco"));
+    }
+
+    Q_PROPERTY(uint PacketServiceState READ packetServiceState)
+    inline uint packetServiceState() const
+    {
+        return qvariant_cast<uint>(property("PacketServiceState"));
     }
 
     Q_PROPERTY(uint RegistrationState READ registrationState)
@@ -82,6 +126,13 @@ public:
     }
 
 public Q_SLOTS: // METHODS
+    inline QDBusPendingReply<> DisableFacilityLock(const ModemManager::FacilityLock &lock)
+    {
+        QList<QVariant> argumentList;
+        argumentList << QVariant::fromValue(lock);
+        return asyncCallWithArgumentList(QLatin1String("DisableFacilityLock"), argumentList);
+    }
+
     inline QDBusPendingReply<> Register(const QString &operator_id)
     {
         QList<QVariant> argumentList;
@@ -93,6 +144,41 @@ public Q_SLOTS: // METHODS
     {
         QList<QVariant> argumentList;
         return asyncCallWithArgumentList(QLatin1String("Scan"), argumentList);
+    }
+
+    inline QDBusPendingReply<> SetCarrierLock(const QByteArray &data)
+    {
+        QList<QVariant> argumentList;
+        argumentList << QVariant::fromValue(data);
+        return asyncCallWithArgumentList(QLatin1String("SetCarrierLock"), argumentList);
+    }
+
+    inline QDBusPendingReply<> SetEpsUeModeOperation(uint mode)
+    {
+        QList<QVariant> argumentList;
+        argumentList << QVariant::fromValue(mode);
+        return asyncCallWithArgumentList(QLatin1String("SetEpsUeModeOperation"), argumentList);
+    }
+
+    inline QDBusPendingReply<> SetInitialEpsBearerSettings(const QVariantMap &settings)
+    {
+        QList<QVariant> argumentList;
+        argumentList << QVariant::fromValue(settings);
+        return asyncCallWithArgumentList(QLatin1String("SetInitialEpsBearerSettings"), argumentList);
+    }
+
+    inline QDBusPendingReply<> SetNr5gRegistrationSettings(const QVariantMap &properties)
+    {
+        QList<QVariant> argumentList;
+        argumentList << QVariant::fromValue(properties);
+        return asyncCallWithArgumentList(QLatin1String("SetNr5gRegistrationSettings"), argumentList);
+    }
+
+    inline QDBusPendingReply<> SetPacketServiceState(uint state)
+    {
+        QList<QVariant> argumentList;
+        argumentList << QVariant::fromValue(state);
+        return asyncCallWithArgumentList(QLatin1String("SetPacketServiceState"), argumentList);
     }
 
 Q_SIGNALS: // SIGNALS
