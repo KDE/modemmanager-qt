@@ -23,10 +23,16 @@ public:
     QString uni;
     QString bearerInterface;
     bool isConnected;
+    ModemManager::ConnectionError connectionError;
     bool isSuspended;
+    bool isMultiplexed;
     mutable ModemManager::IpConfig ipv4Config;
     mutable ModemManager::IpConfig ipv6Config;
     uint ipTimeout;
+    MMBearerType bearerType;
+    uint profileId;
+    bool reloadStatsSupported;
+    QVariantMap stats;
     QVariantMap bearerProperties;
 
     ModemManager::IpConfig ipConfigFromMap(const QVariantMap &map);

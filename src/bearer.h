@@ -181,11 +181,25 @@ public:
     bool isConnected() const;
 
     /*!
+     * Returns additional information about the connection error.
+     *
+     * \since 6.24.0
+     */
+    ModemManager::ConnectionError connectionError() const;
+
+    /*!
      * In some devices, packet data service will be suspended while the device
      * is handling other communication, like a voice call. If packet data
      * service is suspended (but not deactivated) this property will be \a true
      */
     bool isSuspended() const;
+
+    /*!
+     * Returns whether the bearer is connected through a multiplexed network link.
+     *
+     * \since 6.24.0
+     */
+    bool isMultiplexed() const;
 
     /*!
      * If the bearer was configured for IPv4 addressing, upon activation
@@ -205,6 +219,34 @@ public:
      * Returns maximum time to wait for a successful IP establishment, when PPP is used.
      */
     uint ipTimeout() const;
+
+    /*!
+     * Returns bearer type.
+     *
+     * \since 6.24.0
+     */
+    MMBearerType bearerType() const;
+
+    /*!
+     * Returns profile identifier.
+     *
+     * \since 6.24.0
+     */
+    uint profileId() const;
+
+    /*!
+     * Returns whether stats reload is supported.
+     *
+     * \since 6.24.0
+     */
+    bool reloadStatsSupported() const;
+
+    /*!
+     * Returns bearer statistics.
+     *
+     * \since 6.24.0
+     */
+    QVariantMap stats() const;
 
     /*!
      * Returns map of properties used when creating the bearer
@@ -256,8 +298,16 @@ Q_SIGNALS:
      */
     void connectedChanged(bool connected);
     /*!
+     * \since 6.24.0
+     */
+    void connectionErrorChanged(const ModemManager::ConnectionError &error);
+    /*!
      */
     void suspendedChanged(bool suspended);
+    /*!
+     * \since 6.24.0
+     */
+    void multiplexedChanged(bool multiplexed);
     /*!
      */
     void ip4ConfigChanged(const ModemManager::IpConfig &ipv4Config);
@@ -267,6 +317,22 @@ Q_SIGNALS:
     /*!
      */
     void ipTimeoutChanged(uint ipTimeout);
+    /*!
+     * \since 6.24.0
+     */
+    void bearerTypeChanged(MMBearerType bearerType);
+    /*!
+     * \since 6.24.0
+     */
+    void profileIdChanged(uint profileId);
+    /*!
+     * \since 6.24.0
+     */
+    void reloadStatsSupportedChanged(bool supported);
+    /*!
+     * \since 6.24.0
+     */
+    void statsChanged(const QVariantMap &stats);
     /*!
      */
     void propertiesChanged(const QVariantMap &properties);

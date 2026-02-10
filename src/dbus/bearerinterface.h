@@ -48,6 +48,12 @@ public:
         return qvariant_cast<bool>(property("Connected"));
     }
 
+    Q_PROPERTY(ModemManager::ConnectionError ConnectionError READ connectionError)
+    inline ModemManager::ConnectionError connectionError() const
+    {
+        return qvariant_cast<ModemManager::ConnectionError>(property("ConnectionError"));
+    }
+
     Q_PROPERTY(QString Interface READ interface)
     inline QString interface() const
     {
@@ -72,10 +78,40 @@ public:
         return qvariant_cast<uint>(property("IpTimeout"));
     }
 
+    Q_PROPERTY(bool Multiplexed READ multiplexed)
+    inline bool multiplexed() const
+    {
+        return qvariant_cast<bool>(property("Multiplexed"));
+    }
+
     Q_PROPERTY(QVariantMap Properties READ properties)
     inline QVariantMap properties() const
     {
         return qvariant_cast<QVariantMap>(property("Properties"));
+    }
+
+    Q_PROPERTY(uint BearerType READ bearerType)
+    inline uint bearerType() const
+    {
+        return qvariant_cast<uint>(property("BearerType"));
+    }
+
+    Q_PROPERTY(uint ProfileId READ profileId)
+    inline uint profileId() const
+    {
+        return qvariant_cast<uint>(property("ProfileId"));
+    }
+
+    Q_PROPERTY(bool ReloadStatsSupported READ reloadStatsSupported)
+    inline bool reloadStatsSupported() const
+    {
+        return qvariant_cast<bool>(property("ReloadStatsSupported"));
+    }
+
+    Q_PROPERTY(QVariantMap Stats READ stats)
+    inline QVariantMap stats() const
+    {
+        return qvariant_cast<QVariantMap>(property("Stats"));
     }
 
     Q_PROPERTY(bool Suspended READ suspended)

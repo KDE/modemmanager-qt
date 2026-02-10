@@ -55,6 +55,125 @@ const QDBusArgument &operator>>(const QDBusArgument &arg, ModemManager::CurrentM
     return arg;
 }
 
+// Marshall the ConnectionError data into a D-BUS argument
+QDBusArgument &operator<<(QDBusArgument &arg, const ModemManager::ConnectionError &error)
+{
+    arg.beginStructure();
+    arg << error.name << error.message;
+    arg.endStructure();
+    return arg;
+}
+
+// Retrieve the ConnectionError data from the D-BUS argument
+const QDBusArgument &operator>>(const QDBusArgument &arg, ModemManager::ConnectionError &error)
+{
+    QString name;
+    QString message;
+    arg.beginStructure();
+    arg >> name >> message;
+    error.name = name;
+    error.message = message;
+    arg.endStructure();
+
+    return arg;
+}
+
+// Marshall the FacilityLock data into a D-BUS argument
+QDBusArgument &operator<<(QDBusArgument &arg, const ModemManager::FacilityLock &lock)
+{
+    arg.beginStructure();
+    arg << lock.facility << lock.controlKey;
+    arg.endStructure();
+    return arg;
+}
+
+// Retrieve the FacilityLock data from the D-BUS argument
+const QDBusArgument &operator>>(const QDBusArgument &arg, ModemManager::FacilityLock &lock)
+{
+    uint facility;
+    QString controlKey;
+    arg.beginStructure();
+    arg >> facility >> controlKey;
+    lock.facility = facility;
+    lock.controlKey = controlKey;
+    arg.endStructure();
+
+    return arg;
+}
+
+// Marshall the PcoInfo data into a D-BUS argument
+QDBusArgument &operator<<(QDBusArgument &arg, const ModemManager::PcoInfo &info)
+{
+    arg.beginStructure();
+    arg << info.sessionId << info.isComplete << info.data;
+    arg.endStructure();
+    return arg;
+}
+
+// Retrieve the PcoInfo data from the D-BUS argument
+const QDBusArgument &operator>>(const QDBusArgument &arg, ModemManager::PcoInfo &info)
+{
+    uint sessionId;
+    bool isComplete;
+    QByteArray data;
+    arg.beginStructure();
+    arg >> sessionId >> isComplete >> data;
+    info.sessionId = sessionId;
+    info.isComplete = isComplete;
+    info.data = data;
+    arg.endStructure();
+
+    return arg;
+}
+
+// Marshall the FirmwareUpdateSettings data into a D-BUS argument
+QDBusArgument &operator<<(QDBusArgument &arg, const ModemManager::FirmwareUpdateSettings &settings)
+{
+    arg.beginStructure();
+    arg << settings.methods << settings.settings;
+    arg.endStructure();
+    return arg;
+}
+
+// Retrieve the FirmwareUpdateSettings data from the D-BUS argument
+const QDBusArgument &operator>>(const QDBusArgument &arg, ModemManager::FirmwareUpdateSettings &settings)
+{
+    uint methods;
+    QVariantMap map;
+    arg.beginStructure();
+    arg >> methods >> map;
+    settings.methods = methods;
+    settings.settings = map;
+    arg.endStructure();
+
+    return arg;
+}
+
+#if MM_CHECK_VERSION(1, 24, 0)
+// Marshall the CellBroadcastChannelRange data into a D-BUS argument
+QDBusArgument &operator<<(QDBusArgument &arg, const ModemManager::CellBroadcastChannelRange &range)
+{
+    arg.beginStructure();
+    arg << range.from << range.to;
+    arg.endStructure();
+    return arg;
+}
+
+// Retrieve the CellBroadcastChannelRange data from the D-BUS argument
+const QDBusArgument &operator>>(const QDBusArgument &arg, ModemManager::CellBroadcastChannelRange &range)
+{
+    uint from;
+    uint to;
+    arg.beginStructure();
+    arg >> from >> to;
+    range.from = from;
+    range.to = to;
+    arg.endStructure();
+
+    return arg;
+}
+#endif
+
 #if MM_CHECK_VERSION(1, 2, 0)
 // Marshall the OmaSessionType data into a D-BUS argument
 QDBusArgument &operator<<(QDBusArgument &arg, const ModemManager::OmaSessionType &sessionType)
@@ -226,11 +345,20 @@ void registerModemManagerTypes()
     qDBusRegisterMetaType<ModemManager::DBUSManagerStruct>();
     qDBusRegisterMetaType<ModemManager::UIntList>();
     qDBusRegisterMetaType<ModemManager::UIntListList>();
+    qDBusRegisterMetaType<ModemManager::ConnectionError>();
+    qDBusRegisterMetaType<ModemManager::FacilityLock>();
+    qDBusRegisterMetaType<ModemManager::PcoInfo>();
+    qDBusRegisterMetaType<ModemManager::PcoInfoList>();
+    qDBusRegisterMetaType<ModemManager::FirmwareUpdateSettings>();
     qDBusRegisterMetaType<ModemManager::Port>();
     qDBusRegisterMetaType<ModemManager::PortList>();
     qDBusRegisterMetaType<ModemManager::CurrentModesType>();
     qDBusRegisterMetaType<ModemManager::SignalQualityPair>();
     qDBusRegisterMetaType<ModemManager::SupportedModesType>();
+#if MM_CHECK_VERSION(1, 24, 0)
+    qDBusRegisterMetaType<ModemManager::CellBroadcastChannelRange>();
+    qDBusRegisterMetaType<ModemManager::CellBroadcastChannelRangeList>();
+#endif
     qDBusRegisterMetaType<ModemManager::UnlockRetriesMap>();
     qDBusRegisterMetaType<ModemManager::QVariantMapList>();
 #if MM_CHECK_VERSION(1, 2, 0)

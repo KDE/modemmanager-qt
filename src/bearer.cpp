@@ -144,10 +144,16 @@ ModemManager::BearerPrivate::BearerPrivate(const QString &path, Bearer *q)
     if (bearerIface.isValid()) {
         bearerInterface = bearerIface.interface();
         isConnected = bearerIface.connected();
+        connectionError = bearerIface.connectionError();
         isSuspended = bearerIface.suspended();
+        isMultiplexed = bearerIface.multiplexed();
         ipv4Config = ipConfigFromMap(bearerIface.ip4Config());
         ipv6Config = ipConfigFromMap(bearerIface.ip6Config());
         ipTimeout = bearerIface.ipTimeout();
+        bearerType = (MMBearerType)bearerIface.bearerType();
+        profileId = bearerIface.profileId();
+        reloadStatsSupported = bearerIface.reloadStatsSupported();
+        stats = bearerIface.stats();
         bearerProperties = bearerIface.properties();
     }
 }
@@ -198,6 +204,18 @@ bool ModemManager::Bearer::isSuspended() const
     return d->isSuspended;
 }
 
+bool ModemManager::Bearer::isMultiplexed() const
+{
+    Q_D(const Bearer);
+    return d->isMultiplexed;
+}
+
+ModemManager::ConnectionError ModemManager::Bearer::connectionError() const
+{
+    Q_D(const Bearer);
+    return d->connectionError;
+}
+
 ModemManager::IpConfig ModemManager::Bearer::ip4Config() const
 {
     Q_D(const Bearer);
@@ -214,6 +232,30 @@ uint ModemManager::Bearer::ipTimeout() const
 {
     Q_D(const Bearer);
     return d->ipTimeout;
+}
+
+MMBearerType ModemManager::Bearer::bearerType() const
+{
+    Q_D(const Bearer);
+    return d->bearerType;
+}
+
+uint ModemManager::Bearer::profileId() const
+{
+    Q_D(const Bearer);
+    return d->profileId;
+}
+
+bool ModemManager::Bearer::reloadStatsSupported() const
+{
+    Q_D(const Bearer);
+    return d->reloadStatsSupported;
+}
+
+QVariantMap ModemManager::Bearer::stats() const
+{
+    Q_D(const Bearer);
+    return d->stats;
 }
 
 QVariantMap ModemManager::Bearer::properties() const
@@ -280,10 +322,20 @@ void ModemManager::BearerPrivate::onPropertiesChanged(const QString &interface, 
             isConnected = it->toBool();
             Q_EMIT q->connectedChanged(isConnected);
         }
+        it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_CONNECTIONERROR));
+        if (it != properties.constEnd()) {
+            connectionError = it->value<ConnectionError>();
+            Q_EMIT q->connectionErrorChanged(connectionError);
+        }
         it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_SUSPENDED));
         if (it != properties.constEnd()) {
             isSuspended = it->toBool();
             Q_EMIT q->suspendedChanged(isSuspended);
+        }
+        it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_MULTIPLEXED));
+        if (it != properties.constEnd()) {
+            isMultiplexed = it->toBool();
+            Q_EMIT q->multiplexedChanged(isMultiplexed);
         }
         it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_IP4CONFIG));
         if (it != properties.constEnd()) {
@@ -299,6 +351,26 @@ void ModemManager::BearerPrivate::onPropertiesChanged(const QString &interface, 
         if (it != properties.constEnd()) {
             ipTimeout = it->toUInt();
             Q_EMIT q->ipTimeoutChanged(ipTimeout);
+        }
+        it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_BEARERTYPE));
+        if (it != properties.constEnd()) {
+            bearerType = (MMBearerType)it->toUInt();
+            Q_EMIT q->bearerTypeChanged(bearerType);
+        }
+        it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_PROFILEID));
+        if (it != properties.constEnd()) {
+            profileId = it->toUInt();
+            Q_EMIT q->profileIdChanged(profileId);
+        }
+        it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_RELOADSTATSSUPPORTED));
+        if (it != properties.constEnd()) {
+            reloadStatsSupported = it->toBool();
+            Q_EMIT q->reloadStatsSupportedChanged(reloadStatsSupported);
+        }
+        it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_STATS));
+        if (it != properties.constEnd()) {
+            stats = qdbus_cast<QVariantMap>(*it);
+            Q_EMIT q->statsChanged(stats);
         }
         it = properties.constFind(QLatin1String(MM_BEARER_PROPERTY_PROPERTIES));
         if (it != properties.constEnd()) {
