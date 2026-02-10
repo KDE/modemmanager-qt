@@ -116,6 +116,13 @@ public:
     QDBusPendingReply<void> deleteMessage(const QString &uni);
 
     /*!
+     * Set the default storage to use when receiving or storing SMS.
+     *
+     * \since 6.24.0
+     */
+    QDBusPendingReply<void> setDefaultStorage(MMSmsStorage storage);
+
+    /*!
      * \a uni path to the Sms object
      *
      * Returns pointer to the found Sms (may be null if not found)

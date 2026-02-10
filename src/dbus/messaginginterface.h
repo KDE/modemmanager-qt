@@ -85,6 +85,13 @@ public Q_SLOTS: // METHODS
         return asyncCallWithArgumentList(QLatin1String("List"), argumentList);
     }
 
+    inline QDBusPendingReply<> SetDefaultStorage(uint storage)
+    {
+        QList<QVariant> argumentList;
+        argumentList << QVariant::fromValue(storage);
+        return asyncCallWithArgumentList(QLatin1String("SetDefaultStorage"), argumentList);
+    }
+
 Q_SIGNALS: // SIGNALS
     void Added(const QDBusObjectPath &path, bool received);
     void Deleted(const QDBusObjectPath &path);

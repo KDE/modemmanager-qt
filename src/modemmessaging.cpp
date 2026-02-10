@@ -185,6 +185,12 @@ QDBusPendingReply<void> ModemManager::ModemMessaging::deleteMessage(const QStrin
     return d->modemMessagingIface.Delete(QDBusObjectPath(uni));
 }
 
+QDBusPendingReply<void> ModemManager::ModemMessaging::setDefaultStorage(MMSmsStorage storage)
+{
+    Q_D(ModemMessaging);
+    return d->modemMessagingIface.SetDefaultStorage((uint)storage);
+}
+
 ModemManager::Sms::Ptr ModemManager::ModemMessaging::findMessage(const QString &uni)
 {
     Q_D(ModemMessaging);
