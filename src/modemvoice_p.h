@@ -21,6 +21,7 @@ public:
     OrgFreedesktopModemManager1ModemVoiceInterface modemVoiceIface;
 
     QMap<QString, ModemManager::Call::Ptr> callList;
+    bool emergencyOnly = false;
     ModemManager::Call::Ptr findCall(const QString &uni);
     ModemManager::Call::List calls();
 
@@ -29,6 +30,7 @@ public:
 private Q_SLOTS:
     void onCallAdded(const QDBusObjectPath &path);
     void onCallDeleted(const QDBusObjectPath &path);
+    void onPropertiesChanged(const QString &interface, const QVariantMap &properties, const QStringList &invalidatedProps) override;
 };
 
 } // namespace ModemManager

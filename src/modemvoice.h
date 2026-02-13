@@ -89,6 +89,55 @@ public:
     ModemManager::Call::Ptr findCall(const QString &uni);
 
     /*!
+     * Returns whether only emergency calls are allowed.
+     *
+     * \since 6.24.0
+     */
+    bool emergencyOnly() const;
+
+    /*!
+     * Hold the current call and accept a waiting call.
+     *
+     * \since 6.24.0
+     */
+    QDBusPendingReply<void> holdAndAccept();
+
+    /*!
+     * Hang up the current call and accept a waiting call.
+     *
+     * \since 6.24.0
+     */
+    QDBusPendingReply<void> hangupAndAccept();
+
+    /*!
+     * Hang up all calls.
+     *
+     * \since 6.24.0
+     */
+    QDBusPendingReply<void> hangupAll();
+
+    /*!
+     * Transfer a call.
+     *
+     * \since 6.24.0
+     */
+    QDBusPendingReply<void> transfer();
+
+    /*!
+     * Enable or disable call waiting.
+     *
+     * \since 6.24.0
+     */
+    QDBusPendingReply<void> callWaitingSetup(bool enabled);
+
+    /*!
+     * Query call waiting status.
+     *
+     * \since 6.24.0
+     */
+    QDBusPendingReply<bool> callWaitingQuery();
+
+    /*!
      * Sets the timeout in milliseconds for all async method DBus calls.
      * -1 means the default DBus timeout (usually 25 seconds).
      */
@@ -114,6 +163,13 @@ Q_SIGNALS:
      * \a uni path to the Call object
      */
     void callDeleted(const QString &uni);
+
+    /*!
+     * Emitted when emergency-only state changes.
+     *
+     * \since 6.24.0
+     */
+    void emergencyOnlyChanged(bool emergencyOnly);
 };
 
 } // namespace ModemManager

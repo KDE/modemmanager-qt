@@ -42,6 +42,12 @@ public:
         return qvariant_cast<QList<QDBusObjectPath>>(property("Calls"));
     }
 
+    Q_PROPERTY(bool EmergencyOnly READ emergencyOnly)
+    inline bool emergencyOnly() const
+    {
+        return qvariant_cast<bool>(property("EmergencyOnly"));
+    }
+
 public Q_SLOTS: // METHODS
     inline QDBusPendingReply<QDBusObjectPath> CreateCall(const QVariantMap &properties)
     {
@@ -55,6 +61,43 @@ public Q_SLOTS: // METHODS
         QList<QVariant> argumentList;
         argumentList << QVariant::fromValue(path);
         return asyncCallWithArgumentList(QStringLiteral("DeleteCall"), argumentList);
+    }
+
+    inline QDBusPendingReply<> HoldAndAccept()
+    {
+        QList<QVariant> argumentList;
+        return asyncCallWithArgumentList(QStringLiteral("HoldAndAccept"), argumentList);
+    }
+
+    inline QDBusPendingReply<> HangupAndAccept()
+    {
+        QList<QVariant> argumentList;
+        return asyncCallWithArgumentList(QStringLiteral("HangupAndAccept"), argumentList);
+    }
+
+    inline QDBusPendingReply<> HangupAll()
+    {
+        QList<QVariant> argumentList;
+        return asyncCallWithArgumentList(QStringLiteral("HangupAll"), argumentList);
+    }
+
+    inline QDBusPendingReply<> Transfer()
+    {
+        QList<QVariant> argumentList;
+        return asyncCallWithArgumentList(QStringLiteral("Transfer"), argumentList);
+    }
+
+    inline QDBusPendingReply<> CallWaitingSetup(bool enabled)
+    {
+        QList<QVariant> argumentList;
+        argumentList << QVariant::fromValue(enabled);
+        return asyncCallWithArgumentList(QStringLiteral("CallWaitingSetup"), argumentList);
+    }
+
+    inline QDBusPendingReply<bool> CallWaitingQuery()
+    {
+        QList<QVariant> argumentList;
+        return asyncCallWithArgumentList(QStringLiteral("CallWaitingQuery"), argumentList);
     }
 
     inline QDBusPendingReply<QList<QDBusObjectPath>> ListCalls()

@@ -5,6 +5,7 @@
 
    Copyright (C) 2015 Marco Bascetta <marco.bascetta@sadel.it>
    Copyright (C) 2015 Riccardo Vangelisti <riccardo.vangelisti@sadel.it>
+   Copyright (C) 2019 Purism SPC
 -->
 
 <node name="/" xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd">
@@ -14,6 +15,11 @@
       @short_description: The ModemManager Voice interface.
 
       The Voice interface handles Calls.
+
+      This interface will only be available once the modem is ready to be
+      registered in the cellular network. 3GPP devices will require a valid
+      unlocked SIM card before any of the features in the interface can be
+      used.
   -->
   <interface name="org.freedesktop.ModemManager1.Modem.Voice">
 
@@ -27,6 +33,8 @@
         retrieved either by listening for the
         #org.freedesktop.ModemManager1.Modem.Voice::Added signal,
         or by querying the specific Call object of interest.
+
+        Since: 1.6
     -->
     <method name="ListCalls">
       <arg name="result" type="ao" direction="out" />
@@ -39,6 +47,8 @@
         Delete a Call from the list of calls.
 
         The call will be hangup if it is still active.
+
+        Since: 1.6
     -->
     <method name="DeleteCall">
       <arg name="path" type="o" direction="in" />
@@ -49,21 +59,122 @@
         @properties: Call properties from the <link linkend="gdbus-org.freedesktop.ModemManager1.Call">Call D-Bus interface</link>.
         @path: The object path of the new call object.
 
-        Creates a new call object.
+        Creates a new call object for a new outgoing call.
 
-        The '<link linkend="gdbus-property-org-freedesktop-ModemManager1-Call.Number">Number</link>' is mandatory
+        The '<link linkend="gdbus-property-org-freedesktop-ModemManager1-Call.Number">Number</link>' is the only
+        expected property to set by the user.
+
+        Since: 1.6
     -->
     <method name="CreateCall">
-      <arg name="properties" type="a{sv}" direction="in"/>
+      <arg name="properties" type="a{sv}" direction="in" />
       <arg name="path" type="o" direction="out" />
-      <annotation name="org.qtproject.QtDBus.QtTypeName.In0" value="QVariantMap"/>
+    </method>
+
+    <!--
+        HoldAndAccept:
+
+        Place all active calls on hold, if any, and accept the next
+        call.
+
+        Waiting calls have preference over held calls, so the next
+        call being active will be any waiting call, or otherwise,
+        any held call.
+
+        The user should monitor the state of all available ongoing
+        calls to be reported of which one becomes active.
+
+        No error is returned if there are no waiting or held calls.
+
+        Since: 1.12
+    -->
+    <method name="HoldAndAccept" />
+
+    <!--
+        HangupAndAccept:
+
+        Hangup all active calls, if any, and accept the next call.
+
+        Waiting calls have preference over held calls, so the next
+        call being active will be any waiting call, or otherwise,
+        any held call.
+
+        The user should monitor the state of all available ongoing
+        calls to be reported of which one becomes active.
+
+        No error is returned if there are no waiting or held calls.
+        In this case, this method would be equivalent to calling
+        <link linkend="gdbus-method-org-freedesktop-ModemManager1-Call.Hangup">Hangup()</link>
+        on the active call.
+
+        Since: 1.12
+    -->
+    <method name="HangupAndAccept" />
+
+    <!--
+        HangupAll:
+
+        Hangup all active calls.
+
+        Depending on how the device implements the action, calls on
+        hold or in waiting state may also be terminated.
+
+        No error is returned if there are no ongoing calls.
+
+        Since: 1.12
+    -->
+    <method name="HangupAll" />
+
+    <!--
+        Transfer:
+
+        Join the currently active and held calls together into a single
+        multiparty call, but disconnects from them.
+
+        The affected calls will be considered terminated from the point of
+        view of the subscriber.
+
+        Since: 1.12
+    -->
+    <method name="Transfer" />
+
+    <!--
+        CallWaitingSetup:
+
+        Activates or deactivates the call waiting network service, as per
+        3GPP TS 22.083.
+
+        This operation requires communication with the network in order to
+        complete, so the modem must be successfully registered.
+
+        Since: 1.12
+    -->
+    <method name="CallWaitingSetup">
+      <arg name="enable" type="b" direction="in" />
+    </method>
+
+    <!--
+        CallWaitingQuery:
+
+        Queries the status of the call waiting network service, as per
+        3GPP TS 22.083.
+
+        This operation requires communication with the network in order to
+        complete, so the modem must be successfully registered.
+
+        Since: 1.12
+    -->
+    <method name="CallWaitingQuery">
+      <arg name="status" type="b" direction="out" />
     </method>
 
     <!--
         CallAdded:
         @path: Object path of the new call.
 
-        Emitted when any part of a Call has been received or added.
+        Emitted when a call has been added.
+
+        Since: 1.6
     -->
     <signal name="CallAdded">
       <arg name="path" type="o" />
@@ -74,6 +185,8 @@
         @path: Object path of the now deleted Call.
 
         Emitted when a call has been deleted.
+
+        Since: 1.6
     -->
     <signal name="CallDeleted">
       <arg name="path" type="o" />
@@ -83,8 +196,22 @@
         Calls:
 
         The list of calls object paths.
+
+        Since: 1.6
     -->
     <property name="Calls" type="ao" access="read" />
+
+    <!--
+        EmergencyOnly:
+
+        A flag indicating whether emergency calls are the only allowed ones.
+
+        If this flag is set, users should only attempt voice calls to
+        emergency numbers, as standard voice calls will likely fail.
+
+        Since: 1.12
+    -->
+    <property name="EmergencyOnly" type="b" access="read" />
 
   </interface>
 </node>

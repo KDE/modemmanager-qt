@@ -26,6 +26,7 @@ ModemManager::ModemVoicePrivate::ModemVoicePrivate(const QString &path, ModemVoi
     , q_ptr(q)
 {
     if (modemVoiceIface.isValid()) {
+        emergencyOnly = modemVoiceIface.emergencyOnly();
         connect(&modemVoiceIface, &OrgFreedesktopModemManager1ModemVoiceInterface::CallAdded, this, &ModemVoicePrivate::onCallAdded);
         connect(&modemVoiceIface, &OrgFreedesktopModemManager1ModemVoiceInterface::CallDeleted, this, &ModemVoicePrivate::onCallDeleted);
     }
@@ -38,6 +39,21 @@ ModemManager::ModemVoice::ModemVoice(const QString &path, QObject *parent)
 
     // \note no need to listen for PropertiesChanged signals. Additions and
     // removals of calls are already notified via CallAdded and CallRemoved
+#ifdef MMQT_STATIC
+    QDBusConnection::sessionBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
+                                          d->uni,
+                                          QLatin1String(DBUS_INTERFACE_PROPS),
+                                          QStringLiteral("PropertiesChanged"),
+                                          d,
+                                          SLOT(onPropertiesChanged(QString, QVariantMap, QStringList)));
+#else
+    QDBusConnection::systemBus().connect(QLatin1String(MMQT_DBUS_SERVICE),
+                                         d->uni,
+                                         QLatin1String(DBUS_INTERFACE_PROPS),
+                                         QStringLiteral("PropertiesChanged"),
+                                         d,
+                                         SLOT(onPropertiesChanged(QString, QVariantMap, QStringList)));
+#endif
 
     QList<QDBusObjectPath> calls = d->modemVoiceIface.calls();
     Q_FOREACH (const QDBusObjectPath &op, calls) {
@@ -96,6 +112,20 @@ void ModemManager::ModemVoicePrivate::onCallDeleted(const QDBusObjectPath &path)
     Q_EMIT q->callDeleted(path.path());
 }
 
+void ModemManager::ModemVoicePrivate::onPropertiesChanged(const QString &interfaceName, const QVariantMap &properties, const QStringList &invalidatedProps)
+{
+    Q_UNUSED(invalidatedProps);
+    Q_Q(ModemVoice);
+
+    if (interfaceName == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_VOICE)) {
+        QVariantMap::const_iterator it = properties.constFind(QLatin1String(MM_MODEM_VOICE_PROPERTY_EMERGENCYONLY));
+        if (it != properties.constEnd()) {
+            emergencyOnly = it->toBool();
+            Q_EMIT q->emergencyOnlyChanged(emergencyOnly);
+        }
+    }
+}
+
 ModemManager::Call::List ModemManager::ModemVoice::calls() const
 {
     Q_D(const ModemVoice);
@@ -131,6 +161,48 @@ ModemManager::Call::Ptr ModemManager::ModemVoice::findCall(const QString &uni)
 {
     Q_D(ModemVoice);
     return d->findCall(uni);
+}
+
+bool ModemManager::ModemVoice::emergencyOnly() const
+{
+    Q_D(const ModemVoice);
+    return d->emergencyOnly;
+}
+
+QDBusPendingReply<void> ModemManager::ModemVoice::holdAndAccept()
+{
+    Q_D(ModemVoice);
+    return d->modemVoiceIface.HoldAndAccept();
+}
+
+QDBusPendingReply<void> ModemManager::ModemVoice::hangupAndAccept()
+{
+    Q_D(ModemVoice);
+    return d->modemVoiceIface.HangupAndAccept();
+}
+
+QDBusPendingReply<void> ModemManager::ModemVoice::hangupAll()
+{
+    Q_D(ModemVoice);
+    return d->modemVoiceIface.HangupAll();
+}
+
+QDBusPendingReply<void> ModemManager::ModemVoice::transfer()
+{
+    Q_D(ModemVoice);
+    return d->modemVoiceIface.Transfer();
+}
+
+QDBusPendingReply<void> ModemManager::ModemVoice::callWaitingSetup(bool enabled)
+{
+    Q_D(ModemVoice);
+    return d->modemVoiceIface.CallWaitingSetup(enabled);
+}
+
+QDBusPendingReply<bool> ModemManager::ModemVoice::callWaitingQuery()
+{
+    Q_D(ModemVoice);
+    return d->modemVoiceIface.CallWaitingQuery();
 }
 
 void ModemManager::ModemVoice::setTimeout(int timeout)
