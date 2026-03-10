@@ -200,11 +200,14 @@ void ModemManager::CallPrivate::onPropertiesChanged(const QString &interfaceName
             number = it->toString();
             Q_EMIT q->numberChanged(number);
         }
+#if MM_CHECK_VERSION(1, 12, 0)
         it = changedProperties.constFind(QLatin1String(MM_CALL_PROPERTY_MULTIPARTY));
         if (it != changedProperties.constEnd()) {
             multiparty = it->toBool();
             Q_EMIT q->multipartyChanged(multiparty);
         }
+#endif
+#if MM_CHECK_VERSION(1, 10, 0)
         it = changedProperties.constFind(QLatin1String(MM_CALL_PROPERTY_AUDIOPORT));
         if (it != changedProperties.constEnd()) {
             audioPort = it->toString();
@@ -215,6 +218,7 @@ void ModemManager::CallPrivate::onPropertiesChanged(const QString &interfaceName
             audioFormat = qdbus_cast<QVariantMap>(*it);
             Q_EMIT q->audioFormatChanged(audioFormat);
         }
+#endif
     }
 }
 

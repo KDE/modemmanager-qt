@@ -72,12 +72,14 @@ void ModemManager::ModemFirmwarePrivate::onPropertiesChanged(const QString &inte
 {
     Q_UNUSED(invalidatedProps);
     if (interfaceName == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_FIRMWARE)) {
+#if MM_CHECK_VERSION(1, 10, 0)
         QVariantMap::const_iterator it = properties.constFind(QLatin1String(MM_MODEM_FIRMWARE_PROPERTY_UPDATESETTINGS));
         if (it != properties.constEnd()) {
             updateSettings = it->value<FirmwareUpdateSettings>();
             Q_Q(ModemFirmware);
             Q_EMIT q->updateSettingsChanged(updateSettings);
         }
+#endif
     }
 }
 
