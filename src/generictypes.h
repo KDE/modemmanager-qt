@@ -278,7 +278,6 @@ Q_DECLARE_METATYPE(MMSimRemovability)
 #if MM_CHECK_VERSION(1, 10, 0)
 Q_DECLARE_METATYPE(MMBearerType)
 Q_DECLARE_METATYPE(MMModem3gppEpsUeModeOperation)
-Q_DECLARE_METATYPE(MMNetworkError)
 Q_DECLARE_METATYPE(QFlags<MMModemFirmwareUpdateMethod>)
 #endif
 #if MM_CHECK_VERSION(1, 20, 0)
@@ -292,6 +291,7 @@ Q_DECLARE_METATYPE(MMServingCellType)
 #endif
 #if MM_CHECK_VERSION(1, 24, 0)
 Q_DECLARE_METATYPE(MMCbmState)
+Q_DECLARE_METATYPE(MMNetworkError)
 #endif
 
 // Others

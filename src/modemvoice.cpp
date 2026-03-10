@@ -118,11 +118,13 @@ void ModemManager::ModemVoicePrivate::onPropertiesChanged(const QString &interfa
     Q_Q(ModemVoice);
 
     if (interfaceName == QLatin1String(MMQT_DBUS_INTERFACE_MODEM_VOICE)) {
+#if MM_CHECK_VERSION(1, 12, 0)
         QVariantMap::const_iterator it = properties.constFind(QLatin1String(MM_MODEM_VOICE_PROPERTY_EMERGENCYONLY));
         if (it != properties.constEnd()) {
             emergencyOnly = it->toBool();
             Q_EMIT q->emergencyOnlyChanged(emergencyOnly);
         }
+#endif
     }
 }
 
