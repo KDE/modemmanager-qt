@@ -23,8 +23,6 @@ include(ECMDeprecationSettings)
 set(REQUIRED_QT_VERSION 6.9.0)
 find_package(Qt6 ${REQUIRED_QT_VERSION} REQUIRED Core DBus Xml)
 
-add_definitions(${QT_DEFINITIONS})
-
 remove_definitions(-DQT_NO_FOREACH) # set by KDEFrameworkCompilerSettings
 
 include(ECMGenerateExportHeader)
