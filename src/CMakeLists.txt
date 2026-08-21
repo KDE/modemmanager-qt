@@ -1,5 +1,3 @@
-#add_subdirectory(dbus)
-
 include_directories(
     ${MODEMMANAGER_INCLUDE_DIRS}
 )
