@@ -30,6 +30,7 @@ include(ECMSetupVersion)
 include(ECMGenerateHeaders)
 include(ECMQtDeclareLoggingCategory)
 include(ECMGenerateQDoc)
+include(ECMInstalledLibraryCheck)
 
 set(modemmanagerqt_version_header "${CMAKE_CURRENT_BINARY_DIR}/src/modemmanagerqt_version.h")
 ecm_setup_version(PROJECT VARIABLE_PREFIX MODEMMANAGERQT

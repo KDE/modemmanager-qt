@@ -168,3 +168,17 @@ ecm_qt_install_logging_categories(
     FILE modemmanagerqt.categories
     DESTINATION ${KDE_INSTALL_LOGGINGCATEGORIESDIR}
 )
+
+ecm_add_installed_library_check(KF6ModemManagerQt
+    PACKAGE_NAME "KF6ModemManagerQt"
+    PACKAGE_TARGET_NAMESPACE "KF6::"
+)
+
+ecm_installed_library_check_include_strings(KF6ModemManagerQt
+    HEADERS ${ModemManagerQt_CamelCaseHEADERS}
+    PREFIX ModemManagerQt
+)
+
+ecm_installed_library_check_version_preprocessor_macros(KF6ModemManagerQt
+    PREFIX MODEMMANAGERQT
+)
