@@ -97,7 +97,7 @@ MODEMMANAGERQT_EXPORT void scanDevices();
  *
  * \a level one of "ERR", "WARN", "MSG" (since ModemManager 1.22), "INFO", "DEBUG".
  *
- * \since 6.24.0
+ * \since 6.31
  */
 MODEMMANAGERQT_EXPORT QDBusPendingReply<> setLogging(const QString &level);
 
@@ -111,7 +111,7 @@ MODEMMANAGERQT_EXPORT QDBusPendingReply<> setLogging(const QString &level);
  *   "subsystem" (string: device subsystem). Optional key: "uid" (string:
  *   unique ID of the physical device; if not given, the sysfs path is used).
  *
- * \since 6.24.0
+ * \since 6.31
  */
 MODEMMANAGERQT_EXPORT QDBusPendingReply<> reportKernelEvent(const QVariantMap &properties);
 
@@ -129,14 +129,14 @@ MODEMMANAGERQT_EXPORT QDBusPendingReply<> reportKernelEvent(const QVariantMap &p
  *   org.freedesktop.ModemManager1.Modem Device property.
  * \a inhibit \c true to inhibit the modem, \c false to uninhibit it.
  *
- * \since 6.24.0
+ * \since 6.31
  */
 MODEMMANAGERQT_EXPORT QDBusPendingReply<> inhibitDevice(const QString &uid, bool inhibit);
 
 /*!
  * Returns the runtime version of the ModemManager daemon.
  *
- * \since 6.24.0
+ * \since 6.31
  */
 MODEMMANAGERQT_EXPORT QString version();
 
